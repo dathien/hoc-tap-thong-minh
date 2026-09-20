@@ -33,6 +33,10 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
 .filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin:12px 0 16px}.filter-bar .field{margin:0;min-width:150px;flex:1}.summary-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}.summary-box{border:1px solid var(--border);border-radius:14px;padding:13px;background:#fff}.summary-box strong{display:block;font-size:23px;color:var(--primary)}.score-input{width:86px!important}.status-done{color:#15803d;font-weight:800}.status-wait{color:#b45309;font-weight:800}.toolbar-right{display:flex;gap:8px;flex-wrap:wrap}@media(max-width:760px){.summary-strip{grid-template-columns:1fr 1fr}}
 .competency-line{margin-top:7px;font-size:12px;line-height:1.6}.competency-line .tag{margin:2px 2px 0 0}
 </style>
+<style>
+/* Bảng điều khiển báo cáo: dùng SVG/CSS nội tuyến, hoạt động khi ngoại tuyến. */
+.rdash{display:grid;gap:16px;margin:16px 0 22px}.rstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.rstat,.rchart{background:#fff;border:1px solid #dce8ed;border-radius:15px;padding:17px;min-width:0}.rstat span{font-size:12px;color:#526779;display:block}.rstat strong{font-size:27px;line-height:1.5;color:#125e71;font-variant-numeric:tabular-nums}.rstat small{display:block;color:#6b7f8e}.rcharts{display:grid;grid-template-columns:1fr 1fr;gap:14px}.rchart h3{font-size:15px;color:#19475a;margin:0 0 12px}.rchart p{font-size:12px;color:#667d8b;margin:8px 0 0}.rlegend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#42576b}.rlegend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px}.rline{display:grid;grid-template-columns:minmax(95px,1fr) 2fr 45px;align-items:center;gap:9px;margin:11px 0;font-size:12px}.rline>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rtrack{height:11px;border-radius:12px;background:#e8eff3;overflow:hidden}.rfill{height:100%;background:#138b8e;border-radius:12px}.rchart svg{width:100%;height:auto;max-height:230px}.rmore{border:1px solid #dce8ed;border-radius:12px;padding:12px;margin-top:14px}.rmore summary{cursor:pointer;font-weight:700;color:#125e71}.rmore[open] summary{margin-bottom:12px}@media(max-width:750px){.rstats{grid-template-columns:repeat(2,minmax(0,1fr))}.rcharts{grid-template-columns:1fr}}@media print{.rmore:not([open])>*:not(summary){display:block!important}.rmore summary{display:none}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -675,11 +679,86 @@ function saved(){const s=current(),key=reportKey();return s&&key&&s.parentFeedba
 function status(t){el('pfStatus').textContent=t}
 function sync(){const sel=el('pfStudent');if(!sel)return;const prev=sel.value;sel.innerHTML='';(state.students||[]).forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=s.name+' · '+(s.className||'');sel.appendChild(o)});if([...sel.options].some(o=>o.value===prev))sel.value=prev;else if(el('rStudent')&&el('rStudent').value!=='all'&&[...sel.options].some(o=>o.value===el('rStudent').value))sel.value=el('rStudent').value;if(!el('pfDate').value)el('pfDate').value=localISO(new Date())}
 window.pfLoadSaved=function(){sync();const item=saved();el('pfText').value=item?item.text:'';status(item?'Đã tải bản phản hồi đã lưu của kỳ này.':'Chưa có phản hồi đã lưu cho học sinh và kỳ được chọn.')};
-window.pfGenerate=function(){sync();const s=current(),r=range();if(!s||!r){status('Hãy chọn học sinh và kỳ báo cáo.');return}const all=Array.isArray(s.assignments)?s.assignments:[],a=all.filter(x=>inRange(x.date||x.due||x.createdAt,r)),j=(s.journals||[]).filter(x=>inRange(x.date,r));const graded=a.filter(x=>x.status==='graded'&&x.score!==''&&x.score!==null&&x.score!==undefined&&Number.isFinite(Number(x.score)));const submitted=a.filter(x=>x.status==='submitted'||x.status==='graded'||x.status==='done');const avg=graded.length?(graded.reduce((n,x)=>n+Number(x.score),0)/graded.length).toFixed(1):null;const names=graded.filter(x=>x.teacherComment&&String(x.teacherComment).trim()).slice(-2).map(x=>String(x.teacherComment).trim());const evidence=a.length||j.length;const lines=['Kính gửi Quý phụ huynh,','', 'Giáo viên xin gửi thông tin học tập của em '+s.name+' (lớp '+(s.className||'chưa cập nhật')+') trong '+(el('pfPeriod').value==='week'?'tuần':'tháng')+' từ '+r.start.split('-').reverse().join('/')+' đến '+r.end.split('-').reverse().join('/')+':',''];if(!evidence){lines.push('Hiện chưa có đủ dữ liệu học tập được ghi nhận trong kỳ này để tổng hợp kết quả. Giáo viên sẽ cập nhật sau khi có thông tin thực tế.')}else{lines.push('• Bài tập ghi nhận: '+a.length+'; đã hoàn thành hoặc nộp: '+submitted.length+'; đã chấm: '+graded.length+'.');lines.push('• Điểm trung bình các bài đã chấm: '+(avg===null?'chưa có dữ liệu':avg+'/10')+'.');lines.push('• Nhật ký học tập đã ghi nhận: '+j.length+' buổi.');if(names.length)lines.push('• Nhận xét từ các bài đã chấm: '+names.join(' '));lines.push('• Nội dung cần phối hợp: '+(a.length&&submitted.length<a.length?'Nhắc em kiểm tra và hoàn thành các bài tập còn lại theo hướng dẫn của giáo viên.':'Tiếp tục theo dõi việc học và động viên em duy trì nề nếp học tập.'))}lines.push('','Rất mong Quý phụ huynh phối hợp, trao đổi với giáo viên khi cần.','Trân trọng!');const prior=el('pfText').value.trim();if(prior&&!confirm('Tạo lại nội dung sẽ thay thế phần đang hiển thị. Thầy/cô có muốn tiếp tục?'))return;el('pfText').value=lines.join('\n');status('Đã tạo bản nháp từ dữ liệu hiện có. Vui lòng kiểm tra và chỉnh sửa trước khi gửi; chưa có tin nhắn nào được gửi.')};
+function periodAssignments(s,r){return (Array.isArray(s.assignments)?s.assignments:[]).filter(x=>!String(x.id||'').startsWith('demo_report_')&&inRange(x.submittedAt||x.date||x.due||x.createdAt,r))}
+function scored(items){return items.filter(x=>x.status==='graded'&&x.score!==''&&x.score!=null&&Number.isFinite(Number(x.score)))}
+function mean(items){return items.length?items.reduce((sum,x)=>sum+Number(x.score),0)/items.length:null}
+function priorRange(r){const d=new Date(r.start+'T12:00:00');if(el('pfPeriod').value==='month'){d.setMonth(d.getMonth()-1);const start=new Date(d.getFullYear(),d.getMonth(),1),end=new Date(d.getFullYear(),d.getMonth()+1,0);return{start:localISO(start),end:localISO(end)}}const end=new Date(d);end.setDate(d.getDate()-1);d.setDate(d.getDate()-7);return{start:localISO(d),end:localISO(end)}}
+function lesson(x){return String(x.bookTopic||x.subjectOutcome||x.title||'').trim()}
+window.pfGenerate=function(){
+ sync();const s=current(),r=range();if(!s||!r){status('Hãy chọn học sinh và kỳ báo cáo.');return}
+ const a=periodAssignments(s,r),previous=periodAssignments(s,priorRange(r));
+ const graded=scored(a),oldGraded=scored(previous),done=a.filter(x=>['submitted','graded','done'].includes(x.status));
+ const avg=mean(graded),oldAvg=mean(oldGraded);
+ const comments=graded.map(x=>({topic:lesson(x),comment:String(x.teacherComment||'').trim()})).filter(x=>x.comment);
+ const journal=(s.journals||[]).filter(x=>inRange(x.date,r));
+ const lines=['Kính gửi Quý phụ huynh,','','Giáo viên xin gửi thông tin học tập của em '+s.name+' (lớp '+(s.className||'chưa cập nhật')+') trong '+(el('pfPeriod').value==='week'?'tuần':'tháng')+' từ '+r.start.split('-').reverse().join('/')+' đến '+r.end.split('-').reverse().join('/')+':',''];
+ lines.push('1. KẾT QUẢ HỌC TẬP');
+ if(!a.length&&!journal.length){lines.push('Chưa có đủ dữ liệu học tập được ghi nhận trong kỳ để tổng hợp kết quả.');}
+ else{
+  lines.push('Bài tập ghi nhận: '+a.length+'; đã nộp hoặc hoàn thành: '+done.length+'; đã chấm: '+graded.length+'.');
+  lines.push('Điểm trung bình các bài đã chấm: '+(avg===null?'chưa có dữ liệu':avg.toFixed(1)+'/10')+'.');
+  if(comments.length)lines.push('Nhận xét đã ghi khi chấm: '+comments.slice(-2).map(x=>x.topic+': '+x.comment).join(' | '));
+ }
+ lines.push('','2. SỰ TIẾN BỘ');
+ if(graded.length>=1&&oldGraded.length>=1){
+  const delta=avg-oldAvg;
+  if(Math.abs(delta)<0.05)lines.push('Điểm trung bình các bài đã chấm tương đương kỳ trước ('+oldAvg.toFixed(1)+' → '+avg.toFixed(1)+'/10).');
+  else lines.push('Điểm trung bình các bài đã chấm '+(delta>0?'tăng':'giảm')+' từ '+oldAvg.toFixed(1)+' lên '+avg.toFixed(1)+'/10 so với kỳ trước.');
+  lines.push('Kỳ trước có '+oldGraded.length+' bài đã chấm; kỳ này có '+graded.length+' bài đã chấm. Kết quả có thể chịu ảnh hưởng bởi độ khó và nội dung bài khác nhau; giáo viên cần đối chiếu bài làm trước khi kết luận mức tiến bộ.');
+ }else lines.push('Chưa đủ bài đã chấm ở cả kỳ này và kỳ trước để đối chiếu sự tiến bộ.');
+ lines.push('','3. NỘI DUNG CẦN LUYỆN TẬP THÊM');
+ const topics=[];const add=t=>{if(t&&!topics.includes(t))topics.push(t)};
+ graded.filter(x=>Number(x.score)<7).sort((x,y)=>Number(x.score)-Number(y.score)).forEach(x=>add(lesson(x)));
+ a.filter(x=>x.status==='pending').forEach(x=>add(lesson(x)));
+ journal.forEach(x=>{if(String(x.hard||'').trim()&&!/^(không|chưa có|không có|không gặp khó khăn)$/i.test(String(x.hard).trim()))add(String(x.hard).trim())});
+ if(topics.length)lines.push('Ưu tiên ôn tập/hoàn thành: '+topics.slice(0,3).join('; ')+'.');
+ else lines.push('Chưa có minh chứng cụ thể về chủ đề cần luyện thêm trong dữ liệu hiện có; giáo viên bổ sung sau khi xem bài làm.');
+ lines.push('','4. PHỐI HỢP CÙNG PHỤ HUYNH');
+ lines.push(a.some(x=>x.status==='pending')?'Nhắc em hoàn thành các bài còn lại và dành thời gian ôn những nội dung giáo viên đã chỉ ra.':'Động viên em duy trì việc học; trao đổi với giáo viên về những nội dung cần hỗ trợ thêm.');
+ lines.push('','Rất mong Quý phụ huynh phối hợp và trao đổi với giáo viên khi cần.','Trân trọng!');
+ const prior=el('pfText').value.trim();if(prior&&!confirm('Tạo lại nội dung sẽ thay thế phần đang hiển thị. Thầy/cô có muốn tiếp tục?'))return;
+ el('pfText').value=lines.join('\n');status('Đã tạo bản nháp. Thầy/cô kiểm tra sự tiến bộ và nội dung cần luyện tập trước khi gửi; app chưa gửi tin nhắn.');
+};
 window.pfSave=function(){const s=current(),key=reportKey(),text=el('pfText').value.trim();if(!s||!key||!text){status('Chọn học sinh, kỳ báo cáo và nhập nội dung trước khi lưu.');return}s.parentFeedback=s.parentFeedback||{};s.parentFeedback[key]={text,updatedAt:new Date().toISOString()};saveState();status('Đã lưu phản hồi trên trình duyệt này. Chưa gửi cho phụ huynh.')};
 window.pfCopy=async function(){const text=el('pfText').value.trim();if(!text){status('Chưa có nội dung để sao chép.');return}try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);else{el('pfText').focus();el('pfText').select();if(!document.execCommand('copy'))throw Error('copy failed')}status('Đã sao chép nội dung. Thầy/cô có thể dán vào tin nhắn Zalo hoặc kênh liên lạc với phụ huynh; app không tự gửi.')}catch(e){status('Không sao chép tự động được. Thầy/cô hãy chọn nội dung trong ô và sao chép thủ công.')}};
 const old=window.goPanel;window.goPanel=function(name){old.apply(this,arguments);if(name==='report')window.pfLoadSaved()};
 document.addEventListener('DOMContentLoaded',()=>{sync();window.pfLoadSaved()});
+})();
+</script>
+<script>
+/* Dashboard uses only the current filtered student records; no synthetic values. */
+(function(){
+ const original=window.renderReport;
+ if(typeof original!=='function')return;
+ const clean=s=>esc(String(s==null?'':s));
+ const n=x=>Number(x);
+ const valid=a=>a&&a.status==='graded'&&a.score!==''&&a.score!=null&&Number.isFinite(n(a.score))&&n(a.score)>=0&&n(a.score)<=10;
+ const genuine=a=>!String(a.id||'').startsWith('demo_report_');
+ const periodOK=(d,p)=>{try{return dateInPeriod(d,p)}catch(e){return false}};
+ const dateOf=a=>a.submittedAt||a.date||a.createdAt||a.due;
+ const pct=(a,b)=>b?Math.round(a/b*100):null;
+ const metric=(v,suffix='')=>v===null?'—':v+suffix;
+ const stat=(v,l,h)=>`<div class="rstat"><span>${l}</span><strong>${v}</strong><small>${h}</small></div>`;
+ const line=(label,v)=>`<div class="rline"><span title="${clean(label)}">${clean(label)}</span><div class="rtrack"><div class="rfill" style="width:${Math.max(0,Math.min(100,v||0))}%"></div></div><b>${metric(v,'%')}</b></div>`;
+ function donut(done,total){const val=pct(done,total),angle=val===null?0:val*3.6;return `<div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap"><div style="width:132px;height:132px;border-radius:50%;background:conic-gradient(#138b8e ${angle}deg,#e6eef3 ${angle}deg);display:grid;place-items:center"><div style="width:100px;height:100px;border-radius:50%;background:white;display:grid;place-items:center;font-size:24px;font-weight:800;color:#125e71">${metric(val,'%')}</div></div><div><b>${done}/${total} bài đã hoàn thành</b><p>Chưa có bài tập: hiển thị —, không tính thành 0%.</p></div></div>`}
+ function trend(assignments){const a=assignments.filter(valid).sort((x,y)=>String(dateOf(x)).localeCompare(String(dateOf(y))));if(!a.length)return '<p>Chưa có bài được chấm trong kỳ.</p>';const max=10,w=540,h=185,pad=30;const pts=a.map((x,i)=>[pad+(a.length===1?(w-2*pad)/2:i*(w-2*pad)/(a.length-1)),h-pad-(n(x.score)/max)*(h-2*pad)]);const poly=pts.map(p=>p.join(',')).join(' ');return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Biểu đồ điểm theo thứ tự các bài đã chấm"><line x1="${pad}" y1="${h-pad}" x2="${w-pad}" y2="${h-pad}" stroke="#cad9df"/><line x1="${pad}" y1="${pad}" x2="${pad}" y2="${h-pad}" stroke="#cad9df"/><text x="4" y="${pad+5}" font-size="12" fill="#536b7c">10</text><text x="12" y="${h-pad+5}" font-size="12" fill="#536b7c">0</text>${pts.length>1?`<polyline points="${poly}" fill="none" stroke="#138b8e" stroke-width="3" stroke-linejoin="round"/>`:''}${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#138b8e"><title>${clean(a[i].title||'Bài tập')}: ${n(a[i].score).toFixed(1)}/10</title></circle>`).join('')}</svg><p>${a.length} bài đã chấm, sắp xếp theo ngày ghi nhận. Di chuột/chạm vào điểm để xem bài và điểm số.</p>`}
+ window.renderReport=function(){
+  original.apply(this,arguments);
+  const box=document.getElementById('reportSheet');if(!box||!box.querySelector('.report-title'))return;
+  const sid=document.getElementById('rStudent')?.value||'all',period=document.getElementById('rPeriod')?.value||'last30',subject=document.getElementById('rSubject')?.value||'all',view=document.getElementById('rView')?.value||'all';
+  const students=(state.students||[]).filter(s=>(sid==='all'||s.id===sid)&&(subject==='all'||s.subject===subject));
+  const rows=students.map(s=>{const a=(s.assignments||[]).filter(x=>genuine(x)&&periodOK(x.date||x.createdAt||dateOf(x),period)),g=a.filter(valid),j=(s.journals||[]).filter(x=>periodOK(x.date,period));return {s,a,g,j,done:a.filter(x=>x.status==='graded'||x.status==='done').length}});
+  const all=rows.flatMap(x=>x.a),graded=rows.flatMap(x=>x.g),done=rows.reduce((sum,x)=>sum+x.done,0),avg=graded.length?(graded.reduce((sum,x)=>sum+n(x.score),0)/graded.length).toFixed(1):'—';
+  const chart1=`<div class="rchart"><h3>Hoàn thành bài tập</h3>${donut(done,all.length)}</div>`;
+  const chart2=`<div class="rchart"><h3>Tiến độ theo học sinh</h3>${rows.some(x=>x.a.length)?rows.map(x=>line(x.s.name,pct(x.done,x.a.length))).join(''):'<p>Chưa có bài tập trong khoảng thời gian đã chọn.</p>'}</div>`;
+  const chart3=`<div class="rchart"><h3>Điểm bài tập theo thời gian</h3>${trend(graded)}</div>`;
+  const chart4=`<div class="rchart"><h3>Phân bố điểm bài đã chấm</h3>${graded.length?[{label:'Dưới 5',min:0,max:5},{label:'Từ 5 đến dưới 7',min:5,max:7},{label:'Từ 7 đến dưới 9',min:7,max:9},{label:'Từ 9 đến 10',min:9,max:11}].map(b=>line(b.label,pct(graded.filter(a=>n(a.score)>=b.min&&n(a.score)<b.max).length,graded.length))).join(''):'<p>Chưa có bài được chấm trong kỳ.</p>'}<p>Phân bố theo điểm bài tập, không phải xếp loại học sinh.</p></div>`;
+  const dashboard=`<div class="rdash"><div class="rstats">${stat(rows.length,'Học sinh','Theo bộ lọc đang chọn')}${stat(all.length,'Bài tập','Trong kỳ báo cáo')}${stat(graded.length,'Bài đã chấm','Có điểm hợp lệ')}${stat(avg==='—'?'—':avg+'/10','Điểm bài tập TB','Chỉ tính bài đã chấm')}</div><div class="rcharts">${chart1}${chart2}${view==='all'||view==='subject'?chart3+chart4:''}</div></div>`;
+  const heading=box.querySelector('.report-title');if(heading)heading.insertAdjacentHTML('afterend',dashboard);
+  const sections=[...box.children].filter(e=>e.classList&&e.classList.contains('report-section'));
+  if(sections.length){const detail=document.createElement('details');detail.className='rmore';detail.innerHTML='<summary>Xem bảng số liệu và minh chứng chi tiết</summary>';sections[0].before(detail);sections.forEach(x=>detail.appendChild(x));}
+  const strip=box.querySelector('.summary-strip');if(strip)strip.remove();
+ };
 })();
 </script>
 </body>
