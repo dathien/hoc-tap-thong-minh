@@ -618,32 +618,33 @@ window.editAssignment=function(sid,id){goPanel('assignments');easyOpen(sid,id);}
 <dialog id="commentDialog" aria-labelledby="commentTitle"><form class="comment-inner" method="dialog" onsubmit="return false">
 <h3 id="commentTitle" style="margin:0">Chấm và nhận xét bài tập</h3><p id="commentStudent" style="margin:0"></p>
 <label for="commentScore">Điểm (0–10)</label><input id="commentScore" type="number" min="0" max="10" step="0.1" placeholder="Nhập điểm" inputmode="decimal">
-<label for="commentPreset">Chọn nhận xét mẫu (có thể sửa lại)</label><select id="commentPreset"><option value="">— Chọn một trong 10 nhận xét —</option></select>
-<label for="commentText">Nhận xét của giáo viên</label><textarea id="commentText" placeholder="Chọn mẫu phía trên hoặc tự nhập nhận xét phù hợp với bài làm"></textarea>
+
+<label for="commentSuggestion">Gợi ý nhận xét (không bắt buộc)</label><select id="commentSuggestion" onchange="applyCommentSuggestion(this.value)"><option value="">Chọn nhận xét phù hợp với bài làm…</option></select>
+<label for="commentText">Nhận xét</label><textarea id="commentText" placeholder="Nhập nhận xét về bài làm của học sinh…"></textarea>
 <p id="commentError" role="alert" style="display:none;color:#b42318;margin:0"></p>
 <div class="comment-actions"><button class="btn primary" type="button" onclick="saveCommentGrade()">Lưu điểm và nhận xét</button><button class="btn secondary" type="button" onclick="document.getElementById('commentDialog').close()">Hủy</button></div>
 </form></dialog>
 <script>
 (function(){'use strict';
-// Mẫu gợi ý do ứng dụng biên soạn dựa trên nguyên tắc phản hồi cụ thể và hướng cải thiện;
-// không phải câu chữ được ban hành nguyên văn trong Thông tư 22/2021.
-const COMMENT_SAMPLES=[
-'Em hoàn thành đầy đủ yêu cầu của bài; cách trình bày rõ ràng. Hãy tiếp tục phát huy.',
-'Em nắm được kiến thức trọng tâm và vận dụng đúng vào bài làm. Cần giải thích thêm các bước để lập luận chặt chẽ hơn.',
-'Em đã có tiến bộ so với bài trước, đặc biệt ở cách xác định yêu cầu. Hãy duy trì việc tự kiểm tra trước khi nộp.',
-'Em thực hiện đúng phần lớn yêu cầu; cần rà soát một số lỗi nhỏ và sửa lại các bước chưa chính xác.',
-'Em hiểu ý chính của bài nhưng còn thiếu một số nội dung. Hãy đối chiếu từng yêu cầu và bổ sung phần còn thiếu.',
-'Em có cách giải phù hợp nhưng phần trình bày chưa rõ. Hãy sắp xếp các bước theo trình tự và nêu kết luận đầy đủ.',
-'Em đã cố gắng hoàn thành bài; cần ôn lại kiến thức nền và luyện thêm bài tương tự để thực hiện chính xác hơn.',
-'Em còn nhầm lẫn ở bước xác định yêu cầu của đề. Hãy đọc kỹ đề, gạch chân dữ kiện quan trọng rồi làm lại phần này.',
-'Bài làm chưa đáp ứng đầy đủ yêu cầu. Hãy xem lại ví dụ đã học, sửa các lỗi được chỉ ra và nộp lại theo hướng dẫn.',
-'Em cần chủ động hoàn thành bài đúng hạn và kiểm tra kết quả trước khi nộp. Giáo viên sẽ hỗ trợ nếu em còn vướng mắc.'
-];
 let active=null;
-const dialog=document.getElementById('commentDialog'),preset=document.getElementById('commentPreset');
-COMMENT_SAMPLES.forEach((sample,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=(i+1)+'. '+sample;preset.appendChild(option)});
-preset.addEventListener('change',()=>{if(preset.value!=='')document.getElementById('commentText').value=COMMENT_SAMPLES[Number(preset.value)]});
-window.gradeAssignment=function(sid,id){const student=state.students.find(s=>s.id===sid),assignment=student?.assignments?.find(a=>a.id===id);if(!assignment)return;active={sid,id};document.getElementById('commentStudent').textContent=student.name+' · '+assignment.title;document.getElementById('commentScore').value=assignment.score===''||assignment.score==null?'':assignment.score;document.getElementById('commentText').value=assignment.teacherComment||'';preset.value='';document.getElementById('commentError').style.display='none';dialog.showModal();};
+const dialog=document.getElementById('commentDialog');
+const SUGGESTIONS=[
+'Em hoàn thành tốt yêu cầu của bài tập; cách trình bày rõ ràng, chính xác. Hãy tiếp tục phát huy.',
+'Em nắm được kiến thức trọng tâm và thực hiện đúng phần lớn yêu cầu; cần kiểm tra lại một vài chi tiết trước khi nộp.',
+'Em có tiến bộ so với các bài trước; hãy duy trì việc luyện tập và chú ý trình bày đầy đủ các bước.',
+'Em đã thực hiện được yêu cầu cơ bản; cần bổ sung giải thích hoặc dẫn chứng để bài làm thuyết phục hơn.',
+'Em hiểu hướng giải quyết nhưng còn sai sót ở một số bước; hãy đối chiếu lại kiến thức và tự sửa những chỗ chưa đúng.',
+'Em đã có cố gắng hoàn thành bài; cần đọc kỹ yêu cầu và kiểm tra kết quả trước khi nộp.',
+'Bài làm còn thiếu một số nội dung theo yêu cầu; em hãy bổ sung và hoàn thiện từng phần.',
+'Em cần ôn lại kiến thức nền tảng của chủ đề này, sau đó luyện thêm bài tương tự để củng cố cách thực hiện.',
+'Em chưa hoàn thành đầy đủ yêu cầu của bài; hãy trao đổi với giáo viên về phần còn vướng mắc và thực hiện lại.',
+'Em có ý tưởng phù hợp; hãy trình bày mạch lạc hơn, kiểm tra tính chính xác và nêu rõ kết luận.'
+];
+const suggestionSelect=document.getElementById('commentSuggestion');
+SUGGESTIONS.forEach((suggestion,index)=>{const option=document.createElement('option');option.value=String(index);option.textContent=(index+1)+'. '+suggestion;suggestionSelect.appendChild(option);});
+window.applyCommentSuggestion=function(index){if(index==='')return;const suggestion=SUGGESTIONS[Number(index)];if(suggestion!==undefined)document.getElementById('commentText').value=suggestion;};
+
+window.gradeAssignment=function(sid,id){const student=state.students.find(s=>s.id===sid),assignment=student?.assignments?.find(a=>a.id===id);if(!assignment)return;active={sid,id};document.getElementById('commentStudent').textContent=student.name+' · '+assignment.title;document.getElementById('commentScore').value=assignment.score===''||assignment.score==null?'':assignment.score;document.getElementById('commentText').value=assignment.teacherComment||'';suggestionSelect.value='';document.getElementById('commentError').style.display='none';dialog.showModal();};
 window.saveCommentGrade=function(){if(!active)return;const scoreInput=document.getElementById('commentScore'),raw=scoreInput.value.trim(),score=Number(raw),error=document.getElementById('commentError');if(!raw||!Number.isFinite(score)||score<0||score>10||!/^\d+(?:[.,]\d)?$/.test(raw)){error.textContent='Nhập điểm từ 0 đến 10, tối đa một chữ số thập phân.';error.style.display='block';scoreInput.focus();return;}const student=state.students.find(s=>s.id===active.sid),assignment=student?.assignments?.find(a=>a.id===active.id);if(!assignment){error.textContent='Không tìm thấy bài tập. Hãy mở lại bài để chấm.';error.style.display='block';return;}assignment.score=score;assignment.teacherComment=document.getElementById('commentText').value.trim();assignment.status='graded';saveState();renderAssignments();dialog.close();active=null;toast('Đã lưu điểm và nhận xét');};
 })();
 </script>
