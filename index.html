@@ -74,7 +74,7 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
   <aside class="card sidebar">
     <div class="nav-title">Dùng nhanh</div>
     <button class="nav-btn active" data-panel="home" onclick="goPanel('home')"><span>🏠</span>Tổng quan</button>
-    <button class="nav-btn" data-panel="profiles" onclick="goPanel('profiles')"><span>👨‍🎓</span>Học sinh</button>
+    <button class="nav-btn" data-panel="profiles" onclick="goPanel('profiles')"><span>👨‍🎓</span>Lớp – Môn – Học sinh</button>
     <button class="nav-btn" data-panel="plan" onclick="goPanel('plan')"><span>📅</span>Kế hoạch</button>
     <button class="nav-btn" data-panel="session" onclick="goPanel('session')"><span>▶</span>Học hôm nay</button>
     <button class="nav-btn" data-panel="assignments" onclick="goPanel('assignments')"><span>📝</span>Bài tập</button>
@@ -103,8 +103,8 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
     </section>
 
     <section id="profilesPanel" class="card panel">
-      <div class="panel-head"><div><h2>👨‍🎓 Học sinh</h2><p>Chỉ cần nhập các thông tin chính. Khảo sát là tùy chọn để cá nhân hóa sâu hơn.</p></div><button class="btn secondary small" onclick="newProfile()">＋ Học sinh mới</button></div><div class="simple-tabs"><button onclick="goPanel('survey')">🧩 Khảo sát thêm (tùy chọn)</button><button onclick="goPanel('analysis')">📌 Xem phân tích</button><button onclick="quickCreateRoute()">✨ Tạo lộ trình tự động</button></div>
-      <div class="grid2">
+      <div class="panel-head"><div><h2>👨‍🎓 Lớp – Môn học – Học sinh</h2><p>Chọn lớp và môn để xem đúng học sinh. Chỉ cần tạo hồ sơ mỗi học sinh một lần.</p></div><button class="btn secondary small" onclick="newProfile()">＋ Học sinh mới</button></div><div class="simple-tabs"><button onclick="goPanel('survey')">🧩 Khảo sát thêm (tùy chọn)</button><button onclick="goPanel('analysis')">📌 Xem phân tích</button><button onclick="quickCreateRoute()">✨ Tạo lộ trình tự động</button></div>
+      <div class="list-card" style="margin-bottom:14px"><div class="grid2"><div class="field"><label for="classManagerFilter">Lớp đang xem</label><select id="classManagerFilter" onchange="classManagerChanged()"></select></div><div class="field"><label for="subjectManagerFilter">Môn học đang xem</label><select id="subjectManagerFilter" onchange="classManagerChanged()"></select></div></div><div class="action-row"><button class="btn secondary small" type="button" onclick="addClassManager()">＋ Thêm lớp</button><button class="btn secondary small" type="button" onclick="addSubjectManager()">＋ Thêm môn cho lớp</button><button class="btn secondary small" type="button" onclick="newStudentInContext()">＋ Thêm học sinh</button></div><p class="help" id="classManagerHint">Chọn lớp và môn; học sinh của lớp được dùng chung, không phải nhập lại cho mỗi môn.</p></div><div class="grid2">
         <div>
           <div class="field"><label>Họ và tên <span class="req">*</span></label><input id="pName" placeholder="Ví dụ: Nguyễn Minh An"></div>
           <div class="grid2"><div class="field"><label>Lớp <span class="req">*</span></label><input id="pClass" placeholder="Ví dụ: 10A1"></div><div class="field"><label>Khối</label><select id="pGrade"><option>Tiểu học</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>Trung học nghề</option></select></div></div>
@@ -116,7 +116,7 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
           <div id="subjectTip" class="info-box"></div>
           <div class="action-row"><button class="btn primary" onclick="saveProfile()">💾 Lưu hồ sơ</button><button class="btn secondary" onclick="fillSampleProfile()">Điền mẫu minh họa</button><button class="btn danger" id="deleteProfileBtn" onclick="deleteCurrentProfile()">Xóa hồ sơ</button></div>
         </div>
-        <div><h3 style="margin-top:0">Danh sách học sinh</h3><div id="profileList"></div></div>
+        <div><h3 style="margin-top:0">Danh sách học sinh theo lớp và môn</h3><div id="profileList"></div></div>
       </div>
     </section>
 
@@ -759,6 +759,30 @@ document.addEventListener('DOMContentLoaded',()=>{sync();window.pfLoadSaved()});
   if(sections.length){const detail=document.createElement('details');detail.className='rmore';detail.innerHTML='<summary>Xem bảng số liệu và minh chứng chi tiết</summary>';sections[0].before(detail);sections.forEach(x=>detail.appendChild(x));}
   const strip=box.querySelector('.summary-strip');if(strip)strip.remove();
  };
+})();
+</script>
+<script>
+/* Quản lý lớp/môn: lưu cấu hình riêng, không nhân bản hồ sơ học sinh. */
+(function(){
+const oldRender=window.renderProfiles;
+function store(){if(!state.settings.classSubjects)state.settings.classSubjects={};return state.settings.classSubjects}
+function classes(){return [...new Set([...state.students.map(s=>s.className).filter(Boolean),...Object.keys(store())])].sort((a,b)=>a.localeCompare(b,'vi'))}
+function subjects(cls){const saved=store()[cls]||[];return [...new Set([...saved,...state.students.filter(s=>s.className===cls).map(s=>s.subject).filter(Boolean),...state.students.filter(s=>s.className===cls).flatMap(s=>(s.assignments||[]).map(a=>a.subject).filter(Boolean))])].sort((a,b)=>a.localeCompare(b,'vi'))}
+window.renderProfiles=function(){
+ const c=document.getElementById('classManagerFilter'),m=document.getElementById('subjectManagerFilter'),box=document.getElementById('profileList');
+ if(!c||!m||!box)return oldRender();
+ const prevC=c.value,cls=classes();c.innerHTML=cls.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
+ c.value=cls.includes(prevC)?prevC:(cls.includes(currentStudent()?.className)?currentStudent().className:cls[0]||'');
+ const prevM=m.value,subs=subjects(c.value);m.innerHTML=subs.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');m.value=subs.includes(prevM)?prevM:(subs.includes(currentStudent()?.subject)?currentStudent().subject:subs[0]||'');
+ const rows=state.students.filter(s=>s.className===c.value);
+ document.getElementById('classManagerHint').textContent=c.value?`${rows.length} học sinh thuộc lớp ${c.value}. ${m.value?'Đang theo dõi môn '+m.value+'.':'Hãy thêm môn học cho lớp.'} Danh sách học sinh chỉ cần nhập một lần.`:'Chưa có lớp. Nhấn “Thêm lớp” để bắt đầu.';
+ box.innerHTML=rows.length?rows.map(s=>{const as=(s.assignments||[]).filter(a=>a.subject===m.value),graded=as.filter(a=>a.status==='graded'&&Number.isFinite(Number(a.score))),avg=graded.length?(graded.reduce((n,a)=>n+Number(a.score),0)/graded.length).toFixed(1):'—';return `<div class="list-card"><h3>${esc(s.name)}</h3><div><span class="tag blue">${esc(s.className)}</span><span class="tag">${esc(m.value||'Chưa chọn môn')}</span><span class="tag amber">${as.length} bài · Điểm TB ${avg}</span></div><p class="help">${as.filter(a=>a.status==='pending').length} bài chưa hoàn thành · ${graded.length} bài đã chấm</p><div class="mini-actions"><button class="btn secondary small" onclick="switchStudent('${s.id}')">Xem hồ sơ</button><button class="btn secondary small" onclick="quickReport('${s.id}')">Xem báo cáo</button><button class="btn secondary small" onclick="managerAssign('${s.id}')">Giao bài</button></div></div>`}).join(''):'<div class="empty">Lớp này chưa có học sinh. Nhấn “Thêm học sinh” để tạo hồ sơ.</div>';
+};
+window.classManagerChanged=function(){const c=document.getElementById('classManagerFilter'),m=document.getElementById('subjectManagerFilter');if(!c||!m)return;const old=m.value,subs=subjects(c.value);m.innerHTML=subs.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');m.value=subs.includes(old)?old:subs[0]||'';renderProfiles()};
+window.addClassManager=function(){const name=prompt('Tên lớp mới (ví dụ: 11A2):');if(name===null)return;const cls=name.trim();if(!cls){toast('Vui lòng nhập tên lớp');return}if(classes().includes(cls)){document.getElementById('classManagerFilter').value=cls;classManagerChanged();toast('Đã chọn lớp hiện có');return}store()[cls]=[];saveState();renderProfiles();document.getElementById('classManagerFilter').value=cls;classManagerChanged();toast('Đã thêm lớp')};
+window.addSubjectManager=function(){const cls=document.getElementById('classManagerFilter').value;if(!cls){toast('Hãy chọn lớp trước');return}const name=prompt('Tên môn học muốn thêm cho lớp '+cls+':');if(name===null)return;const subject=name.trim();if(!subject){toast('Vui lòng nhập tên môn');return}if(!store()[cls])store()[cls]=[];if(!store()[cls].includes(subject))store()[cls].push(subject);saveState();renderProfiles();document.getElementById('classManagerFilter').value=cls;classManagerChanged();document.getElementById('subjectManagerFilter').value=subject;renderProfiles();toast('Đã thêm môn học')};
+window.newStudentInContext=function(){const cls=document.getElementById('classManagerFilter').value,subject=document.getElementById('subjectManagerFilter').value;newProfile();document.getElementById('pClass').value=cls||'';const p=document.getElementById('pSubject');if(subject&&[...p.options].some(o=>o.value===subject))p.value=subject;document.getElementById('pName').focus()};
+window.managerAssign=function(id){const subject=document.getElementById('subjectManagerFilter').value;switchStudent(id);goPanel('assignments');const s=document.getElementById('easyStudent');if(s&&[...s.options].some(o=>o.value===id))s.value=id;const m=document.getElementById('easySubject');if(m&&subject&&[...m.options].some(o=>o.value===subject))m.value=subject;const btn=[...document.querySelectorAll('#assignmentsPanel button')].find(b=>b.textContent.includes('Giao bài tập'));if(btn)btn.click();};
 })();
 </script>
 </body>
