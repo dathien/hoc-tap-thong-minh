@@ -37,19 +37,30 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
 /* Bảng điều khiển báo cáo: dùng SVG/CSS nội tuyến, hoạt động khi ngoại tuyến. */
 .rdash{display:grid;gap:16px;margin:16px 0 22px}.rstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.rstat,.rchart{background:#fff;border:1px solid #dce8ed;border-radius:15px;padding:17px;min-width:0}.rstat span{font-size:12px;color:#526779;display:block}.rstat strong{font-size:27px;line-height:1.5;color:#125e71;font-variant-numeric:tabular-nums}.rstat small{display:block;color:#6b7f8e}.rcharts{display:grid;grid-template-columns:1fr 1fr;gap:14px}.rchart h3{font-size:15px;color:#19475a;margin:0 0 12px}.rchart p{font-size:12px;color:#667d8b;margin:8px 0 0}.rlegend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#42576b}.rlegend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px}.rline{display:grid;grid-template-columns:minmax(95px,1fr) 2fr 45px;align-items:center;gap:9px;margin:11px 0;font-size:12px}.rline>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rtrack{height:11px;border-radius:12px;background:#e8eff3;overflow:hidden}.rfill{height:100%;background:#138b8e;border-radius:12px}.rchart svg{width:100%;height:auto;max-height:230px}.rmore{border:1px solid #dce8ed;border-radius:12px;padding:12px;margin-top:14px}.rmore summary{cursor:pointer;font-weight:700;color:#125e71}.rmore[open] summary{margin-bottom:12px}@media(max-width:750px){.rstats{grid-template-columns:repeat(2,minmax(0,1fr))}.rcharts{grid-template-columns:1fr}}@media print{.rmore:not([open])>*:not(summary){display:block!important}.rmore summary{display:none}}
 
-/* ===== Slider Animation 8.6 ===== */
-.hero-slider{position:relative;min-height:330px;overflow:hidden;background:#fff}
-.hero-slide{position:absolute;inset:0;padding:30px 72px 30px 30px;display:flex;flex-direction:column;justify-content:center;opacity:0;visibility:hidden;transform:translateX(28px) scale(.985);transition:opacity .65s ease,transform .65s ease,visibility .65s;pointer-events:none}
+/* ===== Slider Animation 8.6.2 - bố cục an toàn + animation nội dung ===== */
+.hero-slider{position:relative;min-height:360px;overflow:hidden;background:#fff;isolation:isolate}
+.hero-slide{position:absolute;inset:0;padding:42px 76px 52px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;opacity:0;visibility:hidden;transform:translateX(34px) scale(.988);transition:opacity .62s ease,transform .62s cubic-bezier(.2,.8,.2,1),visibility .62s;pointer-events:none}
 .hero-slide.active{opacity:1;visibility:visible;transform:none;pointer-events:auto}
 .hero-slide:before,.hero-slide:after{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0;animation:sliderFloat 7s ease-in-out infinite}
-.hero-slide:before{width:220px;height:220px;right:-65px;top:-70px;background:linear-gradient(135deg,rgba(8,145,178,.13),rgba(15,118,110,.05))}
-.hero-slide:after{width:115px;height:115px;right:90px;bottom:-55px;background:rgba(245,158,11,.10);animation-delay:-2.5s}
-.hero-slide>*{position:relative;z-index:1}.hero-slide h2{font-size:clamp(27px,3.5vw,43px);line-height:1.08;margin:12px 0 9px;letter-spacing:-1px}.hero-slide p{max-width:760px;color:var(--muted);margin:0 0 18px}.slide-kicker{display:inline-flex;width:max-content;max-width:100%;padding:7px 11px;border-radius:999px;background:#e7f7f4;color:#0b6b64;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.45px}.slide-em{color:var(--primary)}
-.slider-arrow{position:absolute;z-index:5;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:1px solid #d5e5eb;background:rgba(255,255,255,.93);box-shadow:0 5px 16px rgba(23,50,77,.13);font-size:25px;line-height:1;display:grid;place-items:center;cursor:pointer;color:var(--primary);transition:.2s}.slider-arrow:hover{background:var(--primary);color:#fff;transform:translateY(-50%) scale(1.06)}.slider-prev{left:14px}.slider-next{right:14px}.slider-dots{position:absolute;z-index:6;left:50%;bottom:13px;transform:translateX(-50%);display:flex;gap:7px}.slider-dot{width:8px;height:8px;border:0;border-radius:99px;background:#b7cbd3;padding:0;cursor:pointer;transition:.3s}.slider-dot.active{width:25px;background:var(--primary)}
+.hero-slide:before{width:220px;height:220px;right:-68px;top:-72px;background:linear-gradient(135deg,rgba(8,145,178,.13),rgba(15,118,110,.05))}
+.hero-slide:after{width:118px;height:118px;right:92px;bottom:-60px;background:rgba(245,158,11,.10);animation-delay:-2.5s}
+.hero-slide>*{position:relative;z-index:1;max-width:min(900px,calc(100% - 8px))}
+.hero-slide h2{font-size:clamp(28px,3.15vw,42px);line-height:1.12;margin:13px 0 10px;letter-spacing:-.8px;overflow-wrap:break-word;text-wrap:balance}
+.hero-slide p,.hero-slide .slogan{max-width:800px;color:var(--muted);margin:0 0 19px;line-height:1.55}
+.hero-slide .hero-actions{display:flex;flex-wrap:wrap;gap:10px;max-width:100%}
+.slide-kicker{display:inline-flex;width:max-content;max-width:100%;padding:7px 11px;border-radius:999px;background:#e7f7f4;color:#0b6b64;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.45px}.slide-em{color:var(--primary)}
+/* Animation chỉ chạy khi slide đang hoạt động */
+.hero-slide.active .slide-kicker{animation:slideFadeUp .48s .08s both}
+.hero-slide.active h2{animation:slideFadeUp .58s .16s both}
+.hero-slide.active .slogan,.hero-slide.active p{animation:slideFadeUp .58s .25s both}
+.hero-slide.active .hero-actions{animation:slideFadeUp .58s .34s both}
+.slider-arrow{position:absolute;z-index:5;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:1px solid #d5e5eb;background:rgba(255,255,255,.96);box-shadow:0 5px 16px rgba(23,50,77,.13);font-size:25px;line-height:1;display:grid;place-items:center;cursor:pointer;color:var(--primary);transition:background .2s,color .2s,transform .2s}.slider-arrow:hover{background:var(--primary);color:#fff;transform:translateY(-50%) scale(1.06)}.slider-prev{left:14px}.slider-next{right:14px}
+.slider-dots{position:absolute;z-index:6;left:50%;bottom:16px;transform:translateX(-50%);display:flex;gap:7px}.slider-dot{width:8px;height:8px;border:0;border-radius:99px;background:#b7cbd3;padding:0;cursor:pointer;transition:width .3s,background .3s}.slider-dot.active{width:25px;background:var(--primary)}
 @keyframes sliderFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-10px,12px,0)}}
-@media(max-width:900px){.hero-slider{min-height:310px}.hero-slide{padding:28px 58px}.slider-prev{left:9px}.slider-next{right:9px}}
-@media(max-width:560px){.hero-slider{min-height:365px}.hero-slide{padding:26px 46px 42px}.hero-slide h2{font-size:29px}.slider-arrow{width:35px;height:35px;font-size:21px}.slider-prev{left:6px}.slider-next{right:6px}}
-@media(prefers-reduced-motion:reduce){.hero-slide,.slider-arrow,.slider-dot{transition:none}.hero-slide:before,.hero-slide:after{animation:none}}
+@keyframes slideFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){.hero-slider{min-height:380px}.hero-slide{padding:38px 62px 54px}.hero-slide h2{font-size:clamp(28px,5vw,38px)}.slider-prev{left:9px}.slider-next{right:9px}}
+@media(max-width:560px){.hero-slider{min-height:430px}.hero-slide{padding:34px 45px 58px}.hero-slide h2{font-size:clamp(26px,8vw,32px);line-height:1.14}.hero-slide p,.hero-slide .slogan{font-size:14px}.hero-actions .btn{width:100%;justify-content:center}.slider-arrow{width:34px;height:34px;font-size:20px}.slider-prev{left:5px}.slider-next{right:5px}.slider-dots{bottom:14px}}
+@media(prefers-reduced-motion:reduce){.hero-slide,.slider-arrow,.slider-dot{transition:none}.hero-slide:before,.hero-slide:after,.hero-slide.active .slide-kicker,.hero-slide.active h2,.hero-slide.active .slogan,.hero-slide.active p,.hero-slide.active .hero-actions{animation:none}}
 
 </style>
 </head>
