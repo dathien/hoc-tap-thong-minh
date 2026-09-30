@@ -36,6 +36,21 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
 <style>
 /* Bảng điều khiển báo cáo: dùng SVG/CSS nội tuyến, hoạt động khi ngoại tuyến. */
 .rdash{display:grid;gap:16px;margin:16px 0 22px}.rstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.rstat,.rchart{background:#fff;border:1px solid #dce8ed;border-radius:15px;padding:17px;min-width:0}.rstat span{font-size:12px;color:#526779;display:block}.rstat strong{font-size:27px;line-height:1.5;color:#125e71;font-variant-numeric:tabular-nums}.rstat small{display:block;color:#6b7f8e}.rcharts{display:grid;grid-template-columns:1fr 1fr;gap:14px}.rchart h3{font-size:15px;color:#19475a;margin:0 0 12px}.rchart p{font-size:12px;color:#667d8b;margin:8px 0 0}.rlegend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#42576b}.rlegend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px}.rline{display:grid;grid-template-columns:minmax(95px,1fr) 2fr 45px;align-items:center;gap:9px;margin:11px 0;font-size:12px}.rline>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rtrack{height:11px;border-radius:12px;background:#e8eff3;overflow:hidden}.rfill{height:100%;background:#138b8e;border-radius:12px}.rchart svg{width:100%;height:auto;max-height:230px}.rmore{border:1px solid #dce8ed;border-radius:12px;padding:12px;margin-top:14px}.rmore summary{cursor:pointer;font-weight:700;color:#125e71}.rmore[open] summary{margin-bottom:12px}@media(max-width:750px){.rstats{grid-template-columns:repeat(2,minmax(0,1fr))}.rcharts{grid-template-columns:1fr}}@media print{.rmore:not([open])>*:not(summary){display:block!important}.rmore summary{display:none}}
+
+/* ===== Slider Animation 8.6 ===== */
+.hero-slider{position:relative;min-height:330px;overflow:hidden;background:#fff}
+.hero-slide{position:absolute;inset:0;padding:30px 72px 30px 30px;display:flex;flex-direction:column;justify-content:center;opacity:0;visibility:hidden;transform:translateX(28px) scale(.985);transition:opacity .65s ease,transform .65s ease,visibility .65s;pointer-events:none}
+.hero-slide.active{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.hero-slide:before,.hero-slide:after{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0;animation:sliderFloat 7s ease-in-out infinite}
+.hero-slide:before{width:220px;height:220px;right:-65px;top:-70px;background:linear-gradient(135deg,rgba(8,145,178,.13),rgba(15,118,110,.05))}
+.hero-slide:after{width:115px;height:115px;right:90px;bottom:-55px;background:rgba(245,158,11,.10);animation-delay:-2.5s}
+.hero-slide>*{position:relative;z-index:1}.hero-slide h2{font-size:clamp(27px,3.5vw,43px);line-height:1.08;margin:12px 0 9px;letter-spacing:-1px}.hero-slide p{max-width:760px;color:var(--muted);margin:0 0 18px}.slide-kicker{display:inline-flex;width:max-content;max-width:100%;padding:7px 11px;border-radius:999px;background:#e7f7f4;color:#0b6b64;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.45px}.slide-em{color:var(--primary)}
+.slider-arrow{position:absolute;z-index:5;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:1px solid #d5e5eb;background:rgba(255,255,255,.93);box-shadow:0 5px 16px rgba(23,50,77,.13);font-size:25px;line-height:1;display:grid;place-items:center;cursor:pointer;color:var(--primary);transition:.2s}.slider-arrow:hover{background:var(--primary);color:#fff;transform:translateY(-50%) scale(1.06)}.slider-prev{left:14px}.slider-next{right:14px}.slider-dots{position:absolute;z-index:6;left:50%;bottom:13px;transform:translateX(-50%);display:flex;gap:7px}.slider-dot{width:8px;height:8px;border:0;border-radius:99px;background:#b7cbd3;padding:0;cursor:pointer;transition:.3s}.slider-dot.active{width:25px;background:var(--primary)}
+@keyframes sliderFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-10px,12px,0)}}
+@media(max-width:900px){.hero-slider{min-height:310px}.hero-slide{padding:28px 58px}.slider-prev{left:9px}.slider-next{right:9px}}
+@media(max-width:560px){.hero-slider{min-height:365px}.hero-slide{padding:26px 46px 42px}.hero-slide h2{font-size:29px}.slider-arrow{width:35px;height:35px;font-size:21px}.slider-prev{left:6px}.slider-next{right:6px}}
+@media(prefers-reduced-motion:reduce){.hero-slide,.slider-arrow,.slider-dot{transition:none}.hero-slide:before,.hero-slide:after{animation:none}}
+
 </style>
 </head>
 <body>
@@ -51,12 +66,35 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
   </div>
 </header>
 <section class="hero">
-  <div class="card hero-main">
-    
-    <h1 id="heroAppName">HỌC TẬP THÔNG MINH PRO</h1>
-    <div class="slogan" id="heroSlogan">Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách</div>
-    <p class="desc">Công cụ hỗ trợ giáo viên tạo hồ sơ học tập, khảo sát thói quen, phân loại mức hỗ trợ, thiết kế kế hoạch tuần, tổ chức phiên học tập trung và xuất báo cáo tiến bộ cho từng học sinh.</p>
-    <div class="hero-actions"><button class="btn primary" onclick="goPanel('home')">🏠 Bắt đầu nhanh</button><button class="btn secondary" onclick="newProfile();goPanel('profiles')">➕ Thêm học sinh</button></div>
+  <div class="card hero-slider" id="heroSlider" aria-label="Giới thiệu chức năng nổi bật">
+    <article class="hero-slide active">
+      <span class="slide-kicker">Học tập cá nhân hóa</span>
+      <h2 id="heroAppName">HỌC TẬP <span class="slide-em">THÔNG MINH PRO</span></h2>
+      <div class="slogan" id="heroSlogan">Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách</div>
+      <p>Tổ chức hồ sơ, kế hoạch, bài tập và tiến bộ của học sinh trong một quy trình rõ ràng, dễ sử dụng.</p>
+      <div class="hero-actions"><button class="btn primary" onclick="goPanel('home')">Bắt đầu nhanh</button><button class="btn secondary" onclick="newProfile();goPanel('profiles')">Thêm học sinh</button></div>
+    </article>
+    <article class="hero-slide">
+      <span class="slide-kicker">Kế hoạch học tập</span>
+      <h2>Biến mục tiêu thành <span class="slide-em">việc học mỗi ngày</span></h2>
+      <p>Giáo viên theo dõi từng học sinh, xây dựng kế hoạch phù hợp và mở nhanh phiên “Học hôm nay” khi cần.</p>
+      <div class="hero-actions"><button class="btn primary" onclick="goPanel('plan')">Xem kế hoạch</button><button class="btn secondary" onclick="goPanel('session')">Học hôm nay</button></div>
+    </article>
+    <article class="hero-slide">
+      <span class="slide-kicker">Bài tập & phản hồi</span>
+      <h2>Giao bài – Làm bài – <span class="slide-em">Chấm và nhận xét</span></h2>
+      <p>Một luồng làm việc tập trung giúp giáo viên quản lý bài tập, kết quả và phản hồi mà không phải đi qua nhiều màn hình rời rạc.</p>
+      <div class="hero-actions"><button class="btn primary" onclick="goPanel('assignments')">Mở bài tập</button></div>
+    </article>
+    <article class="hero-slide">
+      <span class="slide-kicker">Theo dõi tiến bộ</span>
+      <h2>Dữ liệu học tập thành <span class="slide-em">báo cáo trực quan</span></h2>
+      <p>Xem tiến độ, điểm bài tập và minh chứng học tập theo từng học sinh để hỗ trợ đúng lúc và trao đổi thuận tiện với phụ huynh.</p>
+      <div class="hero-actions"><button class="btn primary" onclick="goPanel('report')">Xem báo cáo</button></div>
+    </article>
+    <button class="slider-arrow slider-prev" type="button" aria-label="Slide trước">‹</button>
+    <button class="slider-arrow slider-next" type="button" aria-label="Slide sau">›</button>
+    <div class="slider-dots" aria-label="Chọn slide"></div>
   </div>
   <div class="card stats">
     <div class="stat"><strong id="statStudents">0</strong><span>Hồ sơ học sinh</span></div>
@@ -418,6 +456,23 @@ window.quizPreview();
 });
 })();
 <\/script>
+
+<script>
+(function(){
+  const slider=document.getElementById('heroSlider'); if(!slider)return;
+  const slides=[...slider.querySelectorAll('.hero-slide')], dotsBox=slider.querySelector('.slider-dots');
+  let current=0,timer=null;
+  slides.forEach((_,i)=>{const b=document.createElement('button');b.type='button';b.className='slider-dot'+(i===0?' active':'');b.setAttribute('aria-label','Đến slide '+(i+1));b.onclick=()=>show(i,true);dotsBox.appendChild(b)});
+  const dots=[...dotsBox.children];
+  function show(i,restart){current=(i+slides.length)%slides.length;slides.forEach((s,n)=>s.classList.toggle('active',n===current));dots.forEach((d,n)=>d.classList.toggle('active',n===current));if(restart)start()}
+  function start(){clearInterval(timer);if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>show(current+1,false),5500)}
+  slider.querySelector('.slider-prev').onclick=()=>show(current-1,true);slider.querySelector('.slider-next').onclick=()=>show(current+1,true);
+  slider.addEventListener('mouseenter',()=>clearInterval(timer));slider.addEventListener('mouseleave',start);
+  slider.addEventListener('focusin',()=>clearInterval(timer));slider.addEventListener('focusout',start);
+  let x=0;slider.addEventListener('touchstart',e=>x=e.changedTouches[0].clientX,{passive:true});slider.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-x;if(Math.abs(d)>45)show(current+(d<0?1:-1),true)},{passive:true});
+  start();
+})();
+</script>
 </body></html>`;downloadBlob(new Blob(['\ufeff',html],{type:'application/msword'}),`Bao_cao_${safeName(s.name)}_${today()}.doc`);toast('Đã xuất báo cáo Word')}
 function backupData(){downloadBlob(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),`Sao_luu_Hoc_Tap_Thong_Minh_${today()}.httt`);toast('Đã tải tệp sao lưu')}
 function restoreData(){const f=document.getElementById('restoreFile').files[0];if(!f){toast('Hãy chọn tệp sao lưu');return}const r=new FileReader();r.onload=()=>{try{const data=JSON.parse(r.result);if(!Array.isArray(data.students))throw new Error('invalid');state=Object.assign(defaultState(),data);saveState();loadProfileForm();loadSurveyForm();renderAll();toast('Đã khôi phục dữ liệu')}catch(e){toast('Tệp sao lưu không hợp lệ')}};r.readAsText(f)}
