@@ -2668,3 +2668,135 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
   document.addEventListener('DOMContentLoaded',function(){syncAssessmentSubtype();});
 })();
 </script>
+
+
+<style id="v8734-compact-question-style">
+/* Câu hỏi gọn hơn */
+#quizBuilder .qcard{padding:10px 12px;margin:8px 0;border-radius:11px}
+#quizBuilder .qcard .action-row{margin-bottom:4px}
+#quizBuilder .qcard label{margin:5px 0 3px;font-size:12px}
+#quizBuilder .qcard textarea{min-height:38px!important;padding:7px 9px!important;line-height:1.35;resize:vertical}
+#quizBuilder .qcard .qt{min-height:48px!important}
+#quizBuilder .qcard .qo{min-height:36px!important;height:36px!important;resize:none}
+#quizBuilder .qcard input,#quizBuilder .qcard select{padding:7px 9px!important;min-height:36px}
+#quizBuilder .qcard .qgrid{gap:7px 10px}
+#quizBuilder .qcard .qlevel-row{grid-template-columns:minmax(0,1fr) 160px;gap:10px}
+#quizBuilder .qcard .qimage-preview:empty{display:none}
+#quizBuilder .qcard .qimage{font-size:12px;padding:5px!important}
+#quizBuilder .qcard .compact-extra{display:grid;grid-template-columns:150px minmax(240px,1fr);gap:10px;align-items:end;margin-top:3px}
+#quizBuilder .qcard .compact-extra label{margin-top:3px}
+#qDistribution.level-distribution{gap:9px}
+#qDistribution .level-box.editable{padding:9px 10px}
+#qDistribution .level-box.editable input{
+  width:74px!important;height:38px!important;margin:0 auto 5px!important;
+  padding:5px!important;text-align:center;font-size:19px;font-weight:900;color:#087f78
+}
+#qDistribution .level-box.editable span{display:block}
+#qDistribution .dist-total{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px;align-items:center;font-size:12px;color:#607889}
+#qDistribution .dist-total.bad{color:#c73535;font-weight:800}
+@media(max-width:650px){
+ #quizBuilder .qcard .qlevel-row,#quizBuilder .qcard .compact-extra{grid-template-columns:1fr}
+}
+</style>
+<script id="v8734-custom-distribution">
+(function(){
+ const $=id=>document.getElementById(id);
+ const LEVEL3=['Nhận biết','Thông hiểu','Vận dụng'];
+ const LEVEL4=['Nhận biết','Thông hiểu','Vận dụng','Vận dụng cao'];
+ let distByMode={3:null,4:null};
+
+ function levels(){return $('qLevel')?.value==='Phân hóa 3 mức'?LEVEL3:LEVEL4}
+ function total(){return [...($('qQuestions')?.querySelectorAll('.qcard')||[])].length}
+ function defaultCounts(n,mode){
+   if(mode===3){
+     if(n===10)return [4,3,3];
+     const a=Math.ceil(n*.4),b=Math.floor((n-a)/2);return [a,b,n-a-b];
+   }
+   if(n===10)return [3,3,2,2];
+   const base=Math.floor(n/4),r=n%4;return [0,1,2,3].map(i=>base+(i<r?1:0));
+ }
+ function currentCounts(){
+   const ls=levels(),c=Object.fromEntries(ls.map(x=>[x,0]));
+   [...($('qQuestions')?.querySelectorAll('.qcard')||[])].forEach(card=>{const v=card.querySelector('.ql')?.value;if(c[v]!=null)c[v]++});
+   return ls.map(x=>c[x]);
+ }
+ function compactCard(card){
+   if(!card||card.dataset.compact8734)return; card.dataset.compact8734='1';
+   card.querySelectorAll('.qo').forEach(x=>x.rows=1);
+   const correct=card.querySelector('.qc'), file=card.querySelector('.qimage'), preview=card.querySelector('.qimage-preview');
+   if(correct&&file&&preview){
+     const lc=correct.previousElementSibling, lf=file.previousElementSibling;
+     const extra=document.createElement('div');extra.className='compact-extra';
+     const a=document.createElement('div'),b=document.createElement('div');
+     if(lc)a.appendChild(lc);a.appendChild(correct);
+     if(lf)b.appendChild(lf);b.appendChild(file);b.appendChild(preview);
+     extra.append(a,b);card.appendChild(extra);
+   }
+ }
+ window.compactAllQuizCards=function(){document.querySelectorAll('#qQuestions .qcard').forEach(compactCard)};
+
+ window.renderDistribution=function(){
+   const box=$('qDistribution');if(!box)return;
+   const mode=levels().length===3?3:4,n=total();
+   let vals=distByMode[mode];
+   if(!vals||vals.length!==mode||vals.reduce((a,b)=>a+b,0)!==n){
+     const actual=currentCounts();
+     vals=actual.reduce((a,b)=>a+b,0)===n&&n?actual:defaultCounts(n,mode);
+     distByMode[mode]=vals.slice();
+   }
+   box.innerHTML=levels().map((name,i)=>
+    '<div class="level-box editable"><input type="number" min="0" max="'+n+'" value="'+vals[i]+'" data-di="'+i+'" aria-label="Số câu '+name+'"><span>'+name+'</span></div>'
+   ).join('')+'<div class="dist-total" id="distTotal"></div>';
+   box.querySelectorAll('input[data-di]').forEach(inp=>{
+     inp.addEventListener('change',function(){applyCustomDistribution();});
+     inp.addEventListener('input',function(){updateDistTotal();});
+   });
+   updateDistTotal();
+ };
+ window.updateDistTotal=function(){
+   const inputs=[...document.querySelectorAll('#qDistribution input[data-di]')],n=total();
+   const sum=inputs.reduce((s,x)=>s+(Number(x.value)||0),0),el=$('distTotal');if(!el)return;
+   el.classList.toggle('bad',sum!==n);
+   el.textContent=sum===n?'Tổng: '+sum+'/'+n+' câu':'Tổng '+sum+'/'+n+' câu · Cần bằng số câu hỏi';
+ };
+ window.applyCustomDistribution=function(){
+   const ls=levels(),inputs=[...document.querySelectorAll('#qDistribution input[data-di]')],n=total();
+   const vals=inputs.map(x=>Math.max(0,Math.round(Number(x.value)||0))),sum=vals.reduce((a,b)=>a+b,0);
+   inputs.forEach((x,i)=>x.value=vals[i]);
+   updateDistTotal();
+   if(sum!==n)return;
+   distByMode[ls.length]=vals.slice();
+   const seq=[];vals.forEach((count,i)=>{for(let k=0;k<count;k++)seq.push(ls[i])});
+   [...$('qQuestions').querySelectorAll('.qcard')].forEach((card,i)=>{const s=card.querySelector('.ql');if(s)s.value=seq[i]||ls[ls.length-1]});
+   if(typeof syncQuizScheme==='function')syncQuizScheme();
+ };
+ window.autoDistributeLevels=function(){
+   const mode=levels().length,n=total();
+   let vals=distByMode[mode];
+   if(!vals||vals.reduce((a,b)=>a+b,0)!==n){vals=defaultCounts(n,mode);distByMode[mode]=vals.slice()}
+   const seq=[];vals.forEach((count,i)=>{for(let k=0;k<count;k++)seq.push(levels()[i])});
+   [...($('qQuestions')?.querySelectorAll('.qcard')||[])].forEach((card,i)=>{const s=card.querySelector('.ql');if(s)s.value=seq[i]||levels().at(-1)});
+   if(typeof syncQuizScheme==='function')syncQuizScheme();
+   renderDistribution();compactAllQuizCards();
+ };
+
+ const oldAdd=window.quizAddQuestion;
+ if(typeof oldAdd==='function'){
+   window.quizAddQuestion=function(data){
+     const r=oldAdd.apply(this,arguments);
+     const cards=$('qQuestions')?.querySelectorAll('.qcard');if(cards?.length)compactCard(cards[cards.length-1]);
+     return r;
+   };
+ }
+ const oldOpen=window.quizOpen;
+ if(typeof oldOpen==='function'){
+   window.quizOpen=function(){
+     distByMode={3:null,4:null};
+     const r=oldOpen.apply(this,arguments);
+     setTimeout(()=>{compactAllQuizCards();autoDistributeLevels()},0);
+     return r;
+   };
+ }
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(compactAllQuizCards,100));
+})();
+</script>
