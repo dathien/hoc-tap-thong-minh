@@ -2800,3 +2800,102 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  document.addEventListener('DOMContentLoaded',()=>setTimeout(compactAllQuizCards,100));
 })();
 </script>
+
+
+<style id="v8735-assignment-tabs-style">
+#assignmentsPanel .assign-main-head{margin-bottom:12px}
+.assign-tabs{display:flex;gap:7px;flex-wrap:wrap;padding:6px;background:#eef3f8;border:1px solid #dce6ef;border-radius:14px;margin:12px 0 16px;position:sticky;top:82px;z-index:12}
+.assign-tab{border:0;background:transparent;color:#50657a;padding:10px 14px;border-radius:10px;font-weight:850;cursor:pointer;transition:.18s}
+.assign-tab:hover{background:#fff;color:#173f59}.assign-tab.active{background:#fff;color:#087f78;box-shadow:0 3px 12px #163a5414}
+.assign-pane{display:none}.assign-pane.active{display:block}
+.assign-pane-intro{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:0 0 12px;padding:13px 15px;border:1px solid #dce7ef;border-radius:13px;background:#f9fcff}
+.assign-pane-intro h3{margin:0 0 3px}.assign-pane-intro p{margin:0;color:#687b8d;font-size:13px}
+#quizBuilder.in-tab{margin:0!important;border:1px solid #cfe0eb!important;box-shadow:none!important}
+/* Trình soạn từng câu */
+.quiz-question-workspace{margin-top:10px;border:1px solid #d7e4ed;border-radius:14px;background:#f8fbfe;padding:10px}
+.quiz-question-toolbar{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;margin-bottom:8px}
+.quiz-qnav{display:flex;gap:6px;overflow-x:auto;padding:4px 2px;scrollbar-width:thin}
+.quiz-qnav button{flex:0 0 34px;height:34px;border:1px solid #c8d8e5;border-radius:9px;background:#fff;color:#496274;font-weight:850;cursor:pointer}
+.quiz-qnav button.active{background:#087f78;color:#fff;border-color:#087f78}.quiz-qnav button.filled:not(.active){background:#e9f6f4;border-color:#b9dfda;color:#087f78}
+.quiz-nav-arrow{height:36px;min-width:92px;border:1px solid #bfd2df;border-radius:9px;background:#fff;color:#174a61;font-weight:800;cursor:pointer}.quiz-nav-arrow:disabled{opacity:.4;cursor:not-allowed}
+.quiz-current-label{text-align:center;font-size:12px;color:#61798a;margin:4px 0 8px}
+#qQuestions.paged-questions .qcard{display:none!important;margin:0!important}#qQuestions.paged-questions .qcard.q-active{display:block!important}
+#qQuestions.paged-questions .qcard .action-row:first-child strong::after{content:' đang soạn';color:#6d8291;font-size:12px;font-weight:600}
+#qQuestions.paged-questions{min-height:0}
+.assign-bank-compact #adaptiveSampleBank,.assign-history-compact #assignedHistory,.assign-submit-compact #submissionSamples{margin-top:0!important}
+@media(max-width:720px){.assign-tabs{position:static}.assign-tab{flex:1 1 45%;text-align:center}.quiz-question-toolbar{grid-template-columns:1fr 1fr}.quiz-qnav{grid-column:1/-1;grid-row:2}.quiz-nav-arrow{min-width:0}}
+</style>
+<script id="v8735-assignment-tabs-script">
+(function(){
+ let activeQ=0;
+ const E=id=>document.getElementById(id);
+ function tabButton(id,label){const b=document.createElement('button');b.type='button';b.className='assign-tab';b.dataset.assignTab=id;b.textContent=label;return b}
+ function pane(id){const d=document.createElement('div');d.className='assign-pane';d.id='assignPane-'+id;return d}
+ function intro(title,desc,button){const d=document.createElement('div');d.className='assign-pane-intro';d.innerHTML='<div><h3>'+title+'</h3><p>'+desc+'</p></div>'+(button||'');return d}
+ function move(id,to){const x=E(id);if(x)to.appendChild(x)}
+ window.switchAssignmentTab=function(id){
+   document.querySelectorAll('.assign-tab').forEach(b=>b.classList.toggle('active',b.dataset.assignTab===id));
+   document.querySelectorAll('.assign-pane').forEach(p=>p.classList.toggle('active',p.id==='assignPane-'+id));
+   if(id==='assigned'&&typeof renderAssignedHistory==='function')renderAssignedHistory();
+   if(id==='submissions'){if(typeof renderSubmissionSamples==='function')renderSubmissionSamples();if(typeof renderAssignments==='function')renderAssignments();}
+   if(id==='bank'&&typeof renderAdaptiveSampleBank==='function')renderAdaptiveSampleBank();
+ };
+ function buildTabs(){
+   const panel=E('assignmentsPanel');if(!panel||E('assignmentTabs8735'))return;
+   const head=panel.querySelector(':scope > .panel-head');if(head)head.classList.add('assign-main-head');
+   const tabs=document.createElement('div');tabs.id='assignmentTabs8735';tabs.className='assign-tabs';
+   [['compose','Soạn & giao bài'],['assigned','Bài đã giao'],['submissions','Bài học sinh nộp'],['bank','Ngân hàng bài/đề']].forEach(x=>tabs.appendChild(tabButton(x[0],x[1])));
+   if(head)head.after(tabs);else panel.prepend(tabs);
+   const wrap=document.createElement('div');wrap.id='assignmentPanes8735';tabs.after(wrap);
+   const compose=pane('compose'),assigned=pane('assigned'),subs=pane('submissions'),bank=pane('bank');wrap.append(compose,assigned,subs,bank);
+   compose.appendChild(intro('Soạn & giao bài','Tạo bài mới, phân hóa mức độ và soạn từng câu trên một màn hình.','<button class="btn primary small" type="button" onclick="quizOpen()">＋ Soạn trắc nghiệm</button>'));
+   assigned.appendChild(intro('Bài đã giao','Theo dõi bài đã phát hành, đối tượng nhận, hạn nộp và tiến độ.'));
+   subs.appendChild(intro('Bài học sinh nộp','Tập trung xem bài làm, chấm điểm và nhận xét.'));
+   bank.appendChild(intro('Ngân hàng bài/đề','Chọn bài mẫu, chỉnh sửa, nhân bản và giao lại cho lớp/học sinh.'));
+   const builder=E('quizBuilder');if(builder){builder.classList.add('in-tab');compose.appendChild(builder)}
+   move('easyAssignmentForm',compose);move('easyEditTools',compose);
+   const legacyBtn=[...panel.querySelectorAll('.action-row')].find(x=>x.textContent.includes('Bài tự luận'));if(legacyBtn)compose.appendChild(legacyBtn);
+   move('assignedHistory',assigned);
+   move('submissionSamples',subs);move('assignmentSummary',subs);move('assignmentList',subs);
+   move('adaptiveSampleBank',bank);
+   // Hide old global filters: each tab has its own contextual filters.
+   const filter=panel.querySelector(':scope > .filter-bar');if(filter)filter.style.display='none';
+   tabs.querySelectorAll('.assign-tab').forEach(b=>b.onclick=()=>switchAssignmentTab(b.dataset.assignTab));
+   switchAssignmentTab('compose');
+ }
+ function ensurePager(){
+   const qs=E('qQuestions');if(!qs)return;qs.classList.add('paged-questions');
+   let ws=E('quizQuestionWorkspace8735');
+   if(!ws){
+     ws=document.createElement('div');ws.id='quizQuestionWorkspace8735';ws.className='quiz-question-workspace';
+     ws.innerHTML='<div class="quiz-question-toolbar"><button type="button" class="quiz-nav-arrow" id="qPrev8735">← Câu trước</button><div class="quiz-qnav" id="qNav8735"></div><button type="button" class="quiz-nav-arrow" id="qNext8735">Câu tiếp →</button></div><div class="quiz-current-label" id="qCurrent8735"></div>';
+     qs.parentNode.insertBefore(ws,qs);ws.appendChild(qs);
+     E('qPrev8735').onclick=()=>showQuestion(activeQ-1);E('qNext8735').onclick=()=>showQuestion(activeQ+1);
+   }
+   renderPager();
+ }
+ function cards(){return [...(E('qQuestions')?.querySelectorAll('.qcard')||[])]}
+ function filled(card){return !!(card?.querySelector('.qt')?.value.trim()||[...card?.querySelectorAll('.qo')||[]].some(x=>x.value.trim())||card?.dataset.image)}
+ function renderPager(){
+   const cs=cards(),nav=E('qNav8735');if(!nav)return;if(activeQ>=cs.length)activeQ=Math.max(0,cs.length-1);
+   nav.innerHTML='';cs.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.textContent=i+1;b.className=(i===activeQ?'active ':'')+(filled(c)?'filled':'');b.onclick=()=>showQuestion(i);nav.appendChild(b);c.classList.toggle('q-active',i===activeQ)});
+   if(E('qCurrent8735'))E('qCurrent8735').textContent=cs.length?'Câu '+(activeQ+1)+' / '+cs.length:'Chưa có câu hỏi';
+   if(E('qPrev8735'))E('qPrev8735').disabled=activeQ<=0;if(E('qNext8735'))E('qNext8735').disabled=activeQ>=cs.length-1;
+   nav.children[activeQ]?.scrollIntoView({inline:'center',block:'nearest'});
+ }
+ window.showQuestion=function(i){const cs=cards();if(!cs.length)return;activeQ=Math.max(0,Math.min(i,cs.length-1));renderPager()};
+ document.addEventListener('input',e=>{if(e.target.closest('#qQuestions'))renderPager()});
+ document.addEventListener('change',e=>{if(e.target.closest('#qQuestions'))renderPager()});
+ const oldAdd=window.quizAddQuestion;
+ if(typeof oldAdd==='function')window.quizAddQuestion=function(){const before=cards().length,r=oldAdd.apply(this,arguments);ensurePager();if(cards().length>before&&arguments.length===0)activeQ=cards().length-1;renderPager();return r};
+ const oldApply=window.applyQuizQuestionCount;
+ if(typeof oldApply==='function')window.applyQuizQuestionCount=function(){const r=oldApply.apply(this,arguments);ensurePager();renderPager();return r};
+ const oldOpen=window.quizOpen;
+ if(typeof oldOpen==='function')window.quizOpen=function(){switchAssignmentTab('compose');const r=oldOpen.apply(this,arguments);activeQ=0;setTimeout(()=>{ensurePager();showQuestion(0)},0);return r};
+ // When editing/loading a sample, remain in composer and page questions.
+ const oldLoad=window.loadAdaptiveSample;
+ if(typeof oldLoad==='function')window.loadAdaptiveSample=function(){switchAssignmentTab('compose');const r=oldLoad.apply(this,arguments);activeQ=0;setTimeout(()=>{ensurePager();showQuestion(0)},0);return r};
+ document.addEventListener('DOMContentLoaded',()=>{buildTabs();ensurePager()});
+ setTimeout(()=>{buildTabs();ensurePager()},0);
+})();
+</script>
