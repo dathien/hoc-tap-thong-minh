@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0f766e">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#0f766e" name="theme-color"/>
 <title>Học Tập Thông Minh Pro</title>
 <style>
 :root{--primary:#0f766e;--primary2:#0891b2;--accent:#f59e0b;--bg:#f3f8fb;--surface:#fff;--surface2:#eef7f7;--text:#17324d;--muted:#5f7285;--border:#d9e5ec;--danger:#dc2626;--success:#15803d;--shadow:0 12px 34px rgba(24,58,82,.12);--radius:18px;--font:16px}
@@ -92,7 +93,6 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
 @media(prefers-reduced-motion:reduce){.hero-slide,.slider-arrow,.slider-dot{transition:none}.hero-slide:before,.hero-slide:after,.hero-slide.active .slide-kicker,.hero-slide.active h2,.hero-slide.active .slogan,.hero-slide.active p,.hero-slide.active .hero-actions{animation:none}}
 
 </style>
-
 <style id="number-animation-style">
 /* 8.6.3 - Number motion: subtle count-up + emphasis for KPI cards */
 .stat strong,.rstat strong,.metric strong{font-variant-numeric:tabular-nums;display:inline-block;transform-origin:left center}
@@ -102,16 +102,13 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
 @keyframes numberPop{0%{transform:translateY(7px) scale(.94);opacity:.25}65%{transform:translateY(-1px) scale(1.055);opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
 @media (prefers-reduced-motion:reduce){.stat strong,.rstat strong,.metric strong,.stat,.rstat{animation:none!important;transition:none!important}}
 </style>
-
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style id="quick-preview-professional-style">
 .quick-preview-backdrop{position:fixed;inset:0;z-index:12000;background:rgba(15,35,52,.56);backdrop-filter:blur(5px);display:grid;place-items:center;padding:22px}.quick-preview-backdrop[hidden]{display:none!important}.quick-preview-modal{width:min(980px,96vw);max-height:92vh;background:#fff;border:1px solid #dbe8ed;border-radius:22px;box-shadow:0 28px 80px rgba(15,35,52,.28);overflow:hidden;display:flex;flex-direction:column}.quick-preview-head{padding:20px 22px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;border-bottom:1px solid #e4edf1;background:linear-gradient(135deg,#f8fcfd,#eef9f8)}.quick-preview-kicker{display:inline-block;font-size:11px;font-weight:850;letter-spacing:.08em;color:#087f78;margin-bottom:6px}.quick-preview-head h3{margin:0;color:#17324d;font-size:23px;line-height:1.25}.quick-preview-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}.quick-preview-meta span{font-size:12px;font-weight:750;color:#496278;background:#fff;border:1px solid #d7e5ea;border-radius:999px;padding:5px 9px}.quick-preview-close{flex:0 0 auto;width:38px;height:38px;border:0;border-radius:50%;background:#e8f2f4;color:#29485d;font-size:25px;line-height:1;cursor:pointer}.quick-preview-summary{padding:12px 22px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid #e8eff2;background:#fff}.level-pill{display:inline-flex;align-items:center;gap:5px;border-radius:10px;padding:7px 10px;font-size:12px;font-weight:750;background:#f3f7f8;color:#35536a;border:1px solid #e0eaed}.level-pill b{font-size:14px;color:#087f78}.quick-preview-toolbar{padding:10px 22px;background:#f8fbfc;border-bottom:1px solid #e4edf1;display:flex;justify-content:space-between;align-items:center;gap:10px}.quick-preview-toolbar .help{margin:0}.quick-preview-body{padding:18px 22px 22px;overflow:auto;background:#f7fafb;display:grid;gap:12px}.quick-question{background:#fff;border:1px solid #dce8ec;border-radius:15px;padding:15px 16px;box-shadow:0 3px 12px rgba(25,55,75,.045)}.quick-question-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.q-head-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.q-number{font-weight:850;color:#17324d}.q-level{font-size:11px;font-weight:800;color:#087f78;background:#e8f8f5;border:1px solid #c9ebe5;border-radius:999px;padding:5px 9px}.q-manage{display:flex;gap:6px}.q-manage button{border:1px solid #dbe6eb;background:#fff;border-radius:8px;padding:6px 9px;font-size:11px;font-weight:800;cursor:pointer;color:#36546a}.q-manage button:hover{background:#eef8f7;border-color:#9fd7d1}.q-manage .delete{color:#b42318}.q-text{font-size:14px;font-weight:700;color:#243f55;line-height:1.55;margin-bottom:11px}.q-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}.q-option{display:flex;align-items:flex-start;gap:9px;padding:9px 10px;border:1px solid #e1eaee;border-radius:10px;background:#fbfdfe;color:#40586c;font-size:13px;line-height:1.4}.q-option.correct{border-color:#9dd8c7;background:#effbf6}.option-letter{display:grid;place-items:center;flex:0 0 25px;width:25px;height:25px;border-radius:7px;background:#eaf4f5;color:#087f78;font-weight:850}.quick-preview-foot{padding:14px 22px;border-top:1px solid #dfe9ed;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:14px}.quick-preview-note{font-size:12px;color:#6a7f8f}.quiz-editor-backdrop{position:fixed;inset:0;z-index:13000;background:rgba(15,35,52,.62);display:grid;place-items:center;padding:18px}.quiz-editor-backdrop[hidden]{display:none!important}.quiz-editor{width:min(760px,96vw);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;padding:20px;box-shadow:0 25px 75px rgba(0,0,0,.28)}.quiz-editor-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.quiz-editor-head h3{margin:0;color:#17324d}.quiz-editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.quiz-editor textarea,.quiz-editor select{width:100%}.quiz-editor .full{grid-column:1/-1}.quiz-editor-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}@media(max-width:650px){.quick-preview-backdrop{padding:8px}.quick-preview-modal{max-height:96vh;border-radius:16px}.quick-preview-head,.quick-preview-summary,.quick-preview-toolbar,.quick-preview-body,.quick-preview-foot{padding-left:13px;padding-right:13px}.quick-preview-head h3{font-size:19px}.q-options,.quiz-editor-grid{grid-template-columns:1fr}.quick-preview-foot{align-items:stretch;flex-direction:column}.quick-preview-toolbar{align-items:stretch;flex-direction:column}.quick-preview-note{display:none}.q-manage{width:100%;justify-content:flex-end}}
 </style>
-
 <style>
 .today-class-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:12px 0 16px}.today-class-kpi{background:linear-gradient(180deg,#fff,#f7fbfb);border:1px solid #dbe9ea;border-radius:15px;padding:15px;text-align:center}.today-class-kpi b{display:block;font-size:28px;line-height:1;color:#087f78;margin-bottom:6px}.today-class-kpi span{font-size:13px;font-weight:700;color:#52687a}.today-class-table{overflow:auto;border:1px solid #dfeaec;border-radius:15px;background:#fff}.today-class-table table{width:100%;border-collapse:collapse}.today-class-table th,.today-class-table td{padding:11px 12px;border-bottom:1px solid #edf2f4;text-align:left;vertical-align:middle}.today-class-table th{background:#f4f9f9;color:#3d566a;font-size:12px;text-transform:uppercase;letter-spacing:.03em}.today-status{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:800}.today-status.todo{background:#fff4dd;color:#94620b}.today-status.done{background:#e8f7ef;color:#197149}.today-status.progress{background:#eaf3ff;color:#2c66a5}.today-source-note{padding:10px 12px;border-radius:12px;background:#f4faf9;color:#526b73;font-size:13px;margin-bottom:12px}.today-source-note b{color:#087f78}@media(max-width:800px){.today-class-summary{grid-template-columns:repeat(2,1fr)}.today-picker.grid3{grid-template-columns:1fr}}
 </style>
-
 <style>
 /* 8.6.38 - Tiến độ theo học sinh: gọn + animation */
 .progress-students-chart{overflow:hidden}
@@ -138,7 +135,6 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
 @media(max-width:760px){.student-progress-grid{grid-template-columns:1fr}.rchart-head{flex-direction:column}.progress-count{align-self:flex-start}}
 @media(prefers-reduced-motion:reduce){.student-progress-card,.progress-extra{animation:none}.sp-track i{transition:none}}
 </style>
-
 <style id="ui-871-redesign">
 /* 8.7.1 — Visual redesign. Functional logic remains from 8.6.38 baseline. */
 :root{
@@ -206,8 +202,6 @@ input,select,textarea{border-color:#dfe5ec;border-radius:11px;background:#fff;pa
 @media(max-width:600px){.top-actions .icon-btn:nth-child(-n+2){display:none}.hero-slider{min-height:390px}.hero-slide{padding:34px 42px 52px}.stats{grid-template-columns:1fr 1fr}.stat{min-height:100px}.home-actions{grid-template-columns:1fr}.panel{padding:17px}.panel-head{display:block}.quick-path{display:none}}
 @media(prefers-reduced-motion:reduce){.panel,.panel.active .list-card,.panel.active .today-task,.panel.active .quick-card{animation:none!important}.quick-card,.nav-btn,.icon-btn{transition:none!important}}
 </style>
-
-
 <style id="kpi-motion-874">
 /* 8.7.4 - chỉ tăng độ rõ cho hiệu ứng KPI GỐC; không can thiệp dữ liệu/giá trị */
 .stats .stat{position:relative;overflow:hidden;isolation:isolate}
@@ -237,21 +231,17 @@ html,body{margin:0!important;padding:0!important}
 @media(max-width:900px){.app{padding-top:0!important}.topbar{top:0!important}}
 @media(max-width:560px){.app{padding-top:0!important}.topbar{top:0!important}}
 </style>
-
-
 <style id="sv2-home-polish-8720">
 /* 8.7.20 - Lam moi Hoc hom nay + Tu luyen */
 .sv2-head-rich{align-items:flex-end;margin-bottom:14px}.sv2-head-rich>div>p{margin:4px 0 0;color:#64748b;font-size:13px}.sv2-eyebrow{display:block!important;margin-bottom:5px;color:#4f46e5!important;font-size:10px!important;font-weight:950;letter-spacing:.12em}.sv2-count-pill{padding:7px 11px;border:1px solid #dbeafe;border-radius:999px;background:#eff6ff;color:#1d4ed8!important;font-weight:850!important;white-space:nowrap}.sv2-today-list{display:grid;gap:10px}.sv2-today-card{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:15px;align-items:center;background:linear-gradient(135deg,#fff 0%,#fbfdff 70%,#eef4ff 100%);border:1px solid #dfe7f3;border-radius:18px;padding:15px 16px;box-shadow:0 7px 22px rgba(15,23,42,.045);transition:transform .2s,box-shadow .2s,border-color .2s;overflow:hidden;position:relative}.sv2-today-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(#2563eb,#4f46e5)}.sv2-today-card:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(30,64,175,.10);border-color:#bfdbfe}.sv2-task-no{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#eef2ff;color:#3730a3;font-size:14px;font-weight:950}.sv2-task-main{min-width:0}.sv2-task-meta{display:flex;align-items:center;gap:8px;margin-bottom:4px;color:#2563eb;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}.sv2-task-status{padding:3px 7px;border-radius:999px;background:#fff7ed;color:#c2410c;text-transform:none;letter-spacing:0}.sv2-task-main h4{font-size:15px;margin:0 0 4px;color:#172554;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sv2-task-main p{margin:0;color:#64748b;font-size:12px}.sv2-task-progress{height:5px;background:#e8eef8;border-radius:999px;overflow:hidden;margin-top:10px;max-width:380px}.sv2-task-progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#2563eb,#4f46e5)}.sv2-task-action{border:0;border-radius:12px;padding:10px 13px;background:#1e3a8a;color:#fff;font-weight:900;cursor:pointer;box-shadow:0 7px 16px rgba(30,58,138,.16);white-space:nowrap}.sv2-task-action:hover{background:#2949a5}.sv2-task-action span{margin-left:6px}.sv2-today-empty{display:flex;align-items:center;gap:14px;padding:18px;border-radius:18px;background:linear-gradient(135deg,#f0fdf4,#f8fafc);border:1px solid #bbf7d0}.sv2-today-empty h4{margin:0 0 4px}.sv2-today-empty p{margin:0;color:#64748b;font-size:13px}.sv2-done-mark{width:48px;height:48px;flex:0 0 48px;border-radius:50%;display:grid;place-items:center;background:#dcfce7;color:#15803d;font-size:22px;font-weight:950}.sv2-subjects-new{grid-template-columns:repeat(3,1fr);gap:11px}.sv2-subject-new{position:relative;display:grid;grid-template-columns:48px minmax(0,1fr) 24px;align-items:center;gap:11px;padding:13px 14px;text-align:left;min-height:76px;overflow:hidden;background:#fff}.sv2-subject-new:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:#4f46e5}.sv2-subject-new.s1:before{background:#e11d48}.sv2-subject-new.s2:before{background:#0891b2}.sv2-subject-new.s3:before{background:#7c3aed}.sv2-subject-new.s4:before{background:#d97706}.sv2-subject-new.s5:before{background:#059669}.sv2-subject-mark{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:#eef2ff;color:#3730a3;font-size:10px;font-weight:950;letter-spacing:.03em}.sv2-subject-new.s1 .sv2-subject-mark{background:#fff1f2;color:#be123c}.sv2-subject-new.s2 .sv2-subject-mark{background:#ecfeff;color:#0e7490}.sv2-subject-new.s3 .sv2-subject-mark{background:#f5f3ff;color:#6d28d9}.sv2-subject-new.s4 .sv2-subject-mark{background:#fffbeb;color:#b45309}.sv2-subject-new.s5 .sv2-subject-mark{background:#ecfdf5;color:#047857}.sv2-subject-copy{min-width:0;display:block}.sv2-subject-copy strong{display:block;color:#172554;font-size:14px}.sv2-subject-copy small{display:block;color:#64748b;font-size:11px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sv2-subject-go{color:#94a3b8;font-size:18px;font-weight:900}.sv2-subject-new:hover .sv2-subject-go{transform:translateX(3px);color:#4f46e5}.sv2-subject-new .sv2-subject-go{transition:.2s}.sv2-subject-new b{display:initial;width:auto;height:auto;margin:0;background:none}.sv2-practice-section{padding:17px;border:1px solid #e7eaf3;border-radius:20px;background:linear-gradient(180deg,#fbfcff,#f7f9fd)}
 @media(max-width:900px){.sv2-subjects-new{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.sv2-today-card{grid-template-columns:44px 1fr}.sv2-task-no{width:40px;height:40px}.sv2-task-action{grid-column:2;justify-self:start}.sv2-subjects-new{grid-template-columns:1fr}.sv2-head-rich{align-items:flex-start;flex-direction:column}}
 </style>
-
 <style id="sv2-practice-page-871">
 .sv2-practice-enter{border:0;border-radius:14px;padding:12px 16px;background:#3155e7;color:#fff;font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(49,85,231,.18)}
 .sv2-practice-enter span{margin-left:8px}.sv2-practice-preview{display:flex;align-items:center;gap:16px;border:1px solid #dfe7fb;background:linear-gradient(135deg,#f8fbff,#f4f6ff);padding:18px 20px;border-radius:20px}.sv2-practice-preview-icon{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;background:#e9efff;color:#3155e7;font-size:24px;font-weight:900}.sv2-practice-preview>div:nth-child(2){flex:1}.sv2-practice-preview b{font-size:17px;color:#15213b}.sv2-practice-preview p{margin:5px 0 0;color:#68738b}.sv2-practice-preview button{border:0;border-radius:12px;background:#fff;color:#2747bf;font-weight:800;padding:11px 15px;box-shadow:0 4px 14px rgba(35,57,120,.10);cursor:pointer}
 .sv2-practice-page{min-height:100vh;padding-bottom:56px}.sv2-crumb{display:flex;align-items:center;gap:10px;padding:20px 4px 8px;color:#60708f}.sv2-crumb button{border:0;background:none;color:#2448b8;font-weight:700;cursor:pointer;padding:5px 0}.sv2-practice-hero{text-align:center;padding:20px 12px 28px}.sv2-practice-hero>span{font-size:12px;font-weight:900;letter-spacing:.13em;color:#3155e7}.sv2-practice-hero h2{font-size:30px;margin:8px 0 2px;color:#17213a}.sv2-practice-hero p{font-size:24px;margin:0;color:#17213a}.sv2-practice-list{max-width:780px;margin:0 auto;display:grid;gap:12px}.sv2-practice-row{width:100%;display:flex;align-items:center;gap:18px;text-align:left;border:1px solid #d9e3fa;background:#fff;border-radius:18px;padding:14px 16px;cursor:pointer;transition:.2s ease;box-shadow:0 3px 12px rgba(33,57,116,.04)}.sv2-practice-row:hover{transform:translateY(-2px);border-color:#a9bdf5;box-shadow:0 10px 26px rgba(33,57,116,.10)}.sv2-practice-icon{width:58px;height:58px;flex:0 0 58px;border-radius:15px;display:grid;place-items:center;background:#edf2ff;color:#2949b8;font-weight:900;font-size:16px}.sv2-practice-main{min-width:0;flex:1;display:grid;gap:8px}.sv2-practice-main>strong{font-size:20px;color:#17213a}.sv2-practice-bar{height:7px;background:#e5e7eb;border-radius:99px;overflow:hidden}.sv2-practice-bar i{display:block;height:100%;background:linear-gradient(90deg,#16a6a2,#3155e7);border-radius:inherit}.sv2-practice-main small{display:flex;justify-content:space-between;gap:12px;color:#5d6b87;font-size:12px}.sv2-practice-main small em{font-style:normal;color:#3155e7}.sv2-practice-main small b{font-weight:700;color:#32446d}.sv2-practice-arrow{font-size:30px;color:#3155e7;padding:0 5px}@media(max-width:700px){.sv2-practice-preview{align-items:flex-start;flex-wrap:wrap}.sv2-practice-preview>div:nth-child(2){flex-basis:calc(100% - 70px)}.sv2-practice-preview button{width:100%}.sv2-practice-hero h2{font-size:25px}.sv2-practice-hero p{font-size:20px}.sv2-practice-row{gap:12px;padding:12px}.sv2-practice-icon{width:48px;height:48px;flex-basis:48px}.sv2-practice-main small{display:grid;gap:3px}}
 </style>
-
 <style id="sv2-quick-nav-8723">
 .sv2-quick-nav-wrap{display:flex;justify-content:center;margin:18px 0 24px}
 .sv2-quick-nav{display:grid;grid-template-columns:repeat(6,minmax(92px,1fr));gap:2px;width:min(760px,100%);padding:8px 12px;background:#fff;border:1.5px solid #c7d7ff;border-radius:34px;box-shadow:0 8px 24px rgba(37,99,235,.08)}
@@ -265,298 +255,276 @@ html,body{margin:0!important;padding:0!important}
 <body>
 <div class="app">
 <header class="topbar">
-  <div class="brand-mini"><div class="logo" aria-label="Học tập thông minh">HT</div><div class="brand-copy"><div class="brand-name" id="brandAppName">HỌC TẬP THÔNG MINH PRO</div><div class="brand-slogan" id="brandTopSlogan">Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách</div><div class="teacher-credit">GV.Hồ Nguyễn Đa Thiện</div></div></div>
-  <div class="top-actions">
-    <button class="icon-btn student-entry-btn" onclick="studentV2OpenLogin()">🎓 Học sinh</button>
-    <button class="icon-btn" onclick="openModal('introModal')">Giới thiệu</button>
-    <button class="icon-btn" onclick="openModal('guideModal')">Hướng dẫn</button>
-    <button class="icon-btn" onclick="toggleFont()" title="Tăng cỡ chữ">A+</button>
-    <button class="icon-btn" onclick="toggleContrast()" title="Tăng tương phản">◐</button>
-    <button class="icon-btn" onclick="toggleFullscreen()" title="Toàn màn hình">⛶</button>
-  </div>
+<div class="brand-mini"><div aria-label="Học tập thông minh" class="logo">HT</div><div class="brand-copy"><div class="brand-name" id="brandAppName">HỌC TẬP THÔNG MINH PRO</div><div class="brand-slogan" id="brandTopSlogan">Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách</div><div class="teacher-credit">GV.Hồ Nguyễn Đa Thiện</div></div></div>
+<div class="top-actions">
+<button class="icon-btn student-entry-btn" onclick="studentV2OpenLogin()">🎓 Học sinh</button>
+<button class="icon-btn" onclick="openModal('introModal')">Giới thiệu</button>
+<button class="icon-btn" onclick="openModal('guideModal')">Hướng dẫn</button>
+<button class="icon-btn" onclick="toggleFont()" title="Tăng cỡ chữ">A+</button>
+<button class="icon-btn" onclick="toggleContrast()" title="Tăng tương phản">◐</button>
+<button class="icon-btn" onclick="toggleFullscreen()" title="Toàn màn hình">⛶</button>
+</div>
 </header>
 <section class="hero">
-  <div class="card hero-slider" id="heroSlider" aria-label="Giới thiệu chức năng nổi bật">
-    <article class="hero-slide active">
-      <span class="slide-kicker">Học tập cá nhân hóa</span>
-      <h2 id="heroAppName">HỌC TẬP <span class="slide-em">THÔNG MINH PRO</span></h2>
-      <div class="slogan" id="heroSlogan">Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách</div>
-      <p>Tổ chức hồ sơ, kế hoạch, bài tập và tiến bộ của học sinh trong một quy trình rõ ràng, dễ sử dụng.</p>
-      <div class="hero-actions"><button class="btn primary" onclick="goPanel('home')">Bắt đầu nhanh</button><button class="btn secondary" onclick="newProfile();goPanel('profiles')">Thêm học sinh</button></div>
-    </article>
-    <article class="hero-slide">
-      <span class="slide-kicker">Kế hoạch học tập</span>
-      <h2>Biến mục tiêu thành <span class="slide-em">việc học mỗi ngày</span></h2>
-      <p>Giáo viên theo dõi từng học sinh, xây dựng kế hoạch phù hợp và mở nhanh phiên “Học hôm nay” khi cần.</p>
-      <div class="hero-actions"><button class="btn primary" onclick="goPanel('plan')">Xem kế hoạch</button><button class="btn secondary" onclick="goPanel('session')">Học hôm nay</button></div>
-    </article>
-    <article class="hero-slide">
-      <span class="slide-kicker">Bài tập & phản hồi</span>
-      <h2>Giao bài – Làm bài – <span class="slide-em">Chấm và nhận xét</span></h2>
-      <p>Một luồng làm việc tập trung giúp giáo viên quản lý bài tập, kết quả và phản hồi mà không phải đi qua nhiều màn hình rời rạc.</p>
-      <div class="hero-actions"><button class="btn primary" onclick="goPanel('assignments')">Mở bài tập</button></div>
-    </article>
-    <article class="hero-slide">
-      <span class="slide-kicker">Theo dõi tiến bộ</span>
-      <h2>Dữ liệu học tập thành <span class="slide-em">báo cáo trực quan</span></h2>
-      <p>Xem tiến độ, điểm bài tập và minh chứng học tập theo từng học sinh để hỗ trợ đúng lúc và trao đổi thuận tiện với phụ huynh.</p>
-      <div class="hero-actions"><button class="btn primary" onclick="goPanel('report')">Xem báo cáo</button></div>
-    </article>
-    <button class="slider-arrow slider-prev" type="button" aria-label="Slide trước">‹</button>
-    <button class="slider-arrow slider-next" type="button" aria-label="Slide sau">›</button>
-    <div class="slider-dots" aria-label="Chọn slide"></div>
-  </div>
-  <div class="card stats">
-    <div class="stat"><strong id="statStudents">0</strong><span>Hồ sơ học sinh</span></div>
-    <div class="stat"><strong id="statSessions">0</strong><span>Buổi học đã ghi</span></div>
-    <div class="stat"><strong id="statTasks">0%</strong><span>Nhiệm vụ hoàn thành</span></div>
-    <div class="stat"><strong id="statProgress">0%</strong><span>Hiệu quả trung bình</span></div>
-  </div>
+<div aria-label="Giới thiệu chức năng nổi bật" class="card hero-slider" id="heroSlider">
+<article class="hero-slide active">
+<span class="slide-kicker">Học tập cá nhân hóa</span>
+<h2 id="heroAppName">HỌC TẬP <span class="slide-em">THÔNG MINH PRO</span></h2>
+<div class="slogan" id="heroSlogan">Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách</div>
+<p>Tổ chức hồ sơ, kế hoạch, bài tập và tiến bộ của học sinh trong một quy trình rõ ràng, dễ sử dụng.</p>
+<div class="hero-actions"><button class="btn primary" onclick="goPanel('home')">Bắt đầu nhanh</button><button class="btn secondary" onclick="newProfile();goPanel('profiles')">Thêm học sinh</button></div>
+</article>
+<article class="hero-slide">
+<span class="slide-kicker">Kế hoạch học tập</span>
+<h2>Biến mục tiêu thành <span class="slide-em">việc học mỗi ngày</span></h2>
+<p>Giáo viên theo dõi từng học sinh, xây dựng kế hoạch phù hợp và mở nhanh phiên “Học hôm nay” khi cần.</p>
+<div class="hero-actions"><button class="btn primary" onclick="goPanel('plan')">Xem kế hoạch</button><button class="btn secondary" onclick="goPanel('session')">Học hôm nay</button></div>
+</article>
+<article class="hero-slide">
+<span class="slide-kicker">Bài tập &amp; phản hồi</span>
+<h2>Giao bài – Làm bài – <span class="slide-em">Chấm và nhận xét</span></h2>
+<p>Một luồng làm việc tập trung giúp giáo viên quản lý bài tập, kết quả và phản hồi mà không phải đi qua nhiều màn hình rời rạc.</p>
+<div class="hero-actions"><button class="btn primary" onclick="goPanel('assignments')">Mở bài tập</button></div>
+</article>
+<article class="hero-slide">
+<span class="slide-kicker">Theo dõi tiến bộ</span>
+<h2>Dữ liệu học tập thành <span class="slide-em">báo cáo trực quan</span></h2>
+<p>Xem tiến độ, điểm bài tập và minh chứng học tập theo từng học sinh để hỗ trợ đúng lúc và trao đổi thuận tiện với phụ huynh.</p>
+<div class="hero-actions"><button class="btn primary" onclick="goPanel('report')">Xem báo cáo</button></div>
+</article>
+<button aria-label="Slide trước" class="slider-arrow slider-prev" type="button">‹</button>
+<button aria-label="Slide sau" class="slider-arrow slider-next" type="button">›</button>
+<div aria-label="Chọn slide" class="slider-dots"></div>
+</div>
+<div class="card stats">
+<div class="stat"><strong id="statStudents">0</strong><span>Hồ sơ học sinh</span></div>
+<div class="stat"><strong id="statSessions">0</strong><span>Buổi học đã ghi</span></div>
+<div class="stat"><strong id="statTasks">0%</strong><span>Nhiệm vụ hoàn thành</span></div>
+<div class="stat"><strong id="statProgress">0%</strong><span>Hiệu quả trung bình</span></div>
+</div>
 </section>
 <section class="card quick-path">
-  <div class="path-title"><h2>Quy trình sử dụng 7 bước</h2><span id="pathText" class="tag">Bắt đầu từ hồ sơ học sinh</span></div>
-  <div class="progress-line"><i id="pathProgress"></i></div>
-  <div class="steps" id="stepNav"></div>
+<div class="path-title"><h2>Quy trình sử dụng 7 bước</h2><span class="tag" id="pathText">Bắt đầu từ hồ sơ học sinh</span></div>
+<div class="progress-line"><i id="pathProgress"></i></div>
+<div class="steps" id="stepNav"></div>
 </section>
 <div class="layout">
-  <aside class="card sidebar">
-    <div class="nav-title">Điều hướng</div>
-    <button class="nav-btn active" data-panel="home" onclick="goPanel('home')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M9.5 20v-6h5v6"/></svg></span><span class="nav-label">Tổng quan</span></button>
-    <button class="nav-btn" data-panel="profiles" onclick="goPanel('profiles')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.4-3.3 2.2-5 5.5-5s5.1 1.7 5.5 5"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14.5c3.1-.4 4.7 1.1 5 4"/></svg></span><span class="nav-label">Lớp học &amp; học sinh</span></button>
-    <button class="nav-btn" data-panel="plan" onclick="goPanel('plan')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16M8 14h3M8 17h6"/></svg></span><span class="nav-label">Kế hoạch ôn tập</span></button>
-    <button class="nav-btn" data-panel="session" onclick="goPanel('session')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4Z"/></svg></span><span class="nav-label">Học hôm nay</span></button>
-    <button class="nav-btn" data-panel="journal" onclick="goPanel('journal')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span class="nav-label">Nhật ký học tập</span></button>
-    <button class="nav-btn" data-panel="assignments" onclick="goPanel('assignments')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v4H7z"/><path d="M6 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1"/><path d="m8 14 2.5 2.5L16 11"/></svg></span><span class="nav-label">Bài tập &amp; ôn luyện</span></button>
-    <button class="nav-btn" data-panel="report" onclick="goPanel('report')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10h4v10M10 20V5h4v15M15 20v-7h4v7M3 20h18"/></svg></span><span class="nav-label">Kết quả &amp; phụ huynh</span></button>
-    <div class="nav-divider" aria-hidden="true"></div>
-    <div class="nav-title nav-title-secondary">Công cụ giáo viên</div>
-    <button class="nav-btn" data-panel="assessment" onclick="goPanel('assessment')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18H6z"/><path d="M9 8h6M9 12h6M9 16h3"/><path d="m14 16 1.5 1.5L19 14"/></svg></span><span class="nav-label">Kiểm tra &amp; đánh giá</span></button>
-    <button class="nav-btn" data-panel="professional" onclick="goPanel('professional')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v14H4z"/><path d="M8 6V4h8v2M8 11h8M8 15h5"/></svg></span><span class="nav-label">Quản lý chuyên môn</span></button>
-    <button class="nav-btn" data-panel="aihelper" onclick="goPanel('aihelper')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h10a4 4 0 0 1 4 4v5a4 4 0 0 1-4 4h-5l-4 3v-3H7a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z"/><path d="M8 12h8M10 9v6M14 9v6"/></svg></span><span class="nav-label">Trợ lý AI</span></button>
-    <div class="nav-divider" aria-hidden="true"></div>
-    <button class="nav-btn" data-panel="data" onclick="goPanel('data')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg></span><span class="nav-label">Cài đặt &amp; dữ liệu</span></button>
-    <div class="student-switch context-switch"><label>Lớp đang làm việc</label><select id="workClassSelect" onchange="workClassChanged(this.value)"></select><label style="margin-top:8px">Học sinh</label><select id="studentSelect" onchange="switchStudent(this.value)"></select><small id="workContextHint" class="help">Chọn lớp để lọc học sinh trong toàn app.</small></div>
-  </aside>
-  <main class="content">
-    <section id="homePanel" class="card panel active">
-      <div class="panel-head"><div><h2>🏠 Tổng quan</h2><p>Chọn việc cần làm. App sẽ đưa thầy/cô đến đúng chỗ.</p></div></div>
-      <div class="teacher-home">
-        <div class="home-welcome"><h3>Hôm nay thầy/cô muốn làm gì?</h3><p class="help">Không cần đi lần lượt từng bước. Có thể bắt đầu từ công việc đang cần.</p>
-          <div class="home-actions">
-            <button class="quick-card" onclick="newProfile();goPanel('profiles')"><b>➕ Thêm học sinh</b><small>Chỉ cần nhập thông tin cơ bản</small></button>
-            <button class="quick-card" onclick="quickCreateRoute()"><b>✨ Tạo lộ trình</b><small>Tự tạo mục tiêu và kế hoạch tuần</small></button>
-            <button class="quick-card" onclick="startToday()"><b>▶ Học hôm nay</b><small>Mở ngay phiên học cho học sinh đang chọn</small></button>
-            <button class="quick-card" onclick="goPanel('journal')"><b>📝 Ghi nhận kết quả</b><small>Ghi nhanh sau một buổi học</small></button>
-            <button class="quick-card" onclick="goPanel('report')"><b>📊 Kết quả &amp; phụ huynh</b><small>Xem tiến bộ và chuẩn bị phản hồi</small></button>
-            <button class="quick-card" onclick="goPanel('profiles')"><b>👨‍🎓 Danh sách học sinh</b><small>Chọn hoặc chỉnh hồ sơ</small></button>
-          </div>
-        </div>
-        <div id="homeStudentSummary" class="student-summary list-card"></div>
-      </div>
-      <h3 class="section-title">Học sinh gần đây</h3><div id="homeStudentList" class="grid2"></div>
-    </section>
+<aside class="card sidebar">
+<div class="nav-title">Điều hướng</div>
+<button class="nav-btn active" data-panel="home" onclick="goPanel('home')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"></path><path d="M5.5 10.5V20h13v-9.5"></path><path d="M9.5 20v-6h5v6"></path></svg></span><span class="nav-label">Tổng quan</span></button>
+<button class="nav-btn" data-panel="profiles" onclick="goPanel('profiles')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3.5 19c.4-3.3 2.2-5 5.5-5s5.1 1.7 5.5 5"></path><circle cx="17" cy="9" r="2.3"></circle><path d="M15.5 14.5c3.1-.4 4.7 1.1 5 4"></path></svg></span><span class="nav-label">Lớp học &amp; học sinh</span></button>
+<button class="nav-btn" data-panel="plan" onclick="goPanel('plan')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><rect height="15" rx="2" width="16" x="4" y="5"></rect><path d="M8 3v4M16 3v4M4 10h16M8 14h3M8 17h6"></path></svg></span><span class="nav-label">Kế hoạch ôn tập</span></button>
+<button class="nav-btn" data-panel="session" onclick="goPanel('session')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m10 8 6 4-6 4Z"></path></svg></span><span class="nav-label">Học hôm nay</span></button>
+<button class="nav-btn" data-panel="journal" onclick="goPanel('journal')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 4h14v16H5z"></path><path d="M8 8h8M8 12h8M8 16h5"></path></svg></span><span class="nav-label">Nhật ký học tập</span></button>
+<button class="nav-btn" data-panel="assignments" onclick="goPanel('assignments')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M7 3h10v4H7z"></path><path d="M6 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1"></path><path d="m8 14 2.5 2.5L16 11"></path></svg></span><span class="nav-label">Bài tập &amp; ôn luyện</span></button>
+<button class="nav-btn" data-panel="report" onclick="goPanel('report')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 20V10h4v10M10 20V5h4v15M15 20v-7h4v7M3 20h18"></path></svg></span><span class="nav-label">Kết quả &amp; phụ huynh</span></button>
+<div aria-hidden="true" class="nav-divider"></div>
+<div class="nav-title nav-title-secondary">Công cụ giáo viên</div>
+<button class="nav-btn" data-panel="assessment" onclick="goPanel('assessment')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M6 3h12v18H6z"></path><path d="M9 8h6M9 12h6M9 16h3"></path><path d="m14 16 1.5 1.5L19 14"></path></svg></span><span class="nav-label">Kiểm tra &amp; đánh giá</span></button>
+<button class="nav-btn" data-panel="professional" onclick="goPanel('professional')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 6h16v14H4z"></path><path d="M8 6V4h8v2M8 11h8M8 15h5"></path></svg></span><span class="nav-label">Quản lý chuyên môn</span></button>
+<button class="nav-btn" data-panel="aihelper" onclick="goPanel('aihelper')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M7 5h10a4 4 0 0 1 4 4v5a4 4 0 0 1-4 4h-5l-4 3v-3H7a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z"></path><path d="M8 12h8M10 9v6M14 9v6"></path></svg></span><span class="nav-label">Trợ lý AI</span></button>
+<div aria-hidden="true" class="nav-divider"></div>
+<button class="nav-btn" data-panel="data" onclick="goPanel('data')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"></path></svg></span><span class="nav-label">Cài đặt &amp; dữ liệu</span></button>
+<div class="student-switch context-switch"><label>Lớp đang làm việc</label><select id="workClassSelect" onchange="workClassChanged(this.value)"></select><label style="margin-top:8px">Học sinh</label><select id="studentSelect" onchange="switchStudent(this.value)"></select><small class="help" id="workContextHint">Chọn lớp để lọc học sinh trong toàn app.</small></div>
+</aside>
+<main class="content">
+<section class="card panel active" id="homePanel">
+<div class="panel-head"><div><h2>🏠 Tổng quan</h2><p>Chọn việc cần làm. App sẽ đưa thầy/cô đến đúng chỗ.</p></div></div>
+<div class="teacher-home">
+<div class="home-welcome"><h3>Hôm nay thầy/cô muốn làm gì?</h3><p class="help">Không cần đi lần lượt từng bước. Có thể bắt đầu từ công việc đang cần.</p>
+<div class="home-actions">
+<button class="quick-card" onclick="newProfile();goPanel('profiles')"><b>➕ Thêm học sinh</b><small>Chỉ cần nhập thông tin cơ bản</small></button>
+<button class="quick-card" onclick="quickCreateRoute()"><b>✨ Tạo lộ trình</b><small>Tự tạo mục tiêu và kế hoạch tuần</small></button>
+<button class="quick-card" onclick="startToday()"><b>▶ Học hôm nay</b><small>Mở ngay phiên học cho học sinh đang chọn</small></button>
+<button class="quick-card" onclick="goPanel('journal')"><b>📝 Ghi nhận kết quả</b><small>Ghi nhanh sau một buổi học</small></button>
+<button class="quick-card" onclick="goPanel('report')"><b>📊 Kết quả &amp; phụ huynh</b><small>Xem tiến bộ và chuẩn bị phản hồi</small></button>
+<button class="quick-card" onclick="goPanel('profiles')"><b>👨‍🎓 Danh sách học sinh</b><small>Chọn hoặc chỉnh hồ sơ</small></button>
+</div>
+</div>
+<div class="student-summary list-card" id="homeStudentSummary"></div>
+</div>
+<h3 class="section-title">Học sinh gần đây</h3><div class="grid2" id="homeStudentList"></div>
+</section>
+<section class="card panel" id="profilesPanel">
+<div class="panel-head"><div><h2>👨‍🎓 Lớp học &amp; học sinh</h2><p>Quản lý nhiều lớp ôn tập. Chọn lớp và môn để xem đúng học sinh; mỗi học sinh chỉ cần tạo hồ sơ một lần.</p></div><button class="btn secondary small" onclick="newProfile()">＋ Học sinh mới</button></div><div class="simple-tabs"><button onclick="goPanel('analysis')">📌 Xem phân tích</button><button onclick="quickCreateRoute()">✨ Tạo lộ trình tự động</button></div>
+<div class="list-card" style="margin-bottom:14px"><div class="grid2"><div class="field"><label for="classManagerFilter">Lớp đang xem</label><select id="classManagerFilter" onchange="classManagerChanged()"></select></div><div class="field"><label for="subjectManagerFilter">Môn học đang xem</label><select id="subjectManagerFilter" onchange="classManagerChanged()"></select></div></div><div class="action-row"><button class="btn secondary small" onclick="addClassManager()" type="button">＋ Thêm lớp</button><button class="btn secondary small" onclick="addSubjectManager()" type="button">＋ Thêm môn cho lớp</button><button class="btn secondary small" onclick="newStudentInContext()" type="button">＋ Thêm học sinh</button><button class="btn primary small" onclick="openStudentExcelImport()" type="button">📥 Tải danh sách Excel</button></div><p class="help" id="classManagerHint">Chọn lớp và môn; học sinh của lớp được dùng chung, không phải nhập lại cho mỗi môn.</p></div><div class="grid2">
+<div>
+<div class="field"><label>Họ và tên <span class="req">*</span></label><input id="pName" placeholder="Ví dụ: Nguyễn Minh An"/></div>
+<div class="field"><label>Lớp <span class="req">*</span></label><input id="pClass" placeholder="Ví dụ: 10A1, 11A2, 12C5"/></div>
+<div class="grid2"><div class="field"><label>Môn cần cải thiện <span class="req">*</span></label><select id="pSubject" onchange="renderSubjectTip()"><option>Toán</option><option>Ngữ văn</option><option>Tiếng Anh</option><option>Tin học</option><option>Vật lí</option><option>Hóa học</option><option>Sinh học</option><option>Lịch sử</option><option>Địa lí</option><option>Công nghệ</option><option>Khác</option></select></div><div class="field"><label>Điểm hiện tại</label><input id="pScore" max="10" min="0" placeholder="0 - 10" step="0.1" type="number"/></div></div>
+<div class="field"><label>Mục tiêu ban đầu</label><select id="pGoal"><option>Hiểu bài chắc hơn</option><option>Tăng điểm kiểm tra</option><option>Lấp lỗ hổng kiến thức</option><option>Ôn thi</option><option>Học nâng cao</option><option>Tạo thói quen tự học</option></select></div>
+<div class="grid2"><div class="field"><label>Thời gian học mỗi ngày</label><select id="pTime"><option value="30">30 phút</option><option selected="" value="45">45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option></select></div><div class="field"><label>Số ngày học mỗi tuần</label><select id="pDays"><option>3</option><option>4</option><option selected="">5</option><option>6</option><option>7</option></select></div></div>
+<div class="field"><label>Khó khăn đang gặp</label><textarea id="pDifficulty" placeholder="Ví dụ: Dễ mất tập trung, chưa nhớ công thức, ngại làm bài..."></textarea></div>
+<div class="field"><label>Điểm mạnh hoặc sở thích</label><textarea id="pStrength" placeholder="Ví dụ: Thích hình ảnh, thực hành tốt, chăm ghi chép..."></textarea></div>
+<div class="info-box" id="subjectTip"></div>
+<div class="action-row"><button class="btn primary" onclick="saveProfile()">💾 Lưu hồ sơ</button><button class="btn secondary" onclick="fillSampleProfile()">Điền mẫu minh họa</button><button class="btn danger" id="deleteProfileBtn" onclick="deleteCurrentProfile()">Xóa hồ sơ</button></div>
+</div>
+<div><h3 style="margin-top:0">Danh sách học sinh theo lớp và môn</h3><div id="profileList"></div></div>
+</div>
+</section>
+<div class="excel-import-backdrop" hidden="" id="studentExcelImport">
+<div aria-labelledby="excelImportTitle" aria-modal="true" class="excel-import-modal" role="dialog">
+<div class="excel-import-head"><div><h3 id="excelImportTitle">📥 Thêm học sinh từ Excel</h3><p>Chọn file .xlsx/.xls. App đọc danh sách, cho xem trước rồi mới thêm vào lớp.</p></div><button aria-label="Đóng" class="excel-close" onclick="closeStudentExcelImport()" type="button">×</button></div>
+<div class="excel-import-note"><b>Cột bắt buộc:</b> Họ và tên. <b>Cột nên có:</b> Lớp, Môn học, Điểm hiện tại. Nếu file không có Lớp/Môn học, app dùng lớp và môn đang chọn.</div>
+<div class="action-row"><button class="btn secondary" onclick="downloadStudentExcelTemplate()" type="button">⬇ Tải file Excel mẫu</button><label class="btn primary" style="cursor:pointer">📂 Chọn file Excel<input accept=".xlsx,.xls" hidden="" id="studentExcelFile" onchange="readStudentExcel(this.files[0])" type="file"/></label></div>
+<div class="help" id="studentExcelStatus" style="margin:10px 0">Chưa chọn file.</div>
+<div id="studentExcelPreview"></div>
+<div class="action-row" style="justify-content:flex-end"><button class="btn secondary" onclick="closeStudentExcelImport()" type="button">Hủy</button><button class="btn primary" disabled="" id="studentExcelImportBtn" onclick="confirmStudentExcelImport()" type="button">Thêm học sinh vào app</button></div>
+</div>
+</div>
 
-    <section id="profilesPanel" class="card panel">
-      <div class="panel-head"><div><h2>👨‍🎓 Lớp học &amp; học sinh</h2><p>Quản lý nhiều lớp ôn tập. Chọn lớp và môn để xem đúng học sinh; mỗi học sinh chỉ cần tạo hồ sơ một lần.</p></div><button class="btn secondary small" onclick="newProfile()">＋ Học sinh mới</button></div><div class="simple-tabs"><button onclick="openSurveyForCurrent()">🧩 Khảo sát đầu vào</button><button onclick="goPanel('analysis')">📌 Xem phân tích</button><button onclick="quickCreateRoute()">✨ Tạo lộ trình tự động</button></div>
-      <div class="list-card" style="margin-bottom:14px"><div class="grid2"><div class="field"><label for="classManagerFilter">Lớp đang xem</label><select id="classManagerFilter" onchange="classManagerChanged()"></select></div><div class="field"><label for="subjectManagerFilter">Môn học đang xem</label><select id="subjectManagerFilter" onchange="classManagerChanged()"></select></div></div><div class="action-row"><button class="btn secondary small" type="button" onclick="addClassManager()">＋ Thêm lớp</button><button class="btn secondary small" type="button" onclick="addSubjectManager()">＋ Thêm môn cho lớp</button><button class="btn secondary small" type="button" onclick="newStudentInContext()">＋ Thêm học sinh</button><button class="btn primary small" type="button" onclick="openStudentExcelImport()">📥 Tải danh sách Excel</button></div><p class="help" id="classManagerHint">Chọn lớp và môn; học sinh của lớp được dùng chung, không phải nhập lại cho mỗi môn.</p></div><div class="grid2">
-        <div>
-          <div class="field"><label>Họ và tên <span class="req">*</span></label><input id="pName" placeholder="Ví dụ: Nguyễn Minh An"></div>
-          <div class="field"><label>Lớp <span class="req">*</span></label><input id="pClass" placeholder="Ví dụ: 10A1, 11A2, 12C5"></div>
-          <div class="grid2"><div class="field"><label>Môn cần cải thiện <span class="req">*</span></label><select id="pSubject" onchange="renderSubjectTip()"><option>Toán</option><option>Ngữ văn</option><option>Tiếng Anh</option><option>Tin học</option><option>Vật lí</option><option>Hóa học</option><option>Sinh học</option><option>Lịch sử</option><option>Địa lí</option><option>Công nghệ</option><option>Khác</option></select></div><div class="field"><label>Điểm hiện tại</label><input id="pScore" type="number" min="0" max="10" step="0.1" placeholder="0 - 10"></div></div>
-          <div class="field"><label>Mục tiêu ban đầu</label><select id="pGoal"><option>Hiểu bài chắc hơn</option><option>Tăng điểm kiểm tra</option><option>Lấp lỗ hổng kiến thức</option><option>Ôn thi</option><option>Học nâng cao</option><option>Tạo thói quen tự học</option></select></div>
-          <div class="grid2"><div class="field"><label>Thời gian học mỗi ngày</label><select id="pTime"><option value="30">30 phút</option><option value="45" selected>45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option></select></div><div class="field"><label>Số ngày học mỗi tuần</label><select id="pDays"><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option></select></div></div>
-          <div class="field"><label>Khó khăn đang gặp</label><textarea id="pDifficulty" placeholder="Ví dụ: Dễ mất tập trung, chưa nhớ công thức, ngại làm bài..."></textarea></div>
-          <div class="field"><label>Điểm mạnh hoặc sở thích</label><textarea id="pStrength" placeholder="Ví dụ: Thích hình ảnh, thực hành tốt, chăm ghi chép..."></textarea></div>
-          <div id="subjectTip" class="info-box"></div>
-          <div class="action-row"><button class="btn primary" onclick="saveProfile()">💾 Lưu hồ sơ</button><button class="btn secondary" onclick="fillSampleProfile()">Điền mẫu minh họa</button><button class="btn danger" id="deleteProfileBtn" onclick="deleteCurrentProfile()">Xóa hồ sơ</button></div>
-        </div>
-        <div><h3 style="margin-top:0">Danh sách học sinh theo lớp và môn</h3><div id="profileList"></div></div>
-      </div>
-    </section>
-
-    <div id="studentExcelImport" class="excel-import-backdrop" hidden>
-      <div class="excel-import-modal" role="dialog" aria-modal="true" aria-labelledby="excelImportTitle">
-        <div class="excel-import-head"><div><h3 id="excelImportTitle">📥 Thêm học sinh từ Excel</h3><p>Chọn file .xlsx/.xls. App đọc danh sách, cho xem trước rồi mới thêm vào lớp.</p></div><button class="excel-close" type="button" onclick="closeStudentExcelImport()" aria-label="Đóng">×</button></div>
-        <div class="excel-import-note"><b>Cột bắt buộc:</b> Họ và tên. <b>Cột nên có:</b> Lớp, Môn học, Điểm hiện tại. Nếu file không có Lớp/Môn học, app dùng lớp và môn đang chọn.</div>
-        <div class="action-row"><button class="btn secondary" type="button" onclick="downloadStudentExcelTemplate()">⬇ Tải file Excel mẫu</button><label class="btn primary" style="cursor:pointer">📂 Chọn file Excel<input id="studentExcelFile" type="file" accept=".xlsx,.xls" hidden onchange="readStudentExcel(this.files[0])"></label></div>
-        <div id="studentExcelStatus" class="help" style="margin:10px 0">Chưa chọn file.</div>
-        <div id="studentExcelPreview"></div>
-        <div class="action-row" style="justify-content:flex-end"><button class="btn secondary" type="button" onclick="closeStudentExcelImport()">Hủy</button><button id="studentExcelImportBtn" class="btn primary" type="button" onclick="confirmStudentExcelImport()" disabled>Thêm học sinh vào app</button></div>
-      </div>
-    </div>
-
-    <section id="surveyPanel" class="card panel">
-      <div class="panel-head"><div><h2>🧩 Khảo sát đầu vào</h2><p>Giáo viên chọn lớp và học sinh để xem, thực hiện hoặc cập nhật 15 câu khảo sát cá nhân hóa.</p></div><button class="btn secondary small" type="button" onclick="goPanel('profiles')">← Danh sách học sinh</button></div>
-      <div class="survey-teacher-bar">
-        <div class="field"><label>Lớp</label><select id="surveyClassSelect" onchange="surveyClassChanged()"></select></div>
-        <div class="field"><label>Học sinh</label><select id="surveyStudentSelect" onchange="surveyStudentChanged()"></select></div>
-        <div class="survey-status-card"><span class="help">Trạng thái khảo sát</span><strong id="surveyStatusText">Chưa chọn học sinh</strong><small id="surveyStatusDate">—</small></div>
-      </div>
-      <div class="optional-note"><b>Cách dùng:</b> Chọn học sinh → trả lời 15 câu theo thang 1–5 → nhấn <b>Lưu & xem phân tích</b>. Có thể cập nhật lại khảo sát khi cần; kết quả được gắn đúng hồ sơ học sinh.</div>
-      <div id="surveyQuestions" style="margin-top:12px"></div>
-      <div class="action-row"><button class="btn primary" onclick="saveSurvey()">💾 Lưu & xem phân tích</button><button class="btn secondary" onclick="clearSurveyForm()">Làm lại khảo sát</button><button class="btn secondary" onclick="goPanel('analysis')">📌 Xem phân tích hiện tại</button></div>
-    </section>
-
-    <section id="analysisPanel" class="card panel">
-      <div class="panel-head"><div><h2>3. Phân tích cá nhân hóa</h2><p>Kết quả được tổng hợp từ hồ sơ và khảo sát đầu vào.</p></div><button class="btn secondary small" onclick="openSurveyForCurrent()">Xem / cập nhật khảo sát</button></div>
-      <div id="analysisContent"></div>
-    </section>
-
-    <section id="goalsPanel" class="card panel">
-      <div class="panel-head"><div><h2>4. Mục tiêu học tập</h2><p>Thiết lập mục tiêu cụ thể, có thời hạn và có cách đo.</p></div></div>
-      <div class="grid2">
-        <div>
-          <div class="field"><label>Mục tiêu cụ thể <span class="req">*</span></label><textarea id="gTarget" placeholder="Ví dụ: Nâng điểm Toán từ 6,5 lên 7,5"></textarea></div>
-          <div class="grid2"><div class="field"><label>Điểm/đích mong muốn</label><input id="gScore" type="number" min="0" max="10" step="0.1" placeholder="Ví dụ: 7.5"></div><div class="field"><label>Hạn hoàn thành</label><input id="gDate" type="date"></div></div>
-          <div class="field"><label>Minh chứng hoàn thành</label><textarea id="gEvidence" placeholder="Ví dụ: Hoàn thành 4 bài luyện tập và đạt từ 7,5 ở bài kiểm tra"></textarea></div>
-          <div class="field"><label>Phần thưởng/động lực tích cực</label><input id="gReward" placeholder="Ví dụ: Một buổi xem phim, lời khen, huy hiệu tiến bộ"></div>
-          <div class="action-row"><button class="btn primary" onclick="saveGoal()">Lưu mục tiêu</button><button class="btn secondary" onclick="suggestGoal()">Gợi ý mục tiêu</button></div>
-        </div>
-        <div><h3 style="margin-top:0">Mục tiêu đang theo dõi</h3><div id="goalList"></div></div>
-      </div>
-    </section>
-
-    <section id="planPanel" class="card panel">
-      <div class="panel-head"><div><h2>Kế hoạch ôn tập tuần</h2><p>Kế hoạch ôn tập cá nhân của học sinh đang chọn; chuyển lớp hoặc học sinh để xem kế hoạch tương ứng.</p></div></div>
-      <div class="field" style="max-width:520px"><label for="planStudentSelect">Chọn học sinh lập kế hoạch</label><select id="planStudentSelect" onchange="switchStudent(this.value)"></select></div><div id="planStudentContext" class="info-box" style="margin-bottom:12px;text-align:left"></div>
-      <div class="grid3"><div class="field"><label>Tuần bắt đầu</label><input id="weekStart" type="date"></div><div class="field"><label>Chủ đề trọng tâm</label><input id="weekTopic" placeholder="Ví dụ: Phương trình bậc hai"></div><div class="field"><label>Mức độ</label><select id="weekLevel"><option>Tự động theo hồ sơ</option><option>Hỗ trợ nền tảng</option><option>Củng cố</option><option>Phát triển</option><option>Nâng cao</option></select></div></div>
-      <div class="action-row"><button class="btn primary" onclick="generateWeekPlan()">✨ Tạo kế hoạch tuần</button><button class="btn secondary" onclick="saveWeekPlan()">💾 Lưu thay đổi</button><button class="btn warning" onclick="resetWeekPlan()">Tạo lại</button></div>
-      <div id="weekPlan" class="week-grid" style="margin-top:15px"></div>
-    </section>
-
-    <section id="sessionPanel" class="card panel">
-      <div class="panel-head"><div><h2>Học hôm nay</h2><p>Nhiệm vụ ở đây lấy trực tiếp từ bài giáo viên đã giao và kế hoạch ôn tập; học sinh không phải nhập lại nội dung.</p></div><span id="todaySubjectBadge" class="tag blue">Chưa chọn học sinh</span></div>
-      <div class="grid3 today-picker"><div class="field"><label>Lớp</label><select id="todayClass" onchange="todayClassChanged()"></select></div><div class="field"><label>Học sinh đang học</label><select id="todayStudent" onchange="chooseTodayStudent(this.value);renderTodayLearning()"></select></div><div class="field"><label>Theo dõi nhanh</label><button class="btn secondary" style="width:100%;min-height:42px" onclick="todayToggleClassSummary()">Tình hình lớp hôm nay</button></div></div>
-      <div id="todayOverview" style="margin:12px 0"></div>
-      <div id="todayPersonal" class="info-box" style="margin-bottom:12px"></div>
-      <div id="todayUnifiedContent"></div>
-      <div class="action-row today-footer-actions"><button class="btn secondary" onclick="goPanel('plan')">Kế hoạch ôn tập</button><button class="btn secondary" onclick="goPanel('assignments')">Bài tập &amp; ôn luyện</button><button class="btn secondary" onclick="goPanel('journal')">Nhật ký học tập</button></div>
-    </section>
-
-    <section id="journalPanel" class="card panel">
-      <div class="panel-head"><div><h2>Nhật ký học tập</h2><p>Chọn lớp hoặc học sinh để xem nhanh lịch sử ôn tập, mức độ hiểu, tập trung và nội dung cần củng cố.</p></div><button class="btn secondary small" onclick="journalResetFilters()">↺ Xem tất cả</button></div>
-      <div class="journal-manager">
-        <div class="filter-bar journal-filters">
-          <div class="field"><label>Lớp</label><select id="journalClassFilter" onchange="journalClassChanged()"></select></div>
-          <div class="field"><label>Học sinh</label><select id="journalStudentFilter" onchange="renderJournals()"><option value="all">Tất cả học sinh</option></select></div>
-          <div class="field"><label>Thời gian</label><select id="journalPeriodFilter" onchange="renderJournals()"><option value="7">7 ngày gần đây</option><option value="30" selected>30 ngày gần đây</option><option value="90">90 ngày gần đây</option><option value="all">Tất cả</option></select></div>
-          <div class="field"><label>Tìm nội dung</label><input id="journalSearch" placeholder="Tên học sinh, nội dung đã học..." oninput="renderJournals()"></div>
-        </div>
-        <div id="journalSummary" class="summary-strip" style="margin:12px 0"></div>
-        <div id="journalManagerList"></div>
-      </div>
-      <details class="journal-entry-box" style="margin-top:16px"><summary><b>＋ Ghi nhật ký cho học sinh đang chọn</b></summary><div style="padding-top:14px">
-      <div class="grid2"><div><div class="field"><label>Ngày học</label><input id="jDate" type="date"></div><div class="field"><label>Nội dung đã học <span class="req">*</span></label><textarea id="jWhat" placeholder="Hôm nay đã học phần nào?"></textarea></div><div class="field"><label>Phần khó nhất</label><textarea id="jHard" placeholder="Phần nào còn vướng hoặc mất nhiều thời gian?"></textarea></div></div><div><div class="field"><label>Điều đã hiểu/nhớ rõ</label><textarea id="jRemember" placeholder="Viết ít nhất một điều đã hiểu"></textarea></div><div class="field"><label>Việc cần làm tiếp theo</label><textarea id="jNext" placeholder="Ví dụ: Ôn lại công thức, làm thêm 5 câu"></textarea></div><div class="grid2"><div class="field"><label>Mức độ hiểu</label><select id="jUnderstand"><option value="2">2 - Còn yếu</option><option value="4">4 - Hiểu ít</option><option value="6" selected>6 - Tạm ổn</option><option value="8">8 - Hiểu tốt</option><option value="10">10 - Rất chắc</option></select></div><div class="field"><label>Mức độ tập trung</label><select id="jFocus"><option value="2">2 - Rất thấp</option><option value="4">4 - Thấp</option><option value="6" selected>6 - Trung bình</option><option value="8">8 - Tốt</option><option value="10">10 - Rất tốt</option></select></div></div></div></div>
-      <div class="action-row"><button class="btn primary" onclick="saveJournal()">💾 Lưu nhật ký</button><button class="btn secondary" onclick="clearJournalForm()">Nhập buổi mới</button></div>
-      </div></details>
-      <div id="journalList" style="display:none"></div>
-    </section>
-
-    <section id="assignmentsPanel" class="card panel">
-      <div class="panel-head"><div><h2>Bài tập &amp; ôn luyện theo năng lực</h2><p>Ôn tập trắc nghiệm theo môn với 2 chế độ phân hóa: 3 mức (Nhận biết · Thông hiểu · Vận dụng) hoặc 4 mức (thêm Vận dụng cao). Giáo viên có thể chọn bài mẫu, xem trước, điều chỉnh rồi giao cho học sinh.</p></div><button class="btn primary small" onclick="quizOpen()">＋ Giao bài trắc nghiệm</button></div>
-      <div class="filter-bar"><div class="field"><label>Học sinh</label><select id="aStudentFilter" onchange="renderAssignments()"></select></div><div class="field"><label>Thời gian</label><select id="aPeriod" onchange="renderAssignments()"><option value="today">Hôm nay</option><option value="week" selected>Tuần này</option><option value="month">Tháng này</option><option value="all">Tất cả</option></select></div><div class="field"><label>Trạng thái</label><select id="aStatus" onchange="renderAssignments()"><option value="all">Tất cả</option><option value="done">Đã làm</option><option value="pending">Chưa hoàn thành</option><option value="graded">Đã chấm</option></select></div></div>
-      <div id="adaptiveSampleBank" class="list-card" style="margin:12px 0;padding:18px;border:1px solid #cfe3ea;border-radius:15px;background:#fbfeff">
-        <div class="panel-head" style="margin-bottom:10px"><div><h3 style="margin:0">Kho 80 bài trắc nghiệm mẫu</h3><p style="margin:5px 0 0">8 môn × 10 bài. Chọn phân hóa 3 mức hoặc 4 mức trước khi xem/chọn bài; mỗi bài gồm 10 câu A–D.</p></div><button type="button" class="btn primary small" onclick="quizOpen()">＋ Tự soạn trắc nghiệm</button></div>
-        <div class="filter-bar"><div class="field"><label>Môn học</label><select id="sampleBankSubject" onchange="renderAdaptiveSampleBank()"></select></div><div class="field"><label>Phân hóa</label><select id="sampleBankScheme" onchange="renderAdaptiveSampleBank()"><option value="3">3 mức · Nhận biết – Thông hiểu – Vận dụng</option><option value="4" selected>4 mức · Thêm Vận dụng cao</option></select></div><div class="field"><label>Tìm bài</label><input id="sampleBankSearch" placeholder="Nhập tên chủ đề..." oninput="renderAdaptiveSampleBank()"></div></div>
-        <div id="sampleBankList"></div>
-      </div>
-      <div id="easyAssignmentForm" class="list-card" style="display:none;margin:12px 0;padding:20px;border:2px solid #c4e4e5;border-radius:15px">
-        <h3 id="easyFormHeading" style="margin-top:0">Bài tập tài liệu / tự luận (tùy chọn)</h3>
-        <div class="grid2"><div class="field"><label for="easyRecipient">Giao cho</label><select id="easyRecipient"></select></div><div class="field"><label for="easyType">Loại bài tập</label><select id="easyType" onchange="easyTypeChanged()"><option value="teacher">Giáo viên tự soạn</option><option value="textbook">Theo chương trình/SGK</option></select></div></div>
-        <div id="easyBookFields" style="display:none" class="grid2"><div class="field"><label for="easyBook">Bộ sách đang sử dụng</label><input id="easyBook" placeholder="Nhập tên bộ sách của lớp"></div><div class="field"><label for="easyTopic">Bài / chủ đề</label><input id="easyTopic" placeholder="Nhập tên bài hoặc chủ đề"></div></div>
-        <div class="field"><label for="easyTitle">Tên bài tập <span class="req">*</span></label><input id="easyTitle" placeholder="Ví dụ: Xác định bảng, trường và khóa"></div>
-        <div class="field"><label for="easyBody">Nội dung bài tập</label><textarea id="easyBody" rows="6" placeholder="Nhập câu hỏi hoặc yêu cầu học sinh thực hiện..."></textarea></div>
-        <div class="grid2"><div class="field"><label for="easyFiles">Tài liệu đính kèm (nếu có)</label><input id="easyFiles" type="file" accept=".docx,.pdf,.png,.jpg,.jpeg" multiple></div><div class="field"><label for="easyDue">Hạn nộp (nếu có)</label><input id="easyDue" type="date"></div></div>
-        <p id="easyFormError" role="alert" style="display:none;color:#a52323;font-weight:600"></p>
-        <div class="action-row"><button class="btn primary" id="easySubmit" type="button" onclick="easySave(true)">Giao bài</button><button class="btn secondary" type="button" onclick="easySave(false)">Lưu nháp</button><button class="btn secondary" type="button" onclick="easyClose()">Hủy</button></div>
-      </div>
-      <div id="easyEditTools" class="list-card" style="display:none;margin:12px 0"><h3>Sửa nội dung và tài liệu bài tập cũ</h3><div class="grid2"><div class="field"><label>Học sinh</label><select id="docStudent"></select></div><div class="field"><label>Bài tập</label><select id="docAssignment"></select></div></div><div class="action-row"><input id="docFiles" type="file" accept=".docx,.pdf" multiple><button class="btn secondary" onclick="attachAssignmentFiles()">Lưu tệp đính kèm</button><button class="btn secondary" onclick="viewAssignmentFiles()">Xem / tải tệp</button></div><div class="field"><label>Nội dung bài tập</label><textarea id="docBody" rows="5"></textarea></div><div class="action-row"><button class="btn secondary" onclick="saveAssignmentContent()">Lưu nội dung</button><button class="btn secondary" onclick="printAssignmentContent()">In / Lưu PDF</button></div><div id="docPreview" class="list-card"></div></div>
-      <div class="action-row"><button class="btn secondary small" type="button" onclick="easyToggleLegacy()">Bài tự luận / tài liệu cũ</button></div>
-      <div id="assignedHistory" class="list-card" style="margin:16px 0;padding:18px;border:1px solid #cfe3ea;border-radius:15px;background:#fbfeff">
-        <div class="panel-head" style="margin-bottom:10px"><div><h3 style="margin:0">Bài đã giao</h3><p style="margin:5px 0 0">Xem lại bài đã giao cho lớp/học sinh nào, thời điểm giao, hạn nộp và tiến độ làm bài.</p></div><button type="button" class="btn primary small" onclick="quizOpen()">＋ Giao bài mới</button></div>
-        <div class="filter-bar"><div class="field"><label>Lớp</label><select id="assignedClassFilter" onchange="renderAssignedHistory()"><option value="all">Tất cả lớp</option></select></div><div class="field"><label>Môn</label><select id="assignedSubjectFilter" onchange="renderAssignedHistory()"><option value="all">Tất cả môn</option></select></div><div class="field"><label>Trạng thái</label><select id="assignedStatusFilter" onchange="renderAssignedHistory()"><option value="all">Tất cả</option><option value="pending">Còn học sinh chưa nộp</option><option value="complete">Đã nộp đủ</option></select></div><div class="field"><label>Tìm bài / học sinh</label><input id="assignedSearch" placeholder="Nhập tên bài hoặc học sinh..." oninput="renderAssignedHistory()"></div></div>
-        <div id="assignedHistorySummary" class="summary-strip"></div><div id="assignedHistoryList"></div><div id="assignedHistoryDetail"></div>
-      </div>
-      <div id="submissionSamples" class="list-card" style="margin:16px 0;padding:18px;border:1px solid #cfe3ea;border-radius:15px;background:#fbfeff">
-        <div class="panel-head" style="margin-bottom:10px"><div><h3 style="margin:0">Bài đã nộp &amp; chấm điểm · Dữ liệu xem trước</h3><p style="margin:5px 0 0">12 bài mẫu: 4 môn ở cả 3 khối 10, 11, 12. Mỗi bài có ngày và thời gian nộp để giáo viên xem trước quy trình quản lý bài làm.</p></div></div>
-        <div class="filter-bar"><div class="field"><label>Khối lớp</label><select id="sampleSubmissionGrade" onchange="renderSubmissionSamples()"><option value="all">Cả 3 khối</option><option value="10">Khối 10</option><option value="11">Khối 11</option><option value="12">Khối 12</option></select></div><div class="field"><label>Môn học</label><select id="sampleSubmissionSubject" onchange="renderSubmissionSamples()"><option value="all">Cả 4 môn</option><option value="Toán">Toán</option><option value="Vật lí">Vật lí</option><option value="Tiếng Anh">Tiếng Anh</option><option value="Tin học">Tin học</option></select></div></div>
-        <div id="sampleSubmissionSummary" class="summary-strip"></div>
-        <div id="sampleSubmissionList"></div>
-      </div>
-      <div id="assignmentSummary" class="summary-strip"></div><div id="assignmentList"></div>
-    </section>
-
-    <section id="reportPanel" class="card panel">
-      <div class="panel-head no-print"><div><h2>Kết quả &amp; phụ huynh</h2><p>Theo dõi kết quả ôn tập và tạo nội dung phản hồi học tập để giáo viên chủ động gửi phụ huynh.</p></div></div><div class="report-tabs no-print"><button class="report-tab active" type="button" onclick="switchReportTab('learning',this)">Kết quả học tập</button><button class="report-tab" type="button" onclick="switchReportTab('parent',this)">Thông báo phụ huynh</button></div><div id="learningReportArea">
-      <div class="filter-bar no-print"><div class="field"><label>Phạm vi học sinh</label><select id="rStudent" onchange="renderReport()"><option value="all">Tất cả học sinh</option></select></div><div class="field"><label>Thời gian</label><select id="rPeriod" onchange="renderReport()"><option value="week">Tuần này</option><option value="month">Tháng này</option><option value="last30" selected>30 ngày gần đây</option><option value="all">Toàn bộ</option></select></div></div>
-      <div class="filter-bar no-print"><div class="field"><label>Môn học</label><select id="rSubject" onchange="renderReport()"><option value="all">Tất cả môn</option><option value="Toán">Toán</option><option value="Tin học">Tin học</option><option value="Tiếng Anh">Tiếng Anh</option></select></div><div class="field"><label>Nội dung</label><select id="rView" onchange="renderReport()"><option value="all">Tổng hợp</option><option value="subject">Kết quả môn học</option><option value="digital">Năng lực số</option><option value="ai">Năng lực AI</option></select></div></div><div id="reportSheet" class="report-sheet"></div>
-      </div><div id="parentReportArea" style="display:none"><div class="card no-print" id="parentFeedback" style="margin:20px 0;padding:18px;border:1px solid #cbdde5;background:#f7fbff;border-radius:14px">
-        <h3 style="margin:0 0 5px">Phản hồi học tập gửi phụ huynh</h3>
-        <p style="margin:0 0 14px">Chọn học sinh và thời gian; app tổng hợp dữ liệu đã ghi nhận để thầy cô kiểm tra, chỉnh sửa rồi sao chép gửi phụ huynh.</p>
-        <div class="filter-bar" style="margin-bottom:10px">
-          <div class="field"><label for="pfStudent">Học sinh</label><select id="pfStudent" onchange="pfLoadSaved()"></select></div>
-          <div class="field"><label for="pfPeriod">Kỳ báo cáo</label><select id="pfPeriod" onchange="pfLoadSaved()"><option value="week">Theo tuần</option><option value="month">Theo tháng</option></select></div>
-          <div class="field"><label for="pfDate">Ngày thuộc kỳ báo cáo</label><input id="pfDate" type="date" onchange="pfLoadSaved()"></div>
-        </div>
-        <div class="action-row" style="margin-bottom:10px"><button type="button" class="btn primary" onclick="pfGenerate()">Tạo nội dung phản hồi</button></div>
-        <div class="field"><label for="pfText">Nội dung gửi phụ huynh (có thể chỉnh sửa)</label><textarea id="pfText" rows="11" style="width:100%;min-height:210px" placeholder="Chọn học sinh và nhấn Tạo nội dung phản hồi…"></textarea></div>
-        <div class="action-row" style="margin-top:10px"><button type="button" class="btn secondary" onclick="pfSave()">Lưu phản hồi</button><button type="button" class="btn primary" onclick="pfCopy()">Sao chép để gửi phụ huynh</button></div>
-        <p id="pfStatus" role="status" style="font-size:13px;margin:10px 0 0;color:#526475">Chưa gửi tin nhắn. Nội dung chỉ được sao chép; giáo viên chủ động gửi qua kênh liên lạc phù hợp.</p>
-      </div>
-      </div><div id="reportActions" class="action-row"><button class="btn primary" onclick="renderReport()">Cập nhật báo cáo</button><button class="btn secondary" onclick="window.print()">🖨 In / Lưu PDF</button></div>
-    </section>
-
-    <section id="assessmentPanel" class="card panel">
-      <div class="panel-head"><div><h2>Kiểm tra &amp; đánh giá</h2><p>Tổ chức bài tập, theo dõi bài đã nộp và xem kết quả đánh giá học sinh.</p></div></div>
-      <div class="action-grid">
-        <button class="action-card" onclick="goPanel('assignments')"><b>Bài tập &amp; ôn luyện</b><span>Tạo trắc nghiệm, giao bài, xem bài đã nộp và chấm điểm.</span></button>
-        <button class="action-card" onclick="goPanel('report')"><b>Kết quả &amp; phụ huynh</b><span>Xem tiến độ, kết quả và chuẩn bị phản hồi học tập.</span></button>
-      </div>
-      <div class="list-card" style="margin-top:16px;padding:18px">
-        <div class="panel-head" style="margin-bottom:10px"><div><h3 style="margin:0">Câu hỏi học sinh gửi giáo viên</h3><p style="margin:5px 0 0">Nhận câu hỏi từ mục Hỏi giáo viên theo môn học; trả lời và lưu phản hồi để học sinh xem lại.</p></div><button class="btn secondary small" type="button" onclick="renderTeacherQuestions()">↻ Cập nhật</button></div>
-        <div id="teacherQuestionInbox"></div>
-      </div>
-    </section>
-    <section id="professionalPanel" class="card panel">
-      <div class="panel-head"><div><h2>Quản lý chuyên môn</h2><p>Tập trung các công việc lập kế hoạch, theo dõi tiến độ và tổng hợp chuyên môn.</p></div></div>
-      <div class="action-grid">
-        <button class="action-card" onclick="goPanel('plan')"><b>Kế hoạch ôn tập</b><span>Xây dựng và theo dõi kế hoạch ôn tập theo tuần.</span></button>
-        <button class="action-card" onclick="goPanel('report')"><b>Kết quả ôn tập</b><span>Tổng hợp kết quả và tiến độ ôn tập.</span></button>
-        <button class="action-card" onclick="goPanel('data')"><b>Dữ liệu</b><span>Sao lưu, khôi phục và quản lý dữ liệu ứng dụng.</span></button>
-      </div>
-    </section>
-    <section id="aihelperPanel" class="card panel">
-      <div class="panel-head"><div><h2>Trợ lý AI</h2><p>Khu vực tập trung các tác vụ AI hỗ trợ giáo viên. Các chức năng AI sẽ chỉ hoạt động khi được kết nối dịch vụ AI phù hợp.</p></div></div>
-      <div class="action-grid">
-        <button class="action-card" onclick="goPanel('plan')"><b>Hỗ trợ lập kế hoạch</b><span>Mở dữ liệu kế hoạch để chuẩn bị nội dung cho trợ lý AI.</span></button>
-        <button class="action-card" onclick="goPanel('assignments')"><b>Hỗ trợ bài tập</b><span>Mở khu vực bài tập và đánh giá.</span></button>
-        <button class="action-card" onclick="goPanel('report')"><b>Hỗ trợ nhận xét</b><span>Mở báo cáo để sử dụng dữ liệu kết quả học tập.</span></button>
-      </div>
-      <div class="notice" style="margin-top:14px">Trợ lý AI hiện là khu vực điều hướng. App chưa tự gửi dữ liệu học sinh tới dịch vụ AI bên ngoài.</div>
-    </section>
-    <section id="dataPanel" class="card panel">
-      <div class="panel-head"><div><h2>Cài đặt & dữ liệu</h2><p>Dữ liệu chỉ được lưu trong trình duyệt trên máy đang sử dụng.</p></div></div>
-      <div class="list-card" style="margin-bottom:14px"><h3>Tên ứng dụng</h3><p>Thay đổi tên và khẩu hiệu hiển thị trên trang.</p><button class="btn secondary" onclick="openBrandSettings()">✏️ Đổi tên ứng dụng</button></div>
-      <div class="list-card" id="studentQuickMenuManager" style="margin-bottom:14px">
-        <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
-          <div><h3 style="margin-bottom:4px">Thanh chức năng học sinh</h3><p style="margin:0">Quản lý các chức năng hiển thị trên Trang chủ học sinh.</p></div>
-          <button class="btn primary small" type="button" onclick="sqmAdd()">+ Thêm chức năng</button>
-        </div>
-        <div id="sqmRows" style="margin-top:12px"></div>
-      </div>
-      <div class="grid2"><div class="list-card"><h3>Sao lưu dữ liệu</h3><p>Tải một tệp sao lưu để chuyển sang máy khác hoặc lưu dự phòng.</p><button class="btn primary" onclick="backupData()">⬇ Tải tệp sao lưu</button></div><div class="list-card"><h3>Khôi phục dữ liệu</h3><p>Chọn tệp sao lưu đã tải từ ứng dụng này.</p><input type="file" id="restoreFile" accept=".httt,.json"><button class="btn secondary" style="margin-top:10px" onclick="restoreData()">⬆ Khôi phục</button></div></div>
-      <div class="warning-box" style="margin-top:14px"><b>Lưu ý:</b> Không xóa dữ liệu trình duyệt nếu chưa sao lưu. Khi dùng máy chung, nên xuất báo cáo rồi xóa dữ liệu cá nhân sau khi hoàn thành.</div>
-      <div class="action-row"><button class="btn secondary" onclick="loadDemoData()">🧪 Nạp dữ liệu mẫu đầy đủ</button><button class="btn danger" onclick="clearAllData()">Xóa toàn bộ dữ liệu ứng dụng</button></div>
-    </section>
-  </main>
+<section class="card panel" id="analysisPanel">
+<div class="panel-head"><div><h2>3. Phân tích cá nhân hóa</h2><p>Kết quả được tổng hợp từ hồ sơ và khảo sát đầu vào.</p></div></div>
+<div id="analysisContent"></div>
+</section>
+<section class="card panel" id="goalsPanel">
+<div class="panel-head"><div><h2>4. Mục tiêu học tập</h2><p>Thiết lập mục tiêu cụ thể, có thời hạn và có cách đo.</p></div></div>
+<div class="grid2">
+<div>
+<div class="field"><label>Mục tiêu cụ thể <span class="req">*</span></label><textarea id="gTarget" placeholder="Ví dụ: Nâng điểm Toán từ 6,5 lên 7,5"></textarea></div>
+<div class="grid2"><div class="field"><label>Điểm/đích mong muốn</label><input id="gScore" max="10" min="0" placeholder="Ví dụ: 7.5" step="0.1" type="number"/></div><div class="field"><label>Hạn hoàn thành</label><input id="gDate" type="date"/></div></div>
+<div class="field"><label>Minh chứng hoàn thành</label><textarea id="gEvidence" placeholder="Ví dụ: Hoàn thành 4 bài luyện tập và đạt từ 7,5 ở bài kiểm tra"></textarea></div>
+<div class="field"><label>Phần thưởng/động lực tích cực</label><input id="gReward" placeholder="Ví dụ: Một buổi xem phim, lời khen, huy hiệu tiến bộ"/></div>
+<div class="action-row"><button class="btn primary" onclick="saveGoal()">Lưu mục tiêu</button><button class="btn secondary" onclick="suggestGoal()">Gợi ý mục tiêu</button></div>
+</div>
+<div><h3 style="margin-top:0">Mục tiêu đang theo dõi</h3><div id="goalList"></div></div>
+</div>
+</section>
+<section class="card panel" id="planPanel">
+<div class="panel-head"><div><h2>Kế hoạch ôn tập tuần</h2><p>Kế hoạch ôn tập cá nhân của học sinh đang chọn; chuyển lớp hoặc học sinh để xem kế hoạch tương ứng.</p></div></div>
+<div class="field" style="max-width:520px"><label for="planStudentSelect">Chọn học sinh lập kế hoạch</label><select id="planStudentSelect" onchange="switchStudent(this.value)"></select></div><div class="info-box" id="planStudentContext" style="margin-bottom:12px;text-align:left"></div>
+<div class="grid3"><div class="field"><label>Tuần bắt đầu</label><input id="weekStart" type="date"/></div><div class="field"><label>Chủ đề trọng tâm</label><input id="weekTopic" placeholder="Ví dụ: Phương trình bậc hai"/></div><div class="field"><label>Mức độ</label><select id="weekLevel"><option>Tự động theo hồ sơ</option><option>Hỗ trợ nền tảng</option><option>Củng cố</option><option>Phát triển</option><option>Nâng cao</option></select></div></div>
+<div class="action-row"><button class="btn primary" onclick="generateWeekPlan()">✨ Tạo kế hoạch tuần</button><button class="btn secondary" onclick="saveWeekPlan()">💾 Lưu thay đổi</button><button class="btn warning" onclick="resetWeekPlan()">Tạo lại</button></div>
+<div class="week-grid" id="weekPlan" style="margin-top:15px"></div>
+</section>
+<section class="card panel" id="sessionPanel">
+<div class="panel-head"><div><h2>Học hôm nay</h2><p>Nhiệm vụ ở đây lấy trực tiếp từ bài giáo viên đã giao và kế hoạch ôn tập; học sinh không phải nhập lại nội dung.</p></div><span class="tag blue" id="todaySubjectBadge">Chưa chọn học sinh</span></div>
+<div class="grid3 today-picker"><div class="field"><label>Lớp</label><select id="todayClass" onchange="todayClassChanged()"></select></div><div class="field"><label>Học sinh đang học</label><select id="todayStudent" onchange="chooseTodayStudent(this.value);renderTodayLearning()"></select></div><div class="field"><label>Theo dõi nhanh</label><button class="btn secondary" onclick="todayToggleClassSummary()" style="width:100%;min-height:42px">Tình hình lớp hôm nay</button></div></div>
+<div id="todayOverview" style="margin:12px 0"></div>
+<div class="info-box" id="todayPersonal" style="margin-bottom:12px"></div>
+<div id="todayUnifiedContent"></div>
+<div class="action-row today-footer-actions"><button class="btn secondary" onclick="goPanel('plan')">Kế hoạch ôn tập</button><button class="btn secondary" onclick="goPanel('assignments')">Bài tập &amp; ôn luyện</button><button class="btn secondary" onclick="goPanel('journal')">Nhật ký học tập</button></div>
+</section>
+<section class="card panel" id="journalPanel">
+<div class="panel-head"><div><h2>Nhật ký học tập</h2><p>Chọn lớp hoặc học sinh để xem nhanh lịch sử ôn tập, mức độ hiểu, tập trung và nội dung cần củng cố.</p></div><button class="btn secondary small" onclick="journalResetFilters()">↺ Xem tất cả</button></div>
+<div class="journal-manager">
+<div class="filter-bar journal-filters">
+<div class="field"><label>Lớp</label><select id="journalClassFilter" onchange="journalClassChanged()"></select></div>
+<div class="field"><label>Học sinh</label><select id="journalStudentFilter" onchange="renderJournals()"><option value="all">Tất cả học sinh</option></select></div>
+<div class="field"><label>Thời gian</label><select id="journalPeriodFilter" onchange="renderJournals()"><option value="7">7 ngày gần đây</option><option selected="" value="30">30 ngày gần đây</option><option value="90">90 ngày gần đây</option><option value="all">Tất cả</option></select></div>
+<div class="field"><label>Tìm nội dung</label><input id="journalSearch" oninput="renderJournals()" placeholder="Tên học sinh, nội dung đã học..."/></div>
+</div>
+<div class="summary-strip" id="journalSummary" style="margin:12px 0"></div>
+<div id="journalManagerList"></div>
+</div>
+<details class="journal-entry-box" style="margin-top:16px"><summary><b>＋ Ghi nhật ký cho học sinh đang chọn</b></summary><div style="padding-top:14px">
+<div class="grid2"><div><div class="field"><label>Ngày học</label><input id="jDate" type="date"/></div><div class="field"><label>Nội dung đã học <span class="req">*</span></label><textarea id="jWhat" placeholder="Hôm nay đã học phần nào?"></textarea></div><div class="field"><label>Phần khó nhất</label><textarea id="jHard" placeholder="Phần nào còn vướng hoặc mất nhiều thời gian?"></textarea></div></div><div><div class="field"><label>Điều đã hiểu/nhớ rõ</label><textarea id="jRemember" placeholder="Viết ít nhất một điều đã hiểu"></textarea></div><div class="field"><label>Việc cần làm tiếp theo</label><textarea id="jNext" placeholder="Ví dụ: Ôn lại công thức, làm thêm 5 câu"></textarea></div><div class="grid2"><div class="field"><label>Mức độ hiểu</label><select id="jUnderstand"><option value="2">2 - Còn yếu</option><option value="4">4 - Hiểu ít</option><option selected="" value="6">6 - Tạm ổn</option><option value="8">8 - Hiểu tốt</option><option value="10">10 - Rất chắc</option></select></div><div class="field"><label>Mức độ tập trung</label><select id="jFocus"><option value="2">2 - Rất thấp</option><option value="4">4 - Thấp</option><option selected="" value="6">6 - Trung bình</option><option value="8">8 - Tốt</option><option value="10">10 - Rất tốt</option></select></div></div></div></div>
+<div class="action-row"><button class="btn primary" onclick="saveJournal()">💾 Lưu nhật ký</button><button class="btn secondary" onclick="clearJournalForm()">Nhập buổi mới</button></div>
+</div></details>
+<div id="journalList" style="display:none"></div>
+</section>
+<section class="card panel" id="assignmentsPanel">
+<div class="panel-head"><div><h2>Bài tập &amp; ôn luyện theo năng lực</h2><p>Ôn tập trắc nghiệm theo môn với 2 chế độ phân hóa: 3 mức (Nhận biết · Thông hiểu · Vận dụng) hoặc 4 mức (thêm Vận dụng cao). Giáo viên có thể chọn bài mẫu, xem trước, điều chỉnh rồi giao cho học sinh.</p></div><button class="btn primary small" onclick="quizOpen()">＋ Giao bài trắc nghiệm</button></div>
+<div class="filter-bar"><div class="field"><label>Học sinh</label><select id="aStudentFilter" onchange="renderAssignments()"></select></div><div class="field"><label>Thời gian</label><select id="aPeriod" onchange="renderAssignments()"><option value="today">Hôm nay</option><option selected="" value="week">Tuần này</option><option value="month">Tháng này</option><option value="all">Tất cả</option></select></div><div class="field"><label>Trạng thái</label><select id="aStatus" onchange="renderAssignments()"><option value="all">Tất cả</option><option value="done">Đã làm</option><option value="pending">Chưa hoàn thành</option><option value="graded">Đã chấm</option></select></div></div>
+<div class="list-card" id="adaptiveSampleBank" style="margin:12px 0;padding:18px;border:1px solid #cfe3ea;border-radius:15px;background:#fbfeff">
+<div class="panel-head" style="margin-bottom:10px"><div><h3 style="margin:0">Kho 80 bài trắc nghiệm mẫu</h3><p style="margin:5px 0 0">8 môn × 10 bài. Chọn phân hóa 3 mức hoặc 4 mức trước khi xem/chọn bài; mỗi bài gồm 10 câu A–D.</p></div><button class="btn primary small" onclick="quizOpen()" type="button">＋ Tự soạn trắc nghiệm</button></div>
+<div class="filter-bar"><div class="field"><label>Môn học</label><select id="sampleBankSubject" onchange="renderAdaptiveSampleBank()"></select></div><div class="field"><label>Phân hóa</label><select id="sampleBankScheme" onchange="renderAdaptiveSampleBank()"><option value="3">3 mức · Nhận biết – Thông hiểu – Vận dụng</option><option selected="" value="4">4 mức · Thêm Vận dụng cao</option></select></div><div class="field"><label>Tìm bài</label><input id="sampleBankSearch" oninput="renderAdaptiveSampleBank()" placeholder="Nhập tên chủ đề..."/></div></div>
+<div id="sampleBankList"></div>
+</div>
+<div class="list-card" id="easyAssignmentForm" style="display:none;margin:12px 0;padding:20px;border:2px solid #c4e4e5;border-radius:15px">
+<h3 id="easyFormHeading" style="margin-top:0">Bài tập tài liệu / tự luận (tùy chọn)</h3>
+<div class="grid2"><div class="field"><label for="easyRecipient">Giao cho</label><select id="easyRecipient"></select></div><div class="field"><label for="easyType">Loại bài tập</label><select id="easyType" onchange="easyTypeChanged()"><option value="teacher">Giáo viên tự soạn</option><option value="textbook">Theo chương trình/SGK</option></select></div></div>
+<div class="grid2" id="easyBookFields" style="display:none"><div class="field"><label for="easyBook">Bộ sách đang sử dụng</label><input id="easyBook" placeholder="Nhập tên bộ sách của lớp"/></div><div class="field"><label for="easyTopic">Bài / chủ đề</label><input id="easyTopic" placeholder="Nhập tên bài hoặc chủ đề"/></div></div>
+<div class="field"><label for="easyTitle">Tên bài tập <span class="req">*</span></label><input id="easyTitle" placeholder="Ví dụ: Xác định bảng, trường và khóa"/></div>
+<div class="field"><label for="easyBody">Nội dung bài tập</label><textarea id="easyBody" placeholder="Nhập câu hỏi hoặc yêu cầu học sinh thực hiện..." rows="6"></textarea></div>
+<div class="grid2"><div class="field"><label for="easyFiles">Tài liệu đính kèm (nếu có)</label><input accept=".docx,.pdf,.png,.jpg,.jpeg" id="easyFiles" multiple="" type="file"/></div><div class="field"><label for="easyDue">Hạn nộp (nếu có)</label><input id="easyDue" type="date"/></div></div>
+<p id="easyFormError" role="alert" style="display:none;color:#a52323;font-weight:600"></p>
+<div class="action-row"><button class="btn primary" id="easySubmit" onclick="easySave(true)" type="button">Giao bài</button><button class="btn secondary" onclick="easySave(false)" type="button">Lưu nháp</button><button class="btn secondary" onclick="easyClose()" type="button">Hủy</button></div>
+</div>
+<div class="list-card" id="easyEditTools" style="display:none;margin:12px 0"><h3>Sửa nội dung và tài liệu bài tập cũ</h3><div class="grid2"><div class="field"><label>Học sinh</label><select id="docStudent"></select></div><div class="field"><label>Bài tập</label><select id="docAssignment"></select></div></div><div class="action-row"><input accept=".docx,.pdf" id="docFiles" multiple="" type="file"/><button class="btn secondary" onclick="attachAssignmentFiles()">Lưu tệp đính kèm</button><button class="btn secondary" onclick="viewAssignmentFiles()">Xem / tải tệp</button></div><div class="field"><label>Nội dung bài tập</label><textarea id="docBody" rows="5"></textarea></div><div class="action-row"><button class="btn secondary" onclick="saveAssignmentContent()">Lưu nội dung</button><button class="btn secondary" onclick="printAssignmentContent()">In / Lưu PDF</button></div><div class="list-card" id="docPreview"></div></div>
+<div class="action-row"><button class="btn secondary small" onclick="easyToggleLegacy()" type="button">Bài tự luận / tài liệu cũ</button></div>
+<div class="list-card" id="assignedHistory" style="margin:16px 0;padding:18px;border:1px solid #cfe3ea;border-radius:15px;background:#fbfeff">
+<div class="panel-head" style="margin-bottom:10px"><div><h3 style="margin:0">Bài đã giao</h3><p style="margin:5px 0 0">Xem lại bài đã giao cho lớp/học sinh nào, thời điểm giao, hạn nộp và tiến độ làm bài.</p></div><button class="btn primary small" onclick="quizOpen()" type="button">＋ Giao bài mới</button></div>
+<div class="filter-bar"><div class="field"><label>Lớp</label><select id="assignedClassFilter" onchange="renderAssignedHistory()"><option value="all">Tất cả lớp</option></select></div><div class="field"><label>Môn</label><select id="assignedSubjectFilter" onchange="renderAssignedHistory()"><option value="all">Tất cả môn</option></select></div><div class="field"><label>Trạng thái</label><select id="assignedStatusFilter" onchange="renderAssignedHistory()"><option value="all">Tất cả</option><option value="pending">Còn học sinh chưa nộp</option><option value="complete">Đã nộp đủ</option></select></div><div class="field"><label>Tìm bài / học sinh</label><input id="assignedSearch" oninput="renderAssignedHistory()" placeholder="Nhập tên bài hoặc học sinh..."/></div></div>
+<div class="summary-strip" id="assignedHistorySummary"></div><div id="assignedHistoryList"></div><div id="assignedHistoryDetail"></div>
+</div>
+<div class="list-card" id="submissionSamples" style="margin:16px 0;padding:18px;border:1px solid #cfe3ea;border-radius:15px;background:#fbfeff">
+<div class="panel-head" style="margin-bottom:10px"><div><h3 style="margin:0">Bài đã nộp &amp; chấm điểm · Dữ liệu xem trước</h3><p style="margin:5px 0 0">12 bài mẫu: 4 môn ở cả 3 khối 10, 11, 12. Mỗi bài có ngày và thời gian nộp để giáo viên xem trước quy trình quản lý bài làm.</p></div></div>
+<div class="filter-bar"><div class="field"><label>Khối lớp</label><select id="sampleSubmissionGrade" onchange="renderSubmissionSamples()"><option value="all">Cả 3 khối</option><option value="10">Khối 10</option><option value="11">Khối 11</option><option value="12">Khối 12</option></select></div><div class="field"><label>Môn học</label><select id="sampleSubmissionSubject" onchange="renderSubmissionSamples()"><option value="all">Cả 4 môn</option><option value="Toán">Toán</option><option value="Vật lí">Vật lí</option><option value="Tiếng Anh">Tiếng Anh</option><option value="Tin học">Tin học</option></select></div></div>
+<div class="summary-strip" id="sampleSubmissionSummary"></div>
+<div id="sampleSubmissionList"></div>
+</div>
+<div class="summary-strip" id="assignmentSummary"></div><div id="assignmentList"></div>
+</section>
+<section class="card panel" id="reportPanel">
+<div class="panel-head no-print"><div><h2>Kết quả &amp; phụ huynh</h2><p>Theo dõi kết quả ôn tập và tạo nội dung phản hồi học tập để giáo viên chủ động gửi phụ huynh.</p></div></div><div class="report-tabs no-print"><button class="report-tab active" onclick="switchReportTab('learning',this)" type="button">Kết quả học tập</button><button class="report-tab" onclick="switchReportTab('parent',this)" type="button">Thông báo phụ huynh</button></div><div id="learningReportArea">
+<div class="filter-bar no-print"><div class="field"><label>Phạm vi học sinh</label><select id="rStudent" onchange="renderReport()"><option value="all">Tất cả học sinh</option></select></div><div class="field"><label>Thời gian</label><select id="rPeriod" onchange="renderReport()"><option value="week">Tuần này</option><option value="month">Tháng này</option><option selected="" value="last30">30 ngày gần đây</option><option value="all">Toàn bộ</option></select></div></div>
+<div class="filter-bar no-print"><div class="field"><label>Môn học</label><select id="rSubject" onchange="renderReport()"><option value="all">Tất cả môn</option><option value="Toán">Toán</option><option value="Tin học">Tin học</option><option value="Tiếng Anh">Tiếng Anh</option></select></div><div class="field"><label>Nội dung</label><select id="rView" onchange="renderReport()"><option value="all">Tổng hợp</option><option value="subject">Kết quả môn học</option><option value="digital">Năng lực số</option><option value="ai">Năng lực AI</option></select></div></div><div class="report-sheet" id="reportSheet"></div>
+</div><div id="parentReportArea" style="display:none"><div class="card no-print" id="parentFeedback" style="margin:20px 0;padding:18px;border:1px solid #cbdde5;background:#f7fbff;border-radius:14px">
+<h3 style="margin:0 0 5px">Phản hồi học tập gửi phụ huynh</h3>
+<p style="margin:0 0 14px">Chọn học sinh và thời gian; app tổng hợp dữ liệu đã ghi nhận để thầy cô kiểm tra, chỉnh sửa rồi sao chép gửi phụ huynh.</p>
+<div class="filter-bar" style="margin-bottom:10px">
+<div class="field"><label for="pfStudent">Học sinh</label><select id="pfStudent" onchange="pfLoadSaved()"></select></div>
+<div class="field"><label for="pfPeriod">Kỳ báo cáo</label><select id="pfPeriod" onchange="pfLoadSaved()"><option value="week">Theo tuần</option><option value="month">Theo tháng</option></select></div>
+<div class="field"><label for="pfDate">Ngày thuộc kỳ báo cáo</label><input id="pfDate" onchange="pfLoadSaved()" type="date"/></div>
+</div>
+<div class="action-row" style="margin-bottom:10px"><button class="btn primary" onclick="pfGenerate()" type="button">Tạo nội dung phản hồi</button></div>
+<div class="field"><label for="pfText">Nội dung gửi phụ huynh (có thể chỉnh sửa)</label><textarea id="pfText" placeholder="Chọn học sinh và nhấn Tạo nội dung phản hồi…" rows="11" style="width:100%;min-height:210px"></textarea></div>
+<div class="action-row" style="margin-top:10px"><button class="btn secondary" onclick="pfSave()" type="button">Lưu phản hồi</button><button class="btn primary" onclick="pfCopy()" type="button">Sao chép để gửi phụ huynh</button></div>
+<p id="pfStatus" role="status" style="font-size:13px;margin:10px 0 0;color:#526475">Chưa gửi tin nhắn. Nội dung chỉ được sao chép; giáo viên chủ động gửi qua kênh liên lạc phù hợp.</p>
+</div>
+</div><div class="action-row" id="reportActions"><button class="btn primary" onclick="renderReport()">Cập nhật báo cáo</button><button class="btn secondary" onclick="window.print()">🖨 In / Lưu PDF</button></div>
+</section>
+<section class="card panel" id="assessmentPanel">
+<div class="panel-head"><div><h2>Kiểm tra &amp; đánh giá</h2><p>Tổ chức bài tập, theo dõi bài đã nộp và xem kết quả đánh giá học sinh.</p></div></div>
+<div class="action-grid">
+<button class="action-card" onclick="goPanel('assignments')"><b>Bài tập &amp; ôn luyện</b><span>Tạo trắc nghiệm, giao bài, xem bài đã nộp và chấm điểm.</span></button>
+<button class="action-card" onclick="goPanel('report')"><b>Kết quả &amp; phụ huynh</b><span>Xem tiến độ, kết quả và chuẩn bị phản hồi học tập.</span></button>
+</div>
+<div class="list-card" style="margin-top:16px;padding:18px">
+<div class="panel-head" style="margin-bottom:10px"><div><h3 style="margin:0">Câu hỏi học sinh gửi giáo viên</h3><p style="margin:5px 0 0">Nhận câu hỏi từ mục Hỏi giáo viên theo môn học; trả lời và lưu phản hồi để học sinh xem lại.</p></div><button class="btn secondary small" onclick="renderTeacherQuestions()" type="button">↻ Cập nhật</button></div>
+<div id="teacherQuestionInbox"></div>
+</div>
+</section>
+<section class="card panel" id="professionalPanel">
+<div class="panel-head"><div><h2>Quản lý chuyên môn</h2><p>Tập trung các công việc lập kế hoạch, theo dõi tiến độ và tổng hợp chuyên môn.</p></div></div>
+<div class="action-grid">
+<button class="action-card" onclick="goPanel('plan')"><b>Kế hoạch ôn tập</b><span>Xây dựng và theo dõi kế hoạch ôn tập theo tuần.</span></button>
+<button class="action-card" onclick="goPanel('report')"><b>Kết quả ôn tập</b><span>Tổng hợp kết quả và tiến độ ôn tập.</span></button>
+<button class="action-card" onclick="goPanel('data')"><b>Dữ liệu</b><span>Sao lưu, khôi phục và quản lý dữ liệu ứng dụng.</span></button>
+</div>
+</section>
+<section class="card panel" id="aihelperPanel">
+<div class="panel-head"><div><h2>Trợ lý AI</h2><p>Khu vực tập trung các tác vụ AI hỗ trợ giáo viên. Các chức năng AI sẽ chỉ hoạt động khi được kết nối dịch vụ AI phù hợp.</p></div></div>
+<div class="action-grid">
+<button class="action-card" onclick="goPanel('plan')"><b>Hỗ trợ lập kế hoạch</b><span>Mở dữ liệu kế hoạch để chuẩn bị nội dung cho trợ lý AI.</span></button>
+<button class="action-card" onclick="goPanel('assignments')"><b>Hỗ trợ bài tập</b><span>Mở khu vực bài tập và đánh giá.</span></button>
+<button class="action-card" onclick="goPanel('report')"><b>Hỗ trợ nhận xét</b><span>Mở báo cáo để sử dụng dữ liệu kết quả học tập.</span></button>
+</div>
+<div class="notice" style="margin-top:14px">Trợ lý AI hiện là khu vực điều hướng. App chưa tự gửi dữ liệu học sinh tới dịch vụ AI bên ngoài.</div>
+</section>
+<section class="card panel" id="dataPanel">
+<div class="panel-head"><div><h2>Cài đặt &amp; dữ liệu</h2><p>Dữ liệu chỉ được lưu trong trình duyệt trên máy đang sử dụng.</p></div></div>
+<div class="list-card" style="margin-bottom:14px"><h3>Tên ứng dụng</h3><p>Thay đổi tên và khẩu hiệu hiển thị trên trang.</p><button class="btn secondary" onclick="openBrandSettings()">✏️ Đổi tên ứng dụng</button></div>
+<div class="list-card" id="studentQuickMenuManager" style="margin-bottom:14px">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+<div><h3 style="margin-bottom:4px">Thanh chức năng học sinh</h3><p style="margin:0">Quản lý các chức năng hiển thị trên Trang chủ học sinh.</p></div>
+<button class="btn primary small" onclick="sqmAdd()" type="button">+ Thêm chức năng</button>
+</div>
+<div id="sqmRows" style="margin-top:12px"></div>
+</div>
+<div class="grid2"><div class="list-card"><h3>Sao lưu dữ liệu</h3><p>Tải một tệp sao lưu để chuyển sang máy khác hoặc lưu dự phòng.</p><button class="btn primary" onclick="backupData()">⬇ Tải tệp sao lưu</button></div><div class="list-card"><h3>Khôi phục dữ liệu</h3><p>Chọn tệp sao lưu đã tải từ ứng dụng này.</p><input accept=".httt,.json" id="restoreFile" type="file"/><button class="btn secondary" onclick="restoreData()" style="margin-top:10px">⬆ Khôi phục</button></div></div>
+<div class="warning-box" style="margin-top:14px"><b>Lưu ý:</b> Không xóa dữ liệu trình duyệt nếu chưa sao lưu. Khi dùng máy chung, nên xuất báo cáo rồi xóa dữ liệu cá nhân sau khi hoàn thành.</div>
+<div class="action-row"><button class="btn secondary" onclick="loadDemoData()">🧪 Nạp dữ liệu mẫu đầy đủ</button><button class="btn danger" onclick="clearAllData()">Xóa toàn bộ dữ liệu ứng dụng</button></div>
+</section>
+</main>
 </div>
 <footer class="footer"><span id="footerAppName">HỌC TẬP THÔNG MINH PRO</span></footer>
 </div>
-
-<div id="introModal" class="modal" onclick="modalBackdrop(event,'introModal')"><div class="modal-box"><div class="modal-head"><h2>Giới thiệu ứng dụng</h2><button class="close" onclick="closeModal('introModal')">×</button></div><p><b id="introAppName">Học Tập Thông Minh Pro</b> là công cụ hỗ trợ giáo viên quản lý hồ sơ, xây dựng lộ trình học tập cá nhân hóa và theo dõi tiến bộ của học sinh.</p><div class="guide-grid"><div class="guide-card"><b>🎯 Cá nhân hóa</b><p>Tạo hồ sơ, nhận diện thói quen học và đề xuất mức hỗ trợ phù hợp.</p></div><div class="guide-card"><b>📅 Lập kế hoạch</b><p>Thiết lập mục tiêu, tạo kế hoạch tuần và tổ chức phiên học tập trung.</p></div><div class="guide-card"><b>📈 Theo dõi tiến bộ</b><p>Ghi nhật ký, theo dõi bài tập, kết quả môn học và sự phát triển năng lực.</p></div></div><div class="info-box" style="margin-top:14px">Giáo viên có thể điều chỉnh kế hoạch và đánh giá theo thực tế từng học sinh.</div></div></div>
-<div id="guideModal" class="modal" onclick="modalBackdrop(event,'guideModal')"><div class="modal-box"><div class="modal-head"><h2>Hướng dẫn sử dụng từng bước</h2><button class="close" onclick="closeModal('guideModal')">×</button></div><div class="guide-grid"><div class="guide-card"><b>Bước 1. Tạo hồ sơ</b><ol><li>Nhập họ tên, lớp, môn học.</li><li>Nhập điểm hiện tại và khó khăn.</li><li>Nhấn <b>Lưu hồ sơ</b>.</li></ol></div><div class="guide-card"><b>Bước 2. Khảo sát</b><ol><li>Chọn học sinh.</li><li>Trả lời đủ 15 câu.</li><li>Nhấn <b>Phân tích kết quả</b>.</li></ol></div><div class="guide-card"><b>Bước 3. Xem phân tích</b><ol><li>Xem phong cách nổi trội.</li><li>Xem mức cần hỗ trợ.</li><li>Đọc gợi ý dành cho giáo viên.</li></ol></div><div class="guide-card"><b>Bước 4. Đặt mục tiêu</b><ol><li>Nhập mục tiêu cụ thể.</li><li>Chọn thời hạn.</li><li>Ghi minh chứng hoàn thành.</li></ol></div><div class="guide-card"><b>Bước 5. Tạo kế hoạch tuần</b><ol><li>Nhập chủ đề trọng tâm.</li><li>Nhấn tạo kế hoạch.</li><li>Đánh dấu nhiệm vụ đã xong.</li></ol></div><div class="guide-card"><b>Bước 6–7. Học và ghi nhận</b><ol><li>Bật bộ đếm giờ.</li><li>Hoàn thành phiên học.</li><li>Ghi nhật ký và xuất báo cáo.</li></ol></div></div><div class="warning-box" style="margin-top:14px"><b>Cách dùng nhanh:</b> Tạo hồ sơ → Khảo sát → Xem phân tích → Tạo kế hoạch → Ghi nhật ký → Xuất Word.</div></div></div>
-<div id="brandModal" class="modal" onclick="modalBackdrop(event,'brandModal')"><div class="modal-box"><div class="modal-head"><h2>Chỉnh tên ứng dụng</h2><button class="close" onclick="closeModal('brandModal')">×</button></div><div class="grid2"><label><b>Tên ứng dụng</b><input id="brandNameInput" maxlength="60" placeholder="Ví dụ: Học Tập Thông Minh Pro"></label><label><b>Khẩu hiệu</b><input id="brandSloganInput" maxlength="120" placeholder="Ví dụ: Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách"></label></div><div class="action-row" style="margin-top:16px"><button class="btn primary" onclick="saveBrandSettings()">💾 Lưu thay đổi</button><button class="btn secondary" onclick="resetBrandSettings()">↺ Khôi phục mặc định</button></div></div></div>
-<div id="toast" class="toast"></div>
+<div class="modal" id="introModal" onclick="modalBackdrop(event,'introModal')"><div class="modal-box"><div class="modal-head"><h2>Giới thiệu ứng dụng</h2><button class="close" onclick="closeModal('introModal')">×</button></div><p><b id="introAppName">Học Tập Thông Minh Pro</b> là công cụ hỗ trợ giáo viên quản lý hồ sơ, xây dựng lộ trình học tập cá nhân hóa và theo dõi tiến bộ của học sinh.</p><div class="guide-grid"><div class="guide-card"><b>🎯 Cá nhân hóa</b><p>Tạo hồ sơ, nhận diện thói quen học và đề xuất mức hỗ trợ phù hợp.</p></div><div class="guide-card"><b>📅 Lập kế hoạch</b><p>Thiết lập mục tiêu, tạo kế hoạch tuần và tổ chức phiên học tập trung.</p></div><div class="guide-card"><b>📈 Theo dõi tiến bộ</b><p>Ghi nhật ký, theo dõi bài tập, kết quả môn học và sự phát triển năng lực.</p></div></div><div class="info-box" style="margin-top:14px">Giáo viên có thể điều chỉnh kế hoạch và đánh giá theo thực tế từng học sinh.</div></div></div>
+<div class="modal" id="guideModal" onclick="modalBackdrop(event,'guideModal')"><div class="modal-box"><div class="modal-head"><h2>Hướng dẫn sử dụng từng bước</h2><button class="close" onclick="closeModal('guideModal')">×</button></div><div class="guide-grid"><div class="guide-card"><b>Bước 1. Tạo hồ sơ</b><ol><li>Nhập họ tên, lớp, môn học.</li><li>Nhập điểm hiện tại và khó khăn.</li><li>Nhấn <b>Lưu hồ sơ</b>.</li></ol></div><div class="guide-card"><b>Bước 2. Khảo sát</b><ol><li>Chọn học sinh.</li><li>Trả lời đủ 15 câu.</li><li>Nhấn <b>Phân tích kết quả</b>.</li></ol></div><div class="guide-card"><b>Bước 3. Xem phân tích</b><ol><li>Xem phong cách nổi trội.</li><li>Xem mức cần hỗ trợ.</li><li>Đọc gợi ý dành cho giáo viên.</li></ol></div><div class="guide-card"><b>Bước 4. Đặt mục tiêu</b><ol><li>Nhập mục tiêu cụ thể.</li><li>Chọn thời hạn.</li><li>Ghi minh chứng hoàn thành.</li></ol></div><div class="guide-card"><b>Bước 5. Tạo kế hoạch tuần</b><ol><li>Nhập chủ đề trọng tâm.</li><li>Nhấn tạo kế hoạch.</li><li>Đánh dấu nhiệm vụ đã xong.</li></ol></div><div class="guide-card"><b>Bước 6–7. Học và ghi nhận</b><ol><li>Bật bộ đếm giờ.</li><li>Hoàn thành phiên học.</li><li>Ghi nhật ký và xuất báo cáo.</li></ol></div></div><div class="warning-box" style="margin-top:14px"><b>Cách dùng nhanh:</b> Tạo hồ sơ → Khảo sát → Xem phân tích → Tạo kế hoạch → Ghi nhật ký → Xuất Word.</div></div></div>
+<div class="modal" id="brandModal" onclick="modalBackdrop(event,'brandModal')"><div class="modal-box"><div class="modal-head"><h2>Chỉnh tên ứng dụng</h2><button class="close" onclick="closeModal('brandModal')">×</button></div><div class="grid2"><label><b>Tên ứng dụng</b><input id="brandNameInput" maxlength="60" placeholder="Ví dụ: Học Tập Thông Minh Pro"/></label><label><b>Khẩu hiệu</b><input id="brandSloganInput" maxlength="120" placeholder="Ví dụ: Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách"/></label></div><div class="action-row" style="margin-top:16px"><button class="btn primary" onclick="saveBrandSettings()">💾 Lưu thay đổi</button><button class="btn secondary" onclick="resetBrandSettings()">↺ Khôi phục mặc định</button></div></div></div>
+<div class="toast" id="toast"></div>
 <script>
 'use strict';
 const STORE_KEY='hocTapThongMinhPro_v5_2_demo4';
@@ -953,7 +921,7 @@ const _personalBuildSession=buildSession;buildSession=function(){const s=current
 <style>
 #studentPortal{display:none;position:fixed;inset:0;z-index:10000;background:#f5f9fc;overflow:auto;padding:22px;color:#183047}#studentPortal.open{display:block}#studentPortal .portal-shell{max-width:980px;margin:auto;background:white;border:1px solid #d6e5ef;border-radius:18px;padding:24px;box-shadow:0 12px 35px #2342 12}#studentPortal .portal-actions{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}#studentPortal textarea{width:100%;min-height:110px;padding:12px;border:1px solid #bed1df;border-radius:10px}#studentPortal select{max-width:100%;padding:10px;border-radius:10px}#studentPortal .portal-item{border:1px solid #dbe6ef;border-radius:12px;padding:15px;margin:12px 0}#studentPortal button{cursor:pointer}#studentPortal .portal-note{color:#566c7b;font-size:13px}
 </style>
-<div id="studentPortal" aria-hidden="true"><div class="portal-shell"><div class="portal-actions" style="justify-content:space-between;align-items:center"><h2>🎓 Giao diện học sinh · Bản thử trên thiết bị này</h2><button class="btn secondary" type="button" onclick="portalClose()">← Trở về giáo viên</button></div><p class="portal-note">Chọn hồ sơ để thử làm và nộp bài trên cùng trình duyệt. Chưa có tài khoản học sinh hoặc đồng bộ trực tuyến.</p><label for="portalStudent">Học sinh</label> <select id="portalStudent" onchange="portalRender()"></select><div id="portalList"></div></div></div>
+<div aria-hidden="true" id="studentPortal"><div class="portal-shell"><div class="portal-actions" style="justify-content:space-between;align-items:center"><h2>🎓 Giao diện học sinh · Bản thử trên thiết bị này</h2><button class="btn secondary" onclick="portalClose()" type="button">← Trở về giáo viên</button></div><p class="portal-note">Chọn hồ sơ để thử làm và nộp bài trên cùng trình duyệt. Chưa có tài khoản học sinh hoặc đồng bộ trực tuyến.</p><label for="portalStudent">Học sinh</label> <select id="portalStudent" onchange="portalRender()"></select><div id="portalList"></div></div></div>
 <script>
 (function(){'use strict';
 function selected(){return state.students.find(s=>s.id===document.getElementById('portalStudent').value)}
@@ -987,7 +955,6 @@ window.portalPublish=function(sid,id){goPanel('assignments');easyOpen(sid,id);};
 window.editAssignment=function(sid,id){goPanel('assignments');easyOpen(sid,id);};
 })();
 </script>
-
 <script>
 (function(){'use strict';
 const E=id=>document.getElementById(id), h=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -1009,14 +976,13 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <style>
 #commentDialog{border:0;border-radius:16px;padding:0;width:min(540px,calc(100% - 24px));max-height:90vh;box-shadow:0 16px 55px #18304755;color:#183047}#commentDialog::backdrop{background:#152a4077}#commentDialog .comment-inner{padding:22px;display:grid;gap:12px}#commentDialog label{font-weight:700}#commentDialog input,#commentDialog select,#commentDialog textarea{width:100%;padding:11px;border:1px solid #bfd3e6;border-radius:9px;font:inherit;background:white;color:#183047}#commentDialog textarea{min-height:95px;resize:vertical}#commentDialog .comment-actions{display:flex;gap:8px;flex-wrap:wrap}#commentDialog .comment-actions button{flex:1;min-width:125px}
 </style>
-<dialog id="commentDialog" aria-labelledby="commentTitle"><form class="comment-inner" method="dialog" onsubmit="return false">
+<dialog aria-labelledby="commentTitle" id="commentDialog"><form class="comment-inner" method="dialog" onsubmit="return false">
 <h3 id="commentTitle" style="margin:0">Chấm và nhận xét bài tập</h3><p id="commentStudent" style="margin:0"></p>
-<label for="commentScore">Điểm (0–10)</label><input id="commentScore" type="number" min="0" max="10" step="0.1" placeholder="Nhập điểm" inputmode="decimal">
-
+<label for="commentScore">Điểm (0–10)</label><input id="commentScore" inputmode="decimal" max="10" min="0" placeholder="Nhập điểm" step="0.1" type="number"/>
 <label for="commentSuggestion">Gợi ý nhận xét (không bắt buộc)</label><select id="commentSuggestion" onchange="applyCommentSuggestion(this.value)"><option value="">Chọn nhận xét phù hợp với bài làm…</option></select>
 <label for="commentText">Nhận xét</label><textarea id="commentText" placeholder="Nhập nhận xét về bài làm của học sinh…"></textarea>
 <p id="commentError" role="alert" style="display:none;color:#b42318;margin:0"></p>
-<div class="comment-actions"><button class="btn primary" type="button" onclick="saveCommentGrade()">Lưu điểm và nhận xét</button><button class="btn secondary" type="button" onclick="document.getElementById('commentDialog').close()">Hủy</button></div>
+<div class="comment-actions"><button class="btn primary" onclick="saveCommentGrade()" type="button">Lưu điểm và nhận xét</button><button class="btn secondary" onclick="document.getElementById('commentDialog').close()" type="button">Hủy</button></div>
 </form></dialog>
 <script>
 (function(){'use strict';
@@ -1166,7 +1132,6 @@ window.newStudentInContext=function(){const cls=document.getElementById('classMa
 window.managerAssign=function(id){const subject=document.getElementById('subjectManagerFilter')?.value||'';switchStudent(id);goPanel('assignments');setTimeout(()=>{quizOpen();const st=state.students.find(x=>x.id===id);if(st){$('qClass').value=st.className;quizClassChanged();$('qRecipient').value=id;}if(subject)$('qSubject').value=subject;},0);};
 })();
 </script>
-
 <style>
 .sample-bank-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.sample-bank-card{border:1px solid #d8e6ec;border-radius:13px;padding:14px;background:#fff}.sample-bank-card h4{margin:0 0 6px;color:#173f59}.sample-levels{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0}.sample-levels span{font-size:12px;padding:4px 8px;border-radius:999px;background:#eef7f7;color:#24676b;font-weight:700}.sample-bank-card .action-row{margin-top:10px}@media(max-width:760px){.sample-bank-grid{grid-template-columns:1fr}}
 .qlevel-row{display:grid;grid-template-columns:1fr 180px;gap:10px;align-items:end}@media(max-width:650px){.qlevel-row{grid-template-columns:1fr}}
@@ -1174,25 +1139,24 @@ window.managerAssign=function(id){const subject=document.getElementById('subject
 <style>
 #quizBuilder{display:none;margin:14px 0;padding:18px;border:2px solid #b6d9ec;border-radius:16px;background:#f7fbff}.quiz-builder-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;padding-bottom:14px;border-bottom:1px solid #d8e8ee}.quiz-builder-head h3{margin:4px 0 6px;font-size:22px;color:#153b55}.quiz-builder-head p{margin:0;max-width:780px;color:#607889}.quiz-kicker{font-size:11px;font-weight:900;letter-spacing:.09em;color:#087f78}.quiz-step{display:flex;align-items:center;gap:9px;margin:18px 0 10px;font-weight:900;color:#173f59}.quiz-step b{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#087f78;color:white}.level-distribution{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:12px}.level-box{border:1px solid #cfe2e8;background:white;border-radius:11px;padding:10px;text-align:center}.level-box strong{display:block;font-size:21px;color:#087f78}.level-box span{font-size:12px;font-weight:800;color:#496475}.quiz-options-box{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;padding:11px 13px;border:1px solid #d4e4ea;border-radius:11px;background:white}.quiz-options-box label{display:flex!important;align-items:center;gap:7px;margin:0!important;font-weight:700!important}.quiz-options-box input{width:auto!important}.qcard-level-badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#e9f6f4;color:#087f78;font-size:11px;font-weight:900}@media(max-width:700px){.level-distribution{grid-template-columns:repeat(2,1fr)}.quiz-builder-head{flex-direction:column}}#quizBuilder .qcard,.quiz-student-card{background:white;border:1px solid #d5e2ed;border-radius:12px;padding:14px;margin:12px 0}#quizBuilder input,#quizBuilder textarea,#quizBuilder select{width:100%;max-width:100%;box-sizing:border-box;padding:9px;border:1px solid #b8cad7;border-radius:8px;background:white;color:#17334b}#quizBuilder .qgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#quizBuilder label{display:block;font-weight:600;margin:8px 0 4px}.quiz-math{overflow-x:auto;overflow-y:hidden;max-width:100%;line-height:1.7}.quiz-math img{max-width:100%;height:auto;object-fit:contain}.quiz-student-card label{display:flex;gap:9px;align-items:flex-start;padding:8px;border:1px solid #e3eaf0;border-radius:8px;margin:6px 0;cursor:pointer}.quiz-student-card input[type=radio]{width:auto;margin-top:6px}.quiz-student-card button{margin-top:10px}@media(max-width:650px){#quizBuilder .qgrid{grid-template-columns:1fr}}
 </style>
-<div id="quizBuilder" aria-label="Soạn và giao bài trắc nghiệm">
-  <div class="quiz-builder-head"><div><span class="quiz-kicker">GIAO BÀI ÔN LUYỆN</span><h3>Trắc nghiệm phân hóa theo năng lực</h3><p>Chọn lớp, học sinh, môn học và cấu trúc 3 mức hoặc 4 mức. Học sinh làm trực tiếp trong app; kết quả từng câu được lưu để giáo viên xem và chấm.</p></div><button type="button" class="btn secondary small" onclick="quizClose()">Đóng</button></div>
-  <div class="quiz-step"><b>1</b><span>Đối tượng & nội dung</span></div>
-  <div class="qgrid"><div><label for="qClass">Lớp nhận bài</label><select id="qClass" onchange="quizClassChanged()"></select></div><div><label for="qRecipient">Giao cho</label><select id="qRecipient"></select></div><div><label for="qSubject">Môn học</label><input id="qSubject" list="qSubjectList" placeholder="Ví dụ: Toán"><datalist id="qSubjectList"><option value="Toán"><option value="Vật lí"><option value="Hóa học"><option value="Sinh học"><option value="Lịch sử"><option value="Địa lí"><option value="Tiếng Anh"><option value="Tin học"></datalist></div><div><label for="qTitle">Tên bài ôn luyện</label><input id="qTitle" placeholder="Ví dụ: Ôn tập hàm số"></div></div>
-  <div class="qgrid" id="teacherAssessmentClassify">
-    <div><label for="qTrack">Đưa bài vào khu vực học sinh</label><select id="qTrack" onchange="syncAssessmentSubtype()"><option value="assignment">Bài tập & ôn luyện</option><option value="practice">Kiểm tra · Luyện tập</option><option value="exam">Kiểm tra · Ôn thi</option></select></div>
-    <div><label for="qSubtype">Nhóm bài / kỳ kiểm tra</label><select id="qSubtype"></select></div>
-  </div>
-  <div class="quiz-step"><b>2</b><span>Phân hóa & số câu</span></div>
-  <div class="qgrid"><div><label for="qLevel">Chế độ phân hóa</label><select id="qLevel" onchange="syncQuizScheme();autoDistributeLevels()"><option value="Phân hóa 3 mức">3 mức · Nhận biết – Thông hiểu – Vận dụng</option><option value="Phân hóa 4 mức" selected>4 mức · Nhận biết – Thông hiểu – Vận dụng – Vận dụng cao</option></select></div><div><label for="qQuestionCount">Số câu hỏi</label><div class="question-count-control"><button type="button" class="qcount-btn" onclick="changeQuizQuestionCount(-1)" aria-label="Giảm số câu">−</button><input id="qQuestionCount" type="number" min="5" max="50" step="1" value="10" onchange="applyQuizQuestionCount();autoDistributeLevels()" aria-label="Số câu hỏi"><button type="button" class="qcount-btn" onclick="changeQuizQuestionCount(1)" aria-label="Tăng số câu">＋</button></div><small class="qcount-hint">5–50 câu · Có thể tăng/giảm hoặc nhập trực tiếp.</small></div></div>
-  <div id="qDistribution" class="level-distribution"></div>
-  <div class="quiz-step"><b>3</b><span>Thời gian & cách làm</span></div>
-  <div class="qgrid"><div><label for="qDuration">Thời gian làm bài (phút)</label><input id="qDuration" type="number" min="0" max="180" value="15"><small class="qcount-hint">Nhập 0 nếu không giới hạn.</small></div><div><label for="qAttempts">Số lần được làm</label><select id="qAttempts"><option value="1">1 lần</option><option value="2">2 lần</option><option value="3">3 lần</option></select></div><div><label for="qOpenAt">Mở bài từ</label><input id="qOpenAt" type="datetime-local"></div><div><label for="qDue">Hạn nộp</label><input id="qDue" type="datetime-local"></div></div>
-  <div class="quiz-options-box"><label><input id="qShuffleQ" type="checkbox" checked> Trộn thứ tự câu hỏi</label><label><input id="qShuffleA" type="checkbox" checked> Trộn đáp án A–D</label><label><input id="qShowAnswers" type="checkbox"> Cho xem đáp án đúng ngay sau khi nộp</label></div>
-  <div class="quiz-step"><b>4</b><span>Câu hỏi</span></div><p class="help">Mỗi câu có mức độ riêng. Giáo viên có thể sửa mức sau khi hệ thống phân bổ tự động.</p>
-  <div id="qQuestions"></div>
-  <div class="action-row"><button type="button" class="btn secondary" onclick="quizAddQuestion();syncQuestionCountField();renderDistribution()">＋ Thêm câu hỏi</button><button type="button" class="btn secondary" onclick="quizPreview()">Xem trước toàn bộ đề</button><button type="button" class="btn primary" onclick="quizPublish()">Giao bài</button><button type="button" class="btn secondary" onclick="quizClose()">Hủy</button></div><p id="qError" role="alert" style="color:#a52323;font-weight:600"></p><div id="qPreview"></div>
+<div aria-label="Soạn và giao bài trắc nghiệm" id="quizBuilder">
+<div class="quiz-builder-head"><div><span class="quiz-kicker">GIAO BÀI ÔN LUYỆN</span><h3>Trắc nghiệm phân hóa theo năng lực</h3><p>Chọn lớp, học sinh, môn học và cấu trúc 3 mức hoặc 4 mức. Học sinh làm trực tiếp trong app; kết quả từng câu được lưu để giáo viên xem và chấm.</p></div><button class="btn secondary small" onclick="quizClose()" type="button">Đóng</button></div>
+<div class="quiz-step"><b>1</b><span>Đối tượng &amp; nội dung</span></div>
+<div class="qgrid"><div><label for="qClass">Lớp nhận bài</label><select id="qClass" onchange="quizClassChanged()"></select></div><div><label for="qRecipient">Giao cho</label><select id="qRecipient"></select></div><div><label for="qSubject">Môn học</label><input id="qSubject" list="qSubjectList" placeholder="Ví dụ: Toán"/><datalist id="qSubjectList"><option value="Toán"><option value="Vật lí"><option value="Hóa học"><option value="Sinh học"><option value="Lịch sử"><option value="Địa lí"><option value="Tiếng Anh"><option value="Tin học"></option></option></option></option></option></option></option></option></datalist></div><div><label for="qTitle">Tên bài ôn luyện</label><input id="qTitle" placeholder="Ví dụ: Ôn tập hàm số"/></div></div>
+<div class="qgrid" id="teacherAssessmentClassify">
+<div><label for="qTrack">Đưa bài vào khu vực học sinh</label><select id="qTrack" onchange="syncAssessmentSubtype()"><option value="assignment">Bài tập &amp; ôn luyện</option><option value="practice">Kiểm tra · Luyện tập</option><option value="exam">Kiểm tra · Ôn thi</option></select></div>
+<div><label for="qSubtype">Nhóm bài / kỳ kiểm tra</label><select id="qSubtype"></select></div>
 </div>
-
+<div class="quiz-step"><b>2</b><span>Phân hóa &amp; số câu</span></div>
+<div class="qgrid"><div><label for="qLevel">Chế độ phân hóa</label><select id="qLevel" onchange="syncQuizScheme();autoDistributeLevels()"><option value="Phân hóa 3 mức">3 mức · Nhận biết – Thông hiểu – Vận dụng</option><option selected="" value="Phân hóa 4 mức">4 mức · Nhận biết – Thông hiểu – Vận dụng – Vận dụng cao</option></select></div><div><label for="qQuestionCount">Số câu hỏi</label><div class="question-count-control"><button aria-label="Giảm số câu" class="qcount-btn" onclick="changeQuizQuestionCount(-1)" type="button">−</button><input aria-label="Số câu hỏi" id="qQuestionCount" max="50" min="5" onchange="applyQuizQuestionCount();autoDistributeLevels()" step="1" type="number" value="10"/><button aria-label="Tăng số câu" class="qcount-btn" onclick="changeQuizQuestionCount(1)" type="button">＋</button></div><small class="qcount-hint">5–50 câu · Có thể tăng/giảm hoặc nhập trực tiếp.</small></div></div>
+<div class="level-distribution" id="qDistribution"></div>
+<div class="quiz-step"><b>3</b><span>Thời gian &amp; cách làm</span></div>
+<div class="qgrid"><div><label for="qDuration">Thời gian làm bài (phút)</label><input id="qDuration" max="180" min="0" type="number" value="15"/><small class="qcount-hint">Nhập 0 nếu không giới hạn.</small></div><div><label for="qAttempts">Số lần được làm</label><select id="qAttempts"><option value="1">1 lần</option><option value="2">2 lần</option><option value="3">3 lần</option></select></div><div><label for="qOpenAt">Mở bài từ</label><input id="qOpenAt" type="datetime-local"/></div><div><label for="qDue">Hạn nộp</label><input id="qDue" type="datetime-local"/></div></div>
+<div class="quiz-options-box"><label><input checked="" id="qShuffleQ" type="checkbox"/> Trộn thứ tự câu hỏi</label><label><input checked="" id="qShuffleA" type="checkbox"/> Trộn đáp án A–D</label><label><input id="qShowAnswers" type="checkbox"/> Cho xem đáp án đúng ngay sau khi nộp</label></div>
+<div class="quiz-step"><b>4</b><span>Câu hỏi</span></div><p class="help">Mỗi câu có mức độ riêng. Giáo viên có thể sửa mức sau khi hệ thống phân bổ tự động.</p>
+<div id="qQuestions"></div>
+<div class="action-row"><button class="btn secondary" onclick="quizAddQuestion();syncQuestionCountField();renderDistribution()" type="button">＋ Thêm câu hỏi</button><button class="btn secondary" onclick="quizPreview()" type="button">Xem trước toàn bộ đề</button><button class="btn primary" onclick="quizPublish()" type="button">Giao bài</button><button class="btn secondary" onclick="quizClose()" type="button">Hủy</button></div><p id="qError" role="alert" style="color:#a52323;font-weight:600"></p><div id="qPreview"></div>
+</div>
 <style>
 .question-count-control{display:grid;grid-template-columns:42px minmax(76px,1fr) 42px;gap:7px;align-items:center}.question-count-control #qQuestionCount{text-align:center;font-size:18px;font-weight:800;color:#174a61;height:42px}.qcount-btn{height:42px;border:1px solid #a9cbd3;border-radius:9px;background:#fff;color:#087f78;font-size:22px;font-weight:900;cursor:pointer;transition:.18s ease}.qcount-btn:hover{background:#eaf7f6;transform:translateY(-1px)}.qcount-btn:active{transform:scale(.96)}.qcount-hint{display:block;margin-top:5px;color:#6a7f8d;font-size:12px;line-height:1.35}
 </style>
@@ -1225,7 +1189,6 @@ const legacyEditAssignment=window.editAssignment;window.editAssignment=function(
 const bar=document.querySelector('#assignmentsPanel .panel-head');if(bar){const b=document.createElement('button');b.className='btn primary small';b.type='button';b.textContent='＋ Trắc nghiệm làm ngay';b.onclick=quizOpen;bar.append(b);}
 })();
 </script>
-
 <style>
 #resultsPanel83{margin:18px 0;padding:18px;border:1px solid #c9dbe8;border-radius:14px;background:#f7fbff}#resultsPanel83 .result-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:end}#resultsPanel83 .result-controls label{flex:1 1 150px}#resultsPanel83 select,#resultsPanel83 input{width:100%;padding:9px;border:1px solid #bacbda;border-radius:8px;background:white}#resultsPanel83 .result-scroll{overflow:auto;max-width:100%}#resultsPanel83 table{border-collapse:collapse;width:100%;min-width:780px;background:white}#resultsPanel83 th,#resultsPanel83 td{border-bottom:1px solid #e0e7ef;padding:9px;text-align:left}#resultsPanel83 th{background:#e8f2fb}#resultDetail83{background:white;border:1px solid #cad8e5;border-radius:12px;padding:15px;margin-top:12px}#resultDetail83 .question-detail{border-top:1px solid #dde6ef;padding:12px 0;overflow-wrap:anywhere}#resultDetail83 img{max-width:100%;height:auto}#resultDetail83 textarea{width:100%;min-height:70px}#resultDetail83 input[type=number]{max-width:100px;padding:8px}#resultsPanel83 .rbutton{padding:7px 12px;border:1px solid #b4c9d9;background:white;border-radius:8px;cursor:pointer;color:#123c56}#resultsPanel83 .rbutton:focus-visible{outline:3px solid #3981c3}
 </style>
@@ -1258,7 +1221,6 @@ byId('rExport83').onclick=exportExcel;
 const original=window.renderAssignments;window.renderAssignments=function(...args){const result=original.apply(this,args);refreshFilters();showRows();return result;};refreshFilters();showRows();
 })();
 </script>
-
 <script>
 /* Ngân hàng mẫu do app cung cấp, giáo viên duyệt trước khi giao. */
 (function(){'use strict';
@@ -1357,8 +1319,6 @@ setTimeout(()=>renderAdaptiveSampleBank(),0);
   start();
 })();
 </script>
-
-
 <style>
 .excel-import-backdrop{position:fixed;inset:0;background:rgba(15,35,52,.42);z-index:9999;display:grid;place-items:center;padding:18px}.excel-import-backdrop[hidden]{display:none}.excel-import-modal{width:min(900px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:20px;box-shadow:0 24px 70px rgba(15,35,52,.25)}.excel-import-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.excel-import-head h3{margin:0 0 5px;font-size:22px}.excel-import-head p{margin:0;color:var(--muted)}.excel-close{border:0;background:#edf4f6;width:38px;height:38px;border-radius:50%;font-size:25px;line-height:1;cursor:pointer}.excel-import-note{margin:14px 0;padding:12px 14px;border-radius:12px;background:#f0fdfa;border:1px solid #b9e8df}.excel-preview-wrap{overflow:auto;border:1px solid var(--border);border-radius:14px;margin-top:10px}.excel-preview-table{width:100%;border-collapse:collapse;min-width:680px}.excel-preview-table th,.excel-preview-table td{padding:9px 10px;border-bottom:1px solid var(--border);text-align:left}.excel-preview-table th{background:#f1f7f9}.excel-bad{color:#b42318;font-weight:800}.excel-good{color:#0f766e;font-weight:800}@media(max-width:560px){.excel-import-modal{padding:15px}.excel-import-head h3{font-size:19px}}
 
@@ -1387,7 +1347,6 @@ window.confirmStudentExcelImport=function(){const rows=pending.filter(x=>x.valid
 document.getElementById('studentExcelImport')?.addEventListener('click',e=>{if(e.target.id==='studentExcelImport')closeStudentExcelImport()});
 })();
 </script>
-
 <script>
 const SUBMISSION_SAMPLE_DATA=[
  {id:'s10m1',grade:'10',className:'10A1',student:'Nguyễn Thị Ngọc Ánh',subject:'Toán',title:'Hàm số và đồ thị',submittedAt:'2026-10-01T07:42:00',score:8.5,level:'Thông hiểu',answer:'Đúng 8/10 câu. Hai câu sai thuộc phần đọc biến thiên từ đồ thị.',comment:'Nắm kiến thức cơ bản tốt; cần luyện thêm câu vận dụng.'},
@@ -1431,7 +1390,6 @@ const _renderAssignmentsSubmissionSamples=window.renderAssignments;
 if(typeof _renderAssignmentsSubmissionSamples==='function')window.renderAssignments=function(){_renderAssignmentsSubmissionSamples();renderSubmissionSamples();};
 document.addEventListener('DOMContentLoaded',()=>setTimeout(renderSubmissionSamples,0));
 </script>
-
 <style>
 .real-sub-dialog{width:min(980px,96vw);max-height:94vh;border:0;border-radius:20px;padding:0;box-shadow:0 28px 80px rgba(15,35,52,.28)}
 .real-sub-dialog::backdrop{background:rgba(15,35,52,.48)}
@@ -1484,7 +1442,6 @@ const oldRender=window.renderAssignments||renderAssignments;window.renderAssignm
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{applyTop3();renderAssignments();},0)});
 })();
 </script>
-
 <style>
 .report-tabs{display:flex;gap:8px;margin:-4px 0 16px;padding:5px;background:#f1f7f8;border:1px solid #dbe8ec;border-radius:13px;width:max-content;max-width:100%}.report-tab{border:0;background:transparent;padding:9px 14px;border-radius:9px;font-weight:800;color:#526475;cursor:pointer}.report-tab.active{background:#fff;color:#0f766e;box-shadow:0 2px 8px rgba(31,70,88,.09)}.context-switch select+label{display:block}.quiz-options{display:flex;gap:12px;flex-wrap:wrap;min-height:42px;align-items:center;padding:8px 10px;border:1px solid #cad9e2;border-radius:12px;background:#fff}.quiz-options label{display:flex;align-items:center;gap:6px;margin:0;font-weight:700}.quiz-options input{width:auto}.context-switch small{display:block;margin-top:7px}
 </style>
@@ -1499,8 +1456,6 @@ const oldRenderHome=window.renderHome;window.renderHome=function(){if(oldRenderH
 setTimeout(refreshWorkContext,50);
 })();
 </script>
-
-
 <script>
 /* v8.6.25 - Quản lý nhật ký theo lớp/học sinh */
 function journalClasses(){return [...new Set((state.students||[]).map(s=>s.className).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'vi'));}
@@ -1570,7 +1525,6 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{if($t('todayUnifiedContent'))renderTodayLearning()},0));
 })();
 </script>
-
 <script>
 (function(){
  const ROSTER40=['Nguyễn Thị Ngọc Ánh','Nguyễn Đỗ Thanh Binh','Nguyễn Thị Thanh Hương','Nguyễn Hoàng Khang','Ngô Ngọc Lam','Nguyễn Tấn Lộc','Huỳnh Nhật Quang','Huỳnh Thị Như Hoàng','Nguyễn Phạm Xuân Nghi','Nguyễn Ngọc Phương Nghi','Nguyễn Hoàng Triều','Nguyễn Ngô Hoàn Tuấn','Hoàng Công Thành','Lê Việt Quốc Vương','Trần Xuân Lưu Bảo','Lê Nguyễn Ngọc Hương','Trần Ngọc Khánh Linh','Nguyễn Thành Nhơn','Nguyễn Phước Vĩnh','Ngô Duy Khoa','Đỗ Đăng Khoa','Tăng Hoàng Long','Đặng Nguyễn Kim Ngân','Nguyễn Trung Bảo','Phạm Gia Bảo','Nguyễn Tấn Đạt','Nguyễn Hồng Diễm','Trần Hữu Thành','Tô Quốc Thịnh','Nguyễn Xuân Trúc','Nguyễn Huyền Diệu','Trần Quang Nhân','Lê Nguyễn Quốc Duy','Đỗ Minh Kha','Thân Nguyễn Quốc Bảo','Phùng Trần Thanh Trúc','Nguyễn Huỳnh Hải Vy','Lê Huỳnh Hương Y','Trần Tấn Tài','Mai Phương Uyên'];
@@ -1644,8 +1598,8 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
 /* v8.6.29 - Thành tích học tập cá nhân */
 .ach-card{border:1px solid #d8e7eb;border-radius:18px;padding:16px;background:linear-gradient(135deg,#fbfefe,#f4fbfa);margin:12px 0 16px}.ach-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.ach-title{display:flex;gap:11px;align-items:center}.ach-trophy{width:42px;height:42px;border-radius:13px;background:#fff3cf;display:grid;place-items:center;font-size:23px;border:1px solid #f3d98b}.ach-stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.ach-stat{padding:7px 10px;border-radius:999px;background:#fff;border:1px solid #dfeaed;font-size:12px;font-weight:800;color:#466070}.ach-next{margin-top:12px;padding:11px 12px;border-radius:13px;background:#fff;border:1px dashed #bfd9d7}.ach-next-bar{height:7px;border-radius:99px;background:#e8f0f1;overflow:hidden;margin-top:7px}.ach-next-bar span{display:block;height:100%;background:#15958c;border-radius:99px}.ach-modal{position:fixed;inset:0;background:rgba(13,35,48,.48);z-index:9999;display:none;align-items:center;justify-content:center;padding:18px}.ach-modal.open{display:flex}.ach-dialog{width:min(980px,96vw);max-height:92vh;overflow:auto;background:#fff;border-radius:22px;box-shadow:0 24px 70px rgba(13,35,48,.25);padding:22px}.ach-dialog-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.ach-badges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}.ach-badge{border:1px solid #dce8eb;border-radius:15px;padding:13px;background:#fff;min-height:116px}.ach-badge.locked{opacity:.56;background:#f7f9fa}.ach-badge-icon{font-size:28px}.ach-badge h4{margin:7px 0 4px}.ach-badge small{color:#657a89}.ach-cert{border:1px solid #d9e7e9;border-radius:15px;padding:14px;margin-top:10px;background:#fbfefe;display:flex;justify-content:space-between;gap:12px;align-items:center}.ach-popup{position:fixed;right:20px;bottom:20px;z-index:10000;background:#fff;border:1px solid #d8e6e8;border-radius:16px;padding:14px 16px;box-shadow:0 15px 45px rgba(13,35,48,.18);max-width:330px;display:none}.ach-popup.show{display:block;animation:achPop .3s ease}@keyframes achPop{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}@media(max-width:760px){.ach-head,.ach-cert{flex-direction:column}.ach-badges{grid-template-columns:1fr 1fr}}@media(max-width:520px){.ach-badges{grid-template-columns:1fr}}
 </style>
-<div id="achievementModal" class="ach-modal" onclick="if(event.target===this)closeAchievements()"><div class="ach-dialog"><div class="ach-dialog-head"><div><h2 style="margin:0">🏆 Thành tích học tập cá nhân</h2><p id="achievementStudentLabel" class="help"></p></div><button class="btn secondary" onclick="closeAchievements()">Đóng</button></div><div id="achievementModalBody"></div></div></div>
-<div id="achievementPopup" class="ach-popup"></div>
+<div class="ach-modal" id="achievementModal" onclick="if(event.target===this)closeAchievements()"><div class="ach-dialog"><div class="ach-dialog-head"><div><h2 style="margin:0">🏆 Thành tích học tập cá nhân</h2><p class="help" id="achievementStudentLabel"></p></div><button class="btn secondary" onclick="closeAchievements()">Đóng</button></div><div id="achievementModalBody"></div></div></div>
+<div class="ach-popup" id="achievementPopup"></div>
 <script>
 (function(){
  const A=v=>Array.isArray(v)?v:[], E=v=>typeof esc==='function'?esc(String(v??'')):String(v??'');
@@ -1684,12 +1638,6 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{seed();renderTodayLearning()},220));
 })();
 </script>
-
-
-
-
-
-
 <style>
 /* v8.6.32 - KPI Tổng quan luôn đọc từ cùng nguồn dữ liệu lớp đang có */
 .stats .stat strong{display:block;text-align:center;min-height:48px;line-height:1.05}
@@ -1740,7 +1688,6 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
  window.addEventListener('storage',()=>setTimeout(()=>updateDashboard('data'),0));
 })();
 </script>
-
 <style>
 /* 8.6.34 - Danh sách học sinh gọn, phân trang */
 #profilesPanel > .grid2{grid-template-columns:1fr!important;gap:12px}
@@ -1818,14 +1765,14 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
 #roleGateway[hidden]{display:none!important}.rg-shell{width:min(980px,100%);background:#fff;border:1px solid #dfe7f2;border-radius:28px;box-shadow:0 30px 80px rgba(30,58,138,.16);overflow:hidden;display:grid;grid-template-columns:1.05fr .95fr}.rg-brand{padding:48px;background:linear-gradient(145deg,#172554,#1e3a8a 58%,#4338ca);color:#fff;position:relative;overflow:hidden}.rg-brand:after{content:"";position:absolute;width:330px;height:330px;border:62px solid rgba(255,255,255,.055);border-radius:50%;right:-180px;bottom:-180px}.rg-logo{width:58px;height:58px;border-radius:17px;background:#fff;color:#1e3a8a;display:grid;place-items:center;font-weight:950;font-size:21px;margin-bottom:28px}.rg-brand h1{font-size:34px;line-height:1.12;margin:0 0 14px}.rg-brand h1 span{color:#fde68a}.rg-brand p{color:#dbeafe;line-height:1.65;max-width:520px}.rg-choose{padding:44px;display:flex;flex-direction:column;justify-content:center}.rg-choose small{font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#64748b}.rg-choose h2{font-size:28px;margin:7px 0 22px;color:#172554}.rg-choice{width:100%;display:flex;align-items:center;gap:15px;text-align:left;border:1px solid #dbe4ef;background:#fff;border-radius:18px;padding:17px;margin:0 0 12px;cursor:pointer;transition:.2s}.rg-choice:hover{transform:translateY(-2px);border-color:#a9bff5;box-shadow:0 12px 26px rgba(37,99,235,.09)}.rg-choice .ico{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:23px;background:#eef4ff}.rg-choice b{display:block;font-size:17px;color:#172554;margin-bottom:3px}.rg-choice span{font-size:13px;color:#64748b}.rg-choice.student{background:linear-gradient(135deg,#eff6ff,#eef2ff);border-color:#bfcef9}.rg-note{font-size:12px;color:#94a3b8;margin-top:9px;text-align:center}@media(max-width:760px){.rg-shell{grid-template-columns:1fr}.rg-brand{padding:28px}.rg-brand h1{font-size:27px}.rg-choose{padding:28px}}
 </style>
 <div id="roleGateway">
- <div class="rg-shell">
-  <section class="rg-brand"><div class="rg-logo">HT</div><h1>HỌC TẬP<br><span>THÔNG MINH PRO</span></h1><p>Một không gian thống nhất cho giáo viên tổ chức ôn tập và học sinh thực hiện nhiệm vụ, theo dõi tiến độ, kết quả học tập.</p></section>
-  <section class="rg-choose"><small>Chọn khu vực truy cập</small><h2>Bạn đang sử dụng app với vai trò nào?</h2>
-   <button class="rg-choice" type="button" onclick="enterTeacherArea()"><span class="ico">👨‍🏫</span><span><b>Khu vực giáo viên</b><span>Quản lý lớp, kế hoạch, giao bài và theo dõi kết quả.</span></span></button>
-   <button class="rg-choice student" type="button" onclick="enterStudentArea()"><span class="ico">🎓</span><span><b>Khu vực học sinh</b><span>Đăng nhập để học hôm nay, tự luyện và xem tiến độ.</span></span></button>
-   <div class="rg-note">Học sinh phải đăng nhập trước khi vào trang học tập.</div>
-  </section>
- </div>
+<div class="rg-shell">
+<section class="rg-brand"><div class="rg-logo">HT</div><h1>HỌC TẬP<br/><span>THÔNG MINH PRO</span></h1><p>Một không gian thống nhất cho giáo viên tổ chức ôn tập và học sinh thực hiện nhiệm vụ, theo dõi tiến độ, kết quả học tập.</p></section>
+<section class="rg-choose"><small>Chọn khu vực truy cập</small><h2>Bạn đang sử dụng app với vai trò nào?</h2>
+<button class="rg-choice" onclick="enterTeacherArea()" type="button"><span class="ico">👨‍🏫</span><span><b>Khu vực giáo viên</b><span>Quản lý lớp, kế hoạch, giao bài và theo dõi kết quả.</span></span></button>
+<button class="rg-choice student" onclick="enterStudentArea()" type="button"><span class="ico">🎓</span><span><b>Khu vực học sinh</b><span>Đăng nhập để học hôm nay, tự luyện và xem tiến độ.</span></span></button>
+<div class="rg-note">Học sinh phải đăng nhập trước khi vào trang học tập.</div>
+</section>
+</div>
 </div>
 <script>
 window.enterTeacherArea=function(){
@@ -1842,14 +1789,14 @@ window.enterTeacherArea=function(){
 };
 window.enterStudentArea=function(){document.getElementById('roleGateway').hidden=true;if(typeof studentV2OpenLogin==='function'){studentV2OpenLogin()}else{setTimeout(()=>studentV2OpenLogin(),0)}};
 </script>
-<div id="studentV2" aria-hidden="true">
-  <div id="sv2Login" class="sv2-login">
-    <div class="sv2-login-card">
-      <section class="sv2-login-brand"><div class="sv2-mark">HT</div><h1>HỌC TẬP<br>THÔNG MINH PRO</h1><p>Cổng học tập dành cho học sinh. Xem nhiệm vụ, tự luyện, làm bài kiểm tra và theo dõi tiến bộ của chính mình.</p></section>
-      <section class="sv2-login-form"><h2>Đăng nhập học sinh</h2><p>Nhập lớp, họ tên và mật khẩu để bắt đầu học. Có thể sửa thông tin demo bên dưới để đăng nhập bằng học sinh khác.</p><div class="sv2-field"><label>Lớp</label><input id="sv2Class" type="text" autocomplete="off" value="10A1" placeholder="Ví dụ: 10A1"></div><div class="sv2-field"><label>Họ và tên học sinh</label><input id="sv2Student" type="text" autocomplete="off" value="Nguyễn Minh An" placeholder="Nhập đầy đủ họ và tên"></div><div class="sv2-field"><label>Mật khẩu</label><input id="sv2Code" type="password" inputmode="numeric" maxlength="8" value="1234" placeholder="Nhập mật khẩu"></div><div id="sv2LoginError" class="sv2-login-error"></div><div class="sv2-login-actions"><button class="btn secondary" type="button" onclick="studentV2Close()">Quay lại</button><button class="btn primary" type="button" onclick="studentV2Login()">Đăng nhập</button></div><div class="sv2-demo-note"><b>Đăng nhập demo:</b> Lớp <b>10A1</b> · Học sinh <b>Nguyễn Minh An</b> · Mật khẩu <b>1234</b>.<br>Các ô phía trên đều có thể sửa để nhập thông tin học sinh khác khi cần.</div></section>
-    </div>
-  </div>
-  <div id="sv2Home" hidden></div>
+<div aria-hidden="true" id="studentV2">
+<div class="sv2-login" id="sv2Login">
+<div class="sv2-login-card">
+<section class="sv2-login-brand"><div class="sv2-mark">HT</div><h1>HỌC TẬP<br/>THÔNG MINH PRO</h1><p>Cổng học tập dành cho học sinh. Xem nhiệm vụ, tự luyện, làm bài kiểm tra và theo dõi tiến bộ của chính mình.</p></section>
+<section class="sv2-login-form"><h2>Đăng nhập học sinh</h2><p>Nhập lớp, họ tên và mật khẩu để bắt đầu học. Có thể sửa thông tin demo bên dưới để đăng nhập bằng học sinh khác.</p><div class="sv2-field"><label>Lớp</label><input autocomplete="off" id="sv2Class" placeholder="Ví dụ: 10A1" type="text" value="10A1"/></div><div class="sv2-field"><label>Họ và tên học sinh</label><input autocomplete="off" id="sv2Student" placeholder="Nhập đầy đủ họ và tên" type="text" value="Nguyễn Minh An"/></div><div class="sv2-field"><label>Mật khẩu</label><input id="sv2Code" inputmode="numeric" maxlength="8" placeholder="Nhập mật khẩu" type="password" value="1234"/></div><div class="sv2-login-error" id="sv2LoginError"></div><div class="sv2-login-actions"><button class="btn secondary" onclick="studentV2Close()" type="button">Quay lại</button><button class="btn primary" onclick="studentV2Login()" type="button">Đăng nhập</button></div><div class="sv2-demo-note"><b>Đăng nhập demo:</b> Lớp <b>10A1</b> · Học sinh <b>Nguyễn Minh An</b> · Mật khẩu <b>1234</b>.<br/>Các ô phía trên đều có thể sửa để nhập thông tin học sinh khác khi cần.</div></section>
+</div>
+</div>
+<div hidden="" id="sv2Home"></div>
 </div>
 <script id="student-v2-script">
 (function(){'use strict';let currentId=null,slide=0,slideTimer=null;
@@ -1893,7 +1840,6 @@ window.studentV2OpenAssignment=function(id){const s=st(),a=pub(s).find(x=>x.id==
 window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');document.body.style.overflow='';if(typeof portalOpen==='function'){portalOpen();setTimeout(()=>{const q=E('portalStudent');if(q){q.value=sid;portalRender()}},0)}};
 })();
 </script>
-
 <script id="sv2-hard-view-switch">
 /* 8.7.17 - Chuyen view that: khong de login va home ton tai dong thoi sau dang nhap */
 (function(){
@@ -2046,9 +1992,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  setTimeout(()=>{try{renderProfiles()}catch(_){}},0);
 })();
 </script>
-
-
-
 <script id="v8727-student-quick-menu-fix">
 (function(){
   const KEY='htpro_student_quick_menu_v2';
@@ -2142,7 +2085,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  #studentQuickMenuManager #sqmRows>div{grid-template-columns:58px 1fr}
 }
 </style>
-
 <script id="v8728-kpi-teacher-guard">
 /* 8.7.28 - Đồng bộ KPI giáo viên sau cổng vai trò */
 (function(){
@@ -2159,8 +2101,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  };
 })();
 </script>
-
-
 <style id="v8729-test-center-style">
 #sv2TestCenter{position:fixed;inset:0;z-index:100002;background:#f5f8fd;overflow:auto;color:#14213d;font-family:inherit}
 .svt-shell{max-width:1180px;margin:auto;padding:22px 22px 54px}
@@ -2184,44 +2124,44 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
 @media(max-width:850px){.svt-subjects,.svt-paths{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.svt-shell{padding:12px}.svt-subjects,.svt-paths{grid-template-columns:1fr}.svt-head{padding-top:25px}.svt-head h1{font-size:26px}}
 </style>
-<div id="sv2TestCenter" hidden>
-  <div class="svt-shell">
-    <div class="svt-top">
-      <button class="svt-back" type="button" onclick="svtBack()">← Quay lại</button>
-      <strong>KIỂM TRA & ÔN LUYỆN</strong>
-      <span id="svtStudentName" style="font-weight:800"></span>
-    </div>
-    <section id="svtSubjectView">
-      <div class="svt-head"><h1>Em muốn học môn nào?</h1><p>Chọn môn để vào Luyện tập, Ôn thi hoặc đặt câu hỏi cho giáo viên.</p></div>
-      <div class="svt-subjects" id="svtSubjects"></div>
-    </section>
-    <section id="svtModeView" hidden>
-      <div class="svt-head"><h1 id="svtSubjectTitle">Môn học</h1><p>Chọn hình thức phù hợp với mục tiêu học tập hôm nay.</p></div>
-      <div class="svt-paths">
-        <article class="svt-path">
-          <div class="svt-icon">✓</div><h3>Luyện tập</h3>
-          <p>Làm bài theo thời lượng để rèn tốc độ và độ chính xác.</p>
-          <div class="svt-options">
-            <button class="svt-option" onclick="svtOpenSet('Luyện tập','15 phút')"><span>Bài 15 phút</span><span>→</span></button>
-            <button class="svt-option" onclick="svtOpenSet('Luyện tập','30 phút')"><span>Bài 30 phút</span><span>→</span></button>
-            <button class="svt-option" onclick="svtOpenSet('Luyện tập','45 phút')"><span>Bài 45 phút</span><span>→</span></button>
-          </div>
-        </article>
-        <article class="svt-path">
-          <div class="svt-icon">🏆</div><h3>Ôn thi</h3>
-          <p>Ôn tập theo các mốc kiểm tra và kỳ thi trong năm học.</p>
-          <div class="svt-options" id="svtExamOptions"></div>
-        </article>
-        <article class="svt-path svt-question">
-          <div class="svt-icon">?</div><h3>Hỏi giáo viên</h3>
-          <p>Gửi vấn đề em đang vướng để giáo viên của môn học hỗ trợ.</p>
-          <textarea id="svtQuestion" placeholder="Nhập câu hỏi hoặc nội dung em cần giáo viên giải thích..."></textarea>
-          <button type="button" onclick="svtSendQuestion()">Gửi câu hỏi</button>
-          <div class="svt-note">Câu hỏi được lưu kèm tên học sinh, lớp, môn và thời gian gửi.</div>
-        </article>
-      </div>
-    </section>
-  </div>
+<div hidden="" id="sv2TestCenter">
+<div class="svt-shell">
+<div class="svt-top">
+<button class="svt-back" onclick="svtBack()" type="button">← Quay lại</button>
+<strong>KIỂM TRA &amp; ÔN LUYỆN</strong>
+<span id="svtStudentName" style="font-weight:800"></span>
+</div>
+<section id="svtSubjectView">
+<div class="svt-head"><h1>Em muốn học môn nào?</h1><p>Chọn môn để vào Luyện tập, Ôn thi hoặc đặt câu hỏi cho giáo viên.</p></div>
+<div class="svt-subjects" id="svtSubjects"></div>
+</section>
+<section hidden="" id="svtModeView">
+<div class="svt-head"><h1 id="svtSubjectTitle">Môn học</h1><p>Chọn hình thức phù hợp với mục tiêu học tập hôm nay.</p></div>
+<div class="svt-paths">
+<article class="svt-path">
+<div class="svt-icon">✓</div><h3>Luyện tập</h3>
+<p>Làm bài theo thời lượng để rèn tốc độ và độ chính xác.</p>
+<div class="svt-options">
+<button class="svt-option" onclick="svtOpenSet('Luyện tập','15 phút')"><span>Bài 15 phút</span><span>→</span></button>
+<button class="svt-option" onclick="svtOpenSet('Luyện tập','30 phút')"><span>Bài 30 phút</span><span>→</span></button>
+<button class="svt-option" onclick="svtOpenSet('Luyện tập','45 phút')"><span>Bài 45 phút</span><span>→</span></button>
+</div>
+</article>
+<article class="svt-path">
+<div class="svt-icon">🏆</div><h3>Ôn thi</h3>
+<p>Ôn tập theo các mốc kiểm tra và kỳ thi trong năm học.</p>
+<div class="svt-options" id="svtExamOptions"></div>
+</article>
+<article class="svt-path svt-question">
+<div class="svt-icon">?</div><h3>Hỏi giáo viên</h3>
+<p>Gửi vấn đề em đang vướng để giáo viên của môn học hỗ trợ.</p>
+<textarea id="svtQuestion" placeholder="Nhập câu hỏi hoặc nội dung em cần giáo viên giải thích..."></textarea>
+<button onclick="svtSendQuestion()" type="button">Gửi câu hỏi</button>
+<div class="svt-note">Câu hỏi được lưu kèm tên học sinh, lớp, môn và thời gian gửi.</div>
+</article>
+</div>
+</section>
+</div>
 </div>
 <script id="v8729-test-center-script">
 (function(){
@@ -2295,8 +2235,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
   };
 })();
 </script>
-
-
 <style id="v8730-subject-card-polish">
 /* 8.7.30 - Thẻ chọn môn đồng nhất, cân đối và rõ điểm bấm */
 #sv2TestCenter .svt-subjects{
@@ -2365,8 +2303,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  #sv2TestCenter .svt-subject{height:154px;min-height:154px}
 }
 </style>
-
-
 <style id="v8731-home-function-cards">
 #sv2Home .sv2-quick-nav-wrap{
   display:block!important;
@@ -2497,8 +2433,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
   document.addEventListener('DOMContentLoaded',function(){setTimeout(window.studentRenderQuickMenu,100);});
 })();
 </script>
-
-
 <style id="v8732-three-balanced-cards">
 /* 8.7.32 - 3 chức năng chính cân đối trên cùng một hàng */
 #sv2Home .sv2-quick-nav{
@@ -2555,8 +2489,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
   }
 }
 </style>
-
-
 <style id="v8733-sync-style">
 .teacher-q-item{border:1px solid #e0e7f1;border-radius:14px;padding:14px;margin:10px 0;background:#fff}
 .teacher-q-meta{font-size:12px;color:#6d7890;margin-bottom:8px}.teacher-q-item textarea{width:100%;box-sizing:border-box;min-height:76px;border:1px solid #d9e2ef;border-radius:10px;padding:10px;font:inherit}
@@ -2670,8 +2602,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
   document.addEventListener('DOMContentLoaded',function(){syncAssessmentSubtype();});
 })();
 </script>
-
-
 <style id="v8734-compact-question-style">
 /* Câu hỏi gọn hơn */
 #quizBuilder .qcard{padding:10px 12px;margin:8px 0;border-radius:11px}
@@ -2802,8 +2732,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  document.addEventListener('DOMContentLoaded',()=>setTimeout(compactAllQuizCards,100));
 })();
 </script>
-
-
 <style id="v8735-assignment-tabs-style">
 #assignmentsPanel .assign-main-head{margin-bottom:12px}
 .assign-tabs{display:flex;gap:7px;flex-wrap:wrap;padding:6px;background:#eef3f8;border:1px solid #dce6ef;border-radius:14px;margin:12px 0 16px;position:sticky;top:82px;z-index:12}
@@ -2901,8 +2829,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  setTimeout(()=>{buildTabs();ensurePager()},0);
 })();
 </script>
-
-
 <style id="v8736-pagination-style">
 .assign-subpager{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:12px 0;padding:9px 11px;border:1px solid #dbe6ef;border-radius:12px;background:#f8fbfe}
 .assign-subpager .pg-info{font-size:12px;color:#62798b;font-weight:750}
@@ -3024,8 +2950,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  setTimeout(()=>{buildComposePages()},0);
 })();
 </script>
-
-
 <style id="v8737-student-picker-style">
 #qRecipient{display:none!important}
 .qrec-picker{margin-top:5px;border:1px solid #cbd9e5;border-radius:12px;background:#fff;overflow:hidden}
@@ -3092,8 +3016,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{ensure();render()},100));
 })();
 </script>
-
-
 <style id="v8738-recipient-modal-style">
 /* 8.7.38 - Một bộ chọn học sinh dùng chung, không bung 129 HS trong 4 tab */
 #qRecipientPicker{display:none!important}
@@ -3112,21 +3034,19 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
 .qrm-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 20px 16px;border-top:1px solid #e3ebf1;background:#fbfdfe}.qrm-pages{display:flex;gap:5px}.qrm-pages button{min-width:31px;height:31px;border:1px solid #c7d8e2;border-radius:8px;background:#fff;font-weight:800;cursor:pointer}.qrm-pages button.active{background:#087f78;color:#fff;border-color:#087f78}.qrm-confirm{border:0;border-radius:10px;background:#087f78;color:#fff;font-weight:900;padding:10px 15px;cursor:pointer}
 @media(max-width:620px){.qrm-list{grid-template-columns:1fr}.qrm-modes{grid-template-columns:1fr}.qrm-tools{grid-template-columns:1fr}.qrm-foot{align-items:flex-start;flex-direction:column}}
 </style>
-
-<div id="qRecipientModal" aria-hidden="true">
- <div class="qrm-card">
-  <div class="qrm-head"><div><h3>Chọn người nhận</h3><p id="qrmClassInfo">Chọn cả lớp, nhóm hoặc cá nhân.</p></div><button class="qrm-close" type="button" onclick="closeRecipientModal()">×</button></div>
-  <div class="qrm-modes">
-   <button type="button" class="qrm-mode active" data-mode="class">Cả lớp</button>
-   <button type="button" class="qrm-mode" data-mode="group">Chọn nhóm</button>
-   <button type="button" class="qrm-mode" data-mode="single">Chọn cá nhân</button>
-  </div>
-  <div class="qrm-tools"><input id="qrmSearch" type="search" placeholder="Tìm học sinh theo họ tên..."><button id="qrmSelectPage" class="qrm-select-page" type="button">Chọn trang này</button></div>
-  <div id="qrmList" class="qrm-list"></div>
-  <div class="qrm-foot"><div><b id="qrmSelectedCount">Đã chọn: 0</b><div id="qrmPages" class="qrm-pages" style="margin-top:7px"></div></div><button class="qrm-confirm" type="button" onclick="confirmRecipients()">Xác nhận</button></div>
- </div>
+<div aria-hidden="true" id="qRecipientModal">
+<div class="qrm-card">
+<div class="qrm-head"><div><h3>Chọn người nhận</h3><p id="qrmClassInfo">Chọn cả lớp, nhóm hoặc cá nhân.</p></div><button class="qrm-close" onclick="closeRecipientModal()" type="button">×</button></div>
+<div class="qrm-modes">
+<button class="qrm-mode active" data-mode="class" type="button">Cả lớp</button>
+<button class="qrm-mode" data-mode="group" type="button">Chọn nhóm</button>
+<button class="qrm-mode" data-mode="single" type="button">Chọn cá nhân</button>
 </div>
-
+<div class="qrm-tools"><input id="qrmSearch" placeholder="Tìm học sinh theo họ tên..." type="search"/><button class="qrm-select-page" id="qrmSelectPage" type="button">Chọn trang này</button></div>
+<div class="qrm-list" id="qrmList"></div>
+<div class="qrm-foot"><div><b id="qrmSelectedCount">Đã chọn: 0</b><div class="qrm-pages" id="qrmPages" style="margin-top:7px"></div></div><button class="qrm-confirm" onclick="confirmRecipients()" type="button">Xác nhận</button></div>
+</div>
+</div>
 <script id="v8738-recipient-modal-script">
 (function(){
  const E=id=>document.getElementById(id), SIZE=10;
@@ -3224,8 +3144,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{ensureSummary();summary()},100));
 })();
 </script>
-
-
 <style id="v8739-fix-results-panel">
 /* Bảng chi tiết bài làm chỉ thuộc tab Bài học sinh nộp, không được nằm ngoài 4 pane */
 #assignmentsPanel > #resultsPanel83{display:none!important}
@@ -3284,12 +3202,6 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  setTimeout(()=>{const b=E('rRows83');if(b)bodyObserver.observe(b,{childList:true})},350);
 })();
 </script>
-
-
-
-
-
-
 <style id="v8747-recent-student-real-buttons">
 #homeStudentList{position:relative;z-index:5;pointer-events:auto!important}
 #homeStudentList .recent-student-button{
