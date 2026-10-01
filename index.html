@@ -797,7 +797,7 @@ function renderHome(){
  if(!s){sum.innerHTML='<div class="empty">Chưa có học sinh. Nhấn “Thêm học sinh” để bắt đầu.</div>';list.innerHTML='';return;}
  const m=metrics(s), next=s.weekPlan?.days?.flatMap((d,di)=>d.tasks.map((t,ti)=>({...t,di,ti,date:d.date,active:d.active}))).find(t=>t.active&&!t.done);
  sum.innerHTML=`<h3>${esc(s.name)}</h3><div><span class="tag blue">${esc(s.className)}</span><span class="tag">${esc(s.subject)}</span><span class="tag amber">${s.score||'Chưa có điểm'} điểm</span></div><p><b>Mức hiện tại:</b> ${supportLevel(s.score)}</p><p><b>Mục tiêu:</b> ${esc(s.goals?.[0]?.target||s.goal||'Chưa đặt')}</p><p><b>Tiến độ nhiệm vụ:</b> ${m.done}% · <b>Hiệu quả:</b> ${m.avg}%</p><div class="next-box"><b>Việc nên làm tiếp theo</b><div>${next?esc(next.text):'Tạo kế hoạch tuần hoặc bắt đầu một phiên học.'}</div></div><button class="btn primary big-next" onclick="startToday()">▶ Bắt đầu học hôm nay</button><div class="mini-actions"><button class="btn secondary small" onclick="goPanel('plan')">📅 Kế hoạch</button><button class="btn secondary small" onclick="goPanel('report')">📊 Báo cáo</button></div>`;
- list.innerHTML=state.students.slice(0,6).map(x=>`<div class="list-card"><h3>${esc(x.name)}</h3><span class="tag blue">${esc(x.className)}</span><span class="tag">${esc(x.subject)}</span><p class="help">${x.score||'—'} điểm · ${supportLevel(x.score)}</p><button type="button" class="btn secondary small home-pick-student" data-home-student-id="${esc(x.id)}" onclick="switchStudent('${x.id}');goPanel('profiles');return false;">Chọn học sinh</button></div>`).join('');
+ list.innerHTML=state.students.slice(0,6).map(x=>`<div class="list-card"><h3>${esc(x.name)}</h3><span class="tag blue">${esc(x.className)}</span><span class="tag">${esc(x.subject)}</span><p class="help">${x.score||'—'} điểm · ${supportLevel(x.score)}</p></div>`).join('');
 }
 function quickCreateRoute(){
  const s=currentStudent();if(!s){toast('Hãy chọn hoặc thêm học sinh trước');goPanel('profiles');return;}
@@ -3285,13 +3285,3 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
 
 
 
-<style id="v8743-home-student-button">
-#homeStudentList .list-card{position:relative}
-#homeStudentList .home-pick-student{
-  position:relative!important;
-  z-index:20!important;
-  pointer-events:auto!important;
-  cursor:pointer!important;
-  touch-action:manipulation;
-}
-</style>
