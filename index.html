@@ -351,11 +351,12 @@ html,body{margin:0!important;padding:0!important}
 <div>
 <div class="field"><label>Họ và tên <span class="req">*</span></label><input id="pName" placeholder="Ví dụ: Nguyễn Minh An"/></div>
 <div class="field"><label>Lớp <span class="req">*</span></label><input id="pClass" placeholder="Ví dụ: 10A1, 11A2, 12C5"/></div>
-<div class="grid2"><div class="field"><label>Môn cần cải thiện <span class="req">*</span></label><select id="pSubject" onchange="renderSubjectTip()"><option>Toán</option><option>Ngữ văn</option><option>Tiếng Anh</option><option>Tin học</option><option>Vật lí</option><option>Hóa học</option><option>Sinh học</option><option>Lịch sử</option><option>Địa lí</option><option>Công nghệ</option><option>Khác</option></select></div><div class="field"><label>Điểm hiện tại</label><input id="pScore" max="10" min="0" placeholder="0 - 10" step="0.1" type="number"/></div></div>
+<div class="field"><label>Môn đang theo dõi <span class="req">*</span></label><select id="pSubject" onchange="renderSubjectTip()"><option>Toán</option><option>Ngữ văn</option><option>Tiếng Anh</option><option>Tin học</option><option>Vật lí</option><option>Hóa học</option><option>Sinh học</option><option>Lịch sử</option><option>Địa lí</option><option>Công nghệ</option><option>Khác</option></select><small class="help">Chọn môn đang xem trong hồ sơ. Năng lực môn sẽ được hình thành từ bài luyện và kiểm tra thực tế, không nhập điểm đầu vào.</small></div>
+<div class="field"><label>Các môn học sinh đăng ký ôn</label><div id="pRegisteredSubjects" class="subject-check-grid"></div><small class="help">Có thể chọn nhiều môn. Ví dụ học sinh chỉ muốn ôn Toán và Hóa học.</small></div>
 <div class="field"><label>Mục tiêu ban đầu</label><select id="pGoal"><option>Hiểu bài chắc hơn</option><option>Tăng điểm kiểm tra</option><option>Lấp lỗ hổng kiến thức</option><option>Ôn thi</option><option>Học nâng cao</option><option>Tạo thói quen tự học</option></select></div>
 <div class="grid2"><div class="field"><label>Thời gian học mỗi ngày</label><select id="pTime"><option value="30">30 phút</option><option selected="" value="45">45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option></select></div><div class="field"><label>Số ngày học mỗi tuần</label><select id="pDays"><option>3</option><option>4</option><option selected="">5</option><option>6</option><option>7</option></select></div></div>
 <div class="field"><label>Khó khăn đang gặp</label><textarea id="pDifficulty" placeholder="Ví dụ: Dễ mất tập trung, chưa nhớ công thức, ngại làm bài..."></textarea></div>
-<div class="field"><label>Điểm mạnh hoặc sở thích</label><textarea id="pStrength" placeholder="Ví dụ: Thích hình ảnh, thực hành tốt, chăm ghi chép..."></textarea></div>
+<div class="field"><label>Điểm mạnh hoặc sở thích</label><textarea id="pStrength" placeholder="Ví dụ: Thích hình ảnh, thực hành tốt, chăm ghi chép..."></textarea></div><div class="field"><label>Ghi chú của giáo viên</label><textarea id="pTeacherNote" placeholder="Ví dụ: Học sinh báo chỉ muốn ôn Toán và Hóa học vì đang yếu hai môn; mục tiêu khoảng 6–7 điểm."></textarea><small class="help">Ghi nhanh nhu cầu học sinh trao đổi trực tiếp, mục tiêu hoặc lưu ý riêng để giáo viên không phải nhớ bên ngoài app.</small></div>
 <div class="info-box" id="subjectTip"></div>
 <div class="action-row"><button class="btn primary" onclick="saveProfile()">💾 Lưu hồ sơ</button><button class="btn secondary" onclick="fillSampleProfile()">Điền mẫu minh họa</button><button class="btn danger" id="deleteProfileBtn" onclick="deleteCurrentProfile()">Xóa hồ sơ</button></div>
 </div>
@@ -374,7 +375,7 @@ html,body{margin:0!important;padding:0!important}
 </div>
 
 <section class="card panel" id="analysisPanel">
-<div class="panel-head"><div><h2>3. Phân tích cá nhân hóa</h2><p>Kết quả được tổng hợp từ hồ sơ và khảo sát đầu vào.</p></div></div>
+<div class="panel-head"><div><h2>Phân tích cá nhân hóa</h2><p>Phân tích theo từng học sinh và từng môn, dựa trên dữ liệu học tập thực tế.</p></div></div>
 <div id="analysisContent"></div>
 </section>
 <section class="card panel" id="goalsPanel">
@@ -528,8 +529,8 @@ html,body{margin:0!important;padding:0!important}
 <script>
 'use strict';
 const STORE_KEY='hocTapThongMinhPro_v5_2_demo4';
-const PANEL_ORDER=['profiles','survey','analysis','goals','plan','session','journal'];
-const PANEL_LABELS=['Hồ sơ','Khảo sát','Phân tích','Mục tiêu','Kế hoạch','Phiên học','Nhật ký'];
+const PANEL_ORDER=['profiles','analysis','goals','plan','session','journal'];
+const PANEL_LABELS=['Hồ sơ','Phân tích','Mục tiêu','Kế hoạch','Phiên học','Nhật ký'];
 const questions=[
 ['Em nhớ bài tốt hơn khi nhìn sơ đồ, hình ảnh, màu sắc hoặc bảng tóm tắt.','visual'],['Em thích nghe giáo viên giải thích hoặc nghe lại nội dung bài học.','audio'],['Em hiểu bài hơn khi tự ghi chép, đọc lại và gạch ý chính.','read'],['Em học nhanh hơn khi được làm bài, thao tác, thí nghiệm hoặc thực hành.','practice'],['Em cần ví dụ từng bước trước khi tự giải quyết nhiệm vụ.','practice'],['Em dễ nhớ kiến thức nếu biến bài học thành sơ đồ tư duy.','visual'],['Em thường học tốt khi tự nói lại kiến thức bằng lời của mình.','audio'],['Em có thói quen ghi công thức, từ khóa hoặc định nghĩa vào vở riêng.','read'],['Em dễ mất tập trung nếu học quá lâu mà không có nhiệm vụ nhỏ.','focus'],['Em hay trì hoãn nếu bài học quá khó hoặc quá dài.','focus'],['Em nhớ lâu hơn nếu được ôn lại sau 1 ngày, 3 ngày và 7 ngày.','memory'],['Em học tốt hơn khi mục tiêu của buổi học được nêu rõ.','goal'],['Em có động lực hơn khi có thử thách, điểm thưởng hoặc ghi nhận tiến bộ.','motivation'],['Em cần được chỉ rõ lỗi sai và cách sửa cụ thể.','feedback'],['Em tự tin hơn khi nhiệm vụ được sắp xếp từ dễ đến khó.','level']
 ];
@@ -561,7 +562,7 @@ function ensureHomeroomRosterCore(){
  const byName=new Map(state.students.map(x=>[String(x.name||'').trim().toLocaleLowerCase('vi'),x]));
  HOMEROOM_ROSTER.forEach((name,i)=>{
    let st=byName.get(name.toLocaleLowerCase('vi'));
-   if(!st){st={id:uid(),name,className:CLASS,grade:'',subject:['Tin học','Toán','Tiếng Anh','Vật lí'][i%4],score:'',goal:'Hoàn thành nhiệm vụ ôn tập được giao',dailyTime:30,daysPerWeek:5,difficulty:'',strength:'',createdAt:new Date().toISOString(),survey:null,goals:[],weekPlan:null,journals:[],assignments:[],lastSession:null};state.students.push(st);}
+   if(!st){st={id:uid(),name,className:CLASS,grade:'',subject:['Tin học','Toán','Tiếng Anh','Vật lí'][i%4],score:'',goal:'Hoàn thành nhiệm vụ ôn tập được giao',dailyTime:30,daysPerWeek:5,difficulty:'',strength:'',teacherNote:'',registeredSubjects:['Toán'],createdAt:new Date().toISOString(),survey:null,goals:[],weekPlan:null,journals:[],assignments:[],lastSession:null};state.students.push(st);}
    st.className=CLASS; st.journals=Array.isArray(st.journals)?st.journals:[]; st.assignments=Array.isArray(st.assignments)?st.assignments:[];
    if(!st.journals.some(j=>j.dashboardCoreDemo)){st.journals.push({id:'corelog_'+i,date:'2026-10-01',what:'Ôn tập theo nhiệm vụ hôm nay',hard:i%3===0?'Câu vận dụng':'Kiến thức trọng tâm',remember:'Đã ghi nhận tiến độ học tập',next:'Tiếp tục bài ôn theo kế hoạch',understand:i<30?8:7,focus:i<24?8:7,dashboardCoreDemo:true});}
    if(!st.assignments.some(a=>a.dashboardCoreDemo)){const finished=i<18;st.assignments.push({id:'coretask_'+i,title:['Ôn tập dữ liệu và thông tin','Ôn tập hàm số và đồ thị','Ôn tập từ vựng và đọc hiểu','Ôn tập chuyển động và vận tốc'][i%4],subject:['Tin học','Toán','Tiếng Anh','Vật lí'][i%4],date:'2026-10-01',assignedAt:'2026-10-01T07:00:00',dueAt:'2026-10-01T21:00:00',portalPublished:true,status:finished?'graded':'pending',submittedAt:finished?'2026-10-01T09:00:00':null,score:finished?Number((6.5+(i%4)*0.8).toFixed(1)):null,dashboardCoreDemo:true,quiz:{scheme:i%3===0?'3':'4',duration:15,questions:[]}});}
@@ -575,10 +576,17 @@ function goPanel(name){if(name==='report')setTimeout(()=>renderReport(),0);curre
 function updateStudentSelect(){const options=state.students.length?state.students.map(s=>`<option value="${s.id}" ${s.id===state.currentStudentId?'selected':''}>${esc(s.name)} · ${esc(s.className)} · ${esc(s.subject)}</option>`).join(''):'<option value="">Chưa có hồ sơ</option>';for(const id of ['studentSelect','planStudentSelect']){const sel=document.getElementById(id);if(sel)sel.innerHTML=options}}
 function switchStudent(id){state.currentStudentId=id||null;saveState();loadProfileForm();loadSurveyForm();renderAll();toast('Đã chuyển hồ sơ học sinh')}
 function emptyProfile(){return{id:uid(),name:'',className:'',grade:'10',subject:'Toán',score:'',goal:'Hiểu bài chắc hơn',dailyTime:45,daysPerWeek:5,difficulty:'',strength:'',createdAt:new Date().toISOString(),survey:null,goals:[],weekPlan:null,journals:[],assignments:[],lastSession:null}}
-function newProfile(){state.currentStudentId=null;['pName','pClass','pScore','pDifficulty','pStrength'].forEach(id=>document.getElementById(id).value='');document.getElementById('pSubject').value='Toán';document.getElementById('pGoal').value='Hiểu bài chắc hơn';document.getElementById('pTime').value='45';document.getElementById('pDays').value='5';renderSubjectTip();document.getElementById('deleteProfileBtn').disabled=true;toast('Đang tạo hồ sơ mới')}
-function saveProfile(){const name=document.getElementById('pName').value.trim(),className=document.getElementById('pClass').value.trim(),subject=document.getElementById('pSubject').value;if(!name||!className||!subject){toast('Vui lòng nhập họ tên, lớp và môn học');return}let s=currentStudent();if(!s){s=emptyProfile();state.students.push(s);state.currentStudentId=s.id}s.name=name;s.className=className;s.grade=gradeFromClass(className)||s.grade||'';s.subject=subject;s.score=document.getElementById('pScore').value;s.goal=document.getElementById('pGoal').value;s.dailyTime=+document.getElementById('pTime').value;s.daysPerWeek=+document.getElementById('pDays').value;s.difficulty=document.getElementById('pDifficulty').value.trim();s.strength=document.getElementById('pStrength').value.trim();saveState();renderProfiles();document.getElementById('deleteProfileBtn').disabled=false;toast('Đã lưu hồ sơ học sinh')}
-function loadProfileForm(){const s=currentStudent();if(!s){newProfile();return}document.getElementById('pName').value=s.name;document.getElementById('pClass').value=s.className;document.getElementById('pSubject').value=s.subject;document.getElementById('pScore').value=s.score;document.getElementById('pGoal').value=s.goal;document.getElementById('pTime').value=s.dailyTime;document.getElementById('pDays').value=s.daysPerWeek;document.getElementById('pDifficulty').value=s.difficulty;document.getElementById('pStrength').value=s.strength;document.getElementById('deleteProfileBtn').disabled=false;renderSubjectTip()}
-function fillSampleProfile(){document.getElementById('pName').value='Nguyễn Minh An';document.getElementById('pClass').value='10A1';document.getElementById('pSubject').value='Toán';document.getElementById('pScore').value='6.5';document.getElementById('pGoal').value='Tăng điểm kiểm tra';document.getElementById('pTime').value='45';document.getElementById('pDays').value='5';document.getElementById('pDifficulty').value='Chưa chắc công thức và dễ mất tập trung khi bài dài.';document.getElementById('pStrength').value='Chăm ghi chép, thích ví dụ trực quan.';renderSubjectTip();toast('Đã điền dữ liệu minh họa, hãy nhấn Lưu hồ sơ')}
+const PROFILE_SUBJECTS=['Toán','Ngữ văn','Tiếng Anh','Tin học','Vật lí','Hóa học','Sinh học','Lịch sử','Địa lí','Công nghệ'];
+function renderRegisteredSubjects(selected){
+ const host=document.getElementById('pRegisteredSubjects');if(!host)return;
+ const set=new Set(Array.isArray(selected)?selected:[]);
+ host.innerHTML=PROFILE_SUBJECTS.map(m=>`<label class="subject-check"><input type="checkbox" value="${esc(m)}" ${set.has(m)?'checked':''}><span>${esc(m)}</span></label>`).join('');
+}
+function getRegisteredSubjects(){return [...document.querySelectorAll('#pRegisteredSubjects input:checked')].map(x=>x.value)}
+function newProfile(){state.currentStudentId=null;['pName','pClass','pDifficulty','pStrength','pTeacherNote'].forEach(id=>document.getElementById(id).value='');document.getElementById('pSubject').value='Toán';document.getElementById('pGoal').value='Hiểu bài chắc hơn';document.getElementById('pTime').value='45';document.getElementById('pDays').value='5';renderRegisteredSubjects(['Toán']);renderSubjectTip();document.getElementById('deleteProfileBtn').disabled=true;toast('Đang tạo hồ sơ mới')}
+function saveProfile(){const name=document.getElementById('pName').value.trim(),className=document.getElementById('pClass').value.trim(),subject=document.getElementById('pSubject').value;if(!name||!className||!subject){toast('Vui lòng nhập họ tên, lớp và môn đang theo dõi');return}if(!getRegisteredSubjects().length){toast('Hãy chọn ít nhất một môn học sinh đăng ký ôn');return}let s=currentStudent();if(!s){s=emptyProfile();state.students.push(s);state.currentStudentId=s.id}s.name=name;s.className=className;s.grade=gradeFromClass(className)||s.grade||'';s.subject=subject;s.goal=document.getElementById('pGoal').value;s.dailyTime=+document.getElementById('pTime').value;s.daysPerWeek=+document.getElementById('pDays').value;s.difficulty=document.getElementById('pDifficulty').value.trim();s.strength=document.getElementById('pStrength').value.trim();s.teacherNote=(document.getElementById('pTeacherNote')?.value||'').trim();s.registeredSubjects=getRegisteredSubjects();if(!s.registeredSubjects.includes(subject))s.registeredSubjects.unshift(subject);saveState();renderProfiles();document.getElementById('deleteProfileBtn').disabled=false;toast('Đã lưu hồ sơ học sinh')}
+function loadProfileForm(){const s=currentStudent();if(!s){newProfile();return}document.getElementById('pName').value=s.name;document.getElementById('pClass').value=s.className;document.getElementById('pSubject').value=s.subject;document.getElementById('pGoal').value=s.goal;document.getElementById('pTime').value=s.dailyTime;document.getElementById('pDays').value=s.daysPerWeek;document.getElementById('pDifficulty').value=s.difficulty;document.getElementById('pStrength').value=s.strength;document.getElementById('pTeacherNote').value=s.teacherNote||'';renderRegisteredSubjects(s.registeredSubjects?.length?s.registeredSubjects:[s.subject].filter(Boolean));document.getElementById('deleteProfileBtn').disabled=false;renderSubjectTip()}
+function fillSampleProfile(){document.getElementById('pName').value='Nguyễn Minh An';document.getElementById('pClass').value='10A1';document.getElementById('pSubject').value='Toán';document.getElementById('pGoal').value='Tăng điểm kiểm tra';document.getElementById('pTime').value='45';document.getElementById('pDays').value='5';document.getElementById('pDifficulty').value='Chưa chắc công thức và dễ mất tập trung khi bài dài.';document.getElementById('pStrength').value='Chăm ghi chép, thích ví dụ trực quan.';document.getElementById('pTeacherNote').value='Học sinh muốn tập trung ôn Toán và Hóa học; mục tiêu khoảng 6–7 điểm.';renderRegisteredSubjects(['Toán','Hóa học']);renderSubjectTip();toast('Đã điền dữ liệu minh họa, hãy nhấn Lưu hồ sơ')}
 function deleteCurrentProfile(){const s=currentStudent();if(!s)return;if(confirm(`Xóa hồ sơ ${s.name} và toàn bộ dữ liệu liên quan?`)){state.students=state.students.filter(x=>x.id!==s.id);state.currentStudentId=state.students[0]?.id||null;saveState();loadProfileForm();renderAll();toast('Đã xóa hồ sơ')}}
 function renderProfiles(){const box=document.getElementById('profileList');if(!state.students.length){box.innerHTML='<div class="empty">Chưa có hồ sơ. Hãy nhập thông tin bên trái và nhấn “Lưu hồ sơ”.</div>';return}box.innerHTML=state.students.map(s=>`<div class="list-card"><h3>${esc(s.name)}</h3><div><span class="tag blue">${esc(s.className)}</span><span class="tag">${esc(s.subject)}</span><span class="tag amber">${s.score||'Chưa có điểm'}</span></div><p class="help">${esc(s.goal)}</p><div class="mini-actions"><button class="btn secondary small" onclick="switchStudent('${s.id}')">Chọn hồ sơ</button><button class="btn secondary small" onclick="quickReport('${s.id}')">Xem báo cáo</button></div></div>`).join('')}
 function quickReport(id){switchStudent(id);goPanel('report')}
@@ -1931,28 +1939,89 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  window.renderAnalysis=function(){
   const box=document.getElementById('analysisContent'),s=typeof currentStudent==='function'?currentStudent():null;if(!box)return;
   if(!s){box.innerHTML='<div class="empty">Hãy chọn học sinh để xem phân tích cá nhân hóa.</div>';return}
-  const survey=s.survey,sc=survey?.scores||{},style=survey&&typeof learningStyle==='function'?learningStyle(sc):{main:'Chưa xác định',secondary:'—'};
-  const assignments=A(s.assignments),submitted=assignments.filter(a=>['done','graded','submitted'].includes(a.status)||a.submittedAt),scores=submitted.map(a=>Number(a.teacherScore??a.score)).filter(Number.isFinite),avg=scores.length?scores.reduce((x,y)=>x+y,0)/scores.length:Number(s.score)||0;
-  const p=perf(s),weekDone=submitted.filter(a=>String(a.submittedAt||a.date||'').slice(0,10)>='2026-09-28').length,totalWeek=assignments.filter(a=>String(a.date||a.assignedAt||'').slice(0,10)>='2026-09-28').length;
-  const weakest=[['Nhận biết',p.nb],['Thông hiểu',p.th],['Vận dụng',p.vd],['Vận dụng cao',p.vdc]].sort((a,b)=>a[1]-b[1])[0];
-  const next=weakest[0]==='Vận dụng cao'?'Ưu tiên câu Vận dụng, sau đó tăng dần Vận dụng cao':`Ưu tiên củng cố ${weakest[0]} trước khi tăng độ khó`;
-  const focus=sc.focus?Math.round(sc.focus/10*100):70,feedback=sc.feedback?Math.round(sc.feedback/5*100):70;
+
+  const assignments=A(s.assignments);
+  const submitted=assignments.filter(a=>['done','graded','submitted'].includes(String(a.status||'').toLowerCase())||a.submittedAt);
+  const rawScores=submitted.map(a=>Number(a.teacherScore??a.score)).filter(Number.isFinite);
+  const journals=A(s.journals||s.learningLogs||s.logs);
+  const completed=assignments.filter(a=>['done','graded','submitted'].includes(String(a.status||'').toLowerCase())||a.submittedAt).length;
+  const completion=assignments.length?Math.round(completed/assignments.length*100):0;
+
+  /* Chỉ phân tích khi có dữ liệu học tập thật. Không dùng khảo sát đầu vào và không tự suy diễn khi chưa đủ dữ liệu. */
+  const evidenceCount=submitted.length+journals.length;
+  const learningAttempts=submitted.length;
+  const dataStage=learningAttempts===0?'Chưa có dữ liệu':learningAttempts===1?'Dữ liệu ban đầu':learningAttempts<5?'Đang hình thành hồ sơ':'Đủ dữ liệu phân tích';
+
+  if(evidenceCount===0){
+    box.innerHTML=`<div class="analysis-source"><span>✓ Hồ sơ: ${E(s.name)}</span><span>✓ Môn: ${E(s.subject||'Chưa chọn')}</span><span>○ Chưa có bài làm/kết quả</span><span>○ Chưa có nhật ký học tập</span></div>
+    <div class="analysis-empty-real"><h3>Chưa có dữ liệu năng lực môn ${E(s.subject||'')}</h3><p>Không cần nhập điểm đầu vào. Học sinh bắt đầu bằng bài luyện hoặc bài kiểm tra 15 phút; kết quả đầu tiên sẽ tạo <b>Dữ liệu ban đầu</b>, sau đó hồ sơ năng lực được cập nhật dần theo các lượt học thực tế.</p>${s.teacherNote?`<div class="teacher-note-analysis"><b>📝 Ghi chú giáo viên:</b> ${E(s.teacherNote)}</div>`:''}<button class="btn primary" type="button" onclick="goPanel('assignments')">Tạo/Giao bài đầu tiên</button></div>`;
+    return;
+  }
+
+  const avg=rawScores.length?rawScores.reduce((x,y)=>x+y,0)/rawScores.length:null;
+  const recent=rawScores.slice(-3);
+  let trend='Chưa đủ dữ liệu xu hướng';
+  if(recent.length>=2){
+    const d=recent[recent.length-1]-recent[0];
+    trend=d>=0.5?'Đang tiến bộ':d<=-0.5?'Cần theo dõi':'Tương đối ổn định';
+  }
+
+  const perfRows=[];
+  const levelKeys=[
+    ['Nhận biết',['nb','recognition','nhanBiet']],
+    ['Thông hiểu',['th','understanding','thongHieu']],
+    ['Vận dụng',['vd','application','vanDung']],
+    ['Vận dụng cao',['vdc','highApplication','vanDungCao']]
+  ];
+  levelKeys.forEach(([label,keys])=>{
+    let vals=[];
+    submitted.forEach(a=>{
+      keys.forEach(k=>{
+        const v=Number(a[k]??a.levelScores?.[k]??a.performance?.[k]);
+        if(Number.isFinite(v)) vals.push(v);
+      });
+    });
+    if(vals.length) perfRows.push([label,Math.round(vals.reduce((x,y)=>x+y,0)/vals.length)]);
+  });
+
+  const topicStats={};
+  submitted.forEach(a=>{
+    const topic=String(a.topic||a.chapter||a.title||'').trim();
+    const score=Number(a.teacherScore??a.score);
+    if(topic&&Number.isFinite(score)){(topicStats[topic]??=[]).push(score)}
+  });
+  const topicRows=Object.entries(topicStats).map(([k,v])=>[k,v.reduce((x,y)=>x+y,0)/v.length]).sort((a,b)=>b[1]-a[1]);
+  const strongTopic=topicRows[0], weakTopic=topicRows.length>1?topicRows[topicRows.length-1]:null;
+  const weakLevel=perfRows.length?[...perfRows].sort((a,b)=>a[1]-b[1])[0]:null;
+
+  let recommendation='Tiếp tục hoàn thành các nhiệm vụ đang được giao và bổ sung thêm dữ liệu để hệ thống phân tích chính xác hơn.';
+  if(weakLevel) recommendation=`Ưu tiên luyện nhóm câu ${weakLevel[0]} vì đây là mức đang có kết quả thấp nhất (${weakLevel[1]}%).`;
+  else if(weakTopic) recommendation=`Ưu tiên củng cố chủ đề ${weakTopic[0]} dựa trên kết quả các bài đã làm.`;
+
+  const levelHtml=perfRows.length?`<div class="analysis-level">${perfRows.map(([n,v])=>`<div><b>${v}%</b><span>${E(n)}</span></div>`).join('')}</div>`:'<p class="help">Chưa có dữ liệu phân loại theo mức độ câu hỏi.</p>';
+  const scoreText=avg===null?'Chưa có điểm':avg.toFixed(1)+'/10';
+  const recentText=recent.length?recent.map(v=>Number(v).toFixed(1)).join(' → '):'Chưa có';
+  const strength=strongTopic?`${E(strongTopic[0])} (${strongTopic[1].toFixed(1)}/10)`:(avg!==null&&avg>=7?'Kết quả chung đang ở mức khá trở lên.':'Chưa đủ dữ liệu để xác định rõ.');
+  const weakness=weakTopic?`${E(weakTopic[0])} (${weakTopic[1].toFixed(1)}/10)`:weakLevel?`${E(weakLevel[0])} (${weakLevel[1]}%)`:'Chưa đủ dữ liệu để xác định rõ.';
+
   box.innerHTML=`
-   <div class="analysis-source"><span>✓ Hồ sơ học sinh</span><span>${survey?'✓ Khảo sát đầu vào 15 câu':'○ Chưa khảo sát'}</span><span>✓ Bài đã giao</span><span>✓ Kết quả học tập</span><span>✓ Nhật ký/tiến độ</span></div>
+   <div class="analysis-context"><b>${E(s.name)}</b><span>${E(s.className||'')}</span><span>${E(s.subject||'')}</span></div>
+   <div class="analysis-source"><span>✓ Hồ sơ học sinh</span><span>${submitted.length?'✓':'○'} Bài làm & kết quả: ${submitted.length}</span><span>${assignments.length?'✓':'○'} Nhiệm vụ được giao: ${assignments.length}</span><span>${journals.length?'✓':'○'} Nhật ký học tập: ${journals.length}</span></div>
    <div class="analysis-kpis">
-    <div class="analysis-kpi"><small>Mức hiện tại</small><strong>${levelName(avg)}</strong><div>${avg?avg.toFixed(1)+'/10':'Chưa có điểm'}</div></div>
-    <div class="analysis-kpi"><small>Phong cách nổi trội</small><strong style="font-size:17px">${E(style.main)}</strong><div>${E(style.secondary||'')}</div></div>
-    <div class="analysis-kpi"><small>Nhiệm vụ tuần</small><strong>${weekDone}/${totalWeek||0}</strong><div>đã hoàn thành</div></div>
-    <div class="analysis-kpi"><small>Tập trung tự đánh giá</small><strong>${focus}%</strong><div>Nhu cầu phản hồi ${feedback}%</div></div>
+    <div class="analysis-kpi"><small>Điểm trung bình</small><strong>${scoreText}</strong><div>${rawScores.length} kết quả có điểm</div></div>
+    <div class="analysis-kpi"><small>Tiến độ nhiệm vụ</small><strong>${completion}%</strong><div>${completed}/${assignments.length} hoàn thành</div></div>
+    <div class="analysis-kpi"><small>Xu hướng gần đây</small><strong style="font-size:17px">${E(trend)}</strong><div>${E(recentText)}</div></div>
+    <div class="analysis-kpi"><small>Độ hình thành hồ sơ</small><strong style="font-size:17px">${E(dataStage)}</strong><div>${learningAttempts} lượt bài/kiểm tra</div></div>
    </div>
    <div class="analysis-two">
-    <div class="analysis-box"><h3>Điểm mạnh & phần cần củng cố</h3><p><b>Điểm mạnh:</b> ${E(s.strength||'Đang tiếp tục thu thập dữ liệu.')}</p><p><b>Cần củng cố:</b> ${E(s.difficulty||weakest[0])}</p><div class="analysis-level"><div><b>${p.nb}%</b><span>Nhận biết</span></div><div><b>${p.th}%</b><span>Thông hiểu</span></div><div><b>${p.vd}%</b><span>Vận dụng</span></div><div><b>${p.vdc}%</b><span>Vận dụng cao</span></div></div></div>
-    <div class="analysis-box"><h3>Cách học phù hợp</h3><p><b>Ưu tiên:</b> ${E(style.main==='Hình ảnh'?'Sơ đồ, bảng tóm tắt và ví dụ trực quan.':style.main==='Âm thanh'?'Nghe giải thích ngắn và tự trình bày lại cách làm.':style.main==='Đọc – viết'?'Ghi chú từ khóa, tóm tắt và lập bảng kiến thức.':'Làm mẫu – thực hành – sửa lỗi – làm lại.')}</p><p><b>Nhịp học đề xuất:</b> ${Number(s.dailyTime)||30} phút/lượt · ${Number(s.daysPerWeek)||5} ngày/tuần.</p><p><b>Mục tiêu cá nhân:</b> ${E(s.goal||'Hoàn thành đều các nhiệm vụ được giao.')}</p></div>
+    <div class="analysis-box"><h3>Điểm mạnh & phần cần củng cố</h3><p><b>Điểm mạnh:</b> ${strength}</p><p><b>Cần củng cố:</b> ${weakness}</p>${levelHtml}</div>
+    <div class="analysis-box"><h3>Phân tích theo môn ${E(s.subject||'')}</h3><p><b>Chủ đề có dữ liệu tốt nhất:</b> ${strongTopic?`${E(strongTopic[0])} · ${strongTopic[1].toFixed(1)}/10`:'Chưa đủ dữ liệu theo chủ đề.'}</p><p><b>Chủ đề cần ưu tiên:</b> ${weakTopic?`${E(weakTopic[0])} · ${weakTopic[1].toFixed(1)}/10`:'Chưa đủ dữ liệu theo chủ đề.'}</p><p><b>Nhật ký:</b> ${journals.length} bản ghi học tập.</p></div>
    </div>
-   <div class="analysis-next"><h3>Đề xuất ôn tập tiếp theo</h3><p><b>${E(next)}.</b> Mức ${E(weakest[0])} hiện khoảng <b>${weakest[1]}%</b>. Bài tiếp theo nên lấy trực tiếp từ Kế hoạch ôn tập/Bài tập & ôn luyện để không tạo nội dung rời.</p><span class="analysis-badge">🎯 Mục tiêu gần: hoàn thành nhiệm vụ tuần và cải thiện mức ${E(weakest[0])}</span></div>
-   <div class="analysis-note">Dữ liệu demo lớp ${CLASS} dùng để minh họa cách app cá nhân hóa. Khi có bài làm thật, kết quả và đề xuất sẽ ưu tiên dữ liệu học tập thực tế của từng học sinh.</div>`;
+   ${s.teacherNote?`<div class="teacher-note-analysis"><b>📝 Ghi chú giáo viên:</b> ${E(s.teacherNote)}</div>`:''}
+   <div class="analysis-next"><h3>Đề xuất ôn tập tiếp theo</h3><p><b>${E(recommendation)}</b></p><p>Bài tiếp theo phải lấy từ <b>Kế hoạch ôn tập → Bài tập & ôn luyện</b>; kết quả sau khi học sinh nộp sẽ quay lại cập nhật phần phân tích này.</p></div>
+   <div class="analysis-note">Phân tích được tạo riêng cho <b>${E(s.name)}</b> ở môn <b>${E(s.subject||'đang chọn')}</b>. Không sử dụng khảo sát đầu vào và không gộp kết quả của các môn khác.</div>`;
  };
- function patchHeader(){const p=document.getElementById('analysisPanel');if(!p)return;const btn=p.querySelector('.panel-head button');if(btn){btn.textContent='Xem / cập nhật khảo sát';btn.setAttribute('onclick',"goPanel('survey')")};const sub=p.querySelector('.panel-head p');if(sub)sub.textContent='Tổng hợp từ hồ sơ, khảo sát đầu vào, bài đã giao, kết quả và tiến độ học tập.'}
+ function patchHeader(){const p=document.getElementById('analysisPanel');if(!p)return;const sub=p.querySelector('.panel-head p');if(sub)sub.textContent='Phân tích theo từng học sinh và từng môn, dựa trên bài làm, kết quả, tiến độ và nhật ký học tập thực tế.'}
  const oldGo=window.goPanel;window.goPanel=function(name){const r=oldGo.apply(this,arguments);if(name==='analysis')setTimeout(()=>{patchHeader();renderAnalysis()},0);return r};
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{seedPersonalization();patchHeader();if(typeof renderAll==='function')renderAll();renderAnalysis()},180));
 })();
@@ -3220,4 +3289,18 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
 #homeStudentList .recent-arrow{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#e9f6f4;color:#087f78;font-size:24px;font-weight:900;flex:0 0 auto}
 #homeStudentList .recent-score{display:block;margin-top:10px;font-size:13px;color:#6a7f8d}
 #homeStudentList .recent-hint{display:block;margin-top:8px;color:#087f78;font-size:12px;font-weight:850}
+</style>
+
+<style id="v8749-real-personal-analysis">
+.analysis-context{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:11px 13px;border-radius:13px;background:#eef7ff;border:1px solid #d8e8f6}
+.analysis-context b{font-size:16px;color:#123d55}.analysis-context span{padding:4px 8px;border-radius:999px;background:#fff;border:1px solid #d6e5ea;font-size:12px;font-weight:800;color:#52687a}
+.analysis-empty-real{padding:28px;border:1px dashed #b9cdd6;border-radius:18px;background:#f8fbfc;text-align:center}.analysis-empty-real h3{margin:0 0 8px;color:#123d55}.analysis-empty-real p{max-width:720px;margin:0 auto 16px;color:#617887;line-height:1.65}
+</style>
+
+<style id="v8750-profile-flow">
+.subject-check-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:7px}
+.subject-check{display:flex;align-items:center;gap:7px;padding:9px 10px;border:1px solid #dce8eb;border-radius:11px;background:#fbfdfd;cursor:pointer;font-size:13px;font-weight:750;color:#40586c}
+.subject-check:has(input:checked){background:#eef9f7;border-color:#9fd7d1;color:#087f78}.subject-check input{accent-color:#087f78}
+.teacher-note-analysis{margin:12px 0;padding:12px 14px;border-radius:13px;background:#fff8e8;border:1px solid #ecd99f;color:#66521a;line-height:1.55}
+@media(max-width:900px){.subject-check-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:560px){.subject-check-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
