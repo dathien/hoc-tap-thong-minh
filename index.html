@@ -797,30 +797,9 @@ function renderHome(){
  if(!s){sum.innerHTML='<div class="empty">Chưa có học sinh. Nhấn “Thêm học sinh” để bắt đầu.</div>';list.innerHTML='';return;}
  const m=metrics(s), next=s.weekPlan?.days?.flatMap((d,di)=>d.tasks.map((t,ti)=>({...t,di,ti,date:d.date,active:d.active}))).find(t=>t.active&&!t.done);
  sum.innerHTML=`<h3>${esc(s.name)}</h3><div><span class="tag blue">${esc(s.className)}</span><span class="tag">${esc(s.subject)}</span><span class="tag amber">${s.score||'Chưa có điểm'} điểm</span></div><p><b>Mức hiện tại:</b> ${supportLevel(s.score)}</p><p><b>Mục tiêu:</b> ${esc(s.goals?.[0]?.target||s.goal||'Chưa đặt')}</p><p><b>Tiến độ nhiệm vụ:</b> ${m.done}% · <b>Hiệu quả:</b> ${m.avg}%</p><div class="next-box"><b>Việc nên làm tiếp theo</b><div>${next?esc(next.text):'Tạo kế hoạch tuần hoặc bắt đầu một phiên học.'}</div></div><button class="btn primary big-next" onclick="startToday()">▶ Bắt đầu học hôm nay</button><div class="mini-actions"><button class="btn secondary small" onclick="goPanel('plan')">📅 Kế hoạch</button><button class="btn secondary small" onclick="goPanel('report')">📊 Báo cáo</button></div>`;
- list.innerHTML=state.students.slice(0,6).map(x=>`<div class="list-card recent-student-card" role="button" tabindex="0" data-student-id="${esc(x.id)}" onclick="openRecentStudent('${x.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRecentStudent('${x.id}')}"><div class="recent-student-top"><div><h3>${esc(x.name)}</h3><span class="tag blue">${esc(x.className)}</span><span class="tag">${esc(x.subject)}</span></div><span class="recent-arrow">›</span></div><p class="help">${x.score||'—'} điểm · ${supportLevel(x.score)}</p><small class="recent-hint">Bấm để mở hồ sơ nhanh</small></div>`).join('');
+ list.innerHTML=state.students.slice(0,6).map(x=>`<button type="button" class="list-card recent-student-button" onclick="state.currentStudentId='${x.id}';saveState();renderAll();goPanel('profiles');"><span class="recent-student-top"><span class="recent-main"><strong>${esc(x.name)}</strong><span class="recent-tags"><span class="tag blue">${esc(x.className)}</span><span class="tag">${esc(x.subject)}</span></span></span><span class="recent-arrow">›</span></span><span class="recent-score">${x.score||'—'} điểm · ${supportLevel(x.score)}</span><span class="recent-hint">Mở hồ sơ học sinh</span></button>`).join('');
 }
 
-window.openRecentStudent=function(id){
- const s=state.students.find(x=>String(x.id)===String(id));
- if(!s){toast('Không tìm thấy hồ sơ học sinh');return;}
- state.currentStudentId=s.id;
- window.__workClass=s.className||'';
- saveState();
- const wc=document.getElementById('workClassSelect'), ss=document.getElementById('studentSelect');
- if(wc)wc.value=s.className||'';
- if(ss)ss.value=s.id;
- loadProfileForm();
- loadSurveyForm();
- renderAll();
- goPanel('profiles');
- setTimeout(()=>{
-   const cf=document.getElementById('classManagerFilter');
-   const sf=document.getElementById('subjectManagerFilter');
-   if(cf)cf.value=s.className||'';
-   if(sf)sf.value=s.subject||'';
-   if(typeof classManagerChanged==='function')classManagerChanged();
- },0);
-};
 
 function quickCreateRoute(){
  const s=currentStudent();if(!s){toast('Hãy chọn hoặc thêm học sinh trước');goPanel('profiles');return;}
@@ -3310,10 +3289,23 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
 
 
 
-<style id="v8746-recent-student-cards">
-#homeStudentList .recent-student-card{cursor:pointer;position:relative;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;outline:none}
-#homeStudentList .recent-student-card:hover,#homeStudentList .recent-student-card:focus-visible{transform:translateY(-2px);box-shadow:0 10px 24px rgba(30,67,88,.12);border-color:#8fc6c2}
+
+<style id="v8747-recent-student-real-buttons">
+#homeStudentList{position:relative;z-index:5;pointer-events:auto!important}
+#homeStudentList .recent-student-button{
+  display:block;width:100%;text-align:left;font:inherit;color:inherit;
+  cursor:pointer!important;position:relative;z-index:10;pointer-events:auto!important;
+  appearance:none;-webkit-appearance:none;
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;
+}
+#homeStudentList .recent-student-button:hover,#homeStudentList .recent-student-button:focus-visible{
+  transform:translateY(-2px);box-shadow:0 10px 24px rgba(30,67,88,.12);border-color:#8fc6c2;outline:3px solid rgba(8,127,120,.12)
+}
 #homeStudentList .recent-student-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+#homeStudentList .recent-main{display:block;min-width:0}
+#homeStudentList .recent-main strong{display:block;font-size:17px;color:#173f59;margin-bottom:5px}
+#homeStudentList .recent-tags{display:block}
 #homeStudentList .recent-arrow{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#e9f6f4;color:#087f78;font-size:24px;font-weight:900;flex:0 0 auto}
-#homeStudentList .recent-hint{display:block;margin-top:8px;color:#087f78;font-weight:800}
+#homeStudentList .recent-score{display:block;margin-top:10px;font-size:13px;color:#6a7f8d}
+#homeStudentList .recent-hint{display:block;margin-top:8px;color:#087f78;font-size:12px;font-weight:850}
 </style>
