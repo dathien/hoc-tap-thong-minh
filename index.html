@@ -46,6 +46,14 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
 @keyframes statValueGlow{0%,100%{box-shadow:0 0 0 rgba(15,118,110,0)}45%{box-shadow:0 12px 30px rgba(15,118,110,.16);border-color:rgba(15,118,110,.35)}}
 @media(max-width:560px){.stat{min-height:124px;padding:15px 8px}.stat strong{font-size:34px!important}.stat span{font-size:12.5px!important}}
 @media(prefers-reduced-motion:reduce){.stat:hover strong,.stat.value-changed{animation:none!important}}
+
+/* Lớp chủ nhiệm - danh sách 40 học sinh */
+.homeroom-summary{display:flex;align-items:end;justify-content:space-between;gap:16px;padding:14px 16px;margin-bottom:14px;border:1px solid #dce8e7;border-radius:16px;background:linear-gradient(135deg,#f6fbfb,#fff)}
+.homeroom-summary>div:first-child{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:110px;color:#40576c;font-weight:700}
+.homeroom-kpi{font-size:36px;line-height:1;font-weight:900;color:#0f827c;margin-bottom:6px}
+.homeroom-search{flex:1;max-width:420px}.homeroom-search label{display:block;font-size:12px;font-weight:800;color:#526475;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}.homeroom-search input{width:100%;box-sizing:border-box}
+.homeroom-table-wrap{overflow:auto;border:1px solid #e1e9ee;border-radius:14px;background:#fff}.homeroom-table{width:100%;border-collapse:collapse}.homeroom-table th,.homeroom-table td{padding:11px 14px;border-bottom:1px solid #edf2f4;text-align:left}.homeroom-table th{position:sticky;top:0;background:#f4f9f9;color:#365066;font-size:13px;z-index:1}.homeroom-table th:first-child,.homeroom-table td:first-child{width:70px;text-align:center}.homeroom-table tbody tr:hover{background:#f8fcfc}.homeroom-empty{text-align:center!important;color:#6b7c8d;padding:24px!important}
+@media(max-width:700px){.homeroom-summary{align-items:stretch;flex-direction:column}.homeroom-summary>div:first-child{align-items:flex-start}.homeroom-search{max-width:none}.homeroom-kpi{font-size:32px}}
 </style>
 <style>
 /* Bảng điều khiển báo cáo: dùng SVG/CSS nội tuyến, hoạt động khi ngoại tuyến. */
@@ -327,9 +335,16 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
       </div>
     </section>
     <section id="homeroomPanel" class="card panel">
-      <div class="panel-head"><div><h2>Lớp chủ nhiệm</h2><p>Quản lý hồ sơ học sinh và theo dõi thông tin cần dùng cho công tác chủ nhiệm.</p></div></div>
-      <div class="action-grid">
-        <button class="action-card" onclick="goPanel('profiles')"><b>Danh sách học sinh</b><span>Thêm, cập nhật và nhập danh sách học sinh từ Excel.</span></button>
+      <div class="panel-head"><div><h2>Lớp chủ nhiệm</h2><p>Danh sách lớp chủ nhiệm được gom thành một lớp duy nhất để giáo viên theo dõi và quản lý thuận tiện.</p></div></div>
+      <div class="homeroom-summary">
+        <div><span class="homeroom-kpi" id="homeroomCount">40</span><span>Học sinh</span></div>
+        <div class="homeroom-search"><label for="homeroomSearch">Tìm học sinh</label><input id="homeroomSearch" type="search" placeholder="Nhập họ và tên…" oninput="renderHomeroomRoster()"></div>
+      </div>
+      <div class="homeroom-table-wrap">
+        <table class="homeroom-table"><thead><tr><th>STT</th><th>Họ và tên học sinh</th></tr></thead><tbody id="homeroomRosterBody"></tbody></table>
+      </div>
+      <div class="action-grid" style="margin-top:16px">
+        <button class="action-card" onclick="goPanel('profiles')"><b>Hồ sơ học sinh</b><span>Thêm, cập nhật hoặc nhập hồ sơ học sinh từ Excel.</span></button>
         <button class="action-card" onclick="goPanel('report')"><b>Báo cáo &amp; phụ huynh</b><span>Xem kết quả và chuẩn bị thông tin trao đổi với phụ huynh.</span></button>
       </div>
     </section>
@@ -384,7 +399,11 @@ function resetBrandSettings(){const d=brandDefaults();state.settings.appName=d.a
 function toggleFullscreen(){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()}
 function toggleFont(){state.settings.largeFont=!state.settings.largeFont;document.documentElement.style.setProperty('--font',state.settings.largeFont?'18px':'16px');saveState();toast(state.settings.largeFont?'Đã tăng cỡ chữ':'Đã đưa cỡ chữ về mặc định')}
 function toggleContrast(){state.settings.contrast=!state.settings.contrast;document.documentElement.classList.toggle('high-contrast',state.settings.contrast);saveState();toast(state.settings.contrast?'Đã bật tương phản cao':'Đã tắt tương phản cao')}
-function goPanel(name){if(currentPanel==='home'&&name!=='home'&&!window.__dashboardExitNav){window.__dashboardExitNav=true;updateDashboard('initial');document.querySelector('.stats')?.classList.add('dashboard-leaving');setTimeout(()=>{document.querySelector('.stats')?.classList.remove('dashboard-leaving');goPanel(name);window.__dashboardExitNav=false},520);return;}if(name==='report')setTimeout(()=>renderReport(),0);const previousPanel=currentPanel;currentPanel=name;document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById(name+'Panel').classList.add('active');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.panel===name));if(name==='home'){renderHome();if(previousPanel!=='home'){updateDashboard(dashboardHasAnimated?'revisit':'initial');dashboardHasAnimated=true;}}if(name==='analysis')renderAnalysis();if(name==='goals')renderGoals();if(name==='plan')renderWeekPlan();if(name==='session')buildSession();if(name==='journal')renderJournals();if(name==='assignments')renderAssignments();if(name==='report'){seedMonthlyDemoReports();renderReport();}window.scrollTo({top:0,behavior:'smooth'})}
+const HOMEROOM_ROSTER=[
+'Nguyễn Thị Ngọc Ánh','Nguyễn Đỗ Thanh Binh','Nguyễn Thị Thanh Hương','Nguyễn Hoàng Khang','Ngô Ngọc Lam','Nguyễn Tấn Lộc','Huỳnh Nhật Quang','Huỳnh Thị Như Hoàng','Nguyễn Phạm Xuân Nghi','Nguyễn Ngọc Phương Nghi','Nguyễn Hoàng Triều','Nguyễn Ngô Hoàn Tuấn','Hoàng Công Thành','Lê Việt Quốc Vương','Trần Xuân Lưu Bảo','Lê Nguyễn Ngọc Hương','Trần Ngọc Khánh Linh','Nguyễn Thành Nhơn','Nguyễn Phước Vĩnh','Ngô Duy Khoa','Đỗ Đăng Khoa','Tăng Hoàng Long','Đặng Nguyễn Kim Ngân','Nguyễn Trung Bảo','Phạm Gia Bảo','Nguyễn Tấn Đạt','Nguyễn Hồng Diễm','Trần Hữu Thành','Tô Quốc Thịnh','Nguyễn Xuân Trúc','Nguyễn Huyền Diệu','Trần Quang Nhân','Lê Nguyễn Quốc Duy','Đỗ Minh Kha','Thân Nguyễn Quốc Bảo','Phùng Trần Thanh Trúc','Nguyễn Huỳnh Hải Vy','Lê Huỳnh Hương Y','Trần Tấn Tài','Mai Phương Uyên'
+];
+function renderHomeroomRoster(){const body=document.getElementById('homeroomRosterBody');if(!body)return;const q=(document.getElementById('homeroomSearch')?.value||'').trim().toLocaleLowerCase('vi');const rows=HOMEROOM_ROSTER.map((name,index)=>({name,index:index+1})).filter(x=>!q||x.name.toLocaleLowerCase('vi').includes(q));const count=document.getElementById('homeroomCount');if(count)count.textContent=HOMEROOM_ROSTER.length;body.innerHTML=rows.length?rows.map(x=>`<tr><td>${x.index}</td><td><b>${esc(x.name)}</b></td></tr>`).join(''):'<tr><td colspan="2" class="homeroom-empty">Không tìm thấy học sinh phù hợp.</td></tr>'}
+function goPanel(name){if(currentPanel==='home'&&name!=='home'&&!window.__dashboardExitNav){window.__dashboardExitNav=true;updateDashboard('initial');document.querySelector('.stats')?.classList.add('dashboard-leaving');setTimeout(()=>{document.querySelector('.stats')?.classList.remove('dashboard-leaving');goPanel(name);window.__dashboardExitNav=false},520);return;}if(name==='report')setTimeout(()=>renderReport(),0);const previousPanel=currentPanel;currentPanel=name;document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById(name+'Panel').classList.add('active');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.panel===name));if(name==='home'){renderHome();if(previousPanel!=='home'){updateDashboard(dashboardHasAnimated?'revisit':'initial');dashboardHasAnimated=true;}}if(name==='homeroom')renderHomeroomRoster();if(name==='analysis')renderAnalysis();if(name==='goals')renderGoals();if(name==='plan')renderWeekPlan();if(name==='session')buildSession();if(name==='journal')renderJournals();if(name==='assignments')renderAssignments();if(name==='report'){seedMonthlyDemoReports();renderReport();}window.scrollTo({top:0,behavior:'smooth'})}
 function updateStudentSelect(){const options=state.students.length?state.students.map(s=>`<option value="${s.id}" ${s.id===state.currentStudentId?'selected':''}>${esc(s.name)} · ${esc(s.className)} · ${esc(s.subject)}</option>`).join(''):'<option value="">Chưa có hồ sơ</option>';for(const id of ['studentSelect','planStudentSelect']){const sel=document.getElementById(id);if(sel)sel.innerHTML=options}}
 function switchStudent(id){state.currentStudentId=id||null;saveState();loadProfileForm();loadSurveyForm();renderAll();toast('Đã chuyển hồ sơ học sinh')}
 function emptyProfile(){return{id:uid(),name:'',className:'',grade:'10',subject:'Toán',score:'',goal:'Hiểu bài chắc hơn',dailyTime:45,daysPerWeek:5,difficulty:'',strength:'',createdAt:new Date().toISOString(),survey:null,goals:[],weekPlan:null,journals:[],assignments:[],lastSession:null}}
