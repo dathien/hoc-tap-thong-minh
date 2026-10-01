@@ -1970,6 +1970,83 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();
 </script>
+
+<!-- v8.7.10 - KPI count-up cưỡng bức sau mọi render: 0 -> giá trị thật -->
+<style id="v8710-kpi-countup-css">
+#homePanel .stats .stat.v8710-counting{animation:v8710CardPulse 1.35s cubic-bezier(.2,.8,.2,1) both!important}
+#homePanel .stats .stat.v8710-counting strong{animation:v8710NumberPulse .42s ease-in-out infinite alternate!important;will-change:transform,opacity}
+#homePanel .stats .stat.v8710-counting:nth-child(2){animation-delay:.08s!important}
+#homePanel .stats .stat.v8710-counting:nth-child(3){animation-delay:.16s!important}
+#homePanel .stats .stat.v8710-counting:nth-child(4){animation-delay:.24s!important}
+@keyframes v8710CardPulse{0%{transform:translateY(8px);box-shadow:0 4px 10px rgba(30,64,175,.03)}45%{transform:translateY(-4px);box-shadow:0 18px 34px rgba(30,64,175,.16)}100%{transform:none}}
+@keyframes v8710NumberPulse{from{transform:translateY(2px) scale(.97);opacity:.72}to{transform:translateY(-2px) scale(1.055);opacity:1}}
+</style>
+<script id="v8710-kpi-countup-engine">
+(function(){
+  let runId=0, timer=0;
+  function A(v){return Array.isArray(v)?v:[]}
+  function targets(){
+    const all=A(window.state?.students);
+    const preferred=all.filter(s=>s.className==='TU2424HC12');
+    const hs=preferred.length?preferred:all;
+    const sessions=hs.reduce((n,s)=>n+A(s.journals).length,0);
+    const logs=hs.flatMap(s=>A(s.journals));
+    const efficiency=logs.length?Math.round(logs.reduce((n,j)=>n+(Number(j.understand)||0)+(Number(j.focus)||0),0)/(logs.length*20)*100):0;
+    const tasks=hs.flatMap(s=>A(s.assignments).filter(a=>a.portalPublished!==false));
+    const finished=tasks.filter(a=>['done','submitted','graded'].includes(a.status)||a.submittedAt).length;
+    const completion=tasks.length?Math.round(finished/tasks.length*100):0;
+    return [
+      ['statStudents',hs.length,''],['statSessions',sessions,''],
+      ['statTasks',completion,'%'],['statProgress',efficiency,'%']
+    ];
+  }
+  function animateOne(el,target,suffix,delay,myRun){
+    const card=el.closest('.stat');
+    setTimeout(()=>{
+      if(myRun!==runId||!document.getElementById('homePanel')?.classList.contains('active'))return;
+      if(el._countFrame)cancelAnimationFrame(el._countFrame);
+      card?.classList.add('v8710-counting');
+      el.textContent='0'+suffix;
+      const start=performance.now(), duration=1250;
+      function tick(now){
+        if(myRun!==runId)return;
+        const p=Math.min(1,(now-start)/duration);
+        const eased=1-Math.pow(1-p,4);
+        let value=Math.round(target*eased);
+        if(value>target)value=target;
+        el.textContent=value+suffix;
+        if(p<1)el._countFrame=requestAnimationFrame(tick);
+        else{
+          el.textContent=target+suffix;
+          el._dashboardValue=target;
+          el._countFrame=null;
+          setTimeout(()=>card?.classList.remove('v8710-counting'),220);
+        }
+      }
+      el._countFrame=requestAnimationFrame(tick);
+    },delay);
+  }
+  window.forceDashboardKpiCountUp=function(){
+    const home=document.getElementById('homePanel');
+    if(!home?.classList.contains('active'))return;
+    const myRun=++runId;
+    targets().forEach(([id,target,suffix],i)=>{
+      const el=document.getElementById(id); if(el)animateOne(el,Number(target)||0,suffix,i*110,myRun);
+    });
+  };
+  function schedule(){clearTimeout(timer);timer=setTimeout(()=>window.forceDashboardKpiCountUp(),520)}
+  const prev=window.goPanel;
+  if(typeof prev==='function'){
+    window.goPanel=function(name){
+      const result=prev.apply(this,arguments);
+      if(name==='home')schedule(); else {runId++;clearTimeout(timer)}
+      return result;
+    };
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(schedule,900),{once:true});
+  else setTimeout(schedule,900);
+})();
+</script>
 </body>
 </html>
 <style>
@@ -2154,5 +2231,73 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
   window.v879ReplayCurrentPage=function(){replay(document.querySelector('.panel.active'))};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installFinalWrapper,{once:true});
   else installFinalWrapper();
+})();
+</script>
+
+<!-- v8.7.11 - KPI nằm ngoài panel: chạy lại trên MỌI lần chuyển trang -->
+<style id="v8711-kpi-global-css">
+.stats .stat.v8711-counting{animation:v8711Card 1.18s cubic-bezier(.2,.8,.2,1) both!important}
+.stats .stat.v8711-counting strong{animation:v8711Number .34s ease-in-out infinite alternate!important;will-change:transform,opacity}
+@keyframes v8711Card{0%{transform:translateY(8px);box-shadow:0 4px 10px rgba(30,64,175,.03)}45%{transform:translateY(-5px);box-shadow:0 18px 36px rgba(30,64,175,.15)}100%{transform:none}}
+@keyframes v8711Number{from{transform:translateY(2px) scale(.97);opacity:.72}to{transform:translateY(-2px) scale(1.055);opacity:1}}
+</style>
+<script id="v8711-kpi-global-engine">
+(function(){
+  let generation=0, navTimer=0;
+  const arr=v=>Array.isArray(v)?v:[];
+  function getTargets(){
+    const all=arr(window.state?.students);
+    const preferred=all.filter(s=>s.className==='TU2424HC12');
+    const students=preferred.length?preferred:all;
+    const sessions=students.reduce((n,s)=>n+arr(s.journals).length,0);
+    const logs=students.flatMap(s=>arr(s.journals));
+    const efficiency=logs.length?Math.round(logs.reduce((n,j)=>n+(Number(j.understand)||0)+(Number(j.focus)||0),0)/(logs.length*20)*100):0;
+    const tasks=students.flatMap(s=>arr(s.assignments).filter(a=>a.portalPublished!==false));
+    const finished=tasks.filter(a=>['done','submitted','graded'].includes(a.status)||a.submittedAt).length;
+    const completion=tasks.length?Math.round(finished/tasks.length*100):0;
+    return [
+      ['statStudents',students.length,''],
+      ['statSessions',sessions,''],
+      ['statTasks',completion,'%'],
+      ['statProgress',efficiency,'%']
+    ];
+  }
+  function animate(el,target,suffix,delay,run){
+    const card=el.closest('.stat');
+    setTimeout(()=>{
+      if(run!==generation)return;
+      if(el.__v8711raf)cancelAnimationFrame(el.__v8711raf);
+      card?.classList.remove('v8711-counting'); void card?.offsetWidth; card?.classList.add('v8711-counting');
+      el.textContent='0'+suffix;
+      const start=performance.now(), duration=1100;
+      function frame(now){
+        if(run!==generation)return;
+        const p=Math.min(1,(now-start)/duration), eased=1-Math.pow(1-p,4);
+        el.textContent=Math.round(target*eased)+suffix;
+        if(p<1)el.__v8711raf=requestAnimationFrame(frame);
+        else{el.textContent=target+suffix;el.__v8711raf=null;setTimeout(()=>card?.classList.remove('v8711-counting'),180)}
+      }
+      el.__v8711raf=requestAnimationFrame(frame);
+    },delay);
+  }
+  function replay(){
+    const run=++generation;
+    getTargets().forEach(([id,target,suffix],i)=>{const el=document.getElementById(id);if(el)animate(el,Number(target)||0,suffix,i*95,run)});
+  }
+  function schedule(delay=120){clearTimeout(navTimer);navTimer=setTimeout(replay,delay)}
+  window.replayGlobalKpis=replay;
+  const previous=window.goPanel;
+  if(typeof previous==='function'&&!previous.__v8711GlobalKpi){
+    const wrapped=function(name){
+      const result=previous.apply(this,arguments);
+      // KPI là khối cố định ngoài các panel, vì vậy trang nào được mở cũng phải chạy lại.
+      schedule(140);
+      return result;
+    };
+    wrapped.__v8711GlobalKpi=true;
+    window.goPanel=wrapped;
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>schedule(700),{once:true});
+  else schedule(700);
 })();
 </script>
