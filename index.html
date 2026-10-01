@@ -2149,3 +2149,139 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  };
 })();
 </script>
+
+
+<style id="v8729-test-center-style">
+#sv2TestCenter{position:fixed;inset:0;z-index:100002;background:#f5f8fd;overflow:auto;color:#14213d;font-family:inherit}
+.svt-shell{max-width:1180px;margin:auto;padding:22px 22px 54px}
+.svt-top{display:flex;align-items:center;justify-content:space-between;gap:16px;background:#fff;border:1px solid #e3eaf5;border-radius:18px;padding:13px 16px;box-shadow:0 8px 28px rgba(20,45,95,.07)}
+.svt-back{border:1px solid #dbe4f2;background:#fff;border-radius:12px;padding:10px 14px;font-weight:800;cursor:pointer}
+.svt-head{text-align:center;padding:36px 12px 22px}.svt-head h1{margin:0 0 8px;font-size:32px}.svt-head p{margin:0;color:#68758d}
+.svt-subjects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.svt-subject{background:#fff;border:1px solid #dfe7f3;border-radius:18px;padding:18px;text-align:left;cursor:pointer;transition:.2s;box-shadow:0 8px 24px rgba(30,54,100,.05)}
+.svt-subject:hover{transform:translateY(-3px);border-color:#aebff8;box-shadow:0 13px 30px rgba(30,54,100,.10)}
+.svt-subject strong{display:block;font-size:19px;margin:8px 0 5px}.svt-subject small{color:#748198}.svt-subject-ico{font-size:25px}
+.svt-paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:20px}
+.svt-path{background:#fff;border:1px solid #e0e7f2;border-radius:20px;padding:20px;box-shadow:0 10px 28px rgba(20,45,95,.06)}
+.svt-path h3{margin:8px 0 7px;font-size:21px}.svt-path p{color:#6c7890;min-height:42px;margin:0 0 15px}
+.svt-path .svt-icon{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#eef3ff;font-size:23px}
+.svt-options{display:grid;gap:9px}.svt-option{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid #e2e8f3;background:#f9fbff;border-radius:12px;padding:11px 12px;cursor:pointer;font-weight:750;text-align:left}
+.svt-option:hover{background:#eef3ff;border-color:#bfcdf5}.svt-option span:last-child{color:#4059d9}
+.svt-question textarea{width:100%;min-height:130px;resize:vertical;border:1px solid #d9e2f0;border-radius:13px;padding:12px;font:inherit;box-sizing:border-box}
+.svt-question button{width:100%;margin-top:10px;border:0;border-radius:12px;padding:12px;background:linear-gradient(135deg,#315eea,#5747e8);color:#fff;font-weight:850;cursor:pointer}
+.svt-note{margin-top:10px;font-size:12px;color:#7b879b}
+.svt-toast{position:fixed;right:22px;bottom:22px;background:#17244a;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 10px 30px #0002;z-index:100003}
+@media(max-width:850px){.svt-subjects,.svt-paths{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.svt-shell{padding:12px}.svt-subjects,.svt-paths{grid-template-columns:1fr}.svt-head{padding-top:25px}.svt-head h1{font-size:26px}}
+</style>
+<div id="sv2TestCenter" hidden>
+  <div class="svt-shell">
+    <div class="svt-top">
+      <button class="svt-back" type="button" onclick="svtBack()">← Quay lại</button>
+      <strong>KIỂM TRA & ÔN LUYỆN</strong>
+      <span id="svtStudentName" style="font-weight:800"></span>
+    </div>
+    <section id="svtSubjectView">
+      <div class="svt-head"><h1>Em muốn học môn nào?</h1><p>Chọn môn để vào Luyện tập, Ôn thi hoặc đặt câu hỏi cho giáo viên.</p></div>
+      <div class="svt-subjects" id="svtSubjects"></div>
+    </section>
+    <section id="svtModeView" hidden>
+      <div class="svt-head"><h1 id="svtSubjectTitle">Môn học</h1><p>Chọn hình thức phù hợp với mục tiêu học tập hôm nay.</p></div>
+      <div class="svt-paths">
+        <article class="svt-path">
+          <div class="svt-icon">✓</div><h3>Luyện tập</h3>
+          <p>Làm bài theo thời lượng để rèn tốc độ và độ chính xác.</p>
+          <div class="svt-options">
+            <button class="svt-option" onclick="svtOpenSet('Luyện tập','15 phút')"><span>Bài 15 phút</span><span>→</span></button>
+            <button class="svt-option" onclick="svtOpenSet('Luyện tập','30 phút')"><span>Bài 30 phút</span><span>→</span></button>
+            <button class="svt-option" onclick="svtOpenSet('Luyện tập','45 phút')"><span>Bài 45 phút</span><span>→</span></button>
+          </div>
+        </article>
+        <article class="svt-path">
+          <div class="svt-icon">🏆</div><h3>Ôn thi</h3>
+          <p>Ôn tập theo các mốc kiểm tra và kỳ thi trong năm học.</p>
+          <div class="svt-options" id="svtExamOptions"></div>
+        </article>
+        <article class="svt-path svt-question">
+          <div class="svt-icon">?</div><h3>Hỏi giáo viên</h3>
+          <p>Gửi vấn đề em đang vướng để giáo viên của môn học hỗ trợ.</p>
+          <textarea id="svtQuestion" placeholder="Nhập câu hỏi hoặc nội dung em cần giáo viên giải thích..."></textarea>
+          <button type="button" onclick="svtSendQuestion()">Gửi câu hỏi</button>
+          <div class="svt-note">Câu hỏi được lưu kèm tên học sinh, lớp, môn và thời gian gửi.</div>
+        </article>
+      </div>
+    </section>
+  </div>
+</div>
+<script id="v8729-test-center-script">
+(function(){
+  let currentSubject='';
+  const center=()=>document.getElementById('sv2TestCenter');
+  function student(){
+    try{return JSON.parse(localStorage.getItem('htpro_student_session')||'null')}catch(e){return null}
+  }
+  function profile(){
+    const n=document.getElementById('sv2Student');
+    const c=document.getElementById('sv2Class');
+    const s=student()||{};
+    return {name:s.name||s.studentName||(n&&n.value)||'Học sinh',className:s.className||s.class||(c&&c.value)||''};
+  }
+  function subjects(){
+    const fixed=['Toán','Ngữ văn','Tiếng Anh','Vật lí','Hóa học','Sinh học','Tin học'];
+    try{
+      if(typeof state!=='undefined'){
+        const arr=[];
+        (state.assignments||[]).forEach(a=>{if(a.subject&&!arr.includes(a.subject))arr.push(a.subject)});
+        return arr.length?arr:fixed;
+      }
+    }catch(e){}
+    return fixed;
+  }
+  function ico(s){return {'Toán':'∑','Ngữ văn':'VĂN','Tiếng Anh':'EN','Vật lí':'F','Hóa học':'HÓA','Sinh học':'DNA','Tin học':'</>'}[s]||'◆'}
+  window.svtOpen=function(){
+    const p=profile(), el=center(); if(!el)return;
+    document.getElementById('svtStudentName').textContent=p.name+(p.className?' · '+p.className:'');
+    document.getElementById('svtSubjects').innerHTML=subjects().map(s=>'<button class="svt-subject" onclick="svtChooseSubject('+JSON.stringify(s).replace(/"/g,'&quot;')+')"><span class="svt-subject-ico">'+ico(s)+'</span><strong>'+s+'</strong><small>Luyện tập · Ôn thi · Hỏi giáo viên</small></button>').join('');
+    document.getElementById('svtSubjectView').hidden=false; document.getElementById('svtModeView').hidden=true;
+    el.hidden=false; el.scrollTop=0; document.body.style.overflow='hidden';
+  };
+  window.svtChooseSubject=function(s){
+    currentSubject=s; document.getElementById('svtSubjectTitle').textContent=s;
+    const p=profile(), grade=(String(p.className).match(/\b(10|11|12)/)||[])[1];
+    const exams=['Giữa kỳ I','Cuối kỳ I','Giữa kỳ II','Cuối kỳ II'];
+    if(grade==='12')exams.push('Ôn thi tốt nghiệp THPT');
+    const examBox=document.getElementById('svtExamOptions');
+    examBox.innerHTML='';
+    exams.forEach(function(x){
+      const b=document.createElement('button'); b.className='svt-option'; b.type='button';
+      b.innerHTML='<span>'+x+'</span><span>→</span>';
+      b.addEventListener('click',function(){svtOpenSet('Ôn thi',x);});
+      examBox.appendChild(b);
+    });
+    document.getElementById('svtSubjectView').hidden=true;document.getElementById('svtModeView').hidden=false;center().scrollTop=0;
+  };
+  window.svtOpenSet=function(group,name){
+    const msg=document.createElement('div');msg.className='svt-toast';msg.textContent=currentSubject+' · '+group+' · '+name+' — chưa có đề được giáo viên giao.';
+    document.body.appendChild(msg);setTimeout(()=>msg.remove(),2600);
+  };
+  window.svtSendQuestion=function(){
+    const ta=document.getElementById('svtQuestion'), q=(ta.value||'').trim(); if(!q){ta.focus();return}
+    const p=profile(), key='htpro_student_questions_v1';
+    let a=[];try{a=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){}
+    a.push({id:'Q'+Date.now(),student:p.name,className:p.className,subject:currentSubject,question:q,createdAt:new Date().toISOString(),status:'Chờ trả lời',answer:''});
+    localStorage.setItem(key,JSON.stringify(a));ta.value='';
+    const msg=document.createElement('div');msg.className='svt-toast';msg.textContent='Đã gửi câu hỏi cho giáo viên '+currentSubject+'.';document.body.appendChild(msg);setTimeout(()=>msg.remove(),2400);
+  };
+  window.svtBack=function(){
+    const modes=document.getElementById('svtModeView');
+    if(modes&&!modes.hidden){modes.hidden=true;document.getElementById('svtSubjectView').hidden=false;center().scrollTop=0;return}
+    center().hidden=true;document.body.style.overflow='';window.scrollTo(0,0);
+  };
+  // Override only the student quick-menu Test action.
+  const old=window.studentV2Quick;
+  window.studentV2Quick=function(kind){
+    if(kind==='test'){svtOpen();return}
+    if(typeof old==='function')return old.apply(this,arguments);
+  };
+})();
+</script>
