@@ -2899,3 +2899,126 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  setTimeout(()=>{buildTabs();ensurePager()},0);
 })();
 </script>
+
+
+<style id="v8736-pagination-style">
+.assign-subpager{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:12px 0;padding:9px 11px;border:1px solid #dbe6ef;border-radius:12px;background:#f8fbfe}
+.assign-subpager .pg-info{font-size:12px;color:#62798b;font-weight:750}
+.assign-subpager .pg-buttons{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.assign-subpager button{min-width:34px;height:34px;border:1px solid #c8d8e5;border-radius:9px;background:#fff;color:#36556a;font-weight:800;cursor:pointer}
+.assign-subpager button.active{background:#087f78;color:#fff;border-color:#087f78}
+.assign-subpager button:disabled{opacity:.38;cursor:not-allowed}
+.compose-pages{margin-top:8px}.compose-page{display:none}.compose-page.active{display:block}
+.compose-page-title{display:flex;align-items:center;gap:10px;margin:0 0 10px;padding:10px 12px;border-radius:11px;background:#eef7f6;color:#0b665f;font-weight:900}
+.compose-page-title b{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#087f78;color:#fff}
+#assignPane-compose #easyAssignmentForm,#assignPane-compose #easyEditTools{display:none!important}
+@media(max-width:650px){.assign-subpager{align-items:flex-start;flex-direction:column}.assign-subpager .pg-buttons{width:100%}}
+</style>
+<script id="v8736-pagination-script">
+(function(){
+ const E=id=>document.getElementById(id);
+ const PAGE_SIZE=8;
+ const pages={compose:0,assigned:0,submissions:0,bank:0};
+
+ function pager(host,total,page,size,onGo,label){
+   if(!host)return;
+   host.innerHTML='';
+   const count=Math.max(1,Math.ceil(total/size)), p=Math.max(0,Math.min(page,count-1));
+   const info=document.createElement('div');info.className='pg-info';
+   info.textContent=total?((label||'Mục')+' '+(p*size+1)+'–'+Math.min((p+1)*size,total)+' / '+total):'Chưa có dữ liệu';
+   const bs=document.createElement('div');bs.className='pg-buttons';
+   const prev=document.createElement('button');prev.type='button';prev.textContent='‹';prev.disabled=p===0;prev.onclick=()=>onGo(p-1);bs.appendChild(prev);
+   let start=Math.max(0,p-2),end=Math.min(count,start+5);start=Math.max(0,end-5);
+   for(let i=start;i<end;i++){const b=document.createElement('button');b.type='button';b.textContent=i+1;b.classList.toggle('active',i===p);b.onclick=()=>onGo(i);bs.appendChild(b)}
+   const next=document.createElement('button');next.type='button';next.textContent='›';next.disabled=p>=count-1;next.onclick=()=>onGo(p+1);bs.appendChild(next);
+   host.append(info,bs);
+ }
+
+ function buildComposePages(){
+   const b=E('quizBuilder');if(!b||E('composePager8736'))return;
+   const kids=[...b.children];
+   if(kids.length<16)return;
+   const groups=[
+     {title:'Thông tin bài & đối tượng',idx:[0,1,2,3]},
+     {title:'Phân hóa & số câu',idx:[4,5,6]},
+     {title:'Thời gian & cách làm',idx:[7,8,9]},
+     {title:'Soạn câu hỏi & giao bài',idx:[10,11,12,13,14,15]}
+   ];
+   const wrap=document.createElement('div');wrap.className='compose-pages';wrap.id='composePages8736';
+   groups.forEach((g,gi)=>{
+     const pg=document.createElement('section');pg.className='compose-page';pg.dataset.cp=gi;
+     const title=document.createElement('div');title.className='compose-page-title';title.innerHTML='<b>'+(gi+1)+'</b><span>'+g.title+'</span>';pg.appendChild(title);
+     g.idx.forEach(i=>{if(kids[i])pg.appendChild(kids[i])});wrap.appendChild(pg);
+   });
+   b.appendChild(wrap);
+   const nav=document.createElement('div');nav.id='composePager8736';nav.className='assign-subpager';b.insertBefore(nav,wrap);
+   showCompose(0);
+ }
+ window.showCompose=function(i){
+   pages.compose=Math.max(0,Math.min(3,i));
+   document.querySelectorAll('#composePages8736 .compose-page').forEach((x,n)=>x.classList.toggle('active',n===pages.compose));
+   pager(E('composePager8736'),4,pages.compose,1,showCompose,'Bước');
+   const info=E('composePager8736')?.querySelector('.pg-info');if(info)info.textContent='Bước '+(pages.compose+1)+' / 4';
+   E('composePages8736')?.scrollIntoView({block:'nearest'});
+ };
+
+ function tablePaginate(containerId,tab,key){
+   const root=E(containerId);if(!root)return;
+   const rows=[...root.querySelectorAll('tbody > tr')];
+   let nav=root.parentElement?.querySelector(':scope > .assign-subpager[data-for="'+key+'"]');
+   if(!nav){nav=document.createElement('div');nav.className='assign-subpager';nav.dataset.for=key;root.parentElement?.appendChild(nav)}
+   const max=Math.max(0,Math.ceil(rows.length/PAGE_SIZE)-1);pages[tab]=Math.min(pages[tab],max);
+   rows.forEach((r,i)=>r.style.display=(i>=pages[tab]*PAGE_SIZE&&i<(pages[tab]+1)*PAGE_SIZE)?'':'none');
+   pager(nav,rows.length,pages[tab],PAGE_SIZE,p=>{pages[tab]=p;tablePaginate(containerId,tab,key)},'Dòng');
+ }
+ function childPaginate(containerId,tab,key){
+   const root=E(containerId);if(!root)return;
+   let items=[...root.children].filter(x=>!x.classList.contains('assign-subpager'));
+   // If the renderer uses one wrapper/grid, paginate its direct children instead.
+   if(items.length===1 && items[0].children.length>PAGE_SIZE)items=[...items[0].children];
+   let nav=root.parentElement?.querySelector(':scope > .assign-subpager[data-for="'+key+'"]');
+   if(!nav){nav=document.createElement('div');nav.className='assign-subpager';nav.dataset.for=key;root.parentElement?.appendChild(nav)}
+   const max=Math.max(0,Math.ceil(items.length/PAGE_SIZE)-1);pages[tab]=Math.min(pages[tab],max);
+   items.forEach((x,i)=>x.style.display=(i>=pages[tab]*PAGE_SIZE&&i<(pages[tab]+1)*PAGE_SIZE)?'':'none');
+   pager(nav,items.length,pages[tab],PAGE_SIZE,p=>{pages[tab]=p;childPaginate(containerId,tab,key)},'Mục');
+ }
+ window.paginateAssignmentTab=function(tab){
+   setTimeout(()=>{
+     if(tab==='assigned')tablePaginate('assignedHistoryList','assigned','assigned');
+     if(tab==='submissions'){
+       if(E('sampleSubmissionList')?.querySelector('tbody tr'))tablePaginate('sampleSubmissionList','submissions','submissions');
+       else if(E('assignmentList')?.querySelector('tbody tr'))tablePaginate('assignmentList','submissions','submissions');
+       else childPaginate('sampleSubmissionList','submissions','submissions');
+     }
+     if(tab==='bank'){
+       if(E('sampleBankList')?.querySelector('tbody tr'))tablePaginate('sampleBankList','bank','bank');
+       else childPaginate('sampleBankList','bank','bank');
+     }
+   },30);
+ };
+
+ const oldSwitch=window.switchAssignmentTab;
+ if(typeof oldSwitch==='function')window.switchAssignmentTab=function(id){
+   const r=oldSwitch.apply(this,arguments);
+   if(id==='compose'){buildComposePages();showCompose(pages.compose)}
+   else paginateAssignmentTab(id);
+   return r;
+ };
+
+ // Re-apply pagination after filters/renderers rebuild their lists.
+ ['renderAssignedHistory','renderSubmissionSamples','renderAssignments','renderAdaptiveSampleBank'].forEach(name=>{
+   const fn=window[name];if(typeof fn!=='function')return;
+   window[name]=function(){
+     const r=fn.apply(this,arguments);
+     const tab=name==='renderAssignedHistory'?'assigned':name==='renderAdaptiveSampleBank'?'bank':'submissions';
+     paginateAssignmentTab(tab);return r;
+   };
+ });
+ const oldOpen=window.quizOpen;
+ if(typeof oldOpen==='function')window.quizOpen=function(){
+   const r=oldOpen.apply(this,arguments);setTimeout(()=>{buildComposePages();showCompose(0)},0);return r;
+ };
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{buildComposePages();paginateAssignmentTab('assigned');paginateAssignmentTab('submissions');paginateAssignmentTab('bank')},100));
+ setTimeout(()=>{buildComposePages()},0);
+})();
+</script>
