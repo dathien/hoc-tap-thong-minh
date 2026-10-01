@@ -1749,6 +1749,129 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{const p=document.getElementById('profilesPanel');if(p)p.classList.remove('profile-editor-open');renderCompact()},0));
 })();
 </script>
+
+
+<!-- v8.7.6 - KPI replay: trigger theo trạng thái hiển thị thực tế của Tổng quan -->
+<script>
+(function(){
+  let replayTimer=null;
+  let lastActive=false;
+
+  function replayHomeKpis(){
+    const home=document.getElementById('homePanel');
+    if(!home || !home.classList.contains('active')) return;
+    clearTimeout(replayTimer);
+    replayTimer=setTimeout(()=>{
+      // renderHome chỉ cập nhật nội dung học sinh; KPI lấy lại dữ liệu sau khi trang đã hiện.
+      if(typeof window.updateDashboard==='function') window.updateDashboard('initial');
+      else if(typeof updateDashboard==='function') updateDashboard('initial');
+    },70);
+  }
+
+  function install(){
+    const home=document.getElementById('homePanel');
+    if(!home) return;
+    lastActive=home.classList.contains('active');
+
+    const observer=new MutationObserver(()=>{
+      const active=home.classList.contains('active');
+      if(active && !lastActive) replayHomeKpis();
+      lastActive=active;
+    });
+    observer.observe(home,{attributes:true,attributeFilter:['class']});
+
+    // Bảo đảm lần mở app đầu tiên cũng có chuyển động.
+    if(lastActive) setTimeout(replayHomeKpis,180);
+
+    // Dự phòng cho mọi nút điều hướng hiện tại/tương lai trỏ về Tổng quan.
+    document.addEventListener('click',(ev)=>{
+      const btn=ev.target.closest('[data-panel="home"]');
+      if(btn) setTimeout(replayHomeKpis,120);
+    },true);
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',install,{once:true});
+  else install();
+})();
+</script>
+
+<style>
+/* v8.7.7 - Motion system toàn app: replay mỗi lần mở trang */
+:root{--motion-fast:260ms;--motion-mid:520ms;--motion-ease:cubic-bezier(.22,.8,.24,1)}
+.panel.motion-enter{animation:pageEnter .52s var(--motion-ease) both}
+.panel.motion-enter .panel-head{animation:motionRise .48s var(--motion-ease) both}
+.panel.motion-enter .motion-item{opacity:0;transform:translateY(16px) scale(.992);animation:motionRise .5s var(--motion-ease) forwards;animation-delay:var(--motion-delay,0ms)}
+.panel.motion-enter .progress>i,.panel.motion-enter .progress-bar>i,.panel.motion-enter [class*="progress"]>span{transition:width .75s var(--motion-ease),transform .45s var(--motion-ease)}
+.panel.motion-enter table tbody tr{opacity:0;transform:translateY(8px);animation:rowEnter .42s var(--motion-ease) forwards;animation-delay:var(--motion-delay,0ms)}
+.panel.motion-enter .btn,.panel.motion-enter button{transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+.panel.motion-enter .btn:hover,.panel.motion-enter button:hover{transform:translateY(-2px)}
+@keyframes pageEnter{from{opacity:.25;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes motionRise{from{opacity:0;transform:translateY(16px) scale(.992)}to{opacity:1;transform:none}}
+@keyframes rowEnter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.panel.motion-enter,.panel.motion-enter .panel-head,.panel.motion-enter .motion-item,.panel.motion-enter table tbody tr{animation-duration:.01ms!important;animation-delay:0ms!important}.panel.motion-enter .progress>i,.panel.motion-enter .progress-bar>i,.panel.motion-enter [class*="progress"]>span{transition-duration:.01ms!important}}
+</style>
+<script>
+/* v8.7.7 - Page Animation Engine dùng chung toàn app */
+(function(){
+  const PANEL_IDS=['homePanel','profilesPanel','surveyPanel','analysisPanel','goalsPanel','planPanel','sessionPanel','journalPanel','assignmentsPanel','reportPanel','assessmentPanel','professionalPanel','aihelperPanel','dataPanel'];
+  const ITEM_SELECTOR=[
+    '.stats > *','.quick-actions > *','.grid > *','.cards > *','.card-grid > *',
+    '.analysis-kpis > *','.analysis-two > *','.analysis-next','.survey-teacher-bar > *',
+    '.today-task','.today-progress','.today-next','.today-result','.achievement-card',
+    '.progress-card','.profile-table-wrap','.profile-toolbar','.filters','.filter-row',
+    '.assignment-card','.quiz-card','.report-card','.chart-card','.empty','.notice',
+    'form > .field','form > .row','details','article'
+  ].join(',');
+  let replayTimer=0;
+
+  function markItems(panel){
+    const nodes=[...panel.querySelectorAll(ITEM_SELECTOR)].filter(el=>!el.closest('.panel:not(.active)'));
+    nodes.slice(0,40).forEach((el,i)=>{
+      el.classList.add('motion-item');
+      el.style.setProperty('--motion-delay',Math.min(i,12)*42+'ms');
+    });
+    [...panel.querySelectorAll('table tbody tr')].slice(0,30).forEach((tr,i)=>tr.style.setProperty('--motion-delay',Math.min(i,12)*34+'ms'));
+  }
+
+  function replay(panel){
+    if(!panel||!panel.classList.contains('active'))return;
+    clearTimeout(replayTimer);
+    markItems(panel);
+    panel.classList.remove('motion-enter');
+    // ép browser ghi nhận trạng thái đầu để animation luôn replay khi quay lại trang
+    void panel.offsetWidth;
+    panel.classList.add('motion-enter');
+    // Tổng quan giữ cơ chế KPI riêng đã ổn định ở 8.7.6
+    if(panel.id==='homePanel'&&typeof window.replayHomeKpis==='function'){
+      setTimeout(()=>window.replayHomeKpis(),90);
+    }
+  }
+
+  function install(){
+    const panels=PANEL_IDS.map(id=>document.getElementById(id)).filter(Boolean);
+    panels.forEach(panel=>{
+      let was=panel.classList.contains('active');
+      new MutationObserver(()=>{
+        const now=panel.classList.contains('active');
+        if(now&&!was){setTimeout(()=>replay(panel),35)}
+        was=now;
+      }).observe(panel,{attributes:true,attributeFilter:['class']});
+      // Nội dung render trễ cũng được animate, nhưng không replay cả trang.
+      new MutationObserver(muts=>{
+        if(!panel.classList.contains('active'))return;
+        const added=muts.some(m=>m.addedNodes&&m.addedNodes.length);
+        if(!added)return;
+        clearTimeout(panel.__motionChildTimer);
+        panel.__motionChildTimer=setTimeout(()=>markItems(panel),25);
+      }).observe(panel,{childList:true,subtree:true});
+    });
+    const active=document.querySelector('.panel.active');
+    if(active)setTimeout(()=>replay(active),160);
+  }
+  window.replayActivePanelMotion=function(){replay(document.querySelector('.panel.active'))};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+})();
+</script>
 </body>
 </html>
 <style>
