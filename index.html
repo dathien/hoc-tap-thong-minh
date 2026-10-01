@@ -512,6 +512,10 @@ html,body{margin:0!important;padding:0!important}
         <button class="action-card" onclick="goPanel('assignments')"><b>Bài tập &amp; ôn luyện</b><span>Tạo trắc nghiệm, giao bài, xem bài đã nộp và chấm điểm.</span></button>
         <button class="action-card" onclick="goPanel('report')"><b>Kết quả &amp; phụ huynh</b><span>Xem tiến độ, kết quả và chuẩn bị phản hồi học tập.</span></button>
       </div>
+      <div class="list-card" style="margin-top:16px;padding:18px">
+        <div class="panel-head" style="margin-bottom:10px"><div><h3 style="margin:0">Câu hỏi học sinh gửi giáo viên</h3><p style="margin:5px 0 0">Nhận câu hỏi từ mục Hỏi giáo viên theo môn học; trả lời và lưu phản hồi để học sinh xem lại.</p></div><button class="btn secondary small" type="button" onclick="renderTeacherQuestions()">↻ Cập nhật</button></div>
+        <div id="teacherQuestionInbox"></div>
+      </div>
     </section>
     <section id="professionalPanel" class="card panel">
       <div class="panel-head"><div><h2>Quản lý chuyên môn</h2><p>Tập trung các công việc lập kế hoạch, theo dõi tiến độ và tổng hợp chuyên môn.</p></div></div>
@@ -1172,6 +1176,10 @@ window.managerAssign=function(id){const subject=document.getElementById('subject
   <div class="quiz-builder-head"><div><span class="quiz-kicker">GIAO BÀI ÔN LUYỆN</span><h3>Trắc nghiệm phân hóa theo năng lực</h3><p>Chọn lớp, học sinh, môn học và cấu trúc 3 mức hoặc 4 mức. Học sinh làm trực tiếp trong app; kết quả từng câu được lưu để giáo viên xem và chấm.</p></div><button type="button" class="btn secondary small" onclick="quizClose()">Đóng</button></div>
   <div class="quiz-step"><b>1</b><span>Đối tượng & nội dung</span></div>
   <div class="qgrid"><div><label for="qClass">Lớp nhận bài</label><select id="qClass" onchange="quizClassChanged()"></select></div><div><label for="qRecipient">Giao cho</label><select id="qRecipient"></select></div><div><label for="qSubject">Môn học</label><input id="qSubject" list="qSubjectList" placeholder="Ví dụ: Toán"><datalist id="qSubjectList"><option value="Toán"><option value="Vật lí"><option value="Hóa học"><option value="Sinh học"><option value="Lịch sử"><option value="Địa lí"><option value="Tiếng Anh"><option value="Tin học"></datalist></div><div><label for="qTitle">Tên bài ôn luyện</label><input id="qTitle" placeholder="Ví dụ: Ôn tập hàm số"></div></div>
+  <div class="qgrid" id="teacherAssessmentClassify">
+    <div><label for="qTrack">Đưa bài vào khu vực học sinh</label><select id="qTrack" onchange="syncAssessmentSubtype()"><option value="assignment">Bài tập & ôn luyện</option><option value="practice">Kiểm tra · Luyện tập</option><option value="exam">Kiểm tra · Ôn thi</option></select></div>
+    <div><label for="qSubtype">Nhóm bài / kỳ kiểm tra</label><select id="qSubtype"></select></div>
+  </div>
   <div class="quiz-step"><b>2</b><span>Phân hóa & số câu</span></div>
   <div class="qgrid"><div><label for="qLevel">Chế độ phân hóa</label><select id="qLevel" onchange="syncQuizScheme();autoDistributeLevels()"><option value="Phân hóa 3 mức">3 mức · Nhận biết – Thông hiểu – Vận dụng</option><option value="Phân hóa 4 mức" selected>4 mức · Nhận biết – Thông hiểu – Vận dụng – Vận dụng cao</option></select></div><div><label for="qQuestionCount">Số câu hỏi</label><div class="question-count-control"><button type="button" class="qcount-btn" onclick="changeQuizQuestionCount(-1)" aria-label="Giảm số câu">−</button><input id="qQuestionCount" type="number" min="5" max="50" step="1" value="10" onchange="applyQuizQuestionCount();autoDistributeLevels()" aria-label="Số câu hỏi"><button type="button" class="qcount-btn" onclick="changeQuizQuestionCount(1)" aria-label="Tăng số câu">＋</button></div><small class="qcount-hint">5–50 câu · Có thể tăng/giảm hoặc nhập trực tiếp.</small></div></div>
   <div id="qDistribution" class="level-distribution"></div>
@@ -2215,7 +2223,7 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
 </div>
 <script id="v8729-test-center-script">
 (function(){
-  let currentSubject='';
+  window.currentSubject='';
   const center=()=>document.getElementById('sv2TestCenter');
   function student(){
     try{return JSON.parse(localStorage.getItem('htpro_student_session')||'null')}catch(e){return null}
@@ -2246,7 +2254,7 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
     el.hidden=false; el.scrollTop=0; document.body.style.overflow='hidden';
   };
   window.svtChooseSubject=function(s){
-    currentSubject=s; document.getElementById('svtSubjectTitle').textContent=s;
+    window.currentSubject=s; document.getElementById('svtSubjectTitle').textContent=s;
     const p=profile(), grade=(String(p.className).match(/\b(10|11|12)/)||[])[1];
     const exams=['Giữa kỳ I','Cuối kỳ I','Giữa kỳ II','Cuối kỳ II'];
     if(grade==='12')exams.push('Ôn thi tốt nghiệp THPT');
@@ -2261,16 +2269,16 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
     document.getElementById('svtSubjectView').hidden=true;document.getElementById('svtModeView').hidden=false;center().scrollTop=0;
   };
   window.svtOpenSet=function(group,name){
-    const msg=document.createElement('div');msg.className='svt-toast';msg.textContent=currentSubject+' · '+group+' · '+name+' — chưa có đề được giáo viên giao.';
+    const msg=document.createElement('div');msg.className='svt-toast';msg.textContent=window.currentSubject+' · '+group+' · '+name+' — chưa có đề được giáo viên giao.';
     document.body.appendChild(msg);setTimeout(()=>msg.remove(),2600);
   };
   window.svtSendQuestion=function(){
     const ta=document.getElementById('svtQuestion'), q=(ta.value||'').trim(); if(!q){ta.focus();return}
     const p=profile(), key='htpro_student_questions_v1';
     let a=[];try{a=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){}
-    a.push({id:'Q'+Date.now(),student:p.name,className:p.className,subject:currentSubject,question:q,createdAt:new Date().toISOString(),status:'Chờ trả lời',answer:''});
+    a.push({id:'Q'+Date.now(),student:p.name,className:p.className,subject:window.currentSubject,question:q,createdAt:new Date().toISOString(),status:'Chờ trả lời',answer:''});
     localStorage.setItem(key,JSON.stringify(a));ta.value='';
-    const msg=document.createElement('div');msg.className='svt-toast';msg.textContent='Đã gửi câu hỏi cho giáo viên '+currentSubject+'.';document.body.appendChild(msg);setTimeout(()=>msg.remove(),2400);
+    const msg=document.createElement('div');msg.className='svt-toast';msg.textContent='Đã gửi câu hỏi cho giáo viên '+window.currentSubject+'.';document.body.appendChild(msg);setTimeout(()=>msg.remove(),2400);
   };
   window.svtBack=function(){
     const modes=document.getElementById('svtModeView');
@@ -2545,3 +2553,118 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
   }
 }
 </style>
+
+
+<style id="v8733-sync-style">
+.teacher-q-item{border:1px solid #e0e7f1;border-radius:14px;padding:14px;margin:10px 0;background:#fff}
+.teacher-q-meta{font-size:12px;color:#6d7890;margin-bottom:8px}.teacher-q-item textarea{width:100%;box-sizing:border-box;min-height:76px;border:1px solid #d9e2ef;border-radius:10px;padding:10px;font:inherit}
+.svt-assigned-list{display:grid;gap:8px;margin-top:10px}.svt-assigned{border:1px solid #dfe7f3;background:#fff;border-radius:12px;padding:11px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.svt-assigned b{display:block}.svt-assigned small{color:#72809a}.svt-assigned button{border:0;background:#304fc5;color:#fff;border-radius:9px;padding:8px 10px;font-weight:800;cursor:pointer}
+</style>
+<script id="v8733-sync-script">
+(function(){
+  function E(id){return document.getElementById(id)}
+  window.syncAssessmentSubtype=function(){
+    const track=E('qTrack'), sub=E('qSubtype'); if(!track||!sub)return;
+    const map={
+      assignment:['Bài tập thường'],
+      practice:['15 phút','30 phút','45 phút'],
+      exam:['Giữa kỳ I','Cuối kỳ I','Giữa kỳ II','Cuối kỳ II','Ôn thi tốt nghiệp THPT']
+    };
+    sub.innerHTML=(map[track.value]||[]).map(x=>'<option value="'+x+'">'+x+'</option>').join('');
+    if(track.value==='practice' && E('qDuration')) E('qDuration').value=parseInt(sub.value)||15;
+  };
+  document.addEventListener('change',function(ev){
+    if(ev.target&&ev.target.id==='qSubtype'&&E('qTrack')?.value==='practice'){
+      const n=parseInt(ev.target.value); if(n&&E('qDuration'))E('qDuration').value=n;
+    }
+  });
+
+  // Preserve the existing publisher, then stamp the classification onto every assignment in the just-created batch.
+  const basePublish=window.quizPublish;
+  if(typeof basePublish==='function'){
+    window.quizPublish=function(){
+      const before=new Set();
+      try{state.students.forEach(s=>(s.assignments||[]).forEach(a=>before.add(a.id)))}catch(e){}
+      const track=E('qTrack')?.value||'assignment', subtype=E('qSubtype')?.value||'Bài tập thường';
+      const r=basePublish.apply(this,arguments);
+      try{
+        let changed=false;
+        state.students.forEach(s=>(s.assignments||[]).forEach(a=>{
+          if(!before.has(a.id)){
+            a.learningTrack=track;
+            a.assessmentSubtype=subtype;
+            changed=true;
+          }
+        }));
+        if(changed&&typeof saveState==='function')saveState();
+      }catch(e){}
+      return r;
+    };
+  }
+
+  // Ensure builder always has valid classification choices.
+  const baseOpen=window.quizOpen;
+  if(typeof baseOpen==='function'){
+    window.quizOpen=function(){
+      const r=baseOpen.apply(this,arguments);
+      if(E('qTrack')){E('qTrack').value='assignment';syncAssessmentSubtype();}
+      return r;
+    };
+  }
+
+  function currentStudent(){
+    try{
+      const name=E('sv2Student')?.value||'';
+      const cls=E('sv2Class')?.value||'';
+      return (state.students||[]).find(s=>s.name===name&&s.className===cls) || (state.students||[]).find(s=>s.id===state.currentStudentId) || null;
+    }catch(e){return null}
+  }
+  function assignedFor(subject,track,subtype){
+    const s=currentStudent(); if(!s)return [];
+    return (s.assignments||[]).filter(a=>a.portalPublished&&a.quiz&&a.subject===subject&&a.learningTrack===track&&a.assessmentSubtype===subtype);
+  }
+  function renderAssigned(host,subject,track,subtype){
+    const arr=assignedFor(subject,track,subtype);
+    if(!arr.length){host.innerHTML='<div class="svt-note">Chưa có đề được giáo viên giao.</div>';return}
+    host.innerHTML='<div class="svt-assigned-list">'+arr.map(a=>'<div class="svt-assigned"><div><b>'+a.title+'</b><small>'+(a.quiz?.questions?.length||0)+' câu · '+(a.quiz?.duration? a.quiz.duration+' phút':'Không giới hạn')+' · '+(a.status==='pending'?'Chưa làm':'Đã làm')+'</small></div><button type="button" data-a="'+a.id+'">'+(a.status==='pending'?'Làm bài':'Xem lại')+'</button></div>').join('')+'</div>';
+    host.querySelectorAll('[data-a]').forEach(b=>b.onclick=function(){
+      const id=this.dataset.a;
+      E('sv2TestCenter').hidden=true;document.body.style.overflow='';
+      if(typeof studentV2OpenAssignment==='function')studentV2OpenAssignment(id);
+    });
+  }
+
+  // Replace the placeholder toast with real assigned-test lookup.
+  window.svtOpenSet=function(group,name){
+    const track=group==='Luyện tập'?'practice':'exam';
+    const box=document.createElement('div');
+    box.className='svt-toast';
+    const arr=assignedFor(window.currentSubject||'',track,name);
+    if(!arr.length){box.textContent='Chưa có đề '+name+' được giáo viên giao.';document.body.appendChild(box);setTimeout(()=>box.remove(),2400);return}
+    box.textContent='Có '+arr.length+' đề '+name+'. Chọn đề bên dưới.';
+    document.body.appendChild(box);setTimeout(()=>box.remove(),1800);
+    const pathCards=[...document.querySelectorAll('#sv2TestCenter .svt-path')];
+    const card=track==='practice'?pathCards[0]:pathCards[1];
+    let host=card.querySelector('.svt-live-assigned');if(!host){host=document.createElement('div');host.className='svt-live-assigned';card.appendChild(host)}
+    renderAssigned(host,window.currentSubject||'',track,name);
+  };
+
+  window.renderTeacherQuestions=function(){
+    const host=E('teacherQuestionInbox');if(!host)return;
+    let arr=[];try{arr=JSON.parse(localStorage.getItem('htpro_student_questions_v1')||'[]')}catch(e){}
+    if(!arr.length){host.innerHTML='<div class="notice">Chưa có câu hỏi nào từ học sinh.</div>';return}
+    host.innerHTML=arr.slice().reverse().map(q=>'<div class="teacher-q-item" data-id="'+q.id+'"><div class="teacher-q-meta"><b>'+q.student+'</b> · '+q.className+' · '+q.subject+' · '+new Date(q.createdAt).toLocaleString('vi-VN')+' · '+(q.status||'Chờ trả lời')+'</div><div style="font-weight:700;margin-bottom:9px">'+q.question+'</div><textarea placeholder="Nhập câu trả lời...">'+(q.answer||'')+'</textarea><div class="action-row" style="margin-top:8px"><button class="btn primary small tq-save" type="button">Lưu trả lời</button></div></div>').join('');
+    host.querySelectorAll('.tq-save').forEach(btn=>btn.onclick=function(){
+      const row=this.closest('.teacher-q-item'),id=row.dataset.id,ta=row.querySelector('textarea');
+      let a=[];try{a=JSON.parse(localStorage.getItem('htpro_student_questions_v1')||'[]')}catch(e){}
+      const q=a.find(x=>x.id===id);if(!q)return;q.answer=ta.value.trim();q.status=q.answer?'Đã trả lời':'Chờ trả lời';q.answeredAt=q.answer?new Date().toISOString():'';
+      localStorage.setItem('htpro_student_questions_v1',JSON.stringify(a));renderTeacherQuestions();if(typeof toast==='function')toast('Đã lưu phản hồi cho học sinh');
+    });
+  };
+  document.addEventListener('click',function(ev){
+    if(ev.target.closest('[data-panel="assessment"],[onclick*="assessment"]'))setTimeout(renderTeacherQuestions,80);
+  });
+  document.addEventListener('DOMContentLoaded',function(){syncAssessmentSubtype();});
+})();
+</script>
