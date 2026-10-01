@@ -2285,3 +2285,205 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
   };
 })();
 </script>
+
+
+<style id="v8730-subject-card-polish">
+/* 8.7.30 - Thẻ chọn môn đồng nhất, cân đối và rõ điểm bấm */
+#sv2TestCenter .svt-subjects{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  align-items:stretch;
+}
+#sv2TestCenter .svt-subject{
+  min-height:168px;
+  height:168px;
+  width:100%;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  position:relative;
+  overflow:hidden;
+  padding:18px 18px 16px;
+  border:1px solid #dce5f3;
+  border-radius:20px;
+  background:linear-gradient(180deg,#fff 0%,#fbfdff 100%);
+}
+#sv2TestCenter .svt-subject::after{
+  content:"→";
+  position:absolute;
+  right:16px;
+  bottom:15px;
+  width:32px;height:32px;border-radius:50%;
+  display:grid;place-items:center;
+  background:#eef3ff;color:#304fc5;font-size:17px;font-weight:900;
+  transition:.2s ease;
+}
+#sv2TestCenter .svt-subject:hover::after{transform:translateX(3px);background:#304fc5;color:#fff}
+#sv2TestCenter .svt-subject-ico{
+  width:46px;height:46px;flex:0 0 46px;
+  display:grid;place-items:center;
+  border-radius:14px;
+  background:#edf3ff;
+  color:#243f9b;
+  font-size:17px;
+  font-weight:900;
+  line-height:1;
+  letter-spacing:-.3px;
+}
+#sv2TestCenter .svt-subject strong{
+  display:block;
+  margin:10px 42px 3px 0;
+  font-size:18px;
+  line-height:1.25;
+  color:#111c36;
+}
+#sv2TestCenter .svt-subject small{
+  display:block;
+  margin-right:42px;
+  color:#72809a;
+  font-size:12.5px;
+  line-height:1.35;
+  white-space:nowrap;
+}
+@media(max-width:850px){
+ #sv2TestCenter .svt-subjects{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+ #sv2TestCenter .svt-subjects{grid-template-columns:1fr}
+ #sv2TestCenter .svt-subject{height:154px;min-height:154px}
+}
+</style>
+
+
+<style id="v8731-home-function-cards">
+#sv2Home .sv2-quick-nav-wrap{
+  display:block!important;
+  margin:20px 0 26px!important;
+}
+#sv2Home .sv2-quick-nav{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:16px!important;
+  width:100%!important;
+  max-width:none!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+#sv2Home .sv2-quick-item{
+  min-height:124px!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:88px minmax(0,1fr) 38px!important;
+  align-items:center!important;
+  gap:18px!important;
+  padding:16px 18px!important;
+  border:1px solid #e0e7f4!important;
+  border-radius:22px!important;
+  background:linear-gradient(135deg,#f5f8ff 0%,#f0f4ff 100%)!important;
+  color:#172650!important;
+  text-align:left!important;
+  box-shadow:0 9px 25px rgba(30,55,110,.06)!important;
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease!important;
+}
+#sv2Home .sv2-quick-item:hover{
+  transform:translateY(-3px)!important;
+  border-color:#b8c7f5!important;
+  box-shadow:0 15px 34px rgba(30,55,110,.11)!important;
+}
+#sv2Home .sv2-quick-ico{
+  width:72px!important;height:72px!important;
+  border-radius:50%!important;
+  display:grid!important;place-items:center!important;
+  background:#294592!important;
+  color:#fff!important;
+  font-size:0!important;
+  font-weight:950!important;
+  box-shadow:0 0 0 10px #e7edff!important;
+}
+#sv2Home .sv2-quick-ico::after{
+  content:attr(data-num);
+  font-size:31px;
+  line-height:1;
+}
+#sv2Home .sv2-quick-copy{min-width:0}
+#sv2Home .sv2-quick-title{
+  display:block;
+  margin-bottom:7px;
+  font-size:20px;
+  line-height:1.15;
+  font-weight:900;
+  color:#203c86;
+}
+#sv2Home .sv2-quick-desc{
+  display:block;
+  font-size:13.5px;
+  line-height:1.55;
+  font-weight:500;
+  color:#50617f;
+}
+#sv2Home .sv2-quick-arrow{
+  width:32px;height:32px;border-radius:50%;
+  display:grid;place-items:center;
+  justify-self:end;
+  background:#294592;color:#fff;
+  font-size:18px;font-weight:900;
+  transition:transform .2s ease;
+}
+#sv2Home .sv2-quick-item:hover .sv2-quick-arrow{transform:translateX(3px)}
+#sv2Home .sv2-quick-item:nth-child(3){
+  grid-column:1/-1!important;
+}
+@media(max-width:760px){
+  #sv2Home .sv2-quick-nav{grid-template-columns:1fr!important}
+  #sv2Home .sv2-quick-item:nth-child(3){grid-column:auto!important}
+}
+@media(max-width:520px){
+  #sv2Home .sv2-quick-item{
+    grid-template-columns:64px minmax(0,1fr) 32px!important;
+    gap:13px!important;padding:14px!important;min-height:112px!important
+  }
+  #sv2Home .sv2-quick-ico{width:54px!important;height:54px!important;box-shadow:0 0 0 7px #e7edff!important}
+  #sv2Home .sv2-quick-ico::after{font-size:25px}
+  #sv2Home .sv2-quick-title{font-size:18px}
+  #sv2Home .sv2-quick-desc{font-size:12.5px}
+}
+</style>
+<script id="v8731-home-function-cards-script">
+(function(){
+  window.studentRenderQuickMenu=function(){
+    const nav=document.querySelector('#sv2Home .sv2-quick-nav');
+    if(!nav)return;
+    const cards=[
+      {num:'1',title:'Tự luyện',desc:'Luyện theo môn và chủ đề, từ cơ bản đến nâng cao.',action:function(){ if(typeof studentV2OpenPractice==='function') studentV2OpenPractice(); }},
+      {num:'2',title:'Kiểm tra',desc:'Luyện bài theo thời gian, ôn giữa kỳ, cuối kỳ và kỳ thi.',action:function(){ if(typeof svtOpen==='function') svtOpen(); else if(typeof studentV2Quick==='function') studentV2Quick('test'); }},
+      {num:'3',title:'Đấu trí',desc:'Ôn kiến thức qua các thử thách và trò chơi học tập.',action:function(){ if(typeof studentV2Quick==='function') studentV2Quick('battle'); }}
+    ];
+    nav.innerHTML='';
+    cards.forEach(function(c){
+      const b=document.createElement('button');
+      b.type='button'; b.className='sv2-quick-item';
+      b.innerHTML='<span class="sv2-quick-ico" data-num="'+c.num+'"></span>'+
+                  '<span class="sv2-quick-copy"><span class="sv2-quick-title">'+c.title+'</span>'+
+                  '<span class="sv2-quick-desc">'+c.desc+'</span></span>'+
+                  '<span class="sv2-quick-arrow">→</span>';
+      b.addEventListener('click',c.action);
+      nav.appendChild(b);
+    });
+  };
+
+  const oldRender=window.studentV2RenderHome;
+  if(typeof oldRender==='function'){
+    window.studentV2RenderHome=function(){
+      const r=oldRender.apply(this,arguments);
+      setTimeout(window.studentRenderQuickMenu,0);
+      return r;
+    };
+  }
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(window.studentRenderQuickMenu,100);});
+})();
+</script>
