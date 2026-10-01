@@ -3022,3 +3022,203 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  setTimeout(()=>{buildComposePages()},0);
 })();
 </script>
+
+
+<style id="v8737-student-picker-style">
+#qRecipient{display:none!important}
+.qrec-picker{margin-top:5px;border:1px solid #cbd9e5;border-radius:12px;background:#fff;overflow:hidden}
+.qrec-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:9px;background:#f6fafc;border-bottom:1px solid #e2eaf0}
+.qrec-toolbar input{margin:0!important}
+.qrec-all{border:1px solid #b9cdd9;border-radius:9px;background:#fff;color:#174a61;font-weight:800;padding:8px 11px;cursor:pointer;white-space:nowrap}
+.qrec-all.active{background:#087f78;color:#fff;border-color:#087f78}
+.qrec-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:9px;min-height:156px;align-content:start}
+.qrec-student{height:34px;border:1px solid #e0e8ee;border-radius:9px;background:#fff;color:#28475b;text-align:left;padding:0 10px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qrec-student:hover{background:#edf8f7;border-color:#9fcfc9}
+.qrec-student.active{background:#e2f4f1;border-color:#087f78;color:#075e58;font-weight:800}
+.qrec-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 9px;border-top:1px solid #e2eaf0;background:#fbfdfe}
+.qrec-info{font-size:12px;color:#687f8e}
+.qrec-pages{display:flex;gap:5px;align-items:center}
+.qrec-pages button{min-width:30px;height:30px;border:1px solid #c7d8e2;border-radius:8px;background:#fff;color:#36566a;font-weight:800;cursor:pointer}
+.qrec-pages button.active{background:#087f78;color:#fff;border-color:#087f78}
+.qrec-pages button:disabled{opacity:.35;cursor:not-allowed}
+@media(max-width:620px){.qrec-list{grid-template-columns:1fr}.qrec-toolbar{grid-template-columns:1fr}.qrec-all{width:100%}}
+</style>
+<script id="v8737-student-picker-script">
+(function(){
+ const SIZE=10;
+ let page=0,query='';
+ const E=id=>document.getElementById(id);
+ function students(){
+   const cls=E('qClass')?.value||'';
+   try{return (state.students||[]).filter(s=>s.className===cls)}catch(e){return []}
+ }
+ function ensure(){
+   const sel=E('qRecipient');if(!sel||E('qRecipientPicker'))return;
+   const box=document.createElement('div');box.id='qRecipientPicker';box.className='qrec-picker';
+   box.innerHTML='<div class="qrec-toolbar"><input id="qRecipientSearch" type="search" placeholder="Tìm học sinh theo họ tên..."><button id="qRecipientAll" type="button" class="qrec-all">Cả lớp</button></div><div id="qRecipientList" class="qrec-list"></div><div class="qrec-footer"><span id="qRecipientInfo" class="qrec-info"></span><div id="qRecipientPages" class="qrec-pages"></div></div>';
+   sel.insertAdjacentElement('afterend',box);
+   E('qRecipientSearch').addEventListener('input',function(){query=this.value.trim().toLocaleLowerCase('vi');page=0;render()});
+   E('qRecipientAll').addEventListener('click',function(){sel.value='class';render()});
+ }
+ function render(){
+   ensure();
+   const sel=E('qRecipient'),list=E('qRecipientList'),pages=E('qRecipientPages'),info=E('qRecipientInfo'),all=E('qRecipientAll');
+   if(!sel||!list)return;
+   const raw=students(), filtered=query?raw.filter(s=>(s.name||'').toLocaleLowerCase('vi').includes(query)):raw;
+   const count=Math.max(1,Math.ceil(filtered.length/SIZE));page=Math.max(0,Math.min(page,count-1));
+   const slice=filtered.slice(page*SIZE,(page+1)*SIZE);
+   list.innerHTML=slice.length?slice.map(s=>'<button type="button" class="qrec-student'+(sel.value===s.id?' active':'')+'" data-id="'+s.id+'" title="'+(s.name||'')+'">'+(s.name||'Học sinh')+'</button>').join(''):'<div class="qcount-hint">Không tìm thấy học sinh phù hợp.</div>';
+   list.querySelectorAll('[data-id]').forEach(b=>b.onclick=function(){sel.value=this.dataset.id;render()});
+   all.classList.toggle('active',sel.value==='class');
+   info.textContent=filtered.length?('Hiển thị '+(page*SIZE+1)+'–'+Math.min((page+1)*SIZE,filtered.length)+' / '+filtered.length+' học sinh'):'0 học sinh';
+   pages.innerHTML='';
+   const prev=document.createElement('button');prev.type='button';prev.textContent='‹';prev.disabled=page===0;prev.onclick=()=>{page--;render()};pages.appendChild(prev);
+   let start=Math.max(0,page-2),end=Math.min(count,start+5);start=Math.max(0,end-5);
+   for(let i=start;i<end;i++){const b=document.createElement('button');b.type='button';b.textContent=i+1;b.classList.toggle('active',i===page);b.onclick=()=>{page=i;render()};pages.appendChild(b)}
+   const next=document.createElement('button');next.type='button';next.textContent='›';next.disabled=page>=count-1;next.onclick=()=>{page++;render()};pages.appendChild(next);
+ }
+ window.renderQuizRecipientPager=render;
+
+ const oldClass=window.quizClassChanged;
+ if(typeof oldClass==='function')window.quizClassChanged=function(){
+   const r=oldClass.apply(this,arguments);page=0;query='';if(E('qRecipientSearch'))E('qRecipientSearch').value='';render();return r;
+ };
+ const oldOpen=window.quizOpen;
+ if(typeof oldOpen==='function')window.quizOpen=function(){
+   const r=oldOpen.apply(this,arguments);setTimeout(()=>{ensure();render()},0);return r;
+ };
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{ensure();render()},100));
+})();
+</script>
+
+
+<style id="v8738-recipient-modal-style">
+/* 8.7.38 - Một bộ chọn học sinh dùng chung, không bung 129 HS trong 4 tab */
+#qRecipientPicker{display:none!important}
+.qrec-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #cbd9e5;border-radius:11px;background:#f8fbfd;padding:9px 10px;margin-top:5px}
+.qrec-summary-text{min-width:0}.qrec-summary-text b{display:block;color:#173f59}.qrec-summary-text small{display:block;color:#687f8e;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px}
+.qrec-open{border:0;border-radius:9px;background:#087f78;color:#fff;font-weight:850;padding:9px 12px;cursor:pointer;white-space:nowrap}
+#qRecipientModal{position:fixed;inset:0;z-index:100020;background:rgba(15,31,48,.48);display:none;align-items:center;justify-content:center;padding:18px}
+#qRecipientModal.open{display:flex}
+.qrm-card{width:min(760px,96vw);max-height:88vh;overflow:hidden;background:#fff;border-radius:20px;box-shadow:0 24px 70px rgba(0,0,0,.24);display:flex;flex-direction:column}
+.qrm-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:18px 20px;border-bottom:1px solid #e3ebf1}.qrm-head h3{margin:0 0 4px}.qrm-head p{margin:0;color:#6b7f8e;font-size:13px}
+.qrm-close{border:0;background:#edf3f6;border-radius:9px;width:34px;height:34px;cursor:pointer;font-size:20px}
+.qrm-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px 20px 8px}.qrm-mode{border:1px solid #cbd9e5;background:#fff;border-radius:10px;padding:10px;font-weight:800;color:#35576b;cursor:pointer}.qrm-mode.active{background:#087f78;color:#fff;border-color:#087f78}
+.qrm-tools{display:grid;grid-template-columns:1fr auto;gap:8px;padding:8px 20px}.qrm-tools input{width:100%;box-sizing:border-box;padding:10px;border:1px solid #cbd9e5;border-radius:10px}.qrm-select-page{border:1px solid #bcd0dc;background:#fff;border-radius:10px;padding:8px 11px;font-weight:800;cursor:pointer}
+.qrm-list{padding:8px 20px;overflow:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;min-height:250px;align-content:start}
+.qrm-person{display:flex;align-items:center;gap:9px;border:1px solid #e0e8ee;border-radius:10px;padding:9px 10px;cursor:pointer}.qrm-person:hover{background:#f1f8f7}.qrm-person input{width:auto!important;margin:0!important}.qrm-person span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qrm-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 20px 16px;border-top:1px solid #e3ebf1;background:#fbfdfe}.qrm-pages{display:flex;gap:5px}.qrm-pages button{min-width:31px;height:31px;border:1px solid #c7d8e2;border-radius:8px;background:#fff;font-weight:800;cursor:pointer}.qrm-pages button.active{background:#087f78;color:#fff;border-color:#087f78}.qrm-confirm{border:0;border-radius:10px;background:#087f78;color:#fff;font-weight:900;padding:10px 15px;cursor:pointer}
+@media(max-width:620px){.qrm-list{grid-template-columns:1fr}.qrm-modes{grid-template-columns:1fr}.qrm-tools{grid-template-columns:1fr}.qrm-foot{align-items:flex-start;flex-direction:column}}
+</style>
+
+<div id="qRecipientModal" aria-hidden="true">
+ <div class="qrm-card">
+  <div class="qrm-head"><div><h3>Chọn người nhận</h3><p id="qrmClassInfo">Chọn cả lớp, nhóm hoặc cá nhân.</p></div><button class="qrm-close" type="button" onclick="closeRecipientModal()">×</button></div>
+  <div class="qrm-modes">
+   <button type="button" class="qrm-mode active" data-mode="class">Cả lớp</button>
+   <button type="button" class="qrm-mode" data-mode="group">Chọn nhóm</button>
+   <button type="button" class="qrm-mode" data-mode="single">Chọn cá nhân</button>
+  </div>
+  <div class="qrm-tools"><input id="qrmSearch" type="search" placeholder="Tìm học sinh theo họ tên..."><button id="qrmSelectPage" class="qrm-select-page" type="button">Chọn trang này</button></div>
+  <div id="qrmList" class="qrm-list"></div>
+  <div class="qrm-foot"><div><b id="qrmSelectedCount">Đã chọn: 0</b><div id="qrmPages" class="qrm-pages" style="margin-top:7px"></div></div><button class="qrm-confirm" type="button" onclick="confirmRecipients()">Xác nhận</button></div>
+ </div>
+</div>
+
+<script id="v8738-recipient-modal-script">
+(function(){
+ const E=id=>document.getElementById(id), SIZE=10;
+ let mode='class',page=0,query='',selected=new Set();
+
+ function classStudents(){
+   const cls=E('qClass')?.value||'';
+   try{return (state.students||[]).filter(s=>s.className===cls)}catch(e){return []}
+ }
+ function summary(){
+   const sel=E('qRecipient'),sum=E('qRecipientSummary'); if(!sel||!sum)return;
+   const all=classStudents();
+   let title='Cả lớp ('+all.length+' học sinh)',detail='Bài sẽ được giao cho toàn bộ lớp.';
+   if(sel.dataset.multiIds){
+     const ids=sel.dataset.multiIds.split(',').filter(Boolean), names=all.filter(s=>ids.includes(String(s.id))).map(s=>s.name);
+     title='Nhóm học sinh ('+ids.length+')';detail=names.slice(0,4).join(', ')+(names.length>4?' và '+(names.length-4)+' bạn khác':'');
+   }else if(sel.value!=='class'){
+     const s=all.find(x=>String(x.id)===String(sel.value)); if(s){title=s.name;detail='Giao riêng cho 1 học sinh.'}
+   }
+   sum.querySelector('b').textContent=title;sum.querySelector('small').textContent=detail;
+ }
+ function ensureSummary(){
+   const sel=E('qRecipient');if(!sel||E('qRecipientSummary'))return;
+   const d=document.createElement('div');d.id='qRecipientSummary';d.className='qrec-summary';
+   d.innerHTML='<div class="qrec-summary-text"><b>Cả lớp</b><small></small></div><button class="qrec-open" type="button" onclick="openRecipientModal()">👥 Chọn người nhận</button>';
+   sel.insertAdjacentElement('afterend',d);summary();
+ }
+ function filtered(){
+   const a=classStudents();return query?a.filter(s=>(s.name||'').toLocaleLowerCase('vi').includes(query)):a;
+ }
+ function render(){
+   const list=E('qrmList'),pg=E('qrmPages'),count=E('qrmSelectedCount'),all=filtered();
+   const pages=Math.max(1,Math.ceil(all.length/SIZE));page=Math.min(page,pages-1);
+   const rows=all.slice(page*SIZE,(page+1)*SIZE);
+   E('qrmClassInfo').textContent=(E('qClass')?.value||'Lớp')+' · '+classStudents().length+' học sinh';
+   document.querySelectorAll('.qrm-mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+   E('qrmSearch').disabled=mode==='class';E('qrmSelectPage').disabled=mode==='class';
+   list.innerHTML=mode==='class'?'<div class="notice" style="grid-column:1/-1">Toàn bộ '+classStudents().length+' học sinh trong lớp sẽ nhận bài.</div>':
+     rows.map(s=>'<label class="qrm-person"><input type="'+(mode==='single'?'radio':'checkbox')+'" name="qrmPerson" value="'+s.id+'" '+(selected.has(String(s.id))?'checked':'')+'><span>'+s.name+'</span></label>').join('');
+   list.querySelectorAll('input').forEach(x=>x.onchange=function(){
+     if(mode==='single')selected=new Set([String(this.value)]);
+     else this.checked?selected.add(String(this.value)):selected.delete(String(this.value));
+     render();
+   });
+   count.textContent=mode==='class'?'Đã chọn: Cả lớp':'Đã chọn: '+selected.size+' học sinh';
+   pg.innerHTML='';
+   if(mode!=='class'){
+     const prev=document.createElement('button');prev.textContent='‹';prev.disabled=page===0;prev.onclick=()=>{page--;render()};pg.appendChild(prev);
+     let st=Math.max(0,page-2),en=Math.min(pages,st+5);st=Math.max(0,en-5);
+     for(let i=st;i<en;i++){const b=document.createElement('button');b.textContent=i+1;b.classList.toggle('active',i===page);b.onclick=()=>{page=i;render()};pg.appendChild(b)}
+     const next=document.createElement('button');next.textContent='›';next.disabled=page>=pages-1;next.onclick=()=>{page++;render()};pg.appendChild(next);
+   }
+ }
+ window.openRecipientModal=function(){
+   ensureSummary();const sel=E('qRecipient');mode=sel?.dataset.multiIds?'group':(sel?.value==='class'?'class':'single');
+   selected=new Set(sel?.dataset.multiIds?sel.dataset.multiIds.split(',').filter(Boolean):(sel?.value&&sel.value!=='class'?[String(sel.value)]:[]));
+   page=0;query='';if(E('qrmSearch'))E('qrmSearch').value='';
+   E('qRecipientModal').classList.add('open');E('qRecipientModal').setAttribute('aria-hidden','false');render();
+ };
+ window.closeRecipientModal=function(){E('qRecipientModal').classList.remove('open');E('qRecipientModal').setAttribute('aria-hidden','true')};
+ window.confirmRecipients=function(){
+   const sel=E('qRecipient');if(!sel)return;
+   if(mode==='class'){sel.value='class';delete sel.dataset.multiIds}
+   else if(mode==='single'){const id=[...selected][0];if(!id)return;sel.value=id;delete sel.dataset.multiIds}
+   else{if(!selected.size)return;sel.value='class';sel.dataset.multiIds=[...selected].join(',')}
+   summary();closeRecipientModal();
+ };
+ document.querySelectorAll('.qrm-mode').forEach(b=>b.onclick=function(){mode=this.dataset.mode;selected.clear();page=0;render()});
+ E('qrmSearch').addEventListener('input',function(){query=this.value.trim().toLocaleLowerCase('vi');page=0;render()});
+ E('qrmSelectPage').addEventListener('click',function(){filtered().slice(page*SIZE,(page+1)*SIZE).forEach(s=>selected.add(String(s.id)));render()});
+
+ const oldClass=window.quizClassChanged;
+ if(typeof oldClass==='function')window.quizClassChanged=function(){const r=oldClass.apply(this,arguments);const sel=E('qRecipient');if(sel)delete sel.dataset.multiIds;setTimeout(()=>{ensureSummary();summary()},0);return r};
+ const oldOpen=window.quizOpen;
+ if(typeof oldOpen==='function')window.quizOpen=function(){const r=oldOpen.apply(this,arguments);setTimeout(()=>{ensureSummary();summary()},0);return r};
+
+ // Extend publishing to support a selected group while preserving the original quiz builder.
+ const basePublish=window.quizPublish;
+ if(typeof basePublish==='function')window.quizPublish=function(){
+   const sel=E('qRecipient'),ids=(sel?.dataset.multiIds||'').split(',').filter(Boolean);
+   if(!ids.length)return basePublish.apply(this,arguments);
+   const originalValue=sel.value;
+   const cls=E('qClass')?.value||'';
+   // Publish once per selected student using the existing, tested single-student path.
+   let first=true;
+   ids.forEach(id=>{
+     sel.value=id;
+     basePublish.apply(window,[]);
+     first=false;
+   });
+   sel.value=originalValue;sel.dataset.multiIds=ids.join(',');
+   summary();
+ };
+
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{ensureSummary();summary()},100));
+})();
+</script>
