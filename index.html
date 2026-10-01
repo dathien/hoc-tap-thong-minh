@@ -155,6 +155,12 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
     <button class="nav-btn" data-panel="assignments" onclick="goPanel('assignments')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v4H7z"/><path d="M6 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1"/><path d="m8 14 2.5 2.5L16 11"/></svg></span><span class="nav-label">Bài tập &amp; chấm bài</span></button>
     <button class="nav-btn" data-panel="report" onclick="goPanel('report')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10h4v10M10 20V5h4v15M15 20v-7h4v7M3 20h18"/></svg></span><span class="nav-label">Báo cáo &amp; phụ huynh</span></button>
     <div class="nav-divider" aria-hidden="true"></div>
+    <div class="nav-title nav-title-secondary">Công cụ giáo viên</div>
+    <button class="nav-btn" data-panel="assessment" onclick="goPanel('assessment')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18H6z"/><path d="M9 8h6M9 12h6M9 16h3"/><path d="m14 16 1.5 1.5L19 14"/></svg></span><span class="nav-label">Kiểm tra &amp; đánh giá</span></button>
+    <button class="nav-btn" data-panel="professional" onclick="goPanel('professional')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v14H4z"/><path d="M8 6V4h8v2M8 11h8M8 15h5"/></svg></span><span class="nav-label">Quản lý chuyên môn</span></button>
+    <button class="nav-btn" data-panel="homeroom" onclick="goPanel('homeroom')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M3 20c.4-4 2.2-6 5-6s4.6 2 5 6M13 15c3.8-.8 6.5 1 7 5"/></svg></span><span class="nav-label">Lớp chủ nhiệm</span></button>
+    <button class="nav-btn" data-panel="aihelper" onclick="goPanel('aihelper')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h10a4 4 0 0 1 4 4v5a4 4 0 0 1-4 4h-5l-4 3v-3H7a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z"/><path d="M8 12h8M10 9v6M14 9v6"/></svg></span><span class="nav-label">Trợ lý AI</span></button>
+    <div class="nav-divider" aria-hidden="true"></div>
     <button class="nav-btn" data-panel="data" onclick="goPanel('data')"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg></span><span class="nav-label">Cài đặt &amp; dữ liệu</span></button>
     <div class="student-switch"><label>Học sinh đang chọn</label><select id="studentSelect" onchange="switchStudent(this.value)"></select></div>
   </aside>
@@ -305,6 +311,37 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
       <div id="reportActions" class="action-row"><button class="btn primary" onclick="renderReport()">Cập nhật báo cáo</button><button class="btn secondary" onclick="window.print()">🖨 In / Lưu PDF</button></div>
     </section>
 
+    <section id="assessmentPanel" class="card panel">
+      <div class="panel-head"><div><h2>Kiểm tra &amp; đánh giá</h2><p>Tổ chức bài tập, theo dõi bài đã nộp và xem kết quả đánh giá học sinh.</p></div></div>
+      <div class="action-grid">
+        <button class="action-card" onclick="goPanel('assignments')"><b>Bài tập &amp; chấm bài</b><span>Tạo bài, giao bài, xem bài đã nộp và chấm điểm.</span></button>
+        <button class="action-card" onclick="goPanel('report')"><b>Kết quả &amp; báo cáo</b><span>Xem tiến độ, kết quả và tổng hợp dữ liệu đánh giá.</span></button>
+      </div>
+    </section>
+    <section id="professionalPanel" class="card panel">
+      <div class="panel-head"><div><h2>Quản lý chuyên môn</h2><p>Tập trung các công việc lập kế hoạch, theo dõi tiến độ và tổng hợp chuyên môn.</p></div></div>
+      <div class="action-grid">
+        <button class="action-card" onclick="goPanel('plan')"><b>Kế hoạch học tập</b><span>Xây dựng và theo dõi kế hoạch theo tuần.</span></button>
+        <button class="action-card" onclick="goPanel('report')"><b>Báo cáo chuyên môn</b><span>Tổng hợp kết quả và tiến độ học tập.</span></button>
+        <button class="action-card" onclick="goPanel('data')"><b>Dữ liệu</b><span>Sao lưu, khôi phục và quản lý dữ liệu ứng dụng.</span></button>
+      </div>
+    </section>
+    <section id="homeroomPanel" class="card panel">
+      <div class="panel-head"><div><h2>Lớp chủ nhiệm</h2><p>Quản lý hồ sơ học sinh và theo dõi thông tin cần dùng cho công tác chủ nhiệm.</p></div></div>
+      <div class="action-grid">
+        <button class="action-card" onclick="goPanel('profiles')"><b>Danh sách học sinh</b><span>Thêm, cập nhật và nhập danh sách học sinh từ Excel.</span></button>
+        <button class="action-card" onclick="goPanel('report')"><b>Báo cáo &amp; phụ huynh</b><span>Xem kết quả và chuẩn bị thông tin trao đổi với phụ huynh.</span></button>
+      </div>
+    </section>
+    <section id="aihelperPanel" class="card panel">
+      <div class="panel-head"><div><h2>Trợ lý AI</h2><p>Khu vực tập trung các tác vụ AI hỗ trợ giáo viên. Các chức năng AI sẽ chỉ hoạt động khi được kết nối dịch vụ AI phù hợp.</p></div></div>
+      <div class="action-grid">
+        <button class="action-card" onclick="goPanel('plan')"><b>Hỗ trợ lập kế hoạch</b><span>Mở dữ liệu kế hoạch để chuẩn bị nội dung cho trợ lý AI.</span></button>
+        <button class="action-card" onclick="goPanel('assignments')"><b>Hỗ trợ bài tập</b><span>Mở khu vực bài tập và đánh giá.</span></button>
+        <button class="action-card" onclick="goPanel('report')"><b>Hỗ trợ nhận xét</b><span>Mở báo cáo để sử dụng dữ liệu kết quả học tập.</span></button>
+      </div>
+      <div class="notice" style="margin-top:14px">Trợ lý AI hiện là khu vực điều hướng. App chưa tự gửi dữ liệu học sinh tới dịch vụ AI bên ngoài.</div>
+    </section>
     <section id="dataPanel" class="card panel">
       <div class="panel-head"><div><h2>Cài đặt & dữ liệu</h2><p>Dữ liệu chỉ được lưu trong trình duyệt trên máy đang sử dụng.</p></div></div>
       <div class="list-card" style="margin-bottom:14px"><h3>Tên ứng dụng</h3><p>Thay đổi tên và khẩu hiệu hiển thị trên trang.</p><button class="btn secondary" onclick="openBrandSettings()">✏️ Đổi tên ứng dụng</button></div>
@@ -975,6 +1012,13 @@ window.quizPreview();
 
 <style>
 .excel-import-backdrop{position:fixed;inset:0;background:rgba(15,35,52,.42);z-index:9999;display:grid;place-items:center;padding:18px}.excel-import-backdrop[hidden]{display:none}.excel-import-modal{width:min(900px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:20px;box-shadow:0 24px 70px rgba(15,35,52,.25)}.excel-import-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.excel-import-head h3{margin:0 0 5px;font-size:22px}.excel-import-head p{margin:0;color:var(--muted)}.excel-close{border:0;background:#edf4f6;width:38px;height:38px;border-radius:50%;font-size:25px;line-height:1;cursor:pointer}.excel-import-note{margin:14px 0;padding:12px 14px;border-radius:12px;background:#f0fdfa;border:1px solid #b9e8df}.excel-preview-wrap{overflow:auto;border:1px solid var(--border);border-radius:14px;margin-top:10px}.excel-preview-table{width:100%;border-collapse:collapse;min-width:680px}.excel-preview-table th,.excel-preview-table td{padding:9px 10px;border-bottom:1px solid var(--border);text-align:left}.excel-preview-table th{background:#f1f7f9}.excel-bad{color:#b42318;font-weight:800}.excel-good{color:#0f766e;font-weight:800}@media(max-width:560px){.excel-import-modal{padding:15px}.excel-import-head h3{font-size:19px}}
+
+.nav-title-secondary{margin-top:2px;font-size:10px;letter-spacing:.08em;color:#8091a3}
+.action-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.action-card{border:1px solid #d8e5ec;background:#fff;border-radius:14px;padding:16px;text-align:left;cursor:pointer;transition:.2s ease;color:#17324d}
+.action-card:hover{transform:translateY(-2px);border-color:#9ccfd0;box-shadow:0 8px 22px rgba(19,78,74,.08)}
+.action-card b{display:block;font-size:14px;margin-bottom:6px;color:#0f766e}.action-card span{display:block;font-size:12px;line-height:1.5;color:#60758a}
+@media(max-width:760px){.action-grid{grid-template-columns:1fr}}
 </style>
 <script>
 /* 8.6.8 - Nhập danh sách học sinh từ Excel */
