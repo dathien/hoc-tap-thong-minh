@@ -1489,3 +1489,76 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
 
 </body>
 </html>
+<style>
+/* v8.6.30 - Phân tích cá nhân hóa có dữ liệu demo lớp chủ nhiệm */
+.analysis-source{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}.analysis-source span{padding:6px 9px;border:1px solid #dbe8eb;background:#f8fbfc;border-radius:999px;font-size:12px;font-weight:800;color:#52687a}.analysis-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}.analysis-kpi{border:1px solid #dce8eb;border-radius:15px;padding:13px;background:#fff}.analysis-kpi small{display:block;color:#6a7e8c;font-weight:700;margin-bottom:5px}.analysis-kpi strong{font-size:20px;color:#123c4a}.analysis-two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.analysis-box{border:1px solid #dce8eb;border-radius:16px;padding:14px;background:#fff}.analysis-box h3{margin:0 0 9px;font-size:16px}.analysis-box p{margin:6px 0;color:#4f6574;line-height:1.55}.analysis-level{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}.analysis-level div{border:1px solid #e0eaed;border-radius:12px;padding:10px;text-align:center;background:#fbfdfd}.analysis-level b{display:block;font-size:18px;color:#0d7f78}.analysis-next{border:1px solid #b9d8d4;background:#f3fbf9;border-radius:16px;padding:14px;margin-top:12px}.analysis-next h3{margin:0 0 7px;color:#116c67}.analysis-note{font-size:12px;color:#6b7f8c;margin-top:10px}.analysis-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;background:#fff7df;border:1px solid #f1dda4;font-size:12px;font-weight:800;color:#815d00}@media(max-width:850px){.analysis-kpis,.analysis-level{grid-template-columns:repeat(2,1fr)}.analysis-two{grid-template-columns:1fr}}
+</style>
+<script>
+/* v8.6.30 - Hồ sơ khảo sát demo và phân tích hợp nhất từ dữ liệu học tập */
+(function(){
+ const CLASS='TU2424HC12';
+ const E=v=>typeof esc==='function'?esc(String(v??'')):String(v??'');
+ const A=v=>Array.isArray(v)?v:[];
+ const profiles=[
+  {style:'Hình ảnh',strength:'Tiếp thu tốt qua sơ đồ, bảng tóm tắt và ví dụ trực quan.',difficulty:'Cần thêm thời gian ở câu vận dụng nhiều bước.',goal:'Củng cố kiến thức và tăng độ chính xác khi làm bài.'},
+  {style:'Thực hành',strength:'Học tốt khi được làm bài, thử nghiệm và sửa lỗi trực tiếp.',difficulty:'Dễ bỏ sót bước kiểm tra lại đáp án.',goal:'Duy trì nhịp luyện tập đều và giảm lỗi bất cẩn.'},
+  {style:'Đọc – viết',strength:'Có khả năng ghi chú, hệ thống từ khóa và tự tóm tắt nội dung.',difficulty:'Cần tăng tốc độ xử lí câu hỏi có nhiều dữ kiện.',goal:'Nâng hiệu quả đọc đề và vận dụng kiến thức.'},
+  {style:'Âm thanh',strength:'Ghi nhớ tốt khi nghe giải thích và tự trình bày lại cách làm.',difficulty:'Cần củng cố khả năng tự giải quyết bài khó khi không có gợi ý.',goal:'Tăng tính chủ động và năng lực vận dụng.'}
+ ];
+ function makeSurvey(i){
+  const p=profiles[i%profiles.length],base=3+(i%3),scores={visual:9,audio:9,read:9,practice:9,focus:7,memory:4,goal:4,motivation:4,feedback:4,level:4};
+  if(p.style==='Hình ảnh')scores.visual=13; if(p.style==='Âm thanh')scores.audio=13; if(p.style==='Đọc – viết')scores.read=13; if(p.style==='Thực hành')scores.practice=13;
+  scores.focus=6+(i%5); scores.motivation=3+(i%3); scores.feedback=3+((i+1)%3); scores.level=3+(i%3); scores.goal=3+((i+2)%3); scores.memory=3+(i%3);
+  return {answers:Array.from({length:15},(_,j)=>Math.max(1,Math.min(5,3+((i+j)%3)-1))),scores,updatedAt:'2026-10-01T07:30:00',demo:true};
+ }
+ function seedPersonalization(){
+  let changed=false;
+  A(state.students).filter(s=>s.className===CLASS).forEach((s,i)=>{
+   const p=profiles[i%profiles.length];
+   if(!s.survey){s.survey=makeSurvey(i);changed=true}
+   if(!s.strength){s.strength=p.strength;changed=true}
+   if(!s.difficulty){s.difficulty=p.difficulty;changed=true}
+   if(!s.goal||s.goal==='Hoàn thành bài ôn tập được giao'){s.goal=p.goal;changed=true}
+   if(!s.dailyTime){s.dailyTime=[20,25,30,35][i%4];changed=true}
+   if(!s.daysPerWeek){s.daysPerWeek=[4,5,5,6][i%4];changed=true}
+   const graded=A(s.assignments).filter(a=>Number.isFinite(Number(a.teacherScore??a.score)));
+   if((s.score===''||s.score==null)&&graded.length){s.score=String(Number(graded[graded.length-1].teacherScore??graded[graded.length-1].score).toFixed(1));changed=true}
+  });
+  if(changed){try{saveState()}catch(_){}}
+ }
+ function perf(s){
+  const qs=[];A(s.assignments).forEach(a=>{if(a.quiz&&A(a.quiz.questions).length)A(a.quiz.questions).forEach(q=>qs.push(q.level||'Thông hiểu'))});
+  const score=Number(s.score)||Number(A(s.assignments).map(a=>Number(a.teacherScore??a.score)).filter(Number.isFinite).slice(-1)[0])||6.5;
+  const adj=(n)=>Math.max(35,Math.min(98,Math.round(n)));
+  return {nb:adj(78+(score-6)*5),th:adj(70+(score-6)*6),vd:adj(58+(score-6)*7),vdc:adj(44+(score-6)*7)};
+ }
+ function levelName(score){return score>=8.5?'Tốt':score>=7?'Khá':score>=5?'Đang củng cố':'Cần hỗ trợ'}
+ window.renderAnalysis=function(){
+  const box=document.getElementById('analysisContent'),s=typeof currentStudent==='function'?currentStudent():null;if(!box)return;
+  if(!s){box.innerHTML='<div class="empty">Hãy chọn học sinh để xem phân tích cá nhân hóa.</div>';return}
+  const survey=s.survey,sc=survey?.scores||{},style=survey&&typeof learningStyle==='function'?learningStyle(sc):{main:'Chưa xác định',secondary:'—'};
+  const assignments=A(s.assignments),submitted=assignments.filter(a=>['done','graded','submitted'].includes(a.status)||a.submittedAt),scores=submitted.map(a=>Number(a.teacherScore??a.score)).filter(Number.isFinite),avg=scores.length?scores.reduce((x,y)=>x+y,0)/scores.length:Number(s.score)||0;
+  const p=perf(s),weekDone=submitted.filter(a=>String(a.submittedAt||a.date||'').slice(0,10)>='2026-09-28').length,totalWeek=assignments.filter(a=>String(a.date||a.assignedAt||'').slice(0,10)>='2026-09-28').length;
+  const weakest=[['Nhận biết',p.nb],['Thông hiểu',p.th],['Vận dụng',p.vd],['Vận dụng cao',p.vdc]].sort((a,b)=>a[1]-b[1])[0];
+  const next=weakest[0]==='Vận dụng cao'?'Ưu tiên câu Vận dụng, sau đó tăng dần Vận dụng cao':`Ưu tiên củng cố ${weakest[0]} trước khi tăng độ khó`;
+  const focus=sc.focus?Math.round(sc.focus/10*100):70,feedback=sc.feedback?Math.round(sc.feedback/5*100):70;
+  box.innerHTML=`
+   <div class="analysis-source"><span>✓ Hồ sơ học sinh</span><span>${survey?'✓ Khảo sát đầu vào 15 câu':'○ Chưa khảo sát'}</span><span>✓ Bài đã giao</span><span>✓ Kết quả học tập</span><span>✓ Nhật ký/tiến độ</span></div>
+   <div class="analysis-kpis">
+    <div class="analysis-kpi"><small>Mức hiện tại</small><strong>${levelName(avg)}</strong><div>${avg?avg.toFixed(1)+'/10':'Chưa có điểm'}</div></div>
+    <div class="analysis-kpi"><small>Phong cách nổi trội</small><strong style="font-size:17px">${E(style.main)}</strong><div>${E(style.secondary||'')}</div></div>
+    <div class="analysis-kpi"><small>Nhiệm vụ tuần</small><strong>${weekDone}/${totalWeek||0}</strong><div>đã hoàn thành</div></div>
+    <div class="analysis-kpi"><small>Tập trung tự đánh giá</small><strong>${focus}%</strong><div>Nhu cầu phản hồi ${feedback}%</div></div>
+   </div>
+   <div class="analysis-two">
+    <div class="analysis-box"><h3>Điểm mạnh & phần cần củng cố</h3><p><b>Điểm mạnh:</b> ${E(s.strength||'Đang tiếp tục thu thập dữ liệu.')}</p><p><b>Cần củng cố:</b> ${E(s.difficulty||weakest[0])}</p><div class="analysis-level"><div><b>${p.nb}%</b><span>Nhận biết</span></div><div><b>${p.th}%</b><span>Thông hiểu</span></div><div><b>${p.vd}%</b><span>Vận dụng</span></div><div><b>${p.vdc}%</b><span>Vận dụng cao</span></div></div></div>
+    <div class="analysis-box"><h3>Cách học phù hợp</h3><p><b>Ưu tiên:</b> ${E(style.main==='Hình ảnh'?'Sơ đồ, bảng tóm tắt và ví dụ trực quan.':style.main==='Âm thanh'?'Nghe giải thích ngắn và tự trình bày lại cách làm.':style.main==='Đọc – viết'?'Ghi chú từ khóa, tóm tắt và lập bảng kiến thức.':'Làm mẫu – thực hành – sửa lỗi – làm lại.')}</p><p><b>Nhịp học đề xuất:</b> ${Number(s.dailyTime)||30} phút/lượt · ${Number(s.daysPerWeek)||5} ngày/tuần.</p><p><b>Mục tiêu cá nhân:</b> ${E(s.goal||'Hoàn thành đều các nhiệm vụ được giao.')}</p></div>
+   </div>
+   <div class="analysis-next"><h3>Đề xuất ôn tập tiếp theo</h3><p><b>${E(next)}.</b> Mức ${E(weakest[0])} hiện khoảng <b>${weakest[1]}%</b>. Bài tiếp theo nên lấy trực tiếp từ Kế hoạch ôn tập/Bài tập & ôn luyện để không tạo nội dung rời.</p><span class="analysis-badge">🎯 Mục tiêu gần: hoàn thành nhiệm vụ tuần và cải thiện mức ${E(weakest[0])}</span></div>
+   <div class="analysis-note">Dữ liệu demo lớp ${CLASS} dùng để minh họa cách app cá nhân hóa. Khi có bài làm thật, kết quả và đề xuất sẽ ưu tiên dữ liệu học tập thực tế của từng học sinh.</div>`;
+ };
+ function patchHeader(){const p=document.getElementById('analysisPanel');if(!p)return;const btn=p.querySelector('.panel-head button');if(btn){btn.textContent='Xem / cập nhật khảo sát';btn.setAttribute('onclick',"goPanel('survey')")};const sub=p.querySelector('.panel-head p');if(sub)sub.textContent='Tổng hợp từ hồ sơ, khảo sát đầu vào, bài đã giao, kết quả và tiến độ học tập.'}
+ const oldGo=window.goPanel;window.goPanel=function(name){const r=oldGo.apply(this,arguments);if(name==='analysis')setTimeout(()=>{patchHeader();renderAnalysis()},0);return r};
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{seedPersonalization();patchHeader();if(typeof renderAll==='function')renderAll();renderAnalysis()},180));
+})();
+</script>
