@@ -3222,3 +3222,63 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{ensureSummary();summary()},100));
 })();
 </script>
+
+
+<style id="v8739-fix-results-panel">
+/* Bảng chi tiết bài làm chỉ thuộc tab Bài học sinh nộp, không được nằm ngoài 4 pane */
+#assignmentsPanel > #resultsPanel83{display:none!important}
+#assignPane-submissions #resultsPanel83{display:block!important;margin-top:12px}
+#resultsPanel83 .r8739-pager{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0}
+#resultsPanel83 .r8739-pages{display:flex;gap:5px}
+#resultsPanel83 .r8739-pages button{min-width:32px;height:32px;border:1px solid #c7d8e2;border-radius:8px;background:#fff;font-weight:800;cursor:pointer}
+#resultsPanel83 .r8739-pages button.active{background:#087f78;color:#fff;border-color:#087f78}
+</style>
+<script id="v8739-fix-results-panel-script">
+(function(){
+ const E=id=>document.getElementById(id), SIZE=10;
+ let page=0;
+
+ function relocate(){
+   const panel=E('resultsPanel83'), pane=E('assignPane-submissions');
+   if(panel&&pane&&panel.parentElement!==pane)pane.appendChild(panel);
+ }
+ function paginate(){
+   relocate();
+   const panel=E('resultsPanel83'),body=E('rRows83');if(!panel||!body)return;
+   const rows=[...body.querySelectorAll(':scope > tr')];
+   if(!rows.length)return;
+   const total=rows.length,pages=Math.max(1,Math.ceil(total/SIZE));page=Math.min(page,pages-1);
+   rows.forEach((r,i)=>r.style.display=(i>=page*SIZE&&i<(page+1)*SIZE)?'':'none');
+   let nav=E('rPager8739');
+   if(!nav){nav=document.createElement('div');nav.id='rPager8739';nav.className='r8739-pager';panel.querySelector('.result-scroll')?.after(nav)}
+   nav.innerHTML='<span>Hiển thị '+(page*SIZE+1)+'–'+Math.min((page+1)*SIZE,total)+' / '+total+' học sinh</span><div class="r8739-pages"></div>';
+   const box=nav.querySelector('.r8739-pages');
+   const add=(txt,p,disabled,active)=>{const b=document.createElement('button');b.type='button';b.textContent=txt;b.disabled=!!disabled;b.classList.toggle('active',!!active);b.onclick=()=>{page=p;paginate()};box.appendChild(b)};
+   add('‹',Math.max(0,page-1),page===0,false);
+   let st=Math.max(0,page-2),en=Math.min(pages,st+5);st=Math.max(0,en-5);
+   for(let i=st;i<en;i++)add(String(i+1),i,false,i===page);
+   add('›',Math.min(pages-1,page+1),page===pages-1,false);
+ }
+ function fix(){
+   relocate();
+   const st=E('rStatus83');
+   // "Bài học sinh nộp" mặc định chỉ xem bài đã nộp/đã chấm, không bung toàn bộ học sinh chưa nộp.
+   if(st && !st.dataset.v8739){st.dataset.v8739='1';st.value='submitted';st.dispatchEvent(new Event('change',{bubbles:true}))}
+   setTimeout(paginate,30);
+ }
+ // resultsPanel83 được tạo động bởi mã cũ, nên theo dõi và di chuyển ngay khi xuất hiện.
+ const obs=new MutationObserver(()=>{if(E('resultsPanel83')){relocate();setTimeout(paginate,0)}});
+ document.addEventListener('DOMContentLoaded',()=>{obs.observe(document.body,{childList:true,subtree:true});setTimeout(fix,180)});
+ setTimeout(fix,250);
+
+ const oldSwitch=window.switchAssignmentTab;
+ if(typeof oldSwitch==='function')window.switchAssignmentTab=function(id){
+   const r=oldSwitch.apply(this,arguments);relocate();
+   if(id==='submissions')setTimeout(paginate,40);
+   return r;
+ };
+ // Phân trang lại khi bảng kết quả được render/filter lại.
+ const bodyObserver=new MutationObserver(()=>{page=0;setTimeout(paginate,0)});
+ setTimeout(()=>{const b=E('rRows83');if(b)bodyObserver.observe(b,{childList:true})},350);
+})();
+</script>
