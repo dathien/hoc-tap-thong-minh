@@ -59,6 +59,8 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
 
 /* v8.6.25 - Nhật ký học tập dành cho giáo viên */
 .journal-manager{background:#f8fcfd;border:1px solid #d7e8ee;border-radius:16px;padding:14px}.journal-filters{align-items:end}.journal-entry-box{border:1px solid #d7e8ee;border-radius:14px;background:#fff;padding:12px 14px}.journal-entry-box summary{cursor:pointer;color:#0b6f69;list-style:none}.journal-entry-box summary::-webkit-details-marker{display:none}.journal-table .journal-score{font-weight:800;color:#087f78;white-space:nowrap}.journal-table td{vertical-align:top}.journal-student{font-weight:800;color:#17324d}.journal-sub{font-size:12px;color:#6b7e90;margin-top:3px}.journal-content{min-width:230px}.journal-next{min-width:180px}.journal-empty{padding:28px;text-align:center;color:#718294;background:#fff;border:1px dashed #cbdde4;border-radius:12px}@media(max-width:760px){.journal-manager{padding:10px}.journal-table{min-width:860px}}
+/* v8.6.26 - Học hôm nay liên kết dữ liệu */
+.today-picker{margin-bottom:4px}.today-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0 16px}.today-kpi{border:1px solid #dce9ed;border-radius:16px;padding:14px;background:linear-gradient(180deg,#fff,#f8fbfc);text-align:center}.today-kpi strong{display:block;font-size:28px;line-height:1;color:#087f78}.today-kpi span{display:block;margin-top:7px;color:#607786;font-weight:700;font-size:13px}.today-section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:18px 0 10px}.today-section-title h3{margin:0}.today-task{border:1px solid #dce9ed;border-radius:18px;padding:16px;margin-bottom:12px;background:#fff;box-shadow:0 7px 22px rgba(32,75,91,.06)}.today-task.pending{border-left:5px solid #0f8f87}.today-task.done{border-left:5px solid #36a269;background:#fbfffc}.today-task-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.today-task h3{margin:4px 0 6px;font-size:18px}.today-meta{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.today-pill{padding:5px 9px;border-radius:999px;background:#eef7f7;color:#315b61;font-size:12px;font-weight:800}.today-levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0}.today-level{padding:9px;border-radius:12px;background:#f6fafb;text-align:center;font-size:12px;color:#607786}.today-level b{display:block;color:#173d4b;font-size:15px}.today-plan-link{border:1px dashed #b9d4d9;border-radius:16px;padding:14px;background:#f8fcfc;margin:12px 0}.today-empty{padding:26px;border:1px dashed #bfd5da;border-radius:18px;text-align:center;background:#fbfdfd;color:#607786}.today-feedback{margin-top:12px;padding-top:12px;border-top:1px solid #e3ecef}.today-feedback .feel-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.today-feedback button{border:1px solid #d7e5e8;background:#fff;border-radius:12px;padding:8px 11px;cursor:pointer;font-weight:700}.today-feedback button:hover{border-color:#0f8f87;background:#f0fbfa}.today-footer-actions{margin-top:18px}@media(max-width:760px){.today-kpis{grid-template-columns:1fr}.today-levels{grid-template-columns:repeat(2,1fr)}.today-task-head{display:block}}
 </style>
 <style>
 /* Bảng điều khiển báo cáo: dùng SVG/CSS nội tuyến, hoạt động khi ngoại tuyến. */
@@ -263,23 +265,12 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
     </section>
 
     <section id="sessionPanel" class="card panel">
-      <div class="panel-head"><div><h2>Học hôm nay</h2><p>App tự điều chỉnh cấu trúc phiên học theo môn, khối, mức học và nhiệm vụ đang thực hiện.</p></div><span id="todaySubjectBadge" class="tag blue">Chưa chọn học sinh</span></div>
-      <div class="grid2" style="margin-bottom:12px"><div class="field"><label>Chế độ xem</label><select id="todayView" onchange="renderPersonalToday()"><option value="individual">Cá nhân</option><option value="class">Toàn lớp</option></select></div><div class="field"><label>Chọn học sinh</label><select id="todayStudent" onchange="chooseTodayStudent(this.value)"></select></div></div>
-      <div id="todayOverview" style="margin-bottom:12px"></div>
+      <div class="panel-head"><div><h2>Học hôm nay</h2><p>Nhiệm vụ ở đây lấy trực tiếp từ bài giáo viên đã giao và kế hoạch ôn tập; học sinh không phải nhập lại nội dung.</p></div><span id="todaySubjectBadge" class="tag blue">Chưa chọn học sinh</span></div>
+      <div class="grid2 today-picker"><div class="field"><label>Chế độ xem</label><select id="todayView" onchange="renderTodayLearning()"><option value="individual">Cá nhân</option><option value="class">Toàn lớp</option></select></div><div class="field"><label>Chọn học sinh</label><select id="todayStudent" onchange="chooseTodayStudent(this.value);renderTodayLearning()"></select></div></div>
+      <div id="todayOverview" style="margin:12px 0"></div>
       <div id="todayPersonal" class="info-box" style="margin-bottom:12px"></div>
-      <div class="grid3" style="margin-bottom:12px"><div class="field"><label>Môn học hôm nay</label><select id="todaySubject" onchange="renderPersonalToday();buildSession()"></select></div><div class="field"><label>Chủ đề</label><input id="todayTopic" placeholder="Nhập chủ đề hoặc chọn bài đã giao" oninput="renderPersonalToday()"></div><div class="field"><label>Mức phù hợp</label><select id="todayLevel" onchange="renderPersonalToday()"><option value="auto">App gợi ý theo kết quả</option><option value="support">Cần hỗ trợ</option><option value="average">Trung bình</option><option value="good">Khá</option><option value="excellent">Giỏi</option></select></div></div>
-      <div id="todayRecommendations" style="margin-bottom:12px"></div>
-      <div id="todayContext" class="info-box" style="margin-bottom:14px"></div>
-      <div class="grid3"><div class="field"><label>Nội dung học</label><input id="sessionTopic" placeholder="Ví dụ: Ôn tập câu điều kiện"></div><div class="field"><label>Thời lượng học dự kiến</label><select id="sessionDuration" onchange="buildSession()"><option value="30">30 phút</option><option value="45" selected>45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option></select></div><div class="field"><label>Kiểu phiên học</label><select id="sessionMode" onchange="buildSession()"><option>Học kiến thức mới</option><option>Luyện tập</option><option>Ôn kiểm tra</option><option>Hoàn thành bài tập</option></select></div></div>
-      <div class="action-row"><button class="btn primary" onclick="buildSession()">✨ Tạo nội dung học theo môn</button><button class="btn secondary" onclick="useTodayTask()">📌 Lấy nhiệm vụ hôm nay</button></div>
-      <div id="sessionStructure" style="margin-top:14px"></div>
-      <div class="timer" hidden style="display:none">
-        <div class="timer-status" id="timerStatus">Sẵn sàng bắt đầu</div>
-        <div class="timer-display" id="timerDisplay">45:00</div>
-        <div class="action-row" style="justify-content:center"><button class="btn primary" id="timerStartBtn" onclick="startPauseTimer()">▶ Bắt đầu</button><button class="btn secondary" onclick="resetTimer()">↺ Làm lại</button></div>
-      </div>
-      <div class="field"><label>Ghi chú nhanh trong phiên học</label><textarea id="sessionNotes" placeholder="Ghi ý quan trọng, lỗi sai, phần cần hỏi giáo viên..."></textarea></div>
-      <div class="action-row"><button class="btn primary" onclick="finishSession()">✓ Hoàn thành và chuyển sang nhật ký</button><button class="btn secondary" onclick="goPanel('journal')">📘 Xem nhật ký học tập</button></div>
+      <div id="todayUnifiedContent"></div>
+      <div class="action-row today-footer-actions"><button class="btn secondary" onclick="goPanel('plan')">Kế hoạch ôn tập</button><button class="btn secondary" onclick="goPanel('assignments')">Bài tập &amp; ôn luyện</button><button class="btn secondary" onclick="goPanel('journal')">Nhật ký học tập</button></div>
     </section>
 
     <section id="journalPanel" class="card panel">
@@ -1319,6 +1310,62 @@ function renderJournals(){initJournalFilters();const manager=document.getElement
 function journalEditForStudent(sid,jid){const s=(state.students||[]).find(x=>x.id===sid),j=s?.journals?.find(x=>x.id===jid);if(!s||!j)return;const what=prompt('Nội dung đã học:',j.what||'');if(what===null)return;const hard=prompt('Phần khó nhất:',j.hard||'');if(hard===null)return;const next=prompt('Việc cần làm tiếp theo:',j.next||'');if(next===null)return;j.what=what.trim()||j.what;j.hard=hard.trim();j.next=next.trim();saveState();renderJournals();toast('Đã sửa nhật ký của '+s.name);}
 function journalDeleteForStudent(sid,jid){const s=(state.students||[]).find(x=>x.id===sid);if(!s)return;if(confirm('Xóa nhật ký này của '+s.name+'?')){s.journals=(s.journals||[]).filter(x=>x.id!==jid);saveState();renderJournals();toast('Đã xóa nhật ký');}}
 const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(name);if(name==='journal')setTimeout(()=>{initJournalFilters();renderJournals();},0);};
+</script>
+<script>
+/* v8.6.26 - một nguồn dữ liệu cho Kế hoạch -> Bài giao -> Học hôm nay -> Kết quả -> Nhật ký */
+(function(){
+ const $t=id=>document.getElementById(id);
+ const e=v=>typeof esc==='function'?esc(String(v??'')):String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+ const arr=v=>Array.isArray(v)?v:[];
+ function selectedStudent(){
+   const id=$t('todayStudent')?.value||state.currentStudentId;
+   return arr(state.students).find(x=>x.id===id)||currentStudent?.();
+ }
+ function assignmentsOf(s){return arr(s?.assignments).filter(a=>a.quiz&&a.portalPublished!==false)}
+ function levelCounts(a){const out={'Nhận biết':0,'Thông hiểu':0,'Vận dụng':0,'Vận dụng cao':0};arr(a.quiz?.questions).forEach(q=>{let k=q.level||q.difficulty||'Thông hiểu';if(out[k]===undefined){if(/cao/i.test(k))k='Vận dụng cao';else if(/vận/i.test(k))k='Vận dụng';else if(/nhận/i.test(k))k='Nhận biết';else k='Thông hiểu'}out[k]++});return out}
+ function dt(v){if(!v)return 'Không giới hạn';const d=new Date(v);return isNaN(d)?String(v):d.toLocaleString('vi-VN',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit',year:'numeric'})}
+ function isDone(a){return a.status==='graded'||a.status==='done'||a.status==='submitted'||!!a.submittedAt}
+ function pending(a){return !isDone(a)}
+ function scoreOf(a){const n=Number(a.teacherScore??a.score);return Number.isFinite(n)?n:null}
+ function planTasks(s){return arr(s?.weekPlan?.days).flatMap(d=>arr(d.tasks).filter(t=>t&&t.text).map(t=>({...t,date:d.date}))) }
+ function openStudentWork(sid){
+   state.currentStudentId=sid;try{saveState()}catch(_){ }
+   if(typeof portalOpen==='function'){portalOpen();setTimeout(()=>{const sel=$t('portalStudent');if(sel){sel.value=sid;if(typeof portalRender==='function')portalRender()}},0)}
+   else {goPanel('assignments');toast('Mở bài tập của học sinh đã chọn')}
+ }
+ window.todayOpenAssignment=function(sid,aid){const s=arr(state.students).find(x=>x.id===sid),a=arr(s?.assignments).find(x=>x.id===aid);if(!s||!a)return;openStudentWork(sid)};
+ window.todayQuickFeedback=function(sid,aid,feel){
+   const s=arr(state.students).find(x=>x.id===sid),a=arr(s?.assignments).find(x=>x.id===aid);if(!s||!a)return;
+   s.journals=s.journals||[];const existing=s.journals.find(j=>j.assignmentId===aid&&j.autoFromAssignment);
+   const score=scoreOf(a), understand=score==null?6:Math.max(1,Math.min(10,Math.round(score)));
+   const rec={id:existing?.id||uid(),assignmentId:aid,planId:a.planId||null,autoFromAssignment:true,date:(a.submittedAt||new Date().toISOString()).slice(0,10),what:a.title||'Bài ôn tập',hard:feel==='Khó'?'Học sinh tự đánh giá bài còn khó':'',remember:'Kết quả '+(score==null?'chưa chấm':score+'/10')+' · Cảm nhận: '+feel,next:score!=null&&score<7?'Ôn lại các câu sai và làm thêm bài cùng chủ đề':'Tiếp tục bài ôn tiếp theo',understand,focus:feel==='Khó'?6:feel==='Vừa sức'?8:9,createdAt:existing?.createdAt||new Date().toISOString()};
+   if(existing)Object.assign(existing,rec);else s.journals.push(rec);try{saveState()}catch(_){ }renderTodayLearning();toast('Đã lưu phản hồi vào Nhật ký học tập')
+ };
+ function taskCard(s,a){const done=isDone(a),c=levelCounts(a),q=arr(a.quiz?.questions).length,score=scoreOf(a);return `<article class="today-task ${done?'done':'pending'}"><div class="today-task-head"><div><span class="tag ${done?'':'blue'}">${done?'Đã hoàn thành':'Cần làm'}</span><h3>${e(a.title||'Bài ôn tập')}</h3><div style="color:#607786">${e(a.subject||s.subject||'')} · ${e(a.quiz?.level||'Phân hóa theo năng lực')}</div></div><div>${done&&score!=null?`<span class="tag">${score}/10</span>`:''}</div></div><div class="today-meta"><span class="today-pill">${q} câu</span><span class="today-pill">${a.quiz?.duration?e(a.quiz.duration)+' phút':'Không giới hạn'}</span><span class="today-pill">Hạn: ${e(dt(a.quiz?.dueAt||a.dueAt))}</span></div><div class="today-levels"><div class="today-level"><b>${c['Nhận biết']}</b>Nhận biết</div><div class="today-level"><b>${c['Thông hiểu']}</b>Thông hiểu</div><div class="today-level"><b>${c['Vận dụng']}</b>Vận dụng</div><div class="today-level"><b>${c['Vận dụng cao']}</b>Vận dụng cao</div></div><div class="action-row">${done?`<button class="btn secondary" onclick="todayOpenAssignment('${e(s.id)}','${e(a.id)}')">Xem lại bài</button>`:`<button class="btn primary" onclick="todayOpenAssignment('${e(s.id)}','${e(a.id)}')">▶ Bắt đầu ôn tập</button>`}<button class="btn secondary" onclick="goPanel('assignments')">Xem trong Bài tập</button></div>${done?`<div class="today-feedback"><b>Em thấy bài này thế nào?</b><div class="feel-row"><button onclick="todayQuickFeedback('${e(s.id)}','${e(a.id)}','Dễ')">😊 Dễ</button><button onclick="todayQuickFeedback('${e(s.id)}','${e(a.id)}','Vừa sức')">🙂 Vừa sức</button><button onclick="todayQuickFeedback('${e(s.id)}','${e(a.id)}','Khó')">😓 Khó</button></div></div>`:''}</article>`}
+ window.renderTodayLearning=function(){
+   const box=$t('todayUnifiedContent');if(!box)return;
+   const s=selectedStudent();if(!s){box.innerHTML='<div class="today-empty">Hãy chọn học sinh để xem nhiệm vụ ôn tập hôm nay.</div>';return}
+   state.currentStudentId=s.id;
+   const badge=$t('todaySubjectBadge');if(badge)badge.textContent=`${s.className||'Chưa có lớp'} · ${s.subject||'Ôn tập'}`;
+   const personal=$t('todayPersonal');if(personal)personal.innerHTML=`<b>${e(s.name)} · ${e(s.className)}</b> — Học hôm nay lấy trực tiếp từ <b>Kế hoạch ôn tập</b> và <b>Bài đã giao</b>; không nhập lại tên bài.`;
+   const all=assignmentsOf(s).slice().sort((a,b)=>String(b.assignedAt||b.createdAt||'').localeCompare(String(a.assignedAt||a.createdAt||'')));
+   const todo=all.filter(pending),done=all.filter(isDone),plans=planTasks(s),donePct=all.length?Math.round(done.length/all.length*100):0;
+   const overview=$t('todayOverview');if(overview)overview.innerHTML=`<div class="today-kpis"><div class="today-kpi"><strong>${todo.length}</strong><span>Bài cần làm</span></div><div class="today-kpi"><strong>${done.length}</strong><span>Đã hoàn thành</span></div><div class="today-kpi"><strong>${donePct}%</strong><span>Tiến độ ôn tập</span></div></div>`;
+   let html='';
+   if(todo.length){html+=`<div class="today-section-title"><h3>Nhiệm vụ cần làm</h3><span class="tag blue">${todo.length} bài</span></div>`+todo.slice(0,5).map(a=>taskCard(s,a)).join('')}
+   else html+=`<div class="today-empty"><b>Không có bài trắc nghiệm đang chờ.</b><br>Giáo viên có thể giao bài từ “Bài tập & ôn luyện”; bài sẽ tự xuất hiện tại đây.</div>`;
+   if(s.weekPlan){const openPlans=plans.filter(t=>!t.done).slice(0,3);html+=`<div class="today-section-title"><h3>Liên kết kế hoạch ôn tập</h3><button class="btn secondary small" onclick="goPanel('plan')">Mở kế hoạch</button></div><div class="today-plan-link"><b>${e(s.weekPlan.topic||'Kế hoạch tuần')}</b><div style="margin-top:7px;color:#607786">${openPlans.length?openPlans.map(x=>'• '+e(x.text)).join('<br>'):'Các nhiệm vụ trong kế hoạch đã hoàn thành.'}</div><div style="margin-top:9px"><small>Bài giáo viên giao sẽ là nguồn thực hiện; kế hoạch chỉ định hướng nội dung, không tạo một bài học khác.</small></div></div>`}
+   if(done.length){html+=`<div class="today-section-title"><h3>Kết quả gần đây</h3><span class="tag">${done.length} bài</span></div>`+done.slice(0,2).map(a=>taskCard(s,a)).join('')}
+   box.innerHTML=html;
+ };
+ // Giữ tương thích với các nút cũ nhưng Học hôm nay không còn tạo một "phiên học" tách rời.
+ window.buildSession=renderTodayLearning;
+ window.useTodayTask=function(){renderTodayLearning();toast('Học hôm nay đã đồng bộ từ kế hoạch và bài được giao')};
+ window.finishSession=function(){goPanel('journal')};
+ const oldChoose=window.chooseTodayStudent;window.chooseTodayStudent=function(id){if(typeof oldChoose==='function')oldChoose(id);const s=arr(state.students).find(x=>x.id===id);if(s){state.currentStudentId=id;try{saveState()}catch(_){ }}renderTodayLearning()};
+ const oldGo=window.goPanel;window.goPanel=function(name){const r=oldGo.apply(this,arguments);if(name==='session')setTimeout(renderTodayLearning,0);return r};
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{if($t('todayUnifiedContent'))renderTodayLearning()},0));
+})();
 </script>
 </body>
 </html>
