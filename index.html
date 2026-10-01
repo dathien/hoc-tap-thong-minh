@@ -1568,6 +1568,51 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
  window.addEventListener('storage',()=>setTimeout(()=>updateDashboard('data'),0));
 })();
 </script>
+
+<style>
+/* 8.6.34 - Danh sách học sinh gọn, phân trang */
+#profilesPanel > .grid2{grid-template-columns:1fr!important;gap:12px}
+#profilesPanel > .grid2 > div:first-child{display:none}
+#profilesPanel.profile-editor-open > .grid2 > div:first-child{display:block;border:1px solid var(--border);border-radius:16px;padding:16px;background:#fbfdfe}
+.profile-list-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:2px 0 12px;flex-wrap:wrap}.profile-list-head h3{margin:0}.profile-count{font-weight:900;color:#087f78;background:#e9f7f5;border-radius:999px;padding:6px 10px;font-size:13px}
+.profile-tools{display:grid;grid-template-columns:minmax(220px,1fr) 180px auto;gap:10px;align-items:end;margin-bottom:12px}.profile-tools .field{margin:0}.profile-quick{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 12px}.profile-chip{border:1px solid #cfe0e7;background:#fff;border-radius:999px;padding:7px 11px;font-weight:800;color:#466276;cursor:pointer}.profile-chip.active{background:#e3f4f2;color:#087f78;border-color:#9ed4ce}
+.profile-table{min-width:820px}.profile-table td{vertical-align:middle}.student-name-cell{font-weight:900;color:#17324d}.student-subline{font-size:12px;color:#718294;margin-top:3px}.progress-mini{min-width:110px}.progress-track{height:7px;border-radius:99px;background:#e8eff2;overflow:hidden;margin-top:5px}.progress-track i{display:block;height:100%;background:#0f766e;border-radius:99px}.student-status{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900}.student-status.ok{background:#e7f7ef;color:#16724a}.student-status.watch{background:#fff4d8;color:#9a5b00}.student-status.help{background:#fff0f0;color:#b42318}
+.profile-pagination{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}.page-buttons{display:flex;gap:5px;align-items:center;flex-wrap:wrap}.page-btn{min-width:34px;height:34px;border:1px solid #cbdce4;background:#fff;border-radius:9px;font-weight:800;cursor:pointer}.page-btn.active{background:#087f78;color:#fff;border-color:#087f78}.page-btn:disabled{opacity:.4;cursor:not-allowed}
+@media(max-width:760px){.profile-tools{grid-template-columns:1fr}.profile-list-head{align-items:flex-start}.profile-table{min-width:760px}}
+</style>
+<script>
+/* 8.6.34 - compact class/subject student manager */
+(function(){
+ let page=1, pageSize=10, query='', quick='all';
+ function n(v){const x=Number(v);return Number.isFinite(x)?x:null}
+ function contextRows(){const cls=document.getElementById('classManagerFilter')?.value||'';return (state.students||[]).filter(s=>!cls||s.className===cls)}
+ function subject(){return document.getElementById('subjectManagerFilter')?.value||''}
+ function metrics(s){const sub=subject();const as=(s.assignments||[]).filter(a=>!sub||a.subject===sub);const done=as.filter(a=>['done','submitted','graded'].includes(a.status)||a.submittedAt);const graded=as.filter(a=>a.status==='graded'&&n(a.score)!==null);const avg=graded.length?graded.reduce((t,a)=>t+n(a.score),0)/graded.length:null;const progress=as.length?Math.round(done.length/as.length*100):0;const surveyDone=!!(s.survey&&(s.survey.completedAt||Object.keys(s.survey.answers||{}).length>=15));const pending=as.filter(a=>!['done','submitted','graded'].includes(a.status)&&!a.submittedAt).length;let status='Đang học',cls='ok';if((avg!==null&&avg<5)||pending>=3){status='Cần hỗ trợ';cls='help'}else if(!surveyDone||pending>0){status='Cần theo dõi';cls='watch'}return{as,avg,progress,surveyDone,pending,status,cls}}
+ function filtered(){let rows=contextRows();const q=query.trim().toLocaleLowerCase('vi');if(q)rows=rows.filter(s=>(s.name+' '+s.className).toLocaleLowerCase('vi').includes(q));if(quick!=='all')rows=rows.filter(s=>{const m=metrics(s);if(quick==='help')return m.cls==='help';if(quick==='survey')return !m.surveyDone;if(quick==='pending')return m.pending>0;return true});return rows}
+ function editor(open){const p=document.getElementById('profilesPanel');if(!p)return;p.classList.toggle('profile-editor-open',open);if(open)setTimeout(()=>document.getElementById('pName')?.scrollIntoView({behavior:'smooth',block:'center'}),30)}
+ window.toggleProfileEditor=function(){const p=document.getElementById('profilesPanel');editor(!p.classList.contains('profile-editor-open'))}
+ window.profileSearch=function(v){query=v;page=1;renderCompact()}
+ window.profileQuick=function(v){quick=v;page=1;renderCompact()}
+ window.profilePage=function(v){page=Math.max(1,v);renderCompact()}
+ window.profilePageSize=function(v){pageSize=Number(v)||10;page=1;renderCompact()}
+ window.openStudentProfileCompact=function(id){switchStudent(id);editor(true)}
+ function renderCompact(){
+   const box=document.getElementById('profileList');if(!box)return;
+   const rows=filtered(),total=rows.length,pages=Math.max(1,Math.ceil(total/pageSize));if(page>pages)page=pages;const start=(page-1)*pageSize,shown=rows.slice(start,start+pageSize);const sub=subject();
+   const chips=[['all','Tất cả'],['help','Cần hỗ trợ'],['survey','Chưa khảo sát'],['pending','Có bài chưa hoàn thành']];
+   box.innerHTML=`<div class="profile-list-head"><div><h3>Danh sách học sinh</h3><div class="help">${esc(document.getElementById('classManagerFilter')?.value||'')} ${sub?'· '+esc(sub):''}</div></div><div class="profile-count">${total} học sinh</div></div>
+   <div class="profile-tools"><div class="field"><label>Tìm học sinh</label><input value="${esc(query)}" oninput="profileSearch(this.value)" placeholder="Nhập họ tên học sinh..."></div><div class="field"><label>Hiển thị</label><select onchange="profilePageSize(this.value)"><option value="10" ${pageSize===10?'selected':''}>10 học sinh / trang</option><option value="20" ${pageSize===20?'selected':''}>20 học sinh / trang</option><option value="40" ${pageSize===40?'selected':''}>40 học sinh / trang</option></select></div><button class="btn secondary" type="button" onclick="toggleProfileEditor()">✏️ Mở/đóng hồ sơ</button></div>
+   <div class="profile-quick">${chips.map(([v,l])=>`<button type="button" class="profile-chip ${quick===v?'active':''}" onclick="profileQuick('${v}')">${l}</button>`).join('')}</div>
+   ${shown.length?`<div class="table-wrap"><table class="table profile-table"><thead><tr><th>STT</th><th>Học sinh</th><th>Trạng thái</th><th>Tiến độ môn</th><th>Điểm TB</th><th>Khảo sát</th><th></th></tr></thead><tbody>${shown.map((s,i)=>{const m=metrics(s);return `<tr><td>${start+i+1}</td><td><div class="student-name-cell">${esc(s.name)}</div><div class="student-subline">${esc(s.className)}</div></td><td><span class="student-status ${m.cls}">${m.status}</span></td><td><div class="progress-mini"><b>${m.progress}%</b><div class="progress-track"><i style="width:${m.progress}%"></i></div><div class="student-subline">${m.as.length} bài · ${m.pending} chưa xong</div></div></td><td><b>${m.avg===null?'—':m.avg.toFixed(1)}</b></td><td>${m.surveyDone?'<span class="tag">Đã khảo sát</span>':'<span class="tag amber">Chưa khảo sát</span>'}</td><td><button class="btn secondary small" onclick="openStudentProfileCompact('${s.id}')">Xem ›</button></td></tr>`}).join('')}</tbody></table></div>`:'<div class="empty">Không có học sinh phù hợp bộ lọc.</div>'}
+   <div class="profile-pagination"><div class="help">Hiển thị ${total?start+1:0}–${Math.min(start+pageSize,total)} / ${total} học sinh</div><div class="page-buttons"><button class="page-btn" onclick="profilePage(${page-1})" ${page<=1?'disabled':''}>‹</button>${Array.from({length:pages},(_,i)=>i+1).slice(Math.max(0,page-3),Math.max(5,page+2)).slice(0,5).map(p=>`<button class="page-btn ${p===page?'active':''}" onclick="profilePage(${p})">${p}</button>`).join('')}<button class="page-btn" onclick="profilePage(${page+1})" ${page>=pages?'disabled':''}>›</button></div></div>`;
+ }
+ const prior=window.renderProfiles;
+ window.renderProfiles=function(){prior();renderCompact()};
+ const oldChanged=window.classManagerChanged;
+ window.classManagerChanged=function(){page=1;query='';quick='all';oldChanged();renderCompact()};
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{const p=document.getElementById('profilesPanel');if(p)p.classList.remove('profile-editor-open');renderCompact()},0));
+})();
+</script>
 </body>
 </html>
 <style>
