@@ -111,6 +111,33 @@ button,input,select,textarea{font:inherit}button{touch-action:manipulation}.hidd
 <style>
 .today-class-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:12px 0 16px}.today-class-kpi{background:linear-gradient(180deg,#fff,#f7fbfb);border:1px solid #dbe9ea;border-radius:15px;padding:15px;text-align:center}.today-class-kpi b{display:block;font-size:28px;line-height:1;color:#087f78;margin-bottom:6px}.today-class-kpi span{font-size:13px;font-weight:700;color:#52687a}.today-class-table{overflow:auto;border:1px solid #dfeaec;border-radius:15px;background:#fff}.today-class-table table{width:100%;border-collapse:collapse}.today-class-table th,.today-class-table td{padding:11px 12px;border-bottom:1px solid #edf2f4;text-align:left;vertical-align:middle}.today-class-table th{background:#f4f9f9;color:#3d566a;font-size:12px;text-transform:uppercase;letter-spacing:.03em}.today-status{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:800}.today-status.todo{background:#fff4dd;color:#94620b}.today-status.done{background:#e8f7ef;color:#197149}.today-status.progress{background:#eaf3ff;color:#2c66a5}.today-source-note{padding:10px 12px;border-radius:12px;background:#f4faf9;color:#526b73;font-size:13px;margin-bottom:12px}.today-source-note b{color:#087f78}@media(max-width:800px){.today-class-summary{grid-template-columns:repeat(2,1fr)}.today-picker.grid3{grid-template-columns:1fr}}
 </style>
+
+<style>
+/* 8.6.38 - Tiến độ theo học sinh: gọn + animation */
+.progress-students-chart{overflow:hidden}
+.rchart-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+.rchart-head h3{margin:0 0 4px}
+.rchart-head p{margin:0;color:#64788a;font-size:13px}
+.progress-count{white-space:nowrap;padding:7px 11px;border-radius:999px;background:#edf7f7;color:#087b78;font-weight:800;font-size:12px}
+.student-progress-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.student-progress-card{border:1px solid #dbe8ed;background:#fff;border-radius:14px;padding:12px 13px;box-shadow:0 5px 16px rgba(28,65,82,.045);animation:spCardIn .42s ease both;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.student-progress-card:hover{transform:translateY(-2px);box-shadow:0 9px 22px rgba(28,65,82,.09);border-color:#b9d9dc}
+.sp-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.sp-head span{font-weight:750;color:#17344c;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.sp-head b{color:#087f7b;font-size:14px}
+.sp-track{height:8px;background:#e8f0f3;border-radius:999px;overflow:hidden}
+.sp-track i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#15958f,#19a8c1);transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.student-progress-card small{display:block;margin-top:7px;color:#6b7e8d;font-size:12px}
+.progress-more{margin-top:12px;border-top:1px dashed #d5e2e7;padding-top:10px}
+.progress-more summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid #cfe0e6;border-radius:10px;color:#176d78;font-weight:750;background:#f8fbfc;transition:.2s ease}
+.progress-more summary:hover{background:#eef8f8;transform:translateY(-1px)}
+.progress-more summary::-webkit-details-marker{display:none}
+.progress-extra{margin-top:12px;animation:spReveal .32s ease both}
+@keyframes spCardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spReveal{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:760px){.student-progress-grid{grid-template-columns:1fr}.rchart-head{flex-direction:column}.progress-count{align-self:flex-start}}
+@media(prefers-reduced-motion:reduce){.student-progress-card,.progress-extra{animation:none}.sp-track i{transition:none}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -963,11 +990,15 @@ document.addEventListener('DOMContentLoaded',()=>{sync();window.pfLoadSaved()});
   const rows=students.map(s=>{const a=(s.assignments||[]).filter(x=>genuine(x)&&periodOK(x.date||x.createdAt||dateOf(x),period)),g=a.filter(valid),j=(s.journals||[]).filter(x=>periodOK(x.date,period));return {s,a,g,j,done:a.filter(x=>x.status==='graded'||x.status==='done').length}});
   const all=rows.flatMap(x=>x.a),graded=rows.flatMap(x=>x.g),done=rows.reduce((sum,x)=>sum+x.done,0),avg=graded.length?(graded.reduce((sum,x)=>sum+n(x.score),0)/graded.length).toFixed(1):'—';
   const chart1=`<div class="rchart"><h3>Hoàn thành bài tập</h3>${donut(done,all.length)}</div>`;
-  const chart2=`<div class="rchart"><h3>Tiến độ theo học sinh</h3>${rows.some(x=>x.a.length)?rows.map(x=>line(x.s.name,pct(x.done,x.a.length))).join(''):'<p>Chưa có bài tập trong khoảng thời gian đã chọn.</p>'}</div>`;
+  const progressRows=rows.filter(x=>x.a.length).map(x=>({name:x.s.name,done:x.done,total:x.a.length,value:pct(x.done,x.a.length)})).sort((a,b)=>(a.value??101)-(b.value??101)||a.name.localeCompare(b.name,'vi'));
+  const progressCard=x=>`<div class="student-progress-card"><div class="sp-head"><span title="${clean(x.name)}">${clean(x.name)}</span><b>${metric(x.value,'%')}</b></div><div class="sp-track"><i data-progress="${Math.max(0,Math.min(100,x.value||0))}"></i></div><small>${x.done}/${x.total} nhiệm vụ hoàn thành</small></div>`;
+  const firstProgress=progressRows.slice(0,8),restProgress=progressRows.slice(8);
+  const chart2=`<div class="rchart progress-students-chart"><div class="rchart-head"><div><h3>Tiến độ theo học sinh</h3><p>Ưu tiên hiển thị học sinh có tiến độ thấp để giáo viên dễ theo dõi.</p></div><span class="progress-count">${progressRows.length} học sinh</span></div>${progressRows.length?`<div class="student-progress-grid">${firstProgress.map(progressCard).join('')}</div>${restProgress.length?`<details class="progress-more"><summary>Xem thêm ${restProgress.length} học sinh</summary><div class="student-progress-grid progress-extra">${restProgress.map(progressCard).join('')}</div></details>`:''}`:'<p>Chưa có bài tập trong khoảng thời gian đã chọn.</p>'}</div>`;
   const chart3=`<div class="rchart"><h3>Điểm bài tập theo thời gian</h3>${trend(graded)}</div>`;
   const chart4=`<div class="rchart"><h3>Phân bố điểm bài đã chấm</h3>${graded.length?[{label:'Dưới 5',min:0,max:5},{label:'Từ 5 đến dưới 7',min:5,max:7},{label:'Từ 7 đến dưới 9',min:7,max:9},{label:'Từ 9 đến 10',min:9,max:11}].map(b=>line(b.label,pct(graded.filter(a=>n(a.score)>=b.min&&n(a.score)<b.max).length,graded.length))).join(''):'<p>Chưa có bài được chấm trong kỳ.</p>'}<p>Phân bố theo điểm bài tập, không phải xếp loại học sinh.</p></div>`;
   const dashboard=`<div class="rdash"><div class="rstats">${stat(rows.length,'Học sinh','Theo bộ lọc đang chọn')}${stat(all.length,'Bài tập','Trong kỳ báo cáo')}${stat(graded.length,'Bài đã chấm','Có điểm hợp lệ')}${stat(avg==='—'?'—':avg+'/10','Điểm bài tập TB','Chỉ tính bài đã chấm')}</div><div class="rcharts">${chart1}${chart2}${view==='all'||view==='subject'?chart3+chart4:''}</div></div>`;
   const heading=box.querySelector('.report-title');if(heading)heading.insertAdjacentHTML('afterend',dashboard);
+  requestAnimationFrame(()=>{box.querySelectorAll('.sp-track i[data-progress]').forEach((bar,i)=>{bar.style.transitionDelay=Math.min(i*45,360)+'ms';bar.style.width=bar.dataset.progress+'%';});});
   const sections=[...box.children].filter(e=>e.classList&&e.classList.contains('report-section'));
   if(sections.length){const detail=document.createElement('details');detail.className='rmore';detail.innerHTML='<summary>Xem bảng số liệu và minh chứng chi tiết</summary>';sections[0].before(detail);sections.forEach(x=>detail.appendChild(x));}
   const strip=box.querySelector('.summary-strip');if(strip)strip.remove();
