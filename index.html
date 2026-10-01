@@ -3382,3 +3382,47 @@ document.addEventListener('click',function(ev){
   window.selectHomeStudent(btn.dataset.homeStudentId,ev);
 },true);
 </script>
+
+
+<script id="v8742-home-student-root-fix">
+/*
+  Gốc lỗi 8.7.41: state là biến phạm vi script, không phải window.state.
+  Vì vậy selectHomeStudent() tìm trong window.state và thoát trước khi chọn.
+*/
+window.selectHomeStudent=function(id,ev){
+  if(ev){ev.preventDefault();ev.stopPropagation();}
+  const s=(state.students||[]).find(x=>String(x.id)===String(id));
+  if(!s){ if(typeof toast==='function')toast('Không tìm thấy hồ sơ học sinh'); return false; }
+
+  state.currentStudentId=s.id;
+  window.__workClass=s.className||'';
+  saveState();
+
+  const wc=document.getElementById('workClassSelect');
+  const ss=document.getElementById('studentSelect');
+  if(wc)wc.value=s.className||'';
+  if(ss)ss.value=s.id;
+
+  loadProfileForm();
+  loadSurveyForm();
+  renderAll();
+
+  /* renderAll tạo lại DOM nên đồng bộ lần cuối sau khi render */
+  const wc2=document.getElementById('workClassSelect');
+  const ss2=document.getElementById('studentSelect');
+  if(wc2)wc2.value=s.className||'';
+  if(ss2)ss2.value=s.id;
+  if(typeof refreshWorkContext==='function')refreshWorkContext();
+  if(typeof toast==='function')toast('Đã chọn học sinh: '+s.name);
+  return false;
+};
+
+/* Ghi đè handler cũ bằng listener capture độc lập, dùng state thật. */
+document.addEventListener('click',function(ev){
+  const btn=ev.target.closest('#homeStudentList button[data-home-student-id]');
+  if(!btn)return;
+  ev.preventDefault();
+  ev.stopImmediatePropagation();
+  window.selectHomeStudent(btn.dataset.homeStudentId,ev);
+},true);
+</script>
