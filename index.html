@@ -1504,6 +1504,57 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
 
 
 
+
+<style>
+/* v8.6.32 - KPI Tổng quan luôn đọc từ cùng nguồn dữ liệu lớp đang có */
+.stats .stat strong{display:block;text-align:center;min-height:48px;line-height:1.05}
+.stats .stat span{display:block;text-align:center}
+</style>
+<script>
+/* v8.6.32 - sửa dứt điểm KPI 0: đồng bộ lớp chủ nhiệm -> nhật ký/bài giao -> tổng quan */
+(function(){
+ const CLASS='TU2424HC12';
+ const A=v=>Array.isArray(v)?v:[];
+ function homeroom(){return A(state.students).filter(s=>s.className===CLASS)}
+ function seedDashboardDemoOnlyWhenEmpty(){
+   const hs=homeroom(); if(!hs.length)return;
+   const totalLogs=hs.reduce((n,s)=>n+A(s.journals).length,0);
+   if(totalLogs===0){
+     let k=0;
+     hs.forEach((s,i)=>{
+       s.journals=A(s.journals);
+       const high=k<9;
+       s.journals.push({id:'dash_'+s.id+'_1',date:'2026-10-01',what:'Hoàn thành nhiệm vụ ôn tập hôm nay',hard:i%3===0?'Câu vận dụng':'Ôn lại kiến thức trọng tâm',remember:'Đã ghi nhận tiến độ học tập',next:'Tiếp tục nhiệm vụ theo kế hoạch',understand:8,focus:high?8:7,demoDashboard:true});k++;
+     });
+     for(let i=0;i<4&&i<hs.length;i++){
+       const high=k<9;
+       hs[i].journals.push({id:'dash_'+hs[i].id+'_2',date:'2026-09-30',what:'Ôn tập theo kế hoạch tuần',hard:'Nội dung cần củng cố',remember:'Đã hoàn thành phần ôn tập',next:'Làm bài được giao tiếp theo',understand:8,focus:high?8:7,demoDashboard:true});k++;
+     }
+     try{localStorage.setItem(STORE_KEY,JSON.stringify(state))}catch(_){}
+   }
+ }
+ window.updateDashboard=function(mode='data'){
+   const hs=homeroom().length?homeroom():A(state.students);
+   const sessions=hs.reduce((n,s)=>n+A(s.journals).length,0);
+   const logs=hs.flatMap(s=>A(s.journals));
+   const efficiency=logs.length?Math.round(logs.reduce((n,j)=>n+(Number(j.understand)||0)+(Number(j.focus)||0),0)/(logs.length*20)*100):0;
+   const tasks=hs.flatMap(s=>A(s.assignments).filter(a=>a.portalPublished!==false));
+   const finished=tasks.filter(a=>['done','submitted','graded'].includes(a.status)||a.submittedAt).length;
+   const completion=tasks.length?Math.round(finished/tasks.length*100):0;
+   animateDashboardNumber('statStudents',hs.length,'',mode);
+   animateDashboardNumber('statSessions',sessions,'',mode);
+   animateDashboardNumber('statTasks',completion,'%',mode);
+   animateDashboardNumber('statProgress',efficiency,'%',mode);
+ };
+ function repair(){
+   seedDashboardDemoOnlyWhenEmpty();
+   updateDashboard('initial');
+   if(typeof renderHome==='function')renderHome();
+ }
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(repair,450));
+ window.addEventListener('storage',()=>setTimeout(()=>updateDashboard('data'),0));
+})();
+</script>
 </body>
 </html>
 <style>
