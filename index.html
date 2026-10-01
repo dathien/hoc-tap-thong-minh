@@ -2074,3 +2074,85 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
  setTimeout(()=>{try{renderProfiles()}catch(_){}},0);
 })();
 </script>
+
+
+<!-- v8.7.9 - FINAL PAGE MOTION: visible, replayable, bound to the final goPanel wrapper -->
+<style id="v879-final-motion-css">
+/* Hiệu ứng đủ rõ để nhận biết khi chuyển trang, nhưng vẫn giữ phong cách dashboard chuyên nghiệp. */
+.panel.v879-enter{animation:v879PanelIn .58s cubic-bezier(.16,.84,.24,1) both!important}
+.panel.v879-enter>.panel-head{animation:v879HeadIn .62s cubic-bezier(.16,.84,.24,1) both!important}
+.panel.v879-enter>.panel-head::after{content:"";display:block;height:3px;width:0;margin-top:10px;border-radius:99px;background:linear-gradient(90deg,#2563eb,#4f46e5,#0ea5e9);animation:v879Sweep .72s .08s cubic-bezier(.2,.8,.2,1) forwards}
+.panel.v879-enter .v879-item{animation:v879ItemIn .52s cubic-bezier(.18,.82,.22,1) both!important;animation-delay:var(--v879-delay,80ms)!important}
+.panel.v879-enter table tbody tr.v879-row{animation:v879RowIn .46s cubic-bezier(.18,.82,.22,1) both!important;animation-delay:var(--v879-delay,90ms)!important}
+.panel.v879-enter .progress>i,.panel.v879-enter .progress-bar>i,.panel.v879-enter .sp-track>i{transform-origin:left center;animation:v879Progress .78s .18s cubic-bezier(.2,.8,.2,1) both!important}
+.nav-btn.v879-nav-hit{animation:v879NavHit .34s ease both!important}
+@keyframes v879PanelIn{0%{opacity:.15;transform:translateX(34px) scale(.988);filter:blur(2px)}55%{opacity:1;filter:blur(0)}100%{opacity:1;transform:none;filter:none}}
+@keyframes v879HeadIn{0%{opacity:0;transform:translateY(-16px)}100%{opacity:1;transform:none}}
+@keyframes v879ItemIn{0%{opacity:0;transform:translateY(24px) scale(.975)}100%{opacity:1;transform:none}}
+@keyframes v879RowIn{0%{opacity:0;transform:translateX(18px)}100%{opacity:1;transform:none}}
+@keyframes v879Progress{0%{transform:scaleX(.03)}100%{transform:scaleX(1)}}
+@keyframes v879Sweep{0%{width:0;opacity:.2}100%{width:min(220px,45%);opacity:1}}
+@keyframes v879NavHit{0%{transform:translateX(0)}50%{transform:translateX(9px)}100%{transform:translateX(5px)}}
+/* User explicitly requested motion across the app; do not collapse these page-entry effects to 0ms. */
+</style>
+<script id="v879-final-motion-engine">
+(function(){
+  const ITEM_SELECTORS=[
+    '.stats > *','.quick-actions > *','.grid > *','.cards > *','.card-grid > *',
+    '.analysis-kpi','.analysis-box','.analysis-next','.survey-teacher-bar > *',
+    '.today-task','.today-progress','.today-next-card','.today-result','.today-class-summary',
+    '.student-progress-card','.progress-card','.list-card','.assignment-card','.quiz-card',
+    '.report-card','.chart-card','.profile-toolbar','.profile-table-wrap','.filters','.filter-row',
+    '.card','.notice','.empty','details','article','.action-card','.quick-card'
+  ];
+  let token=0;
+  function isVisible(el){
+    if(!el) return false;
+    const cs=getComputedStyle(el); if(cs.display==='none'||cs.visibility==='hidden') return false;
+    const r=el.getBoundingClientRect(); return r.width>1&&r.height>1;
+  }
+  function collect(panel){
+    const set=new Set();
+    ITEM_SELECTORS.forEach(sel=>panel.querySelectorAll(sel).forEach(el=>{if(isVisible(el))set.add(el)}));
+    return [...set].filter(el=>!el.closest('table')).slice(0,36);
+  }
+  function replay(panel){
+    if(!panel||!panel.classList.contains('active')) return;
+    const my=++token;
+    panel.classList.remove('v879-enter');
+    panel.querySelectorAll('.v879-item,.v879-row').forEach(el=>{el.classList.remove('v879-item','v879-row');el.style.removeProperty('--v879-delay')});
+    void panel.offsetWidth;
+    const items=collect(panel);
+    items.forEach((el,i)=>{el.classList.add('v879-item');el.style.setProperty('--v879-delay',(90+Math.min(i,14)*48)+'ms')});
+    [...panel.querySelectorAll('table tbody tr')].filter(isVisible).slice(0,24).forEach((tr,i)=>{tr.classList.add('v879-row');tr.style.setProperty('--v879-delay',(110+Math.min(i,12)*36)+'ms')});
+    panel.classList.add('v879-enter');
+    const activeNav=document.querySelector('.nav-btn.active');
+    if(activeNav){activeNav.classList.remove('v879-nav-hit');void activeNav.offsetWidth;activeNav.classList.add('v879-nav-hit')}
+    if(panel.id==='homePanel'){
+      setTimeout(()=>{
+        if(my!==token||!panel.classList.contains('active'))return;
+        if(typeof updateDashboard==='function') updateDashboard('initial');
+      },130);
+    }
+  }
+  function installFinalWrapper(){
+    const previous=window.goPanel;
+    if(typeof previous==='function' && !previous.__v879Wrapped){
+      const wrapped=function(name){
+        const result=previous.apply(this,arguments);
+        /* render functions in this app are synchronous plus several setTimeout(0/20/30); replay after them. */
+        setTimeout(()=>replay(document.getElementById(name+'Panel')||document.querySelector('.panel.active')),75);
+        setTimeout(()=>replay(document.getElementById(name+'Panel')||document.querySelector('.panel.active')),260);
+        return result;
+      };
+      wrapped.__v879Wrapped=true;
+      window.goPanel=wrapped;
+    }
+    const first=document.querySelector('.panel.active');
+    if(first)setTimeout(()=>replay(first),260);
+  }
+  window.v879ReplayCurrentPage=function(){replay(document.querySelector('.panel.active'))};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installFinalWrapper,{once:true});
+  else installFinalWrapper();
+})();
+</script>
