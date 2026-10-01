@@ -516,7 +516,8 @@ function quickCreateRoute(){
 function startToday(){const s=currentStudent();if(!s){toast('Hãy chọn học sinh trước');goPanel('profiles');return;}const td=today(),day=s.weekPlan?.days?.find(d=>d.date===td&&d.active),next=day?.tasks?.find(t=>!t.done)||s.weekPlan?.days?.filter(d=>d.active).flatMap(d=>d.tasks.filter(t=>!t.done)).find(Boolean);document.getElementById('sessionTopic').value=next?.text||s.weekPlan?.topic||`Củng cố môn ${s.subject}`;document.getElementById('sessionDuration').value=String([30,45,60,90].includes(+s.dailyTime)?s.dailyTime:45);buildSession();goPanel('session');}
 function clearAllData(){if(confirm('Xóa toàn bộ hồ sơ, kế hoạch và nhật ký trong ứng dụng?')){state=defaultState();saveState();loadProfileForm();loadSurveyForm();renderAll();toast('Đã xóa toàn bộ dữ liệu')}}
 function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}function safeName(s){return String(s||'Hoc_sinh').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'_')}
-function updateDashboard(){const all=state.students,metricsAll=all.map(metrics),sessions=metricsAll.reduce((a,m)=>a+m.sessions,0),avg=metricsAll.length?Math.round(metricsAll.reduce((a,m)=>a+m.avg,0)/metricsAll.length):0,done=metricsAll.length?Math.round(metricsAll.reduce((a,m)=>a+m.done,0)/metricsAll.length):0;document.getElementById('statStudents').textContent=all.length;document.getElementById('statSessions').textContent=sessions;document.getElementById('statTasks').textContent=done+'%';document.getElementById('statProgress').textContent=avg+'%'}
+function animateDashboardNumber(id,target,suffix=''){const el=document.getElementById(id);if(!el)return;target=Number(target)||0;if(el._countFrame)cancelAnimationFrame(el._countFrame);const start=0,duration=950,t0=performance.now();el.textContent='0'+suffix;const card=el.closest('.stat');if(card)card.classList.add('is-number-animating');function frame(now){const p=Math.min(1,(now-t0)/duration),e=1-Math.pow(1-p,3),v=Math.round(start+(target-start)*e);el.textContent=v+suffix;if(p<1)el._countFrame=requestAnimationFrame(frame);else{el.textContent=target+suffix;el._countFrame=null;setTimeout(()=>card&&card.classList.remove('is-number-animating'),450)}}el._countFrame=requestAnimationFrame(frame)}
+function updateDashboard(){const all=state.students,metricsAll=all.map(metrics),sessions=metricsAll.reduce((a,m)=>a+m.sessions,0),avg=metricsAll.length?Math.round(metricsAll.reduce((a,m)=>a+m.avg,0)/metricsAll.length):0,done=metricsAll.length?Math.round(metricsAll.reduce((a,m)=>a+m.done,0)/metricsAll.length):0;animateDashboardNumber('statStudents',all.length);animateDashboardNumber('statSessions',sessions);animateDashboardNumber('statTasks',done,'%');animateDashboardNumber('statProgress',avg,'%')}
 function completionStep(s){if(!s)return 0;let n=1;if(s.survey)n=3;if((s.goals||[]).length)n=4;if(s.weekPlan)n=5;if(s.lastSession)n=6;if((s.journals||[]).length)n=7;return n}
 function updatePath(){const s=currentStudent(),n=completionStep(s);document.getElementById('pathProgress').style.width=`${Math.round(n/7*100)}%`;document.getElementById('pathText').textContent=s?`${s.name}: đã hoàn thành ${n}/7 bước`:'Bắt đầu từ hồ sơ học sinh';document.getElementById('stepNav').innerHTML=PANEL_ORDER.map((p,i)=>`<div class="step ${i+1<n?'done':''} ${i+1===n?'active':''}" onclick="goPanel('${p}')"><b>${i+1<n?'✓':i+1}</b>${PANEL_LABELS[i]}</div>`).join('')}
 function formatDate(v){if(!v)return'';const [y,m,d]=v.slice(0,10).split('-');return`${d}/${m}/${y}`}
@@ -941,16 +942,6 @@ window.quizPreview();
   start();
 })();
 </script>
-<script id="number-animation-script">
-(()=>{
- const SEL='.stat strong,.rstat strong,.metric strong,.summary-box strong';
- const parse=t=>{const m=String(t||'').trim().match(/^(-?\d+(?:[.,]\d+)?)(%|\/10)?$/);if(!m)return null;return {v:Number(m[1].replace(',','.')),s:m[2]||'',d:(m[1].split(/[.,]/)[1]||'').length}};
- const fmt=(v,d)=>d?Number(v).toFixed(d).replace('.',','):String(Math.round(v));
- const animate=el=>{if(!el||el.dataset.counting==='1')return;const x=parse(el.textContent);if(!x)return;const target=x.v;const old=Number(el.dataset.lastValue);if(Number.isFinite(old)&&old===target)return;el.dataset.counting='1';const from=Number.isFinite(old)?old:0;const card=el.closest('.stat,.rstat,.metric,.summary-box');card?.classList.add('is-number-animating');const t0=performance.now(),dur=900,ease=t=>1-Math.pow(1-t,3);function tick(now){const p=Math.min(1,(now-t0)/dur);el.textContent=fmt(from+(target-from)*ease(p),x.d)+x.s;if(p<1)requestAnimationFrame(tick);else{el.textContent=fmt(target,x.d)+x.s;el.dataset.lastValue=String(target);el.dataset.counting='0';setTimeout(()=>card?.classList.remove('is-number-animating'),500)}}requestAnimationFrame(tick)};
- const scan=root=>{if(root?.nodeType===1&&root.matches?.(SEL))animate(root);root?.querySelectorAll?.(SEL).forEach(animate)};
- const boot=()=>{scan(document);new MutationObserver(ms=>{ms.forEach(m=>{if(m.type==='characterData'){const el=m.target.parentElement;if(el&&el.matches?.(SEL))animate(el)}else m.addedNodes.forEach(n=>{if(n.nodeType===1)scan(n)})})}).observe(document.body,{subtree:true,childList:true,characterData:true})};
- document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot,{once:true}):boot();
-})();
-</script>
+
 </body>
 </html>
