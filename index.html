@@ -3282,3 +3282,59 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
  setTimeout(()=>{const b=E('rRows83');if(b)bodyObserver.observe(b,{childList:true})},350);
 })();
 </script>
+
+
+<style id="v8740-home-student-button-fix">
+#homeStudentList .home-pick-student{
+  position:relative;z-index:3;pointer-events:auto!important;cursor:pointer!important;
+}
+#homeStudentList .list-card{position:relative}
+</style>
+<script id="v8740-home-student-button-fix-script">
+(function(){
+  function bindHomeStudentButtons(){
+    const box=document.getElementById('homeStudentList');
+    if(!box || box.dataset.pickBound==='1') return;
+    box.dataset.pickBound='1';
+    box.addEventListener('click',function(ev){
+      const btn=ev.target.closest('[data-home-student-id]');
+      if(!btn || !box.contains(btn)) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      const id=btn.dataset.homeStudentId;
+      if(!id) return;
+      if(typeof window.switchStudent==='function') window.switchStudent(id);
+      if(typeof window.goPanel==='function') window.goPanel('home');
+      setTimeout(function(){
+        if(typeof window.renderHome==='function') window.renderHome();
+        const s=(window.state?.students||[]).find(x=>String(x.id)===String(id));
+        if(typeof window.toast==='function' && s) window.toast('Đã chọn học sinh: '+s.name);
+      },0);
+    });
+  }
+
+  function repairButtons(){
+    const box=document.getElementById('homeStudentList');
+    if(!box) return;
+    box.querySelectorAll('button').forEach(function(btn){
+      if((btn.textContent||'').includes('Chọn học sinh')){
+        const m=(btn.getAttribute('onclick')||'').match(/switchStudent\('([^']+)'\)/);
+        if(m){
+          btn.type='button';
+          btn.classList.add('home-pick-student');
+          btn.dataset.homeStudentId=m[1];
+          btn.removeAttribute('onclick');
+        }
+      }
+    });
+    bindHomeStudentButtons();
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    repairButtons();
+    const box=document.getElementById('homeStudentList');
+    if(box)new MutationObserver(repairButtons).observe(box,{childList:true,subtree:true});
+  });
+  setTimeout(repairButtons,100);
+})();
+</script>
