@@ -797,7 +797,7 @@ function renderHome(){
  if(!s){sum.innerHTML='<div class="empty">Chưa có học sinh. Nhấn “Thêm học sinh” để bắt đầu.</div>';list.innerHTML='';return;}
  const m=metrics(s), next=s.weekPlan?.days?.flatMap((d,di)=>d.tasks.map((t,ti)=>({...t,di,ti,date:d.date,active:d.active}))).find(t=>t.active&&!t.done);
  sum.innerHTML=`<h3>${esc(s.name)}</h3><div><span class="tag blue">${esc(s.className)}</span><span class="tag">${esc(s.subject)}</span><span class="tag amber">${s.score||'Chưa có điểm'} điểm</span></div><p><b>Mức hiện tại:</b> ${supportLevel(s.score)}</p><p><b>Mục tiêu:</b> ${esc(s.goals?.[0]?.target||s.goal||'Chưa đặt')}</p><p><b>Tiến độ nhiệm vụ:</b> ${m.done}% · <b>Hiệu quả:</b> ${m.avg}%</p><div class="next-box"><b>Việc nên làm tiếp theo</b><div>${next?esc(next.text):'Tạo kế hoạch tuần hoặc bắt đầu một phiên học.'}</div></div><button class="btn primary big-next" onclick="startToday()">▶ Bắt đầu học hôm nay</button><div class="mini-actions"><button class="btn secondary small" onclick="goPanel('plan')">📅 Kế hoạch</button><button class="btn secondary small" onclick="goPanel('report')">📊 Báo cáo</button></div>`;
- list.innerHTML=state.students.slice(0,6).map(x=>`<div class="list-card"><h3>${esc(x.name)}</h3><span class="tag blue">${esc(x.className)}</span><span class="tag">${esc(x.subject)}</span><p class="help">${x.score||'—'} điểm · ${supportLevel(x.score)}</p><button type="button" class="btn secondary small home-pick-student" data-home-student-id="${esc(x.id)}" onclick="return selectHomeStudent('${x.id}',event)">Chọn học sinh</button></div>`).join('');
+ list.innerHTML=state.students.slice(0,6).map(x=>`<div class="list-card"><h3>${esc(x.name)}</h3><span class="tag blue">${esc(x.className)}</span><span class="tag">${esc(x.subject)}</span><p class="help">${x.score||'—'} điểm · ${supportLevel(x.score)}</p><button type="button" class="btn secondary small home-pick-student" data-home-student-id="${esc(x.id)}" onclick="switchStudent('${x.id}');return false;">Chọn học sinh</button></div>`).join('');
 }
 function quickCreateRoute(){
  const s=currentStudent();if(!s){toast('Hãy chọn hoặc thêm học sinh trước');goPanel('profiles');return;}
@@ -3284,145 +3284,14 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
 </script>
 
 
-<style id="v8740-home-student-button-fix">
-#homeStudentList .home-pick-student{
-  position:relative;z-index:3;pointer-events:auto!important;cursor:pointer!important;
-}
+
+<style id="v8743-home-student-button">
 #homeStudentList .list-card{position:relative}
+#homeStudentList .home-pick-student{
+  position:relative!important;
+  z-index:20!important;
+  pointer-events:auto!important;
+  cursor:pointer!important;
+  touch-action:manipulation;
+}
 </style>
-<script id="v8740-home-student-button-fix-script">
-(function(){
-  function bindHomeStudentButtons(){
-    const box=document.getElementById('homeStudentList');
-    if(!box || box.dataset.pickBound==='1') return;
-    box.dataset.pickBound='1';
-    box.addEventListener('click',function(ev){
-      const btn=ev.target.closest('[data-home-student-id]');
-      if(!btn || !box.contains(btn)) return;
-      ev.preventDefault();
-      ev.stopPropagation();
-      const id=btn.dataset.homeStudentId;
-      if(!id) return;
-      if(typeof window.switchStudent==='function') window.switchStudent(id);
-      if(typeof window.goPanel==='function') window.goPanel('home');
-      setTimeout(function(){
-        if(typeof window.renderHome==='function') window.renderHome();
-        const s=(window.state?.students||[]).find(x=>String(x.id)===String(id));
-        if(typeof window.toast==='function' && s) window.toast('Đã chọn học sinh: '+s.name);
-      },0);
-    });
-  }
-
-  function repairButtons(){
-    const box=document.getElementById('homeStudentList');
-    if(!box) return;
-    box.querySelectorAll('button').forEach(function(btn){
-      if((btn.textContent||'').includes('Chọn học sinh')){
-        const m=(btn.getAttribute('onclick')||'').match(/switchStudent\('([^']+)'\)/);
-        if(m){
-          btn.type='button';
-          btn.classList.add('home-pick-student');
-          btn.dataset.homeStudentId=m[1];
-          btn.removeAttribute('onclick');
-        }
-      }
-    });
-    bindHomeStudentButtons();
-  }
-
-  document.addEventListener('DOMContentLoaded',function(){
-    repairButtons();
-    const box=document.getElementById('homeStudentList');
-    if(box)new MutationObserver(repairButtons).observe(box,{childList:true,subtree:true});
-  });
-  setTimeout(repairButtons,100);
-})();
-</script>
-
-
-<script id="v8741-home-student-direct-fix">
-/* Sửa trực tiếp hành vi nút Chọn học sinh ở Tổng quan */
-window.selectHomeStudent=function(id,ev){
-  if(ev){ev.preventDefault();ev.stopPropagation();}
-  const s=(window.state?.students||[]).find(x=>String(x.id)===String(id));
-  if(!s)return false;
-
-  /* cập nhật trực tiếp hồ sơ hiện hành, tránh renderAll giữa chừng làm mất nút đang click */
-  state.currentStudentId=s.id;
-  window.__workClass=s.className;
-  if(typeof saveState==='function')saveState();
-
-  /* đồng bộ các bộ chọn trước khi render lại */
-  const ss=document.getElementById('studentSelect');
-  const wc=document.getElementById('workClassSelect');
-  if(wc)wc.value=s.className||'';
-  if(ss)ss.value=s.id;
-
-  if(typeof loadProfileForm==='function')loadProfileForm();
-  if(typeof loadSurveyForm==='function')loadSurveyForm();
-  if(typeof renderAll==='function')renderAll();
-  if(typeof goPanel==='function')goPanel('home');
-
-  /* đưa người vừa chọn lên phần tóm tắt Tổng quan */
-  setTimeout(function(){
-    if(typeof renderHome==='function')renderHome();
-    const ss2=document.getElementById('studentSelect');
-    if(ss2)ss2.value=s.id;
-    if(typeof refreshWorkContext==='function')refreshWorkContext();
-    if(typeof toast==='function')toast('Đã chọn học sinh: '+s.name);
-  },0);
-  return false;
-};
-
-/* Bắt sự kiện ở document capture để nút vẫn hoạt động nếu renderHome thay DOM. */
-document.addEventListener('click',function(ev){
-  const btn=ev.target.closest('#homeStudentList .home-pick-student[data-home-student-id]');
-  if(!btn)return;
-  ev.preventDefault();ev.stopImmediatePropagation();
-  window.selectHomeStudent(btn.dataset.homeStudentId,ev);
-},true);
-</script>
-
-
-<script id="v8742-home-student-root-fix">
-/*
-  Gốc lỗi 8.7.41: state là biến phạm vi script, không phải window.state.
-  Vì vậy selectHomeStudent() tìm trong window.state và thoát trước khi chọn.
-*/
-window.selectHomeStudent=function(id,ev){
-  if(ev){ev.preventDefault();ev.stopPropagation();}
-  const s=(state.students||[]).find(x=>String(x.id)===String(id));
-  if(!s){ if(typeof toast==='function')toast('Không tìm thấy hồ sơ học sinh'); return false; }
-
-  state.currentStudentId=s.id;
-  window.__workClass=s.className||'';
-  saveState();
-
-  const wc=document.getElementById('workClassSelect');
-  const ss=document.getElementById('studentSelect');
-  if(wc)wc.value=s.className||'';
-  if(ss)ss.value=s.id;
-
-  loadProfileForm();
-  loadSurveyForm();
-  renderAll();
-
-  /* renderAll tạo lại DOM nên đồng bộ lần cuối sau khi render */
-  const wc2=document.getElementById('workClassSelect');
-  const ss2=document.getElementById('studentSelect');
-  if(wc2)wc2.value=s.className||'';
-  if(ss2)ss2.value=s.id;
-  if(typeof refreshWorkContext==='function')refreshWorkContext();
-  if(typeof toast==='function')toast('Đã chọn học sinh: '+s.name);
-  return false;
-};
-
-/* Ghi đè handler cũ bằng listener capture độc lập, dùng state thật. */
-document.addEventListener('click',function(ev){
-  const btn=ev.target.closest('#homeStudentList button[data-home-student-id]');
-  if(!btn)return;
-  ev.preventDefault();
-  ev.stopImmediatePropagation();
-  window.selectHomeStudent(btn.dataset.homeStudentId,ev);
-},true);
-</script>
