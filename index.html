@@ -1872,6 +1872,104 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();
 </script>
+
+
+<style id="v878-motion-css">
+/* v8.7.8 - chuyển động nhìn thấy rõ trên mọi màn hình */
+.panel.active{transform-origin:50% 0}
+.nav-btn{transition:transform .22s ease,background .22s ease,color .22s ease,box-shadow .22s ease!important}
+.nav-btn.active{transform:translateX(5px)}
+.btn,button,.card,.list-card,.analysis-box,.analysis-kpi,.today-task,.today-progress,.today-next,.today-result,.progress-card{will-change:transform,opacity}
+.motion-flash{animation:v878Flash .62s cubic-bezier(.2,.8,.2,1)}
+@keyframes v878Flash{0%{filter:brightness(.96)}45%{filter:brightness(1.035)}100%{filter:none}}
+</style>
+<script id="v878-motion-engine">
+/* v8.7.8 - Web Animations API: replay thật sự mỗi lần panel trở thành active */
+(function(){
+  const SELECTORS=[
+    '.panel-head','.stats > *','.quick-actions > *','.grid > *','.cards > *','.card-grid > *',
+    '.analysis-kpi','.analysis-box','.analysis-next','.survey-teacher-bar > *',
+    '.today-task','.today-progress','.today-next','.today-result','.ach-card','.achievement-card',
+    '.progress-card','.profile-toolbar','.profile-table-wrap','.filters','.filter-row',
+    '.list-card','.assignment-card','.quiz-card','.report-card','.chart-card','.notice','.empty',
+    '.table-wrap','form > .field','form > .row','details','article'
+  ];
+  const panelState=new WeakMap();
+  let runId=0;
+
+  function visible(el){
+    if(!el || el.offsetParent===null) return false;
+    const r=el.getBoundingClientRect();
+    return r.width>0 && r.height>0;
+  }
+  function uniqueNodes(panel){
+    const set=new Set();
+    SELECTORS.forEach(sel=>panel.querySelectorAll(sel).forEach(el=>{if(visible(el))set.add(el)}));
+    panel.querySelectorAll('table tbody tr').forEach(el=>{if(visible(el))set.add(el)});
+    return [...set].slice(0,70);
+  }
+  function animateProgress(panel){
+    panel.querySelectorAll('.progress i,.progress-bar i,[class*="progress"] > span').forEach(el=>{
+      if(!visible(el))return;
+      try{el.animate([{transform:'scaleX(0)',transformOrigin:'left center'},{transform:'scaleX(1)',transformOrigin:'left center'}],{duration:720,easing:'cubic-bezier(.2,.8,.2,1)',fill:'none'});}catch(e){}
+    });
+  }
+  function animatePanel(panel){
+    if(!panel || !panel.classList.contains('active'))return;
+    const id=++runId;
+    panelState.set(panel,id);
+    try{panel.getAnimations({subtree:true}).forEach(a=>{ if(a && a.cancel) a.cancel(); });}catch(e){}
+    panel.classList.remove('motion-enter');
+    panel.classList.remove('motion-flash');
+    void panel.offsetWidth;
+    panel.classList.add('motion-flash');
+    try{
+      panel.animate([
+        {opacity:.18,transform:'translate3d(0,22px,0) scale(.992)'},
+        {opacity:1,transform:'translate3d(0,0,0) scale(1)'}
+      ],{duration:520,easing:'cubic-bezier(.2,.82,.22,1)',fill:'none'});
+    }catch(e){}
+    const nodes=uniqueNodes(panel);
+    nodes.forEach((el,i)=>{
+      const delay=Math.min(i,16)*42+80;
+      try{
+        el.animate([
+          {opacity:0,transform:'translate3d(0,18px,0) scale(.985)'},
+          {opacity:1,transform:'translate3d(0,0,0) scale(1)'}
+        ],{duration:500,delay,easing:'cubic-bezier(.2,.82,.22,1)',fill:'backwards'});
+      }catch(e){}
+    });
+    setTimeout(()=>{ if(panelState.get(panel)===id) animateProgress(panel); },120);
+    if(panel.id==='homePanel' && typeof window.replayHomeKpis==='function'){
+      setTimeout(()=>{if(panel.classList.contains('active'))window.replayHomeKpis();},160);
+    }
+  }
+  function install(){
+    const panels=[...document.querySelectorAll('.panel')];
+    panels.forEach(panel=>{
+      let prev=panel.classList.contains('active');
+      new MutationObserver(()=>{
+        const now=panel.classList.contains('active');
+        if(now && !prev){
+          setTimeout(()=>animatePanel(panel),40);
+          setTimeout(()=>{if(panel.classList.contains('active'))animatePanel(panel)},210);
+        }
+        prev=now;
+      }).observe(panel,{attributes:true,attributeFilter:['class']});
+    });
+    // Bắt cả click menu: sau khi render xong sẽ animate panel đang active.
+    document.addEventListener('click',ev=>{
+      const nav=ev.target.closest('.nav-btn,[data-panel]');
+      if(!nav)return;
+      setTimeout(()=>animatePanel(document.querySelector('.panel.active')),650);
+    },true);
+    const first=document.querySelector('.panel.active');
+    if(first){setTimeout(()=>animatePanel(first),220)}
+  }
+  window.replayAllPageMotion=function(){animatePanel(document.querySelector('.panel.active'))};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+})();
+</script>
 </body>
 </html>
 <style>
