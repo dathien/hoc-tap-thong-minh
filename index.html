@@ -1839,7 +1839,7 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
     if(!loginTemplate) capture();
     root.innerHTML=loginTemplate+'<div id="sv2Home" hidden></div>';
     const cs=$('sv2Class');
-    const rows=Array.isArray(window.state?.students)?window.state.students:[];
+    const rows=(typeof state!=='undefined' && Array.isArray(state.students))?state.students:[];
     const classes=[...new Set(rows.map(x=>x.className).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'vi'));
     if(cs){cs.innerHTML=classes.map(c=>'<option>'+String(c).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))+'</option>').join('');}
     if(typeof window.studentV2ClassChanged==='function') window.studentV2ClassChanged();
