@@ -1595,7 +1595,24 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
  window.profileQuick=function(v){quick=v;page=1;renderCompact()}
  window.profilePage=function(v){page=Math.max(1,v);renderCompact()}
  window.profilePageSize=function(v){pageSize=Number(v)||10;page=1;renderCompact()}
- window.openStudentProfileCompact=function(id){switchStudent(id);editor(true)}
+ window.openStudentProfileCompact=function(id){
+   const s=(state.students||[]).find(x=>String(x.id)===String(id));
+   if(!s){toast('Không tìm thấy hồ sơ học sinh');return;}
+   state.currentStudentId=s.id;
+   window.__workClass=s.className||window.__workClass;
+   saveState();
+   editor(true);
+   if(typeof loadProfileForm==='function')loadProfileForm();
+   if(typeof loadSurveyForm==='function')loadSurveyForm();
+   const classSel=document.getElementById('classManagerFilter');
+   if(classSel&&s.className)classSel.value=s.className;
+   setTimeout(()=>{
+     const form=document.getElementById('pName');
+     if(form){form.scrollIntoView({behavior:'smooth',block:'center'});form.focus();}
+     if(typeof renderCompact==='function')renderCompact();
+   },40);
+   toast('Đang xem hồ sơ '+s.name);
+ }
  function renderCompact(){
    const box=document.getElementById('profileList');if(!box)return;
    const rows=filtered(),total=rows.length,pages=Math.max(1,Math.ceil(total/pageSize));if(page>pages)page=pages;const start=(page-1)*pageSize,shown=rows.slice(start,start+pageSize);const sub=subject();
@@ -1603,7 +1620,7 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
    box.innerHTML=`<div class="profile-list-head"><div><h3>Danh sách học sinh</h3><div class="help">${esc(document.getElementById('classManagerFilter')?.value||'')} ${sub?'· '+esc(sub):''}</div></div><div class="profile-count">${total} học sinh</div></div>
    <div class="profile-tools"><div class="field"><label>Tìm học sinh</label><input value="${esc(query)}" oninput="profileSearch(this.value)" placeholder="Nhập họ tên học sinh..."></div><div class="field"><label>Hiển thị</label><select onchange="profilePageSize(this.value)"><option value="10" ${pageSize===10?'selected':''}>10 học sinh / trang</option><option value="20" ${pageSize===20?'selected':''}>20 học sinh / trang</option><option value="40" ${pageSize===40?'selected':''}>40 học sinh / trang</option></select></div><button class="btn secondary" type="button" onclick="toggleProfileEditor()">✏️ Mở/đóng hồ sơ</button></div>
    <div class="profile-quick">${chips.map(([v,l])=>`<button type="button" class="profile-chip ${quick===v?'active':''}" onclick="profileQuick('${v}')">${l}</button>`).join('')}</div>
-   ${shown.length?`<div class="table-wrap"><table class="table profile-table"><thead><tr><th>STT</th><th>Học sinh</th><th>Trạng thái</th><th>Tiến độ môn</th><th>Điểm TB</th><th>Khảo sát</th><th></th></tr></thead><tbody>${shown.map((s,i)=>{const m=metrics(s);return `<tr><td>${start+i+1}</td><td><div class="student-name-cell">${esc(s.name)}</div><div class="student-subline">${esc(s.className)}</div></td><td><span class="student-status ${m.cls}">${m.status}</span></td><td><div class="progress-mini"><b>${m.progress}%</b><div class="progress-track"><i style="width:${m.progress}%"></i></div><div class="student-subline">${m.as.length} bài · ${m.pending} chưa xong</div></div></td><td><b>${m.avg===null?'—':m.avg.toFixed(1)}</b></td><td>${m.surveyDone?'<span class="tag">Đã khảo sát</span>':'<span class="tag amber">Chưa khảo sát</span>'}</td><td><button class="btn secondary small" onclick="openStudentProfileCompact('${s.id}')">Xem ›</button></td></tr>`}).join('')}</tbody></table></div>`:'<div class="empty">Không có học sinh phù hợp bộ lọc.</div>'}
+   ${shown.length?`<div class="table-wrap"><table class="table profile-table"><thead><tr><th>STT</th><th>Học sinh</th><th>Trạng thái</th><th>Tiến độ môn</th><th>Điểm TB</th><th>Khảo sát</th><th></th></tr></thead><tbody>${shown.map((s,i)=>{const m=metrics(s);return `<tr><td>${start+i+1}</td><td><div class="student-name-cell">${esc(s.name)}</div><div class="student-subline">${esc(s.className)}</div></td><td><span class="student-status ${m.cls}">${m.status}</span></td><td><div class="progress-mini"><b>${m.progress}%</b><div class="progress-track"><i style="width:${m.progress}%"></i></div><div class="student-subline">${m.as.length} bài · ${m.pending} chưa xong</div></div></td><td><b>${m.avg===null?'—':m.avg.toFixed(1)}</b></td><td>${m.surveyDone?'<span class="tag">Đã khảo sát</span>':'<span class="tag amber">Chưa khảo sát</span>'}</td><td><button type="button" class="btn secondary small" onclick="openStudentProfileCompact('${s.id}')">Xem ›</button></td></tr>`}).join('')}</tbody></table></div>`:'<div class="empty">Không có học sinh phù hợp bộ lọc.</div>'}
    <div class="profile-pagination"><div class="help">Hiển thị ${total?start+1:0}–${Math.min(start+pageSize,total)} / ${total} học sinh</div><div class="page-buttons"><button class="page-btn" onclick="profilePage(${page-1})" ${page<=1?'disabled':''}>‹</button>${Array.from({length:pages},(_,i)=>i+1).slice(Math.max(0,page-3),Math.max(5,page+2)).slice(0,5).map(p=>`<button class="page-btn ${p===page?'active':''}" onclick="profilePage(${p})">${p}</button>`).join('')}<button class="page-btn" onclick="profilePage(${page+1})" ${page>=pages?'disabled':''}>›</button></div></div>`;
  }
  const prior=window.renderProfiles;
