@@ -1827,6 +1827,49 @@ window.studentV2OpenAssignment=function(id){const s=st(),a=pub(s).find(x=>x.id==
 window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');document.body.style.overflow='';if(typeof portalOpen==='function'){portalOpen();setTimeout(()=>{const q=E('portalStudent');if(q){q.value=sid;portalRender()}},0)}};
 })();
 </script>
+
+<script id="sv2-hard-view-switch">
+/* 8.7.17 - Chuyen view that: khong de login va home ton tai dong thoi sau dang nhap */
+(function(){
+  const $=id=>document.getElementById(id);
+  let loginTemplate='';
+  function capture(){ const n=$('sv2Login'); if(n) loginTemplate=n.outerHTML; }
+  function fillLogin(){
+    const root=$('studentV2'); if(!root)return;
+    if(!loginTemplate) capture();
+    root.innerHTML=loginTemplate+'<div id="sv2Home" hidden></div>';
+    const cs=$('sv2Class');
+    const rows=Array.isArray(window.state?.students)?window.state.students:[];
+    const classes=[...new Set(rows.map(x=>x.className).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'vi'));
+    if(cs){cs.innerHTML=classes.map(c=>'<option>'+String(c).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))+'</option>').join('');}
+    if(typeof window.studentV2ClassChanged==='function') window.studentV2ClassChanged();
+    const code=$('sv2Code'),err=$('sv2LoginError'); if(code)code.value=''; if(err)err.textContent='';
+    root.scrollTop=0; window.scrollTo(0,0);
+  }
+  document.addEventListener('DOMContentLoaded',capture,{once:true});
+  const oldOpen=window.studentV2OpenLogin;
+  const baseLogin=window.studentV2Login;
+  window.studentV2OpenLogin=function(){
+    const root=$('studentV2'); if(!root)return;
+    if(!loginTemplate) capture();
+    fillLogin(); root.classList.add('open'); root.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+  };
+  window.studentV2Login=function(){
+    /* Goi logic dang nhap goc de cap nhat dung currentId noi bo */
+    baseLogin();
+    const login=$('sv2Login'),home=$('sv2Home'),root=$('studentV2');
+    if(!root||!home||!login||!login.hidden) return; /* sai ma thi giu nguyen form */
+    /* Dang nhap dung: xoa han form dang nhap khoi DOM */
+    root.innerHTML='<div id="sv2Home"></div>';
+    if(typeof window.studentV2RenderHome==='function')window.studentV2RenderHome();
+    root.scrollTop=0; window.scrollTo(0,0);
+  };
+  window.studentV2Logout=function(){
+    try{clearInterval(window.slideTimer)}catch(_){ }
+    fillLogin();
+  };
+})();
+</script>
 </body>
 </html>
 <style>
