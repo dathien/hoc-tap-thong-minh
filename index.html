@@ -223,6 +223,19 @@ input,select,textarea{border-color:#dfe5ec;border-radius:11px;background:#fff;pa
 @keyframes kpi874Float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 @keyframes kpi874Sheen{0%{background-position:120% 0}100%{background-position:-120% 0}}
 @media(prefers-reduced-motion:reduce){.stats .stat.is-number-animating,.stats .stat.is-number-animating strong,.stats .stat.is-number-animating::before,.stats .stat.is-number-animating::after{animation:none!important}}
+
+/* 8.7.13 - Menu top sat mep tren, khong con khe ho */
+html,body{margin:0!important;padding:0!important}
+.app{padding-top:0!important}
+.topbar{
+  top:0!important;
+  margin-top:0!important;
+  border-top-left-radius:0!important;
+  border-top-right-radius:0!important;
+  border-top:0!important;
+}
+@media(max-width:900px){.app{padding-top:0!important}.topbar{top:0!important}}
+@media(max-width:560px){.app{padding-top:0!important}.topbar{top:0!important}}
 </style>
 
 </head>
