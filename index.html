@@ -1834,6 +1834,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 <div class="sv2-login-card">
 <section class="sv2-login-brand"><div class="sv2-mark">HT</div><h1>HỌC TẬP<br/>THÔNG MINH PRO</h1><p>Cổng học tập dành cho học sinh. Xem nhiệm vụ, tự luyện, làm bài kiểm tra và theo dõi tiến bộ của chính mình.</p></section>
 <section class="sv2-login-form">
+      <button class="sv2-back-link" onclick="backToRoleGateway()" type="button">← Chọn đối tượng khác</button>
 <div class="sv2-login-head"><h2>Đăng nhập học sinh</h2><p>Đăng nhập để tiếp tục quá trình ôn tập và theo dõi tiến bộ.</p></div>
 <div class="sv2-field"><label>Lớp</label><input autocomplete="off" id="sv2Class" placeholder="Ví dụ: 10A1" type="text"/></div>
 <div class="sv2-field"><label>Họ và tên học sinh</label><input autocomplete="username" id="sv2Student" placeholder="Nhập họ và tên" type="text"/></div>
@@ -1844,7 +1845,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 <div class="sv2-or"><span>hoặc</span></div>
 <button class="sv2-google-login" onclick="studentV2GoogleLogin()" type="button"><span class="sv2-google-g">G</span><span>Đăng nhập với Google</span></button>
 <div class="sv2-register-line">Chưa có tài khoản? <button type="button" onclick="studentV2Register()">Đăng ký</button></div>
-<button class="sv2-back-link" onclick="backToRoleGateway()" type="button">← Chọn đối tượng khác</button>
+
 <div class="sv2-demo-note"><b>Tài khoản demo:</b> 10A1 · Nguyễn Minh An · Mật khẩu 1234</div>
 </section>
 </div>
@@ -2173,6 +2174,33 @@ window.roleGoogle=function(who){
  transform:none!important;
  flex:0 0 auto!important;
  margin:0!important;
+}
+</style>
+
+<style id="v8764-unified-google-back">
+#studentV2 .sv2-back-link{
+ display:inline-flex!important;align-items:center!important;align-self:flex-start!important;
+ margin:0 0 4px!important;padding:0 0 8px!important;border:0!important;background:transparent!important;
+ color:#526477!important;font-size:13px!important;font-weight:800!important;cursor:pointer!important;
+}
+/* Cả 3 nút Google: icon + chữ là một cụm nằm giữa như mẫu */
+#teacherLoginPanel .sv2-google-btn,
+#parentLoginPanel .sv2-google-btn,
+#studentV2 .sv2-google-btn{
+ position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;
+ gap:10px!important;width:100%!important;height:50px!important;padding:0 18px!important;
+ border:1px solid #d4deea!important;border-radius:12px!important;background:#fff!important;
+ color:#1f2937!important;font-size:14px!important;font-weight:800!important;line-height:1!important;
+ text-align:center!important;box-sizing:border-box!important;
+}
+#teacherLoginPanel .sv2-google-btn .sv2-google-g,
+#parentLoginPanel .sv2-google-btn .sv2-google-g,
+#studentV2 .sv2-google-btn .sv2-google-g{
+ position:static!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+ transform:none!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ flex:0 0 22px!important;width:22px!important;height:22px!important;margin:0!important;padding:0!important;
+ border:1.5px solid #4285f4!important;border-radius:50%!important;color:#2563eb!important;background:#fff!important;
+ font-size:14px!important;font-weight:800!important;line-height:1!important;
 }
 </style>
 </body>
