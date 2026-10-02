@@ -5801,3 +5801,80 @@ window.studentV2OpenAssignment=function(id){
 <style id="v8798-final-style">
 .v98preview{min-height:100vh;padding:28px;background:#f3f7fc}.v98back,.v98top button{height:42px;padding:0 15px;border:1px solid #d7e2ef;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v98card{max-width:720px;margin:48px auto;padding:34px;border:1px solid #dce6f2;border-radius:22px;background:#fff;text-align:center;box-shadow:0 18px 45px rgba(30,58,138,.08)}.v98tag{display:inline-block;padding:6px 10px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:950}.v98card h2{margin:14px 0;color:#172554;font-size:28px}.v98meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.v98meta span{padding:7px 10px;border-radius:9px;background:#f1f5f9;color:#475569;font-size:12px;font-weight:800}.v98idle{width:190px;margin:22px auto;padding:15px;border:1px solid #bfdbfe;border-radius:15px;background:#f8fbff}.v98idle small,.v98idle strong{display:block}.v98idle b{display:block;margin:5px 0;font-size:29px;color:#172554}.v98idle strong{font-size:10px;color:#2563eb}.v98start{height:49px;padding:0 32px;border:0;border-radius:12px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:950}.v98page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc}.v98top{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center}.v98hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center}.v98hero h2{margin:5px 0}.v98hero p{margin:0;color:#dbeafe}.v98clock{min-width:132px;padding:12px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.v98clock small,.v98clock b{display:block}.v98clock b{font-size:25px;margin-top:4px}.v98list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.v98q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.v98qh{display:flex;justify-content:space-between}.v98opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v98opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;padding:12px;border:1px solid #dce5ef;border-radius:11px}.v98submit,.v98done{max-width:1060px;margin:15px auto;padding:14px;border-radius:14px;background:#fff;border:1px solid #d7e2ef}.v98submit{display:flex;justify-content:space-between;align-items:center;position:sticky;bottom:12px}.v98submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:#3156df;color:#fff;font-weight:900}
 </style>
+
+<script id="v8799-tab-monitor">
+(function(){
+'use strict';
+let lastLeave=0, warningOpen=false;
+const A=v=>Array.isArray(v)?v:[];
+function currentDoing(){
+ for(const s of A(state.students)){
+  for(const a of A(s.assignments)){
+   if(a?.quiz && a.attemptStartedByStudent===true && a.startedAt && !a.submittedAt && a.status==='doing') return {s,a};
+  }
+ }
+ return {};
+}
+function save(){try{saveState()}catch(e){}}
+function record(kind){
+ const {a}=currentDoing(); if(!a)return;
+ const now=Date.now();
+ if(now-lastLeave<1200)return; // tránh blur + visibilitychange ghi trùng
+ lastLeave=now;
+ a.integrity=a.integrity||{};
+ a.integrity.tabLeaves=Number(a.integrity.tabLeaves||0)+1;
+ a.integrity.events=A(a.integrity.events);
+ a.integrity.events.push({type:'leave_screen',at:new Date().toISOString(),source:kind});
+ save();
+}
+function warn(){
+ const {a}=currentDoing();if(!a||warningOpen)return;
+ const n=Number(a.integrity?.tabLeaves||0); if(!n)return;
+ warningOpen=true;
+ const old=document.getElementById('v99Warn');if(old)old.remove();
+ const d=document.createElement('div');d.id='v99Warn';d.className='v99overlay';
+ d.innerHTML=`<div class="v99modal"><div class="v99ico">!</div><h3>Cảnh báo rời màn hình làm bài</h3>
+ <p>Bạn vừa rời khỏi màn hình làm bài. Hệ thống đã ghi nhận <b>lần ${n}</b>.</p>
+ ${n>=3?'<div class="v99strong">Đã rời màn hình từ 3 lần. Thông tin này sẽ được lưu để giáo viên xem khi kiểm tra bài làm.</div>':'<div class="v99soft">Hãy tập trung làm bài. Đồng hồ vẫn tiếp tục đếm trong thời gian bạn rời màn hình.</div>'}
+ <button id="v99Continue">Tiếp tục làm bài</button></div>`;
+ document.body.appendChild(d);
+ document.getElementById('v99Continue').onclick=()=>{d.remove();warningOpen=false};
+}
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden) record('visibilitychange');
+ else warn();
+},true);
+window.addEventListener('blur',()=>record('blur'),true);
+window.addEventListener('focus',()=>setTimeout(warn,80),true);
+
+/* Badge trực tiếp trong màn hình làm bài, nếu đã có vi phạm. */
+setInterval(()=>{
+ const {a}=currentDoing();if(!a)return;
+ const n=Number(a.integrity?.tabLeaves||0);
+ const hero=document.querySelector('.v98hero');
+ if(!hero||!n)return;
+ let b=document.getElementById('v99Count');
+ if(!b){b=document.createElement('div');b.id='v99Count';b.className='v99count';hero.appendChild(b)}
+ b.textContent='Rời màn hình: '+n+' lần';
+},1000);
+
+/* Bổ sung dữ liệu cho giáo viên bằng cách gắn nhãn vào comment khi bài được nộp.
+   Không tự nộp bài; chỉ ghi nhận và cảnh báo theo khuyến nghị. */
+const oldSubmit=window.studentV98Submit;
+window.studentV98Submit=function(id){
+ const {a}=currentDoing();
+ if(a){
+   const n=Number(a.integrity?.tabLeaves||0);
+   if(n){
+    const base=String(a.teacherComment||'').replace(/\s*·\s*Rời màn hình:\s*\d+\s*lần/g,'');
+    a.teacherComment=(base?base+' · ':'')+'Rời màn hình: '+n+' lần';
+    save();
+   }
+ }
+ return oldSubmit(id);
+};
+})();
+</script>
+<style id="v8799-tab-monitor-style">
+.v99overlay{position:fixed;inset:0;z-index:2147483000;background:rgba(15,23,42,.58);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}.v99modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.3)}.v99ico{width:48px;height:48px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#fff7ed;color:#ea580c;font-size:25px;font-weight:950;border:1px solid #fed7aa}.v99modal h3{margin:5px 0 9px;color:#172554}.v99modal p{margin:0 0 13px;color:#475569;line-height:1.55}.v99soft,.v99strong{padding:11px 12px;border-radius:11px;font-size:12px;line-height:1.5;text-align:left}.v99soft{background:#eff6ff;color:#1e40af}.v99strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.v99modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}.v99count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
+</style>
