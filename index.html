@@ -2385,9 +2385,17 @@ window.parentRegister=function(){
  if(e)e.textContent='Đăng ký tài khoản phụ huynh sẽ hoạt động khi kết nối hệ thống tài khoản chính thức.';
 };
 window.parentLoginSubmit=function(){
- const u=document.getElementById('parentLoginUser')?.value.trim(),p=document.getElementById('parentLoginPass')?.value.trim(),e=document.getElementById('parentLoginError');
+ const u=document.getElementById('parentLoginUser')?.value.trim();
+ const p=document.getElementById('parentLoginPass')?.value.trim();
+ const e=document.getElementById('parentLoginError');
  if(!u||!p){if(e)e.textContent='Vui lòng nhập tên đăng nhập và mật khẩu.';return;}
- if(e)e.textContent='Tài khoản phụ huynh cần được liên kết với hồ sơ học sinh khi kết nối hệ thống tài khoản chính thức.';
+ if(u==='ph.minhan' && p==='1234'){
+   if(e)e.textContent='';
+   if(typeof window.parentV117EnterDemo==='function'){window.parentV117EnterDemo();return;}
+   if(e)e.textContent='Không thể mở cổng phụ huynh demo. Vui lòng tải lại trang.';
+   return;
+ }
+ if(e)e.textContent='Tên đăng nhập hoặc mật khẩu không đúng.';
 };
 window.roleForgot=function(who){
  const id=who==='Giáo viên'?'teacherLoginError':'parentLoginError';
@@ -4390,23 +4398,22 @@ function show(which){
 }
 document.addEventListener('click',e=>{const b=e.target.closest('#parentV117 nav button[data-pv]');if(b)show(b.dataset.pv)},true);
 
-window.parentLoginSubmit=function(){
- const u=document.getElementById('parentLoginUser')?.value.trim();
- const p=document.getElementById('parentLoginPass')?.value.trim();
+window.parentV117EnterDemo=function(){
  const e=document.getElementById('parentLoginError');
- if(u!==USER||p!==PASS){if(e)e.textContent='Tên đăng nhập hoặc mật khẩu không đúng.';return}
  child=linkedChild();
- if(!child){if(e)e.textContent='Không tìm thấy hồ sơ Nguyễn Minh An – 10A1 để liên kết.';return}
+ if(!child){if(e)e.textContent='Không tìm thấy hồ sơ Nguyễn Minh An – 10A1 để liên kết.';return false}
  if(e)e.textContent='';
- document.getElementById('parentLoginPanel').hidden=true;
- document.getElementById('roleGateway').hidden=true;
+ const lp=document.getElementById('parentLoginPanel');if(lp)lp.hidden=true;
+ const rg=document.getElementById('roleGateway');if(rg)rg.hidden=true;
  const app=document.querySelector('.app');if(app)app.style.display='none';
- const pv=document.getElementById('parentV117');pv.classList.add('open');pv.setAttribute('aria-hidden','false');
+ const pv=document.getElementById('parentV117');if(!pv){if(e)e.textContent='Không tìm thấy cổng phụ huynh.';return false}
+ pv.classList.add('open');pv.setAttribute('aria-hidden','false');
  document.body.style.overflow='hidden';
  document.getElementById('pv117StudentName').textContent=child.name||CHILD_NAME;
  document.getElementById('pv117StudentClass').textContent='Lớp '+(child.className||child.class||CHILD_CLASS);
  if(document.getElementById('parentRemember')?.checked)try{localStorage.setItem('ot_parent_demo_remember',USER)}catch(_){}
  show('overview');
+ return true;
 };
 window.parentV117Logout=function(){
  const pv=document.getElementById('parentV117');pv.classList.remove('open');pv.setAttribute('aria-hidden','true');
