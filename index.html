@@ -313,7 +313,7 @@ html,body{margin:0!important;padding:0!important}
 <div class="nav-title">Điều hướng</div>
 <button class="nav-btn active" data-panel="home" onclick="goPanel('home')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"></path><path d="M5.5 10.5V20h13v-9.5"></path><path d="M9.5 20v-6h5v6"></path></svg></span><span class="nav-label">Tổng quan</span></button>
 <button class="nav-btn" data-panel="profiles" onclick="goPanel('profiles')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3.5 19c.4-3.3 2.2-5 5.5-5s5.1 1.7 5.5 5"></path><circle cx="17" cy="9" r="2.3"></circle><path d="M15.5 14.5c3.1-.4 4.7 1.1 5 4"></path></svg></span><span class="nav-label">Lớp học &amp; học sinh</span></button>
-<button class="nav-btn" data-panel="homeroom" onclick="goPanel('homeroom')"><span class="nav-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="M8 9h2M14 9h2M8 13h2M14 13h2M8 17h8"></path></svg></span><span class="nav-label">Lớp chủ nhiệm</span></button>
+<button class="nav-btn" data-panel="homeroom" onclick="goPanel('homeroom')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="M8 9h2M14 9h2M8 13h2M14 13h2M8 17h8"></path></svg></span><span class="nav-label">Lớp chủ nhiệm</span></button>
 <button class="nav-btn" data-panel="plan" onclick="goPanel('plan')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><rect height="15" rx="2" width="16" x="4" y="5"></rect><path d="M8 3v4M16 3v4M4 10h16M8 14h3M8 17h6"></path></svg></span><span class="nav-label">Kế hoạch ôn tập</span></button>
 <button class="nav-btn" data-panel="session" onclick="goPanel('session')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m10 8 6 4-6 4Z"></path></svg></span><span class="nav-label">Học hôm nay</span></button>
 <button class="nav-btn" data-panel="journal" onclick="goPanel('journal')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 4h14v16H5z"></path><path d="M8 8h8M8 12h8M8 16h5"></path></svg></span><span class="nav-label">Nhật ký học tập</span></button>
@@ -353,7 +353,7 @@ html,body{margin:0!important;padding:0!important}
 <div class="field"><label>Họ và tên <span class="req">*</span></label><input id="pName" placeholder="Ví dụ: Nguyễn Minh An"/></div>
 <div class="field"><label>Lớp <span class="req">*</span></label><input id="pClass" placeholder="Ví dụ: 10A1, 11A2, 12C5"/></div>
 <div class="field"><label>Môn đang theo dõi <span class="req">*</span></label><select id="pSubject" onchange="renderSubjectTip();renderActiveReviewSubject(this.value)"><option>Toán</option><option>Ngữ văn</option><option>Tiếng Anh</option><option>Tin học</option><option>Vật lí</option><option>Hóa học</option><option>Sinh học</option><option>Lịch sử</option><option>Địa lí</option><option>Công nghệ</option><option>Khác</option></select><small class="help">Chọn môn đang xem trong hồ sơ. Năng lực môn sẽ được hình thành từ bài luyện và kiểm tra thực tế, không nhập điểm đầu vào.</small></div>
-<div class="field"><label>Môn đang ôn hiện tại</label><div id="pActiveReviewSubject" class="active-review-subject"></div><small class="help">Mỗi lần chỉ ôn 1 môn. Muốn chuyển môn, học sinh phải kết thúc hoặc thoát môn hiện tại rồi mới chọn môn khác.</small></div>
+<div class="field"><label>Môn đang ôn hiện tại</label><div class="active-review-subject" id="pActiveReviewSubject"></div><small class="help">Mỗi lần chỉ ôn 1 môn. Muốn chuyển môn, học sinh phải kết thúc hoặc thoát môn hiện tại rồi mới chọn môn khác.</small></div>
 <div class="field"><label>Mục tiêu ban đầu</label><select id="pGoal"><option>Hiểu bài chắc hơn</option><option>Tăng điểm kiểm tra</option><option>Lấp lỗ hổng kiến thức</option><option>Ôn thi</option><option>Học nâng cao</option><option>Tạo thói quen tự học</option></select></div>
 <div class="grid2"><div class="field"><label>Thời gian học mỗi ngày</label><select id="pTime"><option value="30">30 phút</option><option selected="" value="45">45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option></select></div><div class="field"><label>Số ngày học mỗi tuần</label><select id="pDays"><option>3</option><option>4</option><option selected="">5</option><option>6</option><option>7</option></select></div></div>
 <div class="field"><label>Khó khăn đang gặp</label><textarea id="pDifficulty" placeholder="Ví dụ: Dễ mất tập trung, chưa nhớ công thức, ngại làm bài..."></textarea></div>
@@ -374,7 +374,6 @@ html,body{margin:0!important;padding:0!important}
 <div class="action-row" style="justify-content:flex-end"><button class="btn secondary" onclick="closeStudentExcelImport()" type="button">Hủy</button><button class="btn primary" disabled="" id="studentExcelImportBtn" onclick="confirmStudentExcelImport()" type="button">Thêm học sinh vào app</button></div>
 </div>
 </div>
-
 <section class="card panel" id="analysisPanel">
 <div class="panel-head"><div><h2>Phân tích cá nhân hóa</h2><p>Phân tích theo từng học sinh và từng môn, dựa trên dữ liệu học tập thực tế.</p></div></div>
 <div id="analysisContent"></div>
@@ -395,8 +394,8 @@ html,body{margin:0!important;padding:0!important}
 <section class="card panel" id="homeroomPanel">
 <div class="panel-head"><div><h2>Lớp chủ nhiệm</h2><p>Danh sách học sinh của lớp đang làm việc. Chọn học sinh để mở hồ sơ và theo dõi quá trình ôn tập.</p></div></div>
 <div class="homeroom-v94-toolbar">
-  <div><span class="help">Lớp đang xem</span><strong id="homeroomV94Class">—</strong></div>
-  <div class="field"><label>Tìm học sinh</label><input id="homeroomV94Search" placeholder="Nhập họ tên học sinh..." oninput="renderHomeroomV94()"></div>
+<div><span class="help">Lớp đang xem</span><strong id="homeroomV94Class">—</strong></div>
+<div class="field"><label>Tìm học sinh</label><input id="homeroomV94Search" oninput="renderHomeroomV94()" placeholder="Nhập họ tên học sinh..."/></div>
 </div>
 <div class="homeroom-v94-summary"><div><strong id="homeroomV94Count">0</strong><span>Học sinh</span></div><div><strong id="homeroomV94Tasks">0</strong><span>Bài đã giao</span></div><div><strong id="homeroomV94Done">0%</strong><span>Hoàn thành</span></div></div>
 <div class="table-wrap"><table class="data-table homeroom-v94-table"><thead><tr><th>STT</th><th>Học sinh</th><th>Lớp</th><th>Môn đang ôn</th><th>Bài đã giao</th><th>Thao tác</th></tr></thead><tbody id="homeroomV94Body"></tbody></table></div>
@@ -1806,71 +1805,69 @@ window.enterTeacherArea=function(){
 };
 window.enterStudentArea=function(){document.getElementById('roleGateway').hidden=true;if(typeof studentV2OpenLogin==='function'){studentV2OpenLogin()}else{setTimeout(()=>studentV2OpenLogin(),0)}};
 </script>
-
-<div class="role-login-overlay" id="teacherLoginPanel" hidden>
-  <div class="role-login-card">
-    <section class="sv2-login-brand unified-login-brand exact-brand">
-  <div class="exact-brand-inner">
-    <div class="sv2-mark">ÔT</div>
-    <h1><span>ÔN TẬP</span><span class="brand-yellow">THÔNG MINH</span></h1>
-  </div>
-</section>
-    <section class="role-login-form">
-      <button class="role-back" type="button" onclick="closeRoleLogin('teacherLoginPanel')">← Chọn đối tượng khác</button>
-      <h2>Đăng nhập giáo viên</h2>
-      <div class="sv2-field"><label>Tên đăng nhập</label><input id="teacherLoginUser" autocomplete="username" placeholder="Nhập tên đăng nhập"/></div>
-      <div class="sv2-field"><label>Mật khẩu</label><div class="teacher-pass-wrap"><input id="teacherLoginPass" autocomplete="current-password" type="password" placeholder="Nhập mật khẩu"/><button class="teacher-eye" type="button" aria-label="Hiện hoặc ẩn mật khẩu" onclick="teacherTogglePassword()">◉</button></div></div>
-      <div class="sv2-login-row"><label class="sv2-remember"><input id="teacherRemember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" type="button" onclick="roleForgot('Giáo viên')">Quên mật khẩu?</button></div>
-      <div class="sv2-login-error" id="teacherLoginError"></div>
-      <button class="sv2-login-btn" type="button" onclick="teacherLoginSubmit()">Đăng nhập</button>
-      <div class="sv2-or"><span>hoặc</span></div>
-      <button class="sv2-google-btn" type="button" onclick="roleGoogle('Giáo viên')"><span class="sv2-google-g">G</span> Đăng nhập với Google</button><div class="teacher-register-line">Chưa có tài khoản? <button type="button" onclick="teacherRegister()">Đăng ký</button></div>
-    </section>
-  </div>
+<div class="role-login-overlay" hidden="" id="teacherLoginPanel">
+<div class="role-login-card">
+<section class="sv2-login-brand unified-login-brand exact-brand">
+<div class="exact-brand-inner">
+<div class="sv2-mark">ÔT</div>
+<h1><span>ÔN TẬP</span><span class="brand-yellow">THÔNG MINH</span></h1>
 </div>
-<div class="role-login-overlay" id="parentLoginPanel" hidden>
-  <div class="role-login-card">
-    <section class="sv2-login-brand unified-login-brand exact-brand">
-  <div class="exact-brand-inner">
-    <div class="sv2-mark">ÔT</div>
-    <h1><span>ÔN TẬP</span><span class="brand-yellow">THÔNG MINH</span></h1>
-  </div>
 </section>
-    <section class="role-login-form">
-      <button class="role-back" type="button" onclick="closeRoleLogin('parentLoginPanel')">← Chọn đối tượng khác</button>
-      <h2>Đăng nhập phụ huynh</h2>
-      <div class="sv2-field"><label>Tên đăng nhập</label><input id="parentLoginUser" autocomplete="username" placeholder="Nhập tên đăng nhập"/></div>
-      <div class="sv2-field"><label>Mật khẩu</label><div class="role-pass-wrap"><input id="parentLoginPass" autocomplete="current-password" type="password" placeholder="Nhập mật khẩu"/><button class="role-eye" type="button" aria-label="Hiện hoặc ẩn mật khẩu" onclick="parentTogglePassword()">◉</button></div></div>
-      <div class="sv2-login-row"><label class="sv2-remember"><input id="parentRemember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" type="button" onclick="roleForgot('Phụ huynh')">Quên mật khẩu?</button></div>
-      <div class="sv2-login-error" id="parentLoginError"></div>
-      <button class="sv2-login-btn" type="button" onclick="parentLoginSubmit()">Đăng nhập</button>
-      <div class="sv2-or"><span>hoặc</span></div>
-      <button class="sv2-google-btn" type="button" onclick="roleGoogle('Phụ huynh')"><span class="sv2-google-g">G</span> Đăng nhập với Google</button><div class="parent-register-line">Chưa có tài khoản? <button type="button" onclick="parentRegister()">Đăng ký</button></div>
-    </section>
-  </div>
+<section class="role-login-form">
+<button class="role-back" onclick="closeRoleLogin('teacherLoginPanel')" type="button">← Chọn đối tượng khác</button>
+<h2>Đăng nhập giáo viên</h2>
+<div class="sv2-field"><label>Tên đăng nhập</label><input autocomplete="username" id="teacherLoginUser" placeholder="Nhập tên đăng nhập"/></div>
+<div class="sv2-field"><label>Mật khẩu</label><div class="teacher-pass-wrap"><input autocomplete="current-password" id="teacherLoginPass" placeholder="Nhập mật khẩu" type="password"/><button aria-label="Hiện hoặc ẩn mật khẩu" class="teacher-eye" onclick="teacherTogglePassword()" type="button">◉</button></div></div>
+<div class="sv2-login-row"><label class="sv2-remember"><input id="teacherRemember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" onclick="roleForgot('Giáo viên')" type="button">Quên mật khẩu?</button></div>
+<div class="sv2-login-error" id="teacherLoginError"></div>
+<button class="sv2-login-btn" onclick="teacherLoginSubmit()" type="button">Đăng nhập</button>
+<div class="sv2-or"><span>hoặc</span></div>
+<button class="sv2-google-btn" onclick="roleGoogle('Giáo viên')" type="button"><span class="sv2-google-g">G</span> Đăng nhập với Google</button><div class="teacher-register-line">Chưa có tài khoản? <button onclick="teacherRegister()" type="button">Đăng ký</button></div>
+</section>
+</div>
+</div>
+<div class="role-login-overlay" hidden="" id="parentLoginPanel">
+<div class="role-login-card">
+<section class="sv2-login-brand unified-login-brand exact-brand">
+<div class="exact-brand-inner">
+<div class="sv2-mark">ÔT</div>
+<h1><span>ÔN TẬP</span><span class="brand-yellow">THÔNG MINH</span></h1>
+</div>
+</section>
+<section class="role-login-form">
+<button class="role-back" onclick="closeRoleLogin('parentLoginPanel')" type="button">← Chọn đối tượng khác</button>
+<h2>Đăng nhập phụ huynh</h2>
+<div class="sv2-field"><label>Tên đăng nhập</label><input autocomplete="username" id="parentLoginUser" placeholder="Nhập tên đăng nhập"/></div>
+<div class="sv2-field"><label>Mật khẩu</label><div class="role-pass-wrap"><input autocomplete="current-password" id="parentLoginPass" placeholder="Nhập mật khẩu" type="password"/><button aria-label="Hiện hoặc ẩn mật khẩu" class="role-eye" onclick="parentTogglePassword()" type="button">◉</button></div></div>
+<div class="sv2-login-row"><label class="sv2-remember"><input id="parentRemember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" onclick="roleForgot('Phụ huynh')" type="button">Quên mật khẩu?</button></div>
+<div class="sv2-login-error" id="parentLoginError"></div>
+<button class="sv2-login-btn" onclick="parentLoginSubmit()" type="button">Đăng nhập</button>
+<div class="sv2-or"><span>hoặc</span></div>
+<button class="sv2-google-btn" onclick="roleGoogle('Phụ huynh')" type="button"><span class="sv2-google-g">G</span> Đăng nhập với Google</button><div class="parent-register-line">Chưa có tài khoản? <button onclick="parentRegister()" type="button">Đăng ký</button></div>
+</section>
+</div>
 </div>
 <div aria-hidden="true" id="studentV2">
 <div class="sv2-login" id="sv2Login">
 <div class="sv2-login-card">
 <section class="sv2-login-brand unified-login-brand exact-brand">
-  <div class="exact-brand-inner">
-    <div class="sv2-mark">ÔT</div>
-    <h1><span>ÔN TẬP</span><span class="brand-yellow">THÔNG MINH</span></h1>
-  </div>
+<div class="exact-brand-inner">
+<div class="sv2-mark">ÔT</div>
+<h1><span>ÔN TẬP</span><span class="brand-yellow">THÔNG MINH</span></h1>
+</div>
 </section>
 <section class="sv2-login-form">
-      <button class="sv2-back-link" onclick="backToRoleGateway()" type="button">← Chọn đối tượng khác</button>
+<button class="sv2-back-link" onclick="backToRoleGateway()" type="button">← Chọn đối tượng khác</button>
 <div class="sv2-login-head"><h2>Đăng nhập học sinh</h2><p>Đăng nhập để tiếp tục quá trình ôn tập và theo dõi tiến bộ.</p></div>
 <div class="sv2-field"><label>Lớp</label><input autocomplete="off" id="sv2Class" placeholder="Ví dụ: 10A1" type="text"/></div>
 <div class="sv2-field"><label>Họ và tên học sinh</label><input autocomplete="username" id="sv2Student" placeholder="Nhập họ và tên" type="text"/></div>
-<div class="sv2-field"><label>Mật khẩu</label><div class="sv2-password-wrap"><input autocomplete="current-password" id="sv2Code" maxlength="32" placeholder="Nhập mật khẩu" type="password"/><button class="sv2-eye" type="button" onclick="studentV2TogglePassword()" aria-label="Hiện hoặc ẩn mật khẩu">◉</button></div></div>
-<div class="sv2-login-row"><label class="sv2-remember"><input id="sv2Remember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" type="button" onclick="studentV2ForgotPassword()">Quên mật khẩu?</button></div>
+<div class="sv2-field"><label>Mật khẩu</label><div class="sv2-password-wrap"><input autocomplete="current-password" id="sv2Code" maxlength="32" placeholder="Nhập mật khẩu" type="password"/><button aria-label="Hiện hoặc ẩn mật khẩu" class="sv2-eye" onclick="studentV2TogglePassword()" type="button">◉</button></div></div>
+<div class="sv2-login-row"><label class="sv2-remember"><input id="sv2Remember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" onclick="studentV2ForgotPassword()" type="button">Quên mật khẩu?</button></div>
 <div class="sv2-login-error" id="sv2LoginError"></div>
 <button class="sv2-main-login" onclick="studentV2Login()" type="button">Đăng nhập</button>
 <div class="sv2-or"><span>hoặc</span></div>
 <button class="sv2-google-login" onclick="studentV2GoogleLogin()" type="button"><span class="sv2-google-g">G</span><span>Đăng nhập với Google</span></button>
-<div class="sv2-register-line">Chưa có tài khoản? <button type="button" onclick="studentV2Register()">Đăng ký</button></div>
-
+<div class="sv2-register-line">Chưa có tài khoản? <button onclick="studentV2Register()" type="button">Đăng ký</button></div>
 <div class="sv2-demo-note"><b>Tài khoản demo:</b> 10A1 · Nguyễn Minh An · Mật khẩu 1234</div>
 </section>
 </div>
@@ -2276,7 +2273,6 @@ window.studentV2UseLegacy=function(){studentV2RenderHome()};
   };
 })();
 </script>
-
 <script id="v8751-single-active-subject">
 (function(){
  const KEY='htpro_active_review_subject_v1';
@@ -2293,7 +2289,6 @@ window.studentV2UseLegacy=function(){studentV2RenderHome()};
  };
 })();
 </script>
-
 <script id="v8759-role-login">
 window.openTeacherLogin=function(){
  const g=document.getElementById('roleGateway'),p=document.getElementById('teacherLoginPanel');
@@ -2364,7 +2359,6 @@ window.roleGoogle=function(who){
  const e=document.getElementById(id);if(e)e.textContent='Đăng nhập Google cần cấu hình xác thực Google trước khi sử dụng thật.';
 };
 </script>
-
 <style id="v8759-role-login-style">
 .rg-choice.parent{background:linear-gradient(135deg,#fffaf0,#fff7ed);border-color:#fed7aa}
 .role-login-overlay{position:fixed;inset:0;z-index:26000;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#eef4ff,#f8fbff 48%,#eef2ff)}
@@ -2373,7 +2367,6 @@ window.roleGoogle=function(who){
 .role-login-form{padding:42px;display:flex;flex-direction:column;justify-content:center}.role-login-form h2{font-size:27px;color:#172554;margin:8px 0 22px}.role-back{align-self:flex-start;border:0;background:transparent;color:#526477;font-weight:800;cursor:pointer;padding:0 0 8px}
 @media(max-width:760px){.role-login-card{grid-template-columns:1fr}.role-login-brand{padding:26px}.role-login-form{padding:28px}}
 </style>
-
 <style id="v8760-teacher-login-polish">
 #teacherLoginPanel .role-login-card{width:min(900px,calc(100vw - 32px));min-height:550px;grid-template-columns:42% 58%;border-radius:26px}
 #teacherLoginPanel .role-login-brand{padding:44px 38px;display:flex;flex-direction:column;justify-content:center}
@@ -2406,13 +2399,11 @@ window.roleGoogle=function(who){
  #teacherLoginPanel .role-login-form h2{font-size:26px}
 }
 </style>
-
 <style id="v8761-teacher-register">
 #teacherLoginPanel .teacher-register-line{margin-top:18px;text-align:center;color:#64748b;font-size:13px;font-weight:600}
 #teacherLoginPanel .teacher-register-line button{border:0;background:transparent;padding:2px 4px;color:#1d4ed8;font:inherit;font-weight:900;cursor:pointer}
 #teacherLoginPanel .teacher-register-line button:hover{text-decoration:underline}
 </style>
-
 <style id="v8762-unified-three-logins">
 /* Shared visual system */
 #teacherLoginPanel .role-login-card,#parentLoginPanel .role-login-card{
@@ -2491,7 +2482,6 @@ window.roleGoogle=function(who){
  #teacherLoginPanel .role-login-form h2,#parentLoginPanel .role-login-form h2,#studentV2 .sv2-login-form h2{font-size:26px}
 }
 </style>
-
 <style id="v8763-google-center-fix">
 /* Giáo viên + Phụ huynh: icon G và chữ là một cụm được căn giữa thực sự */
 #teacherLoginPanel .sv2-google-btn,
@@ -2512,7 +2502,6 @@ window.roleGoogle=function(who){
  margin:0!important;
 }
 </style>
-
 <style id="v8764-unified-google-back">
 #studentV2 .sv2-back-link{
  display:inline-flex!important;align-items:center!important;align-self:flex-start!important;
@@ -2539,7 +2528,6 @@ window.roleGoogle=function(who){
  font-size:14px!important;font-weight:800!important;line-height:1!important;
 }
 </style>
-
 <style id="v8767-unified-brand-panels">
 /* Ba trang đăng nhập dùng cùng một panel thương hiệu */
 #teacherLoginPanel .role-login-brand,
@@ -2600,7 +2588,6 @@ window.roleGoogle=function(who){
  #teacherLoginPanel .role-login-brand,#parentLoginPanel .role-login-brand,#studentV2 .sv2-login-brand{display:none!important}
 }
 </style>
-
 <style id="v8768-exact-brand-component">
 /* Một component thương hiệu duy nhất cho GV / HS / PH */
 .unified-login-brand{
@@ -2647,7 +2634,6 @@ window.roleGoogle=function(who){
 </style>
 isplay:none!important}
 @media(max-width:760px){.unified-login-brand{display:none!important}}
-</style>
 
 <style id="v8770-exact-brand-three">
 /* Thương hiệu chính thức: cùng đúng một mẫu cho GV / HS / PH */
@@ -2685,7 +2671,6 @@ isplay:none!important}
 }
 @media(max-width:760px){.exact-brand{display:none!important}}
 </style>
-
 <style id="v8771-final-login-alignment">
 /* ===== Chuẩn chung 3 trang đăng nhập ===== */
 #teacherLoginPanel .role-login-card,
@@ -2847,7 +2832,6 @@ isplay:none!important}
  }
 }
 </style>
-
 <style id="v8772-lock-brand-position">
 /* Khóa tuyệt đối cùng tọa độ thương hiệu cho cả 3 trang */
 #teacherLoginPanel .exact-brand,
@@ -2922,7 +2906,6 @@ isplay:none!important}
  #teacherLoginPanel .exact-brand,#parentLoginPanel .exact-brand,#studentV2 .exact-brand{display:none!important}
 }
 </style>
-
 <style id="v8773-center-brand-like-student">
 /* Cả 3 trang: thương hiệu căn giữa theo đúng kiểu trang Học sinh */
 #teacherLoginPanel .exact-brand,
@@ -2982,7 +2965,6 @@ isplay:none!important}
  #teacherLoginPanel .exact-brand,#parentLoginPanel .exact-brand,#studentV2 .exact-brand{display:none!important}
 }
 </style>
-
 <style id="v8774-copy-student-brand-exact">
 /* LẤY TRANG HỌC SINH LÀM MẪU DUY NHẤT — GV/HS/PH dùng cùng kích thước */
 #teacherLoginPanel .role-login-card,
@@ -3103,7 +3085,6 @@ isplay:none!important}
  #studentV2 .exact-brand{display:none!important}
 }
 </style>
-
 <style id="v8775-student-login-runtime-fix">
 /* Không cắt form khi chiều cao trình duyệt thấp */
 #studentV2,
@@ -3158,7 +3139,6 @@ isplay:none!important}
  #parentLoginPanel .role-login-card{margin:0 auto!important}
 }
 </style>
-
 <style id="v8776-student-sidebar-demo">
 #sv2Home{background:#f4f7fb}
 .sv2-student-shell{min-height:100vh;display:grid;grid-template-columns:230px minmax(0,1fr);max-width:1680px;margin:auto}
@@ -3187,7 +3167,6 @@ isplay:none!important}
  .sv2-student-main{padding-bottom:72px}
 }
 </style>
-
 <style id="v8777-practice-detail-polish">
 /* Trang sau khi chọn môn/tự luyện: biến màn hình trắng đơn điệu thành learning workspace */
 #sv2PracticeDetail,#sv2Practice,#sv2SubjectPractice,.sv2-practice-detail{
@@ -3258,7 +3237,6 @@ isplay:none!important}
  }
 }
 </style>
-
 <style id="v8778-subject-learning-page">
 .sv2-subject-page{min-height:100vh;max-width:none!important;padding:28px 34px 60px!important;background:linear-gradient(180deg,#f5f8fd,#eef4fb)}
 .sv2-subject-top{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;color:#64748b;font-size:12px;font-weight:900;letter-spacing:.04em}
@@ -3272,7 +3250,6 @@ isplay:none!important}
 @media(max-width:850px){.sv2-subject-hero{grid-template-columns:auto 1fr}.sv2-subject-summary{grid-column:1/-1}.sv2-subject-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.sv2-subject-page{padding:18px 14px 88px!important}.sv2-subject-hero{padding:21px 18px}.sv2-subject-summary{display:grid;grid-template-columns:repeat(3,1fr)}.sv2-subject-summary div{min-width:0}.sv2-subject-heading{align-items:start;gap:8px}.sv2-subject-heading>b{white-space:nowrap}}
 </style>
-
 <style id="v8779-sidebar-subject-fix">
 #sv2Home .sv2-student-shell .sv2-subject-page{
  width:100%!important;
@@ -3284,7 +3261,6 @@ isplay:none!important}
  #sv2Home .sv2-student-shell .sv2-subject-page{padding-bottom:88px!important}
 }
 </style>
-
 <style id="v8780-practice-redesign">
 .sv2-practice-dashboard{min-height:100vh;max-width:none!important;padding:34px 38px 64px!important;background:linear-gradient(180deg,#f7f9fd 0%,#eef4fb 100%)}
 .sv2-practice-head{max-width:1160px;margin:auto;display:flex;justify-content:space-between;align-items:end;gap:24px}
@@ -3307,7 +3283,6 @@ isplay:none!important}
 @media(max-width:900px){.sv2-practice-cards{grid-template-columns:1fr}.sv2-practice-dashboard{padding:28px 24px 80px!important}}
 @media(max-width:700px){.sv2-practice-dashboard{padding:22px 14px 92px!important}.sv2-practice-head{align-items:flex-start}.sv2-practice-user{display:none}.sv2-practice-head h2{font-size:25px}.sv2-practice-overview{grid-template-columns:1fr}.sv2-practice-card{grid-template-columns:52px 1fr auto;padding:16px}.sv2-pc-icon{width:52px;height:52px}.sv2-practice-title p{display:none}}
 </style>
-
 <style id="v8781-direct-student-workflow">
 .sv2-assignment-work{min-height:100vh;max-width:none!important;padding:28px 34px 60px!important;background:linear-gradient(180deg,#f6f9fd,#eef4fb)}
 .sv2-work-top{max-width:1040px;margin:0 auto 16px;display:flex;align-items:center;justify-content:space-between;color:#64748b;font-size:12px;font-weight:800}
@@ -3321,7 +3296,6 @@ isplay:none!important}
 .sv2-submitted-box{margin-top:20px;padding:18px;border:1px solid #bbf7d0;border-radius:14px;background:#f0fdf4}.sv2-submitted-box>span{color:#15803d;font-size:11px;font-weight:950}.sv2-submitted-box p{white-space:pre-wrap;color:#334155}.sv2-submitted-box strong,.sv2-submitted-box em{display:block;margin-top:7px}.sv2-submitted-box em{font-style:normal;color:#64748b}
 @media(max-width:700px){.sv2-assignment-work{padding:18px 14px 88px!important}.sv2-work-card,.sv2-work-hero{padding:20px 17px}.sv2-work-hero h2{font-size:22px}}
 </style>
-
 <style id="v8782-student-quiz-polish">
 #sv2QuizHost{max-width:1040px;margin:16px auto 0}
 #sv2QuizHost .portal-item{padding:26px 28px;border:1px solid #dce6f2;border-radius:20px;background:#fff;box-shadow:0 12px 32px rgba(30,58,138,.065)}
@@ -3334,19 +3308,16 @@ isplay:none!important}
 #sv2QuizHost .quiz-student-card input{margin-top:3px}
 #sv2QuizHost .portal-item>.btn.primary{min-height:44px;padding:0 20px;border:0;border-radius:11px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900;cursor:pointer}
 </style>
-
 <style id="v8783-quiz-visible">
 #sv2QuizHost .sv2-real-quiz{max-width:1040px;margin:auto!important}
 #sv2QuizHost .sv2-quiz-kicker{margin-bottom:7px;color:#2563eb;font-size:10px;font-weight:950;letter-spacing:.13em}
 #sv2QuizHost .sv2-real-quiz>h3{font-size:27px!important;color:#172554!important}
 #sv2QuizHost .quiz-student-card{display:block!important}
 </style>
-
 <style id="v8784-hard-quiz-flow">
 .m84-page{min-height:100vh;padding:24px 32px 110px;background:#f3f7fc;box-sizing:border-box}.m84-top{max-width:1060px;margin:auto auto 14px;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:12px;font-weight:800}.m84-top button{height:40px;padding:0 14px;border:1px solid #d6e1ee;border-radius:11px;background:#fff;color:#334155;font-weight:850}.m84-hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:20px}.m84-hero small{color:#bfdbfe;font-weight:950;letter-spacing:.12em}.m84-hero h2{margin:5px 0;font-size:27px}.m84-hero p{margin:0;color:#dbeafe}.m84-timer,.m84-score{min-width:90px;padding:13px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center;font-size:22px;font-weight:950}.m84-score b,.m84-score span{display:block}.m84-score span{font-size:10px;color:#dbeafe}.m84-list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.m84-q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff;box-shadow:0 7px 20px rgba(30,58,138,.045)}.m84-qhead{display:flex;justify-content:space-between;align-items:center}.m84-qhead>b{color:#1d4ed8}.m84-qhead span{padding:5px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:850}.m84-q h4{margin:10px 0 12px;color:#172554;font-size:15px}.m84-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.m84-options label{display:flex;gap:9px;align-items:flex-start;padding:11px 12px;border:1px solid #e0e8f2;border-radius:11px;cursor:pointer;background:#fbfdff}.m84-options label:hover{border-color:#8fb2f6;background:#f5f8ff}.m84-options label.correct{border-color:#86efac;background:#f0fdf4}.m84-answer{margin-top:10px;color:#15803d;font-size:11px}.m84-submitbar{position:sticky;bottom:12px;max-width:1060px;margin:16px auto 0;padding:12px 14px;border:1px solid #d7e2ef;border-radius:15px;background:rgba(255,255,255,.96);box-shadow:0 12px 30px rgba(30,58,138,.12);display:flex;justify-content:space-between;align-items:center}.m84-submitbar span{color:#64748b;font-size:11px}.m84-submitbar button{height:43px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900}.m84-done{max-width:1060px;margin:16px auto;padding:15px;border:1px solid #bbf7d0;border-radius:13px;background:#f0fdf4;color:#15803d;font-weight:850}
 @media(max-width:700px){.m84-page{padding:16px 12px 88px}.m84-options{grid-template-columns:1fr}.m84-hero{padding:20px 17px}.m84-hero h2{font-size:21px}.m84-submitbar{bottom:72px}}
 </style>
-
 <style id="v8786-answer-alignment">
 .m84-options{
  display:grid!important;
@@ -3394,7 +3365,6 @@ isplay:none!important}
  .m84-options{grid-template-columns:1fr!important}
 }
 </style>
-
 <script id="v8788-teacher-student-single-flow">
 (function(){
  const CANON_ID='teacher_demo_it_minhan_10a1';
@@ -3477,7 +3447,6 @@ isplay:none!important}
 /* Bài do giáo viên giao và bài học sinh làm dùng chung một bản ghi; không tạo giao diện tự luận nếu assignment có quiz. */
 #sv2QuizHost .quiz-student-card label{justify-content:flex-start!important;text-align:left!important}
 </style>
-
 <script id="v8789-quiz-runtime-final">
 (function(){
 'use strict';
@@ -3559,7 +3528,6 @@ try{
 .sv289-page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc;box-sizing:border-box}.sv289-back{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:12px;font-weight:800}.sv289-back button{height:40px;padding:0 14px;border:1px solid #d6e1ee;border-radius:11px;background:#fff;color:#334155;font-weight:850;cursor:pointer}.sv289-hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:18px}.sv289-hero small{color:#bfdbfe;font-weight:950;letter-spacing:.12em}.sv289-hero h2{margin:5px 0;font-size:27px}.sv289-hero p{margin:0;color:#dbeafe}.sv289-clock,.sv289-score{min-width:120px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.sv289-clock small,.sv289-score span{display:block;font-size:9px}.sv289-clock b,.sv289-score b{display:block;margin-top:3px;font-size:24px}.sv289-clock b.danger{color:#fde047}.sv289-list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.sv289-q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.sv289-qhead{display:flex;justify-content:space-between}.sv289-qhead>b{color:#1d4ed8}.sv289-qhead span{padding:4px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:850}.sv289-q h4{margin:10px 0 13px;color:#172554;line-height:1.5}.sv289-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.sv289-opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;align-items:start;padding:12px 13px;border:1px solid #dce5ef;border-radius:11px;background:#fbfdff;cursor:pointer;text-align:left}.sv289-opts input{margin:2px 0 0}.sv289-opts label.correct{border-color:#86efac;background:#f0fdf4}.sv289-opts label.wrong{border-color:#fca5a5;background:#fef2f2}.sv289-key{color:#15803d;font-size:11px}.sv289-submit{position:sticky;bottom:12px;max-width:1060px;margin:15px auto 0;padding:12px 14px;border:1px solid #d7e2ef;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 12px 30px rgba(30,58,138,.12);display:flex;justify-content:space-between;align-items:center}.sv289-submit span{color:#64748b;font-size:11px}.sv289-submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900}.sv289-done{max-width:1060px;margin:15px auto;padding:15px;border:1px solid #bbf7d0;border-radius:13px;background:#f0fdf4;color:#15803d;font-weight:850}
 @media(max-width:760px){.sv289-page{padding:16px 12px 90px}.sv289-opts{grid-template-columns:1fr}.sv289-hero{padding:20px 17px}.sv289-hero h2{font-size:21px}.sv289-submit{bottom:72px}}
 </style>
-
 <script id="v8790-root-fix">
 (function(){
 'use strict';
@@ -3675,7 +3643,6 @@ window.studentV2OpenAssignment=function(id){
 .v90page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc;box-sizing:border-box}.v90top{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:12px;font-weight:800}.v90top button{height:40px;padding:0 14px;border:1px solid #d6e1ee;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v90hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:18px}.v90hero small{color:#bfdbfe;font-weight:950;letter-spacing:.12em}.v90hero h2{margin:5px 0;font-size:27px}.v90hero p{margin:0;color:#dbeafe}.v90timer,.v90score{min-width:120px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.v90timer small,.v90score span{display:block;font-size:9px}.v90timer b,.v90score b{display:block;margin-top:3px;font-size:24px}.v90timer b.danger{color:#fde047}.v90list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.v90q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.v90qh{display:flex;justify-content:space-between}.v90qh>b{color:#1d4ed8}.v90qh span{padding:4px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:850}.v90q h4{margin:10px 0 13px;color:#172554;line-height:1.5}.v90opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v90opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;align-items:start;padding:12px 13px;border:1px solid #dce5ef;border-radius:11px;background:#fbfdff;text-align:left;cursor:pointer}.v90opts input{margin:2px 0 0}.v90opts label.ok{border-color:#86efac;background:#f0fdf4}.v90opts label.bad{border-color:#fca5a5;background:#fef2f2}.v90key{color:#15803d;font-size:11px}.v90submit{position:sticky;bottom:12px;max-width:1060px;margin:15px auto 0;padding:12px 14px;border:1px solid #d7e2ef;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 12px 30px rgba(30,58,138,.12);display:flex;justify-content:space-between;align-items:center}.v90submit span{color:#64748b;font-size:11px}.v90submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900}.v90done{max-width:1060px;margin:15px auto;padding:15px;border:1px solid #bbf7d0;border-radius:13px;background:#f0fdf4;color:#15803d;font-weight:850}
 @media(max-width:760px){.v90page{padding:16px 12px 90px}.v90opts{grid-template-columns:1fr}.v90hero{padding:20px 17px}.v90hero h2{font-size:21px}.v90submit{bottom:72px}}
 </style>
-
 <script id="v8791-real-state-quiz-fix">
 (function(){
 'use strict';
@@ -3785,7 +3752,6 @@ window.studentV2OpenAssignment=function(id){
 .v91page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc;box-sizing:border-box}.v91top{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:12px;font-weight:800}.v91top button{height:40px;padding:0 14px;border:1px solid #d6e1ee;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v91hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:18px}.v91hero small{color:#bfdbfe;font-weight:950;letter-spacing:.12em}.v91hero h2{margin:5px 0;font-size:27px}.v91hero p{margin:0;color:#dbeafe}.v91timer,.v91score{min-width:132px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.v91timer small,.v91score span{display:block;font-size:9px}.v91timer b,.v91score b{display:block;margin-top:3px;font-size:25px}.v91timer b.danger{color:#fde047}.v91list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.v91q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.v91qh{display:flex;justify-content:space-between}.v91qh>b{color:#1d4ed8}.v91qh span{padding:4px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:850}.v91q h4{margin:10px 0 13px;color:#172554;line-height:1.5}.v91opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v91opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;align-items:start;padding:12px 13px;border:1px solid #dce5ef;border-radius:11px;background:#fbfdff;text-align:left;cursor:pointer}.v91opts input{margin:2px 0 0}.v91opts label.ok{border-color:#86efac;background:#f0fdf4}.v91opts label.bad{border-color:#fca5a5;background:#fef2f2}.v91key{color:#15803d;font-size:11px}.v91submit{position:sticky;bottom:12px;max-width:1060px;margin:15px auto 0;padding:12px 14px;border:1px solid #d7e2ef;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 12px 30px rgba(30,58,138,.12);display:flex;justify-content:space-between;align-items:center}.v91submit span{color:#64748b;font-size:11px}.v91submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900}.v91done{max-width:1060px;margin:15px auto;padding:15px;border:1px solid #bbf7d0;border-radius:13px;background:#f0fdf4;color:#15803d;font-weight:850}
 @media(max-width:760px){.v91page{padding:16px 12px 90px}.v91opts{grid-template-columns:1fr}.v91hero{padding:20px 17px}.v91hero h2{font-size:21px}.v91submit{bottom:72px}}
 </style>
-
 <script id="v8792-restore-homeroom-menu">
 (function(){
 'use strict';
@@ -3856,7 +3822,6 @@ setTimeout(run92,300);
 .v92-mi{width:22px;display:inline-flex;justify-content:center}
 #sidebar,.sidebar,.teacher-sidebar{overflow-y:auto!important;overflow-x:hidden!important}
 </style>
-
 <script id="v8793-reset-demo-attempt">
 (function(){
 'use strict';
@@ -3897,7 +3862,6 @@ function resetDemo93(){
 resetDemo93();
 })();
 </script>
-
 <script id="v8794-homeroom-real">
 (function(){
 'use strict';
@@ -3935,7 +3899,6 @@ if(typeof oldWork94==='function')window.workClassChanged=function(v){const r=old
 .homeroom-v94-toolbar{display:grid;grid-template-columns:220px minmax(260px,1fr);gap:16px;align-items:end;margin-bottom:14px}.homeroom-v94-toolbar>div:first-child{padding:12px 14px;border:1px solid var(--border);border-radius:14px;background:#f8fbff}.homeroom-v94-toolbar strong{display:block;margin-top:4px;font-size:20px;color:#172554}.homeroom-v94-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 14px}.homeroom-v94-summary>div{padding:14px;border:1px solid var(--border);border-radius:14px;background:#fff}.homeroom-v94-summary strong{display:block;font-size:24px;color:#1d4ed8}.homeroom-v94-summary span{font-size:12px;color:#64748b}.homeroom-v94-table th,.homeroom-v94-table td{vertical-align:middle}
 @media(max-width:760px){.homeroom-v94-toolbar,.homeroom-v94-summary{grid-template-columns:1fr}}
 </style>
-
 <script id="v8795-start-before-countdown">
 (function(){
 'use strict';
@@ -4031,7 +3994,6 @@ window.studentV2OpenAssignment=function(id){
 .v95page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc;box-sizing:border-box}.v95top{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:12px;font-weight:800}.v95top button{height:40px;padding:0 14px;border:1px solid #d6e1ee;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v95hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:18px}.v95hero small{color:#bfdbfe;font-weight:950;letter-spacing:.12em}.v95hero h2{margin:5px 0;font-size:27px}.v95hero p{margin:0;color:#dbeafe}.v95timer,.v95score{min-width:132px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.v95timer small,.v95score span{display:block;font-size:9px}.v95timer b,.v95score b{display:block;margin-top:3px;font-size:25px}.v95timer b.danger{color:#fde047}.v95list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.v95q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.v95qh{display:flex;justify-content:space-between}.v95qh>b{color:#1d4ed8}.v95qh span{padding:4px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:850}.v95q h4{margin:10px 0 13px;color:#172554;line-height:1.5}.v95opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v95opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;align-items:start;padding:12px 13px;border:1px solid #dce5ef;border-radius:11px;background:#fbfdff;text-align:left;cursor:pointer}.v95opts input{margin:2px 0 0}.v95opts label.ok{border-color:#86efac;background:#f0fdf4}.v95opts label.bad{border-color:#fca5a5;background:#fef2f2}.v95key{color:#15803d;font-size:11px}.v95submit{position:sticky;bottom:12px;max-width:1060px;margin:15px auto 0;padding:12px 14px;border:1px solid #d7e2ef;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 12px 30px rgba(30,58,138,.12);display:flex;justify-content:space-between;align-items:center}.v95submit span{color:#64748b;font-size:11px}.v95submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900}.v95done{max-width:1060px;margin:15px auto;padding:15px;border:1px solid #bbf7d0;border-radius:13px;background:#f0fdf4;color:#15803d;font-weight:850}
 @media(max-width:760px){.v95intro{padding:16px 12px}.v95introcard{margin:30px auto;padding:24px 16px}.v95page{padding:16px 12px 90px}.v95opts{grid-template-columns:1fr}.v95hero{padding:20px 17px}.v95hero h2{font-size:21px}.v95submit{bottom:72px}}
 </style>
-
 <script id="v8796-timer-hard-stop-before-start">
 (function(){
 'use strict';
@@ -5654,22 +5616,17 @@ window.studentV2OpenAssignment=function(id){
 #homeStudentList .recent-score{display:block;margin-top:10px;font-size:13px;color:#6a7f8d}
 #homeStudentList .recent-hint{display:block;margin-top:8px;color:#087f78;font-size:12px;font-weight:850}
 </style>
-
 <style id="v8749-real-personal-analysis">
 .analysis-context{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:11px 13px;border-radius:13px;background:#eef7ff;border:1px solid #d8e8f6}
 .analysis-context b{font-size:16px;color:#123d55}.analysis-context span{padding:4px 8px;border-radius:999px;background:#fff;border:1px solid #d6e5ea;font-size:12px;font-weight:800;color:#52687a}
 .analysis-empty-real{padding:28px;border:1px dashed #b9cdd6;border-radius:18px;background:#f8fbfc;text-align:center}.analysis-empty-real h3{margin:0 0 8px;color:#123d55}.analysis-empty-real p{max-width:720px;margin:0 auto 16px;color:#617887;line-height:1.65}
 </style>
-
 <style id="v8750-profile-flow">
-
 </style>
-
 <style id="v8751-active-subject">
 .active-review-subject{margin-top:7px}.active-subject-chip{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid #9fd7d1;border-radius:13px;background:#eef9f7;color:#087f78}
 .active-subject-chip b{font-size:15px}.active-subject-chip span{font-size:12px;font-weight:800;color:#52766f}
 </style>
-
 <style id="v8752-student-login">
 .sv2-login-card{width:min(900px,100%)}
 .sv2-login-form{padding:38px 42px!important}
@@ -5682,7 +5639,6 @@ window.studentV2OpenAssignment=function(id){
 .sv2-register-line{text-align:center;margin-top:16px;color:#64748b;font-size:13px}.sv2-register-line button{margin-left:4px}.sv2-back-link{display:block;margin:14px auto 0;color:#64748b;font-size:12px}.sv2-demo-note{margin-top:16px!important}
 @media(max-width:760px){.sv2-login-form{padding:28px 22px!important}.sv2-login-row{align-items:flex-start;flex-direction:column}.sv2-login-brand{padding:30px!important}}
 </style>
-
 <script id="v8798-final-timer-gate">
 (function(){
 'use strict';
@@ -5802,165 +5758,26 @@ window.studentV2OpenAssignment=function(id){
 .v98preview{min-height:100vh;padding:28px;background:#f3f7fc}.v98back,.v98top button{height:42px;padding:0 15px;border:1px solid #d7e2ef;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v98card{max-width:720px;margin:48px auto;padding:34px;border:1px solid #dce6f2;border-radius:22px;background:#fff;text-align:center;box-shadow:0 18px 45px rgba(30,58,138,.08)}.v98tag{display:inline-block;padding:6px 10px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:950}.v98card h2{margin:14px 0;color:#172554;font-size:28px}.v98meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.v98meta span{padding:7px 10px;border-radius:9px;background:#f1f5f9;color:#475569;font-size:12px;font-weight:800}.v98idle{width:190px;margin:22px auto;padding:15px;border:1px solid #bfdbfe;border-radius:15px;background:#f8fbff}.v98idle small,.v98idle strong{display:block}.v98idle b{display:block;margin:5px 0;font-size:29px;color:#172554}.v98idle strong{font-size:10px;color:#2563eb}.v98start{height:49px;padding:0 32px;border:0;border-radius:12px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:950}.v98page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc}.v98top{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center}.v98hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center}.v98hero h2{margin:5px 0}.v98hero p{margin:0;color:#dbeafe}.v98clock{min-width:132px;padding:12px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.v98clock small,.v98clock b{display:block}.v98clock b{font-size:25px;margin-top:4px}.v98list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.v98q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.v98qh{display:flex;justify-content:space-between}.v98opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v98opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;padding:12px;border:1px solid #dce5ef;border-radius:11px}.v98submit,.v98done{max-width:1060px;margin:15px auto;padding:14px;border-radius:14px;background:#fff;border:1px solid #d7e2ef}.v98submit{display:flex;justify-content:space-between;align-items:center;position:sticky;bottom:12px}.v98submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:#3156df;color:#fff;font-weight:900}
 </style>
 
-<script id="v8799-tab-monitor">
+
+
+
+
+
+<script id="v8802-single-tab-monitor">
 (function(){
 'use strict';
-let lastLeave=0, warningOpen=false;
 const A=v=>Array.isArray(v)?v:[];
-function currentDoing(){
- for(const s of A(state.students)){
-  for(const a of A(s.assignments)){
-   if(a?.quiz && a.attemptStartedByStudent===true && a.startedAt && !a.submittedAt && a.status==='doing') return {s,a};
-  }
- }
- return {};
-}
-function save(){try{saveState()}catch(e){}}
-function record(kind){
- const {a}=currentDoing(); if(!a)return;
- const now=Date.now();
- if(now-lastLeave<1200)return; // tránh blur + visibilitychange ghi trùng
- lastLeave=now;
- a.integrity=a.integrity||{};
- a.integrity.tabLeaves=Number(a.integrity.tabLeaves||0)+1;
- a.integrity.events=A(a.integrity.events);
- a.integrity.events.push({type:'leave_screen',at:new Date().toISOString(),source:kind});
- save();
-}
-function warn(){
- const {a}=currentDoing();if(!a||warningOpen)return;
- const n=Number(a.integrity?.tabLeaves||0); if(!n)return;
- warningOpen=true;
- const old=document.getElementById('v99Warn');if(old)old.remove();
- const d=document.createElement('div');d.id='v99Warn';d.className='v99overlay';
- d.innerHTML=`<div class="v99modal"><div class="v99ico">!</div><h3>Cảnh báo rời màn hình làm bài</h3>
- <p>Bạn vừa rời khỏi màn hình làm bài. Hệ thống đã ghi nhận <b>lần ${n}</b>.</p>
- ${n>=3?'<div class="v99strong">Đã rời màn hình từ 3 lần. Thông tin này sẽ được lưu để giáo viên xem khi kiểm tra bài làm.</div>':'<div class="v99soft">Hãy tập trung làm bài. Đồng hồ vẫn tiếp tục đếm trong thời gian bạn rời màn hình.</div>'}
- <button id="v99Continue">Tiếp tục làm bài</button></div>`;
- document.body.appendChild(d);
- document.getElementById('v99Continue').onclick=()=>{d.remove();warningOpen=false};
-}
-document.addEventListener('visibilitychange',()=>{
- if(document.hidden) record('visibilitychange');
- else warn();
-},true);
-window.addEventListener('blur',()=>record('blur'),true);
-window.addEventListener('focus',()=>setTimeout(warn,80),true);
+let pending=false, modalOpen=false;
 
-/* Badge trực tiếp trong màn hình làm bài, nếu đã có vi phạm. */
-setInterval(()=>{
- const {a}=currentDoing();if(!a)return;
- const n=Number(a.integrity?.tabLeaves||0);
- const hero=document.querySelector('.v98hero');
- if(!hero||!n)return;
- let b=document.getElementById('v99Count');
- if(!b){b=document.createElement('div');b.id='v99Count';b.className='v99count';hero.appendChild(b)}
- b.textContent='Rời màn hình: '+n+' lần';
-},1000);
-
-/* Bổ sung dữ liệu cho giáo viên bằng cách gắn nhãn vào comment khi bài được nộp.
-   Không tự nộp bài; chỉ ghi nhận và cảnh báo theo khuyến nghị. */
-const oldSubmit=window.studentV98Submit;
-window.studentV98Submit=function(id){
- const {a}=currentDoing();
- if(a){
-   const n=Number(a.integrity?.tabLeaves||0);
-   if(n){
-    const base=String(a.teacherComment||'').replace(/\s*·\s*Rời màn hình:\s*\d+\s*lần/g,'');
-    a.teacherComment=(base?base+' · ':'')+'Rời màn hình: '+n+' lần';
-    save();
-   }
- }
- return oldSubmit(id);
-};
-})();
-</script>
-<style id="v8799-tab-monitor-style">
-.v99overlay{position:fixed;inset:0;z-index:2147483000;background:rgba(15,23,42,.58);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}.v99modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.3)}.v99ico{width:48px;height:48px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#fff7ed;color:#ea580c;font-size:25px;font-weight:950;border:1px solid #fed7aa}.v99modal h3{margin:5px 0 9px;color:#172554}.v99modal p{margin:0 0 13px;color:#475569;line-height:1.55}.v99soft,.v99strong{padding:11px 12px;border-radius:11px;font-size:12px;line-height:1.5;text-align:left}.v99soft{background:#eff6ff;color:#1e40af}.v99strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.v99modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}.v99count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
-</style>
-
-<script id="v8800-tab-counter-fix">
-(function(){
-'use strict';
-/*
-  8.8.00: Nguồn ghi nhận DUY NHẤT là document.visibilitychange -> hidden.
-  Không dùng window.blur để tăng bộ đếm vì khi đổi tab trình duyệt thường phát
-  cả blur và visibilitychange, dẫn tới 1 lần rời tab bị tính thành 2.
-*/
-let pendingWarning=false;
-const A=v=>Array.isArray(v)?v:[];
 function active(){
  for(const s of A(state.students)){
   for(const a of A(s.assignments)){
-   if(a?.quiz && a.attemptStartedByStudent===true && a.startedAt && !a.submittedAt && a.status==='doing')return a;
+   if(a?.quiz && a.attemptStartedByStudent===true && a.startedAt && !a.submittedAt && a.status==='doing') return a;
   }
  }
  return null;
 }
-function save(){try{saveState()}catch(e){}}
-function showWarning(){
- const a=active();if(!a||!pendingWarning)return;
- pendingWarning=false;
- const n=Number(a.integrityV2?.tabLeaves||0);
- const old=document.getElementById('v100Warn');if(old)old.remove();
- const d=document.createElement('div');d.id='v100Warn';d.className='v100overlay';
- d.innerHTML=`<div class="v100modal"><div class="v100ico">!</div><h3>Cảnh báo rời tab làm bài</h3>
- <p>Bạn vừa rời khỏi tab làm bài. Hệ thống đã ghi nhận <b>lần ${n}</b>.</p>
- ${n>=3?'<div class="v100strong">Bạn đã rời tab từ 3 lần. Thông tin này được lưu để giáo viên xem.</div>':'<div class="v100soft">Đồng hồ vẫn tiếp tục đếm trong thời gian bạn rời tab.</div>'}
- <button onclick="document.getElementById('v100Warn').remove()">Tiếp tục làm bài</button></div>`;
- document.body.appendChild(d);
-}
-document.addEventListener('visibilitychange',function(){
- const a=active();if(!a)return;
- if(document.visibilityState==='hidden'){
-   a.integrityV2=a.integrityV2||{tabLeaves:0,events:[]};
-   a.integrityV2.tabLeaves=Number(a.integrityV2.tabLeaves||0)+1;
-   a.integrityV2.events=A(a.integrityV2.events);
-   a.integrityV2.events.push({type:'tab_hidden',at:new Date().toISOString()});
-   pendingWarning=true;save();
- }else if(document.visibilityState==='visible'){
-   setTimeout(showWarning,100);
- }
-},true);
-
-/* Hiển thị số liệu mới; bỏ badge của bộ đếm 8.7.99 để tránh hiểu nhầm. */
-setInterval(function(){
- const old=document.getElementById('v99Count');if(old)old.remove();
- const a=active(),hero=document.querySelector('.v98hero');if(!a||!hero)return;
- const n=Number(a.integrityV2?.tabLeaves||0);
- if(!n)return;
- let b=document.getElementById('v100Count');
- if(!b){b=document.createElement('div');b.id='v100Count';b.className='v100count';hero.appendChild(b)}
- b.textContent='Rời tab: '+n+' lần';
-},700);
-
-/* Khi nộp, dùng đúng bộ đếm visibilitychange mới. */
-const submit0=window.studentV98Submit;
-window.studentV98Submit=function(id){
- const a=active();
- if(a){
-  const n=Number(a.integrityV2?.tabLeaves||0);
-  if(n){
-   let c=String(a.teacherComment||'')
-     .replace(/\s*·?\s*Rời màn hình:\s*\d+\s*lần/g,'')
-     .replace(/\s*·?\s*Rời tab:\s*\d+\s*lần/g,'').trim();
-   a.teacherComment=(c?c+' · ':'')+'Rời tab: '+n+' lần';
-   save();
-  }
- }
- return submit0(id);
-};
-})();
-</script>
-<style id="v8800-tab-counter-fix-style">
-.v100overlay{position:fixed;inset:0;z-index:2147483640;background:rgba(15,23,42,.58);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}.v100modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.3)}.v100ico{width:48px;height:48px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#fff7ed;color:#ea580c;font-size:25px;font-weight:950;border:1px solid #fed7aa}.v100modal h3{margin:5px 0 9px;color:#172554}.v100modal p{color:#475569;line-height:1.55}.v100soft,.v100strong{padding:11px 12px;border-radius:11px;font-size:12px;text-align:left}.v100soft{background:#eff6ff;color:#1e40af}.v100strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.v100modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}.v100count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
-</style>
-
-<script id="v8801-reset-tab-count-per-attempt">
-(function(){
-'use strict';
-const A=v=>Array.isArray(v)?v:[];
-function findAssignment(id){
+function find(id){
  for(const s of A(state.students)){
   const a=A(s.assignments).find(x=>String(x.id)===String(id));
   if(a)return a;
@@ -5968,32 +5785,70 @@ function findAssignment(id){
  return null;
 }
 function save(){try{saveState()}catch(e){}}
+function closeOld(){
+ for(const id of ['v99Warn','v100Warn','v102Warn']){
+  const e=document.getElementById(id);if(e)e.remove();
+ }
+ modalOpen=false;
+}
+function show(){
+ const a=active(); if(!a||!pending||modalOpen)return;
+ pending=false; modalOpen=true; closeOld(); modalOpen=true;
+ const n=Number(a.integrityTab?.count||0);
+ const d=document.createElement('div');
+ d.id='v102Warn'; d.className='v102overlay';
+ d.innerHTML=`<div class="v102modal"><div class="v102ico">!</div>
+ <h3>Cảnh báo rời tab làm bài</h3>
+ <p>Bạn vừa rời khỏi tab làm bài. Hệ thống đã ghi nhận <b>lần ${n}</b>.</p>
+ ${n>=3?'<div class="v102strong">Bạn đã rời tab từ 3 lần. Thông tin này được lưu để giáo viên xem.</div>':'<div class="v102soft">Đồng hồ vẫn tiếp tục đếm trong thời gian bạn rời tab.</div>'}
+ <button id="v102Continue">Tiếp tục làm bài</button></div>`;
+ document.body.appendChild(d);
+ document.getElementById('v102Continue').onclick=()=>{d.remove();modalOpen=false};
+}
 
-/* Mỗi lần bấm BẮT ĐẦU LÀM là một lượt làm mới:
-   xóa hoàn toàn số lần rời tab và nhật ký của lượt trước. */
-const start0=window.studentV98Start;
+/* ONE source only: hidden transition = exactly one leave. */
+document.addEventListener('visibilitychange',function(){
+ const a=active(); if(!a)return;
+ if(document.visibilityState==='hidden'){
+   a.integrityTab=a.integrityTab||{count:0,events:[]};
+   a.integrityTab.count=Number(a.integrityTab.count||0)+1;
+   a.integrityTab.events=A(a.integrityTab.events);
+   a.integrityTab.events.push({at:new Date().toISOString(),type:'tab_hidden'});
+   pending=true; save();
+ }else if(document.visibilityState==='visible'){
+   setTimeout(show,80);
+ }
+},true);
+
+/* Reset exactly when a NEW attempt begins. */
+const startBase=window.studentV98Start;
 window.studentV98Start=function(id){
- const a=findAssignment(id);
+ const a=find(id);
  if(a && !a.submittedAt){
-   a.integrityV2={tabLeaves:0,events:[]};
-   a.integrity={tabLeaves:0,events:[]}; /* xóa dữ liệu bộ đếm cũ 8.7.99 */
+   a.integrityTab={count:0,events:[]};
+   /* purge legacy counters so they can never reappear */
+   delete a.integrity;
+   delete a.integrityV2;
+   closeOld(); pending=false;
    save();
-   const b1=document.getElementById('v99Count'); if(b1)b1.remove();
-   const b2=document.getElementById('v100Count'); if(b2)b2.remove();
  }
- return start0(id);
+ return startBase(id);
 };
 
-/* Khi bài đang ở trạng thái CHƯA BẮT ĐẦU, không mang số đếm cũ sang màn hình mới. */
-const open0=window.studentV2OpenAssignment;
-window.studentV2OpenAssignment=function(id){
- const a=findAssignment(id);
- if(a && a.quiz && !a.submittedAt && a.attemptStartedByStudent!==true){
-   a.integrityV2={tabLeaves:0,events:[]};
-   a.integrity={tabLeaves:0,events:[]};
-   save();
- }
- return open0(id);
-};
+/* Badge uses only the clean counter. */
+setInterval(function(){
+ for(const id of ['v99Count','v100Count']){const x=document.getElementById(id);if(x)x.remove()}
+ const a=active(),hero=document.querySelector('.v98hero');
+ const old=document.getElementById('v102Count');
+ if(!a||!hero){if(old)old.remove();return}
+ const n=Number(a.integrityTab?.count||0);
+ if(!n){if(old)old.remove();return}
+ let b=old;
+ if(!b){b=document.createElement('div');b.id='v102Count';b.className='v102count';hero.appendChild(b)}
+ b.textContent='Rời tab: '+n+' lần';
+},700);
 })();
 </script>
+<style id="v8802-single-tab-monitor-style">
+.v102overlay{position:fixed;inset:0;z-index:2147483640;background:rgba(15,23,42,.58);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}.v102modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.3)}.v102ico{width:48px;height:48px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#fff7ed;color:#ea580c;font-size:25px;font-weight:950;border:1px solid #fed7aa}.v102modal h3{margin:5px 0 9px;color:#172554}.v102modal p{color:#475569;line-height:1.55}.v102soft,.v102strong{padding:11px 12px;border-radius:11px;font-size:12px;text-align:left}.v102soft{background:#eff6ff;color:#1e40af}.v102strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.v102modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}.v102count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
+</style>
