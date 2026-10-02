@@ -289,6 +289,21 @@ html,body{margin:0!important;padding:0!important}
 }
 #parentV117 .pv117side nav a:hover{background:rgba(255,255,255,.08)!important}
 #parentV117 .pv117side nav a.active{background:linear-gradient(135deg,#2563eb,#4f46e5)!important;color:#fff!important}
+</style><style id="v8825-credit-style">
+.v125-brand-stack{display:flex;flex-direction:column;align-items:flex-start}
+.v125-credit{
+ display:block!important;margin:5px 0 12px!important;padding:0!important;
+ border:0!important;background:transparent!important;
+ font-size:10.5px!important;line-height:1.25!important;font-weight:800!important;
+ letter-spacing:.01em!important;color:#bfd2ff!important;text-align:left!important;
+ white-space:nowrap!important
+}
+.topbar .v125-credit{color:#64748b!important;margin:3px 0 0!important}
+#parentV117 .pv117brand + .v125-credit{margin:-8px 5px 14px!important;color:#bfdbfe!important}
+#roleGateway .rg-brand + .v125-credit,
+#teacherLoginPanel .sv2-login-brand + .v125-credit,
+#parentLoginPanel .sv2-login-brand + .v125-credit,
+#studentV2 .sv2-login-brand + .v125-credit{margin-top:-10px!important;margin-bottom:16px!important}
 </style></head>
 <body>
 <div class="app">
@@ -4318,7 +4333,7 @@ window.studentV2OpenAssignment=function(id){
 })();
 </script><div aria-hidden="true" id="parentV117">
 <aside class="pv117side">
-<div class="pv117brand"><div>ÔT</div><b>ÔN TẬP<br/><span>THÔNG MINH</span></b></div>
+<div class="pv117brand"><div>ÔT</div><b>ÔN TẬP<br/><span>THÔNG MINH</span></b></div><div class="v125-credit">GV.Hồ Nguyễn Đa Thiện</div>
 <div class="pv117who"><small>PHỤ HUYNH HỌC SINH</small><strong id="pv117StudentName">Nguyễn Minh An</strong><span id="pv117StudentClass">Lớp 10A1</span></div>
 <nav><a class="active" data-pv="overview" href="#ph-overview" onclick="return parentV122Show('overview', this);">⌂ Tổng quan</a><a data-pv="assignments" href="#ph-assignments" onclick="return parentV122Show('assignments', this);">▣ Bài tập &amp; kiểm tra</a><a data-pv="results" href="#ph-results" onclick="return parentV122Show('results', this);">▥ Kết quả học tập</a><a data-pv="progress" href="#ph-progress" onclick="return parentV122Show('progress', this);">◫ Tiến độ ôn tập</a><a data-pv="feedback" href="#ph-feedback" onclick="return parentV122Show('feedback', this);">✦ Nhận xét giáo viên</a></nav>
 <button class="pv117logout" onclick="parentV117Logout()">Đăng xuất</button>
@@ -4431,6 +4446,20 @@ window.parentV122Show=function(key,el){
  (R[key]||overview)();
  return false;
 };
+})();
+</script><script id="v8825-credit-under-brand">
+(function(){
+ function place(){
+   document.querySelectorAll('.sv2-student-sidebar').forEach(side=>{
+     const brand=side.querySelector('.sv2-brand,.sv2-student-brand,.sv2side-brand');
+     if(brand && !brand.nextElementSibling?.classList.contains('v125-credit')){
+       const d=document.createElement('div');d.className='v125-credit';d.textContent='GV.Hồ Nguyễn Đa Thiện';
+       brand.insertAdjacentElement('afterend',d);
+     }
+   });
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',place);else place();
+ new MutationObserver(place).observe(document.body,{childList:true,subtree:true});
 })();
 </script></body>
 </html>
