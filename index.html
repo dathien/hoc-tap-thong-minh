@@ -1771,7 +1771,7 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
 #roleGateway{position:fixed;inset:0;z-index:25000;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#eef4ff,#f8fbff 48%,#eef2ff)}
 #roleGateway[hidden]{display:none!important}.rg-shell{width:min(980px,100%);background:#fff;border:1px solid #dfe7f2;border-radius:28px;box-shadow:0 30px 80px rgba(30,58,138,.16);overflow:hidden;display:grid;grid-template-columns:1.05fr .95fr}.rg-brand{padding:48px;background:linear-gradient(145deg,#172554,#1e3a8a 58%,#4338ca);color:#fff;position:relative;overflow:hidden}.rg-brand:after{content:"";position:absolute;width:330px;height:330px;border:62px solid rgba(255,255,255,.055);border-radius:50%;right:-180px;bottom:-180px}.rg-logo{width:58px;height:58px;border-radius:17px;background:#fff;color:#1e3a8a;display:grid;place-items:center;font-weight:950;font-size:21px;margin-bottom:28px}.rg-brand h1{font-size:34px;line-height:1.12;margin:0 0 14px}.rg-brand h1 span{color:#fde68a}.rg-brand p{color:#dbeafe;line-height:1.65;max-width:520px}.rg-choose{padding:44px;display:flex;flex-direction:column;justify-content:center}.rg-choose small{font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#64748b}.rg-choose h2{font-size:28px;margin:7px 0 22px;color:#172554}.rg-choice{width:100%;display:flex;align-items:center;gap:15px;text-align:left;border:1px solid #dbe4ef;background:#fff;border-radius:18px;padding:17px;margin:0 0 12px;cursor:pointer;transition:.2s}.rg-choice:hover{transform:translateY(-2px);border-color:#a9bff5;box-shadow:0 12px 26px rgba(37,99,235,.09)}.rg-choice .ico{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:23px;background:#eef4ff}.rg-choice b{display:block;font-size:17px;color:#172554;margin-bottom:3px}.rg-choice span{font-size:13px;color:#64748b}.rg-choice.student{background:linear-gradient(135deg,#eff6ff,#eef2ff);border-color:#bfcef9}.rg-note{font-size:12px;color:#94a3b8;margin-top:9px;text-align:center}@media(max-width:760px){.rg-shell{grid-template-columns:1fr}.rg-brand{padding:28px}.rg-brand h1{font-size:27px}.rg-choose{padding:28px}}
 </style>
-<div id="roleGateway">
+<div id="roleGateway" hidden>
 <div class="rg-shell">
 <section class="rg-brand"><div class="rg-logo">HT</div><h1>HỌC TẬP<br/><span>THÔNG MINH PRO</span></h1><p>Một không gian thống nhất cho giáo viên tổ chức ôn tập và học sinh thực hiện nhiệm vụ, theo dõi tiến độ, kết quả học tập.</p></section>
 <section class="rg-choose"><small>Chọn khu vực truy cập</small><h2>Bạn đang sử dụng app với vai trò nào?</h2>
@@ -1800,7 +1800,20 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 <div class="sv2-login" id="sv2Login">
 <div class="sv2-login-card">
 <section class="sv2-login-brand"><div class="sv2-mark">HT</div><h1>HỌC TẬP<br/>THÔNG MINH PRO</h1><p>Cổng học tập dành cho học sinh. Xem nhiệm vụ, tự luyện, làm bài kiểm tra và theo dõi tiến bộ của chính mình.</p></section>
-<section class="sv2-login-form"><h2>Đăng nhập học sinh</h2><p>Nhập lớp, họ tên và mật khẩu để bắt đầu học. Có thể sửa thông tin demo bên dưới để đăng nhập bằng học sinh khác.</p><div class="sv2-field"><label>Lớp</label><input autocomplete="off" id="sv2Class" placeholder="Ví dụ: 10A1" type="text" value="10A1"/></div><div class="sv2-field"><label>Họ và tên học sinh</label><input autocomplete="off" id="sv2Student" placeholder="Nhập đầy đủ họ và tên" type="text" value="Nguyễn Minh An"/></div><div class="sv2-field"><label>Mật khẩu</label><input id="sv2Code" inputmode="numeric" maxlength="8" placeholder="Nhập mật khẩu" type="password" value="1234"/></div><div class="sv2-login-error" id="sv2LoginError"></div><div class="sv2-login-actions"><button class="btn secondary" onclick="studentV2Close()" type="button">Quay lại</button><button class="btn primary" onclick="studentV2Login()" type="button">Đăng nhập</button></div><div class="sv2-demo-note"><b>Đăng nhập demo:</b> Lớp <b>10A1</b> · Học sinh <b>Nguyễn Minh An</b> · Mật khẩu <b>1234</b>.<br/>Các ô phía trên đều có thể sửa để nhập thông tin học sinh khác khi cần.</div></section>
+<section class="sv2-login-form">
+<div class="sv2-login-head"><h2>Đăng nhập</h2><p>Một cổng đăng nhập cho Giáo viên, Học sinh và Phụ huynh. Hệ thống tự xác định quyền sau khi xác thực.</p></div>
+<div class="sv2-field sv2-student-class"><label>Lớp <span>(chỉ cần với tài khoản học sinh demo hiện tại)</span></label><input autocomplete="off" id="sv2Class" placeholder="Ví dụ: 10A1" type="text"/></div>
+<div class="sv2-field"><label>Tên đăng nhập</label><input autocomplete="username" id="sv2Student" placeholder="Tên đăng nhập / họ tên" type="text"/></div>
+<div class="sv2-field"><label>Mật khẩu</label><div class="sv2-password-wrap"><input autocomplete="current-password" id="sv2Code" maxlength="32" placeholder="Nhập mật khẩu" type="password"/><button class="sv2-eye" type="button" onclick="studentV2TogglePassword()" aria-label="Hiện hoặc ẩn mật khẩu">◉</button></div></div>
+<div class="sv2-login-row"><label class="sv2-remember"><input id="sv2Remember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" type="button" onclick="studentV2ForgotPassword()">Quên mật khẩu?</button></div>
+<div class="sv2-login-error" id="sv2LoginError"></div>
+<button class="sv2-main-login" onclick="studentV2Login()" type="button">Đăng nhập</button>
+<div class="sv2-or"><span>hoặc</span></div>
+<button class="sv2-google-login" onclick="studentV2GoogleLogin()" type="button"><span class="sv2-google-g">G</span><span>Đăng nhập với Google</span></button>
+<div class="sv2-register-line">Chưa có tài khoản? <button type="button" onclick="studentV2Register()">Đăng ký</button></div>
+<button class="sv2-back-link" onclick="studentV2Close()" type="button">← Quay lại trang chính</button>
+<div class="sv2-security-note"><b>Phân quyền sau đăng nhập</b><span>Giáo viên: quản lý theo lớp được cấp quyền.</span><span>Học sinh: chỉ dữ liệu của chính mình.</span><span>Phụ huynh: chỉ xem dữ liệu của con đã liên kết; điểm và nhận xét chỉ đọc.</span></div><div class="sv2-demo-note"><b>Tài khoản học sinh demo:</b> 10A1 · Nguyễn Minh An · Mật khẩu 1234</div>
+</section>
 </div>
 </div>
 <div hidden="" id="sv2Home"></div>
@@ -1809,10 +1822,20 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 (function(){'use strict';let currentId=null,slide=0,slideTimer=null;
 const E=id=>document.getElementById(id), A=v=>Array.isArray(v)?v:[], safe=v=>typeof esc==='function'?esc(v):String(v||'');
 function classes(){return [...new Set(A(state.students).map(s=>s.className).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'vi',{numeric:true}))}
-window.studentV2OpenLogin=function(){const root=E('studentV2');root.classList.add('open');root.setAttribute('aria-hidden','false');E('sv2Login').hidden=false;E('sv2Login').style.display='grid';E('sv2Home').hidden=true;E('sv2Home').style.display='none';root.scrollTop=0;E('sv2Class').value='';E('sv2Student').value='';E('sv2Code').value='';E('sv2LoginError').textContent='';document.body.style.overflow='hidden';setTimeout(()=>E('sv2Class').focus(),50)};
+window.studentV2OpenLogin=function(){const root=E('studentV2');root.classList.add('open');root.setAttribute('aria-hidden','false');E('sv2Login').hidden=false;E('sv2Login').style.display='grid';E('sv2Home').hidden=true;E('sv2Home').style.display='none';root.scrollTop=0;let remembered={};try{remembered=JSON.parse(localStorage.getItem('htpro_student_login_remember')||'{}')}catch(_){ }E('sv2Class').value=remembered.className||'';E('sv2Student').value=remembered.studentName||'';E('sv2Code').value='';if(E('sv2Remember'))E('sv2Remember').checked=!!remembered.studentName;E('sv2LoginError').textContent='';document.body.style.overflow='hidden';setTimeout(()=>E(remembered.studentName?'sv2Code':'sv2Class').focus(),50)};
+window.studentV2TogglePassword=function(){const x=E('sv2Code');if(!x)return;x.type=x.type==='password'?'text':'password'};
+window.studentV2ForgotPassword=function(){E('sv2LoginError').textContent='Khôi phục mật khẩu cần hệ thống tài khoản thật. Khi kết nối backend, yêu cầu sẽ xử lý theo đúng tài khoản Giáo viên / Học sinh / Phụ huynh.'};
+window.studentV2Register=function(){E('sv2LoginError').textContent='Đăng ký sẽ hỗ trợ 3 loại tài khoản khi kết nối backend. Tài khoản phụ huynh phải được liên kết với đúng studentId của con.'};
+window.studentV2GoogleLogin=function(){E('sv2LoginError').textContent='Google Login cần OAuth/Firebase hoặc backend xác thực. Sau xác thực, hệ thống sẽ đọc role và studentId/parentId để mở đúng khu vực; hiện không giả lập đăng nhập.'};
 window.studentV2Close=function(){E('studentV2').classList.remove('open');E('studentV2').setAttribute('aria-hidden','true');document.body.style.overflow='';clearInterval(slideTimer)};
 window.studentV2ClassChanged=function(){};
-window.studentV2Login=function(){const norm=v=>String(v||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('vi-VN');const className=E('sv2Class').value.trim(),studentName=E('sv2Student').value.trim(),code=E('sv2Code').value.trim();if(!className||!studentName||!code){E('sv2LoginError').textContent='Vui lòng nhập đầy đủ lớp, họ tên học sinh và mật khẩu.';return}const s=A(state.students).find(x=>norm(x.className)===norm(className)&&norm(x.name)===norm(studentName));if(!s){E('sv2LoginError').textContent='Không tìm thấy học sinh với lớp và họ tên đã nhập.';return}if(code!==String(s.accessCode||'1234')){E('sv2LoginError').textContent='Mật khẩu chưa đúng.';return}const id=s.id;currentId=id;state.currentStudentId=id;try{saveState()}catch(_){}const login=E('sv2Login'),home=E('sv2Home'),root=E('studentV2');login.hidden=true;login.style.display='none';home.hidden=false;home.style.display='block';studentV2RenderHome();root.scrollTop=0;window.scrollTo(0,0);};
+window.htRoleRoute=function(account){
+ const role=String(account?.role||'student').toLowerCase();
+ if(role==='teacher'){studentV2Close();if(typeof enterTeacherArea==='function')enterTeacherArea();return 'teacher'}
+ if(role==='parent'){window.__parentAccount=account;E('sv2LoginError').textContent='Tài khoản phụ huynh đã sẵn sàng về luồng quyền; cần backend để liên kết parentId → studentId trước khi sử dụng thật.';return 'parent'}
+ return 'student';
+};
+window.studentV2Login=function(){const norm=v=>String(v||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('vi-VN');const className=E('sv2Class').value.trim(),studentName=E('sv2Student').value.trim(),code=E('sv2Code').value.trim();if(!className||!studentName||!code){E('sv2LoginError').textContent='Vui lòng nhập đầy đủ lớp, họ tên học sinh và mật khẩu.';return}const s=A(state.students).find(x=>norm(x.className)===norm(className)&&norm(x.name)===norm(studentName));if(!s){E('sv2LoginError').textContent='Không tìm thấy học sinh với lớp và họ tên đã nhập.';return}if(code!==String(s.accessCode||'1234')){E('sv2LoginError').textContent='Mật khẩu chưa đúng.';return}const id=s.id;if(E('sv2Remember')?.checked){localStorage.setItem('htpro_student_login_remember',JSON.stringify({className,studentName}))}else{localStorage.removeItem('htpro_student_login_remember')}currentId=id;state.currentStudentId=id;try{saveState()}catch(_){}const login=E('sv2Login'),home=E('sv2Home'),root=E('studentV2');login.hidden=true;login.style.display='none';home.hidden=false;home.style.display='block';studentV2RenderHome();root.scrollTop=0;window.scrollTo(0,0);};
 function st(){return A(state.students).find(x=>x.id===currentId)}function done(a){return ['done','submitted','graded'].includes(a.status)||!!a.submittedAt}function pub(s){return A(s.assignments).filter(a=>a.portalPublished!==false&&(a.assignedAt||a.quiz||a.title))}
 function subjects(s){const base=['Toán','Ngữ văn','Tiếng Anh','Tin học','Vật lí','Hóa học','Sinh học'];return [...new Set([s.subject,...pub(s).map(a=>a.subject),...base].filter(Boolean))].slice(0,6)}
 function initials(n){return String(n||'HS').trim().split(/\s+/).slice(-2).map(x=>x[0]).join('').toUpperCase()}
@@ -1905,6 +1928,14 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
    const data=read(),id=studentId||'demo';delete data[id];write(data);return true;
  };
 })();
+</script>
+
+<script id="v8753-role-policy">
+window.HTPRO_ROLE_POLICY={
+ teacher:{canManage:true,canEditGrades:true,canEditComments:true,scope:'authorized_classes'},
+ student:{canManage:false,canEditGrades:false,canEditComments:false,scope:'own_student_id',canStudy:true},
+ parent:{canManage:false,canEditGrades:false,canEditComments:false,scope:'linked_student_ids',canStudy:false,readOnly:true}
+};
 </script>
 </body>
 </html>
@@ -3320,4 +3351,23 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
 <style id="v8751-active-subject">
 .active-review-subject{margin-top:7px}.active-subject-chip{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid #9fd7d1;border-radius:13px;background:#eef9f7;color:#087f78}
 .active-subject-chip b{font-size:15px}.active-subject-chip span{font-size:12px;font-weight:800;color:#52766f}
+</style>
+
+<style id="v8752-student-login">
+.sv2-login-card{width:min(900px,100%)}
+.sv2-login-form{padding:38px 42px!important}
+.sv2-login-head h2{margin:0 0 6px;font-size:27px;color:#172554}.sv2-login-head p{margin:0 0 22px;color:#64748b;line-height:1.5}
+.sv2-password-wrap{position:relative}.sv2-password-wrap input{padding-right:48px!important}.sv2-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:0;background:transparent;color:#64748b;font-size:18px;cursor:pointer}
+.sv2-login-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:4px 0 14px}.sv2-remember{display:flex;align-items:center;gap:7px;color:#475569;font-size:13px;font-weight:700;cursor:pointer}.sv2-remember input{accent-color:#1e3a8a}.sv2-text-link,.sv2-register-line button,.sv2-back-link{border:0;background:transparent;color:#1e40af;font-weight:850;cursor:pointer;padding:0}
+.sv2-main-login{width:100%;border:0;border-radius:13px;padding:13px 16px;background:linear-gradient(135deg,#1e3a8a,#3730a3);color:#fff;font-size:16px;font-weight:950;cursor:pointer;box-shadow:0 9px 20px rgba(30,58,138,.2)}
+.sv2-or{display:flex;align-items:center;gap:12px;margin:17px 0;color:#94a3b8;font-size:12px;font-weight:800}.sv2-or:before,.sv2-or:after{content:"";height:1px;background:#e2e8f0;flex:1}
+.sv2-google-login{width:100%;display:flex;justify-content:center;align-items:center;gap:10px;padding:12px 14px;border:1px solid #d8e0ea;border-radius:13px;background:#fff;color:#334155;font-weight:850;cursor:pointer}.sv2-google-login:hover{background:#f8fafc}.sv2-google-g{display:grid;place-items:center;width:23px;height:23px;border-radius:50%;font-weight:950;color:#2563eb;border:2px solid #4285f4}
+.sv2-register-line{text-align:center;margin-top:16px;color:#64748b;font-size:13px}.sv2-register-line button{margin-left:4px}.sv2-back-link{display:block;margin:14px auto 0;color:#64748b;font-size:12px}.sv2-demo-note{margin-top:16px!important}
+@media(max-width:760px){.sv2-login-form{padding:28px 22px!important}.sv2-login-row{align-items:flex-start;flex-direction:column}.sv2-login-brand{padding:30px!important}}
+</style>
+
+<style id="v8753-unified-login">
+.sv2-student-class label span{font-size:10px;font-weight:700;color:#94a3b8}
+.sv2-security-note{margin-top:15px;padding:12px 14px;border:1px solid #dbe6f2;border-radius:13px;background:#f8fbff;display:grid;gap:5px;color:#526477;font-size:11px;line-height:1.4}
+.sv2-security-note b{color:#172554;font-size:12px}.sv2-security-note span:before{content:"• ";color:#1e40af;font-weight:900}
 </style>
