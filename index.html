@@ -4031,6 +4031,110 @@ window.studentV2OpenAssignment=function(id){
 .v95page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc;box-sizing:border-box}.v95top{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:12px;font-weight:800}.v95top button{height:40px;padding:0 14px;border:1px solid #d6e1ee;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v95hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:18px}.v95hero small{color:#bfdbfe;font-weight:950;letter-spacing:.12em}.v95hero h2{margin:5px 0;font-size:27px}.v95hero p{margin:0;color:#dbeafe}.v95timer,.v95score{min-width:132px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.v95timer small,.v95score span{display:block;font-size:9px}.v95timer b,.v95score b{display:block;margin-top:3px;font-size:25px}.v95timer b.danger{color:#fde047}.v95list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.v95q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.v95qh{display:flex;justify-content:space-between}.v95qh>b{color:#1d4ed8}.v95qh span{padding:4px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:850}.v95q h4{margin:10px 0 13px;color:#172554;line-height:1.5}.v95opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v95opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;align-items:start;padding:12px 13px;border:1px solid #dce5ef;border-radius:11px;background:#fbfdff;text-align:left;cursor:pointer}.v95opts input{margin:2px 0 0}.v95opts label.ok{border-color:#86efac;background:#f0fdf4}.v95opts label.bad{border-color:#fca5a5;background:#fef2f2}.v95key{color:#15803d;font-size:11px}.v95submit{position:sticky;bottom:12px;max-width:1060px;margin:15px auto 0;padding:12px 14px;border:1px solid #d7e2ef;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 12px 30px rgba(30,58,138,.12);display:flex;justify-content:space-between;align-items:center}.v95submit span{color:#64748b;font-size:11px}.v95submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900}.v95done{max-width:1060px;margin:15px auto;padding:15px;border:1px solid #bbf7d0;border-radius:13px;background:#f0fdf4;color:#15803d;font-weight:850}
 @media(max-width:760px){.v95intro{padding:16px 12px}.v95introcard{margin:30px auto;padding:24px 16px}.v95page{padding:16px 12px 90px}.v95opts{grid-template-columns:1fr}.v95hero{padding:20px 17px}.v95hero h2{font-size:21px}.v95submit{bottom:72px}}
 </style>
+
+<script id="v8796-timer-hard-stop-before-start">
+(function(){
+'use strict';
+let timer96=null;
+const A96=v=>Array.isArray(v)?v:[];
+const esc96=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function find96(id){
+ for(const s of A96(state.students)){
+   const a=A96(s.assignments).find(x=>String(x.id)===String(id));
+   if(a)return {s,a};
+ }
+ return {s:null,a:null};
+}
+function isQuiz96(a){return !!(a?.quiz&&A96(a.quiz.questions).length)}
+function stop96(){if(timer96){clearInterval(timer96);timer96=null}}
+function fmt96(v){v=Math.max(0,Math.floor(v));return String(Math.floor(v/60)).padStart(2,'0')+':'+String(v%60).padStart(2,'0')}
+function remain96(a){
+ if(!a.startedAt)return null;
+ const d=Number(a.quiz?.duration)||0;if(!d)return null;
+ return Math.max(0,Math.ceil((new Date(a.startedAt).getTime()+d*60000-Date.now())/1000));
+}
+function side96(){
+ return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
+}
+function waiting96(id){
+ stop96();
+ const {a}=find96(id); if(!a)return;
+ const dur=Number(a.quiz?.duration)||0, qs=A96(a.quiz?.questions).length;
+ const h=document.getElementById('sv2Home');if(!h)return;
+ h.innerHTML=`<div class="sv2-student-shell">${side96()}<main class="sv2-student-main"><div class="v96wait">
+ <button class="v96back" onclick="studentV2RenderHome()">← Học hôm nay</button>
+ <section class="v96card"><span class="v96tag">BÀI ĐƯỢC GIAO</span><h2>${esc96(a.title)}</h2>
+ <div class="v96meta"><b>${esc96(a.subject||'')}</b><b>${qs} câu</b><b>${dur?dur+' phút':'Không giới hạn'}</b></div>
+ <div class="v96clockoff"><small>THỜI GIAN LÀM BÀI</small><strong>${dur?dur+':00':'—'}</strong><span>Chưa bắt đầu</span></div>
+ <p>Thời gian <b>không chạy</b> khi em chỉ xem thông tin bài. Đồng hồ bắt đầu đúng lúc bấm nút bên dưới.</p>
+ <button class="v96start" onclick="studentV96Start('${esc96(a.id)}')">Bắt đầu làm</button>
+ </section></div></main></div>`;window.scrollTo(0,0);
+}
+function tick96(id){
+ stop96();
+ const run=()=>{
+   const {a}=find96(id),el=document.getElementById('v96Clock');
+   if(!a||!el||!a.startedAt||a.submittedAt){stop96();return}
+   const r=remain96(a);
+   if(r===null){el.textContent='Không giới hạn';stop96();return}
+   el.textContent=fmt96(r);
+   if(r<=0){stop96();submit96(id,true)}
+ };
+ run();timer96=setInterval(run,1000);
+}
+function quizScreen96(id){
+ const {a}=find96(id);if(!a||!isQuiz96(a))return;
+ if(!a.startedAt&&!a.submittedAt){waiting96(id);return}
+ const done=!!a.submittedAt||['graded','done','submitted'].includes(a.status);
+ const qs=A96(a.quiz.questions),ans=A96(a.quizAnswers),dur=Number(a.quiz.duration)||0;
+ const qh=qs.map((q,i)=>`<section class="v96q"><div class="v96qh"><b>Câu ${i+1}</b><span>${esc96(q.level||'')}</span></div><h4>${esc96(q.text||'')}</h4><div class="v96opts">${A96(q.options).map((o,j)=>`<label><input type="radio" name="v96q${i}" value="${j}" ${ans[i]===j?'checked':''} ${done?'disabled':''}><b>${String.fromCharCode(65+j)}.</b><span>${esc96(o)}</span></label>`).join('')}</div></section>`).join('');
+ const h=document.getElementById('sv2Home');if(!h)return;
+ h.innerHTML=`<div class="sv2-student-shell">${side96()}<main class="sv2-student-main"><div class="v96page">
+ <div class="v96top"><button onclick="studentV2RenderHome()">← Học hôm nay</button><span>${esc96(a.subject)} · ${qs.length} câu</span></div>
+ <header class="v96hero"><div><small>BÀI TRẮC NGHIỆM</small><h2>${esc96(a.title)}</h2><p>Chọn một đáp án đúng cho mỗi câu.</p></div>
+ ${done?`<div class="v96timer"><small>KẾT QUẢ</small><b>${Number(a.score||0).toFixed(1)}/10</b></div>`:`<div class="v96timer"><small>THỜI GIAN CÒN LẠI</small><b id="v96Clock">${dur?fmt96(remain96(a)):'Không giới hạn'}</b></div>`}</header>
+ <div class="v96list">${qh}</div>
+ ${done?`<div class="v96done">✓ Đã nộp bài.</div>`:`<div class="v96submit"><span>Đồng hồ đang tính thời gian làm bài.</span><button onclick="studentV96Submit('${esc96(a.id)}')">Nộp bài →</button></div>`}
+ </div></main></div>`;
+ window.scrollTo(0,0);if(!done&&dur)tick96(id);
+}
+function start96(id){
+ stop96();
+ const {a}=find96(id);if(!a||!isQuiz96(a)||a.submittedAt)return;
+ /* Dấu thời gian DUY NHẤT được tạo tại thao tác bấm Bắt đầu. */
+ a.startedAt=new Date().toISOString();
+ a.status='doing';
+ a.quizAnswers=[];
+ try{saveState()}catch(e){}
+ quizScreen96(id);
+}
+function submit96(id,auto){
+ const {a}=find96(id);if(!a||!isQuiz96(a)||a.submittedAt)return;
+ const qs=A96(a.quiz.questions),ans=[];
+ for(let i=0;i<qs.length;i++){const e=document.querySelector(`input[name="v96q${i}"]:checked`);ans.push(e?Number(e.value):null)}
+ if(!auto&&ans.some(v=>v===null)){toast('Hãy trả lời đủ các câu trước khi nộp.');return}
+ if(!auto&&!confirm('Nộp bài trắc nghiệm?'))return;
+ const right=ans.reduce((n,v,i)=>n+(v!==null&&v===Number(qs[i].correct)?1:0),0);
+ a.quizAnswers=ans;a.score=Math.round(right/qs.length*100)/10;a.teacherScore=a.score;a.status='graded';a.submittedAt=new Date().toISOString();a.teacherComment=`Đúng ${right}/${qs.length} câu${auto?' · Tự động nộp khi hết thời gian':''}`;
+ try{saveState()}catch(e){}stop96();quizScreen96(id);
+}
+window.studentV96Start=start96;window.studentV96Submit=submit96;
+
+/* Override SAU CÙNG: trước khi bắt đầu tuyệt đối không gọi renderer 8.7.91/8.7.95,
+   vì các renderer đó từng có logic tự ghi startedAt. */
+window.studentV2OpenAssignment=function(id){
+ stop96();
+ const {a}=find96(id);
+ if(isQuiz96(a)){quizScreen96(id);return}
+ /* tự luận: dùng renderer gốc nếu app có */
+ if(typeof window.studentV2OpenAssignmentOriginal==='function')window.studentV2OpenAssignmentOriginal(id);
+ else if(typeof studentV2RenderAssignment==='function')studentV2RenderAssignment(id);
+};
+})();
+</script>
+<style id="v8796-style">
+.v96wait{min-height:100vh;padding:28px;background:#f3f7fc;box-sizing:border-box}.v96back,.v96top button{height:42px;padding:0 15px;border:1px solid #d7e2ef;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v96card{max-width:720px;margin:48px auto;padding:32px;border:1px solid #dce6f2;border-radius:22px;background:#fff;text-align:center;box-shadow:0 18px 45px rgba(30,58,138,.08)}.v96tag{display:inline-block;padding:6px 10px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:950}.v96card h2{color:#172554;font-size:28px}.v96meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.v96meta b{padding:7px 10px;border-radius:9px;background:#f1f5f9;color:#475569;font-size:12px}.v96clockoff{width:170px;margin:22px auto;padding:14px;border:1px solid #dbeafe;border-radius:15px;background:#f8fbff}.v96clockoff small,.v96clockoff span{display:block;color:#64748b;font-size:10px}.v96clockoff strong{display:block;margin:5px 0;font-size:28px;color:#172554}.v96start{height:48px;padding:0 30px;border:0;border-radius:12px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:950}.v96page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc}.v96top{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center}.v96hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center}.v96hero h2{margin:5px 0}.v96hero p{margin:0;color:#dbeafe}.v96timer{min-width:132px;padding:12px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.v96timer small,.v96timer b{display:block}.v96timer b{font-size:25px;margin-top:4px}.v96list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.v96q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.v96qh{display:flex;justify-content:space-between}.v96qh>b{color:#1d4ed8}.v96qh span{padding:4px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px}.v96opts{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.v96opts label{display:grid;grid-template-columns:20px 28px 1fr;gap:8px;padding:12px;border:1px solid #dce5ef;border-radius:11px}.v96submit,.v96done{max-width:1060px;margin:15px auto;padding:14px;border-radius:14px;background:#fff;border:1px solid #d7e2ef}.v96submit{display:flex;justify-content:space-between;align-items:center;position:sticky;bottom:12px}.v96submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:#3156df;color:#fff;font-weight:900}
+</style>
 </body>
 </html>
 <style>
