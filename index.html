@@ -2601,6 +2601,66 @@ isplay:none!important}
  #teacherLoginPanel .exact-brand,#parentLoginPanel .exact-brand,#studentV2 .exact-brand{display:none!important}
 }
 </style>
+
+<style id="v8773-center-brand-like-student">
+/* Cả 3 trang: thương hiệu căn giữa theo đúng kiểu trang Học sinh */
+#teacherLoginPanel .exact-brand,
+#parentLoginPanel .exact-brand,
+#studentV2 .exact-brand{
+ position:relative!important;
+ display:flex!important;
+ align-items:center!important;
+ justify-content:flex-start!important;
+ height:100%!important;
+ min-height:610px!important;
+ padding:0 0 0 28px!important;
+ box-sizing:border-box!important;
+ overflow:hidden!important;
+}
+#teacherLoginPanel .exact-brand .exact-brand-inner,
+#parentLoginPanel .exact-brand .exact-brand-inner,
+#studentV2 .exact-brand .exact-brand-inner{
+ position:static!important;
+ left:auto!important;top:auto!important;right:auto!important;bottom:auto!important;
+ transform:none!important;
+ margin:0!important;padding:0!important;
+ width:auto!important;
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:flex-start!important;
+ justify-content:center!important;
+}
+#teacherLoginPanel .exact-brand .sv2-mark,
+#parentLoginPanel .exact-brand .sv2-mark,
+#studentV2 .exact-brand .sv2-mark{
+ width:58px!important;height:58px!important;
+ margin:0 0 28px!important;
+}
+#teacherLoginPanel .exact-brand h1,
+#parentLoginPanel .exact-brand h1,
+#studentV2 .exact-brand h1{
+ margin:0!important;
+ display:flex!important;
+ flex-direction:column!important;
+ gap:4px!important;
+ font-size:32px!important;
+ line-height:1.08!important;
+}
+/* Khung trái giữ cùng chiều cao để tâm dọc thực sự giống nhau */
+#teacherLoginPanel .role-login-card,
+#parentLoginPanel .role-login-card,
+#studentV2 .sv2-login-card{
+ height:610px!important;
+ min-height:610px!important;
+ grid-template-columns:380px minmax(0,1fr)!important;
+}
+@media(max-width:760px){
+ #teacherLoginPanel .role-login-card,#parentLoginPanel .role-login-card,#studentV2 .sv2-login-card{
+  height:auto!important;min-height:auto!important;grid-template-columns:1fr!important;
+ }
+ #teacherLoginPanel .exact-brand,#parentLoginPanel .exact-brand,#studentV2 .exact-brand{display:none!important}
+}
+</style>
 </body>
 </html>
 <style>
