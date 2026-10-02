@@ -354,16 +354,16 @@ html,body{margin:0!important;padding:0!important}
   letter-spacing:0!important;
   transform:none!important;
 }
-</style><style id="v891-hide-sidebar-scrollbar">
-/* 8.9.1 — menu vẫn cuộn bình thường nhưng không hiển thị thanh scrollbar */
+</style><style id="v892-sidebar-full-scroll-no-bar">
+/* 8.9.2 — sidebar đủ chiều cao, cuộn được đến mục cuối nhưng không hiện thanh cuộn */
 .sidebar,
 .sidebar-scroll,
 .teacher-sidebar,
 .sv2-student-sidebar,
 .pv117side,
 aside{
-  scrollbar-width:none!important;          /* Firefox */
-  -ms-overflow-style:none!important;       /* Edge cũ / IE */
+  scrollbar-width:none!important;
+  -ms-overflow-style:none!important;
 }
 .sidebar::-webkit-scrollbar,
 .sidebar-scroll::-webkit-scrollbar,
@@ -371,9 +371,36 @@ aside{
 .sv2-student-sidebar::-webkit-scrollbar,
 .pv117side::-webkit-scrollbar,
 aside::-webkit-scrollbar{
-  width:0!important;
-  height:0!important;
-  display:none!important;                  /* Chrome / Edge / Safari */
+  width:0!important;height:0!important;display:none!important;
+}
+
+/* Teacher sidebar: không cắt phần cuối; chừa khoảng đáy để Cài đặt & dữ liệu cuộn lên trọn vẹn */
+.sidebar{
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  max-height:100vh!important;
+  height:100vh!important;
+  box-sizing:border-box!important;
+  padding-bottom:28px!important;
+  overscroll-behavior:contain;
+}
+.sidebar nav,
+.sidebar .nav,
+.sidebar .sidebar-nav{
+  overflow:visible!important;
+  max-height:none!important;
+  padding-bottom:18px!important;
+}
+
+/* Các sidebar vai trò khác cũng phải cuộn tới cuối */
+.teacher-sidebar,
+.sv2-student-sidebar,
+.pv117side{
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  max-height:100vh!important;
+  box-sizing:border-box!important;
+  padding-bottom:28px!important;
 }
 </style></head>
 <body>
