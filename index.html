@@ -2106,8 +2106,46 @@ function repairMinhAnMidtermQuiz(s,a){
  try{saveState()}catch(_){}
  return a;
 }
+
+function minhAnDemoQuestions(){return [{"text": "Cho mệnh đề P: “2 + 3 = 5”. Mệnh đề P là:", "options": ["Mệnh đề đúng", "Mệnh đề sai", "Không phải mệnh đề", "Mệnh đề chứa biến"], "correct": 0, "level": "Nhận biết"}, {"text": "Tập hợp A = {1, 2, 3}. Số phần tử của A là:", "options": ["1", "2", "3", "4"], "correct": 2, "level": "Nhận biết"}, {"text": "Cho A = {1, 2, 3} và B = {2, 3, 4}. A ∩ B bằng:", "options": ["{1, 4}", "{2, 3}", "{1, 2, 3, 4}", "∅"], "correct": 1, "level": "Thông hiểu"}, {"text": "Cho A = {1, 2, 3} và B = {2, 3, 4}. A ∪ B bằng:", "options": ["{2, 3}", "{1, 4}", "{1, 2, 3, 4}", "∅"], "correct": 2, "level": "Thông hiểu"}, {"text": "Hàm số y = 2x + 1 có hệ số góc bằng:", "options": ["1", "2", "-1", "-2"], "correct": 1, "level": "Nhận biết"}, {"text": "Điểm nào sau đây thuộc đồ thị y = 2x + 1?", "options": ["(0; 0)", "(0; 1)", "(1; 1)", "(2; 2)"], "correct": 1, "level": "Thông hiểu"}, {"text": "Với y = -3x + 2, khi x tăng thì y:", "options": ["Tăng", "Giảm", "Không đổi", "Luôn bằng 0"], "correct": 1, "level": "Thông hiểu"}, {"text": "Nghiệm của phương trình 2x + 4 = 0 là:", "options": ["x = 2", "x = -2", "x = 4", "x = -4"], "correct": 1, "level": "Thông hiểu"}, {"text": "Cho f(x) = x² - 1. Giá trị f(2) bằng:", "options": ["1", "2", "3", "4"], "correct": 2, "level": "Vận dụng"}, {"text": "Một hàm số bậc nhất có đồ thị đi qua A(0;1) và B(1;3). Công thức phù hợp là:", "options": ["y = x + 1", "y = 2x + 1", "y = 3x + 1", "y = 2x - 1"], "correct": 1, "level": "Vận dụng"}];}
+function isMinhAnDemoAssignment(s,a){
+ return !!(s&&a&&String(s.name||'').trim()==='Nguyễn Minh An'&&String(s.className||'').trim()==='10A1'&&
+ (a.id==='minhan_demo_midterm_algebra'||String(a.title||'').trim()==='Ôn tập giữa kỳ I – phần Đại số'));
+}
+function renderMinhAnDirectQuiz(s,a){
+ const qs=minhAnDemoQuestions(),submitted=!!a.submittedAt,answers=Array.isArray(a.quizAnswers)?a.quizAnswers:[];
+ a.id='minhan_demo_midterm_algebra';a.title='Ôn tập giữa kỳ I – phần Đại số';a.subject='Toán';a.status=submitted?'graded':'pending';
+ a.portalPublished=true;a.learningTrack='exam';a.assessmentSubtype='semester';
+ a.quiz={duration:45,level:'Tổng hợp',showAnswers:true,questions:qs};
+ try{saveState()}catch(_){}
+ const side=`<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
+ const qhtml=qs.map((q,i)=>`<section class="m84-q"><div class="m84-qhead"><b>Câu ${i+1}</b><span>${safe(q.level)}</span></div><h4>${safe(q.text)}</h4><div class="m84-options">${q.options.map((o,j)=>`<label class="${submitted&&j===q.correct?'correct':''}"><input type="radio" name="m84q${i}" value="${j}" ${answers[i]===j?'checked':''} ${submitted?'disabled':''}><b>${String.fromCharCode(65+j)}.</b><span>${safe(o)}</span></label>`).join('')}</div>${submitted?`<div class="m84-answer">Đáp án đúng: <b>${String.fromCharCode(65+q.correct)}</b></div>`:''}</section>`).join('');
+ E('sv2Home').innerHTML=`<div class="sv2-student-shell">${side}<main class="sv2-student-main"><div class="m84-page"><div class="m84-top"><button onclick="studentV2RenderHome()">← Học hôm nay</button><span>Toán · 45 phút · 10 câu</span></div><header class="m84-hero"><div><small>BÀI KIỂM TRA TRẮC NGHIỆM</small><h2>Ôn tập giữa kỳ I – phần Đại số</h2><p>Chọn một đáp án đúng cho mỗi câu.</p></div>${submitted?`<div class="m84-score"><b>${Number(a.score||0).toFixed(1)}</b><span>điểm</span></div>`:'<div class="m84-timer">45:00</div>'}</header><div class="m84-list">${qhtml}</div>${submitted?`<div class="m84-done">✓ Bài đã nộp · Kết quả đã được lưu vào hồ sơ Nguyễn Minh An.</div>`:`<div class="m84-submitbar"><span>Hoàn thành đủ 10 câu trước khi nộp.</span><button onclick="submitMinhAnDirectQuiz('${safe(a.id)}')">Nộp bài trắc nghiệm →</button></div>`}</div></main></div>`;
+ E('studentV2').scrollTop=0;window.scrollTo(0,0);
+}
+window.submitMinhAnDirectQuiz=function(id){
+ const s=st(),a=A(s?.assignments).find(x=>x.id===id||String(x.title||'').trim()==='Ôn tập giữa kỳ I – phần Đại số');if(!s||!a)return;
+ const qs=minhAnDemoQuestions(),ans=[];
+ for(let i=0;i<qs.length;i++){const el=document.querySelector('input[name="m84q'+i+'"]:checked');if(!el){toast('Em chưa trả lời câu '+(i+1));el?.focus();return}ans.push(Number(el.value));}
+ const correct=qs.reduce((n,q,i)=>n+(ans[i]===q.correct?1:0),0);
+ a.quizAnswers=ans;a.autoScore=correct;a.score=Number((correct*10/qs.length).toFixed(1));a.teacherScore=a.score;a.status='graded';a.submittedAt=new Date().toISOString();a.startedAt=a.startedAt||new Date().toISOString();a.quiz={duration:45,level:'Tổng hợp',showAnswers:true,questions:qs};
+ try{saveState()}catch(_){} toast('Đã nộp bài · '+a.score+'/10');renderMinhAnDirectQuiz(s,a);
+};
+function seedMinhAnTeacherStudentDemo(){
+ state.students=Array.isArray(state.students)?state.students:[];
+ let s=state.students.find(x=>String(x.name||'').trim()==='Nguyễn Minh An'&&String(x.className||'').trim()==='10A1');
+ if(!s){s={id:'demo10a',name:'Nguyễn Minh An',className:'10A1',subject:'Toán',accessCode:'1234',assignments:[],journals:[]};state.students.push(s)}
+ s.assignments=Array.isArray(s.assignments)?s.assignments:[];
+ let a=s.assignments.find(x=>x.id==='minhan_demo_midterm_algebra'||String(x.title||'').trim()==='Ôn tập giữa kỳ I – phần Đại số');
+ if(!a){a={id:'minhan_demo_midterm_algebra',title:'Ôn tập giữa kỳ I – phần Đại số',subject:'Toán',status:'pending',date:'2026-10-02',assignedAt:'2026-10-02T07:00:00',dueAt:'2026-10-03T21:00',portalPublished:true};s.assignments.unshift(a)}
+ a.id='minhan_demo_midterm_algebra';a.title='Ôn tập giữa kỳ I – phần Đại số';a.subject='Toán';a.portalPublished=true;a.learningTrack='exam';a.assessmentSubtype='semester';a.quiz={duration:45,level:'Tổng hợp',showAnswers:true,questions:minhAnDemoQuestions()};
+ if(!a.submittedAt){a.status='pending';delete a.score;delete a.teacherScore;delete a.quizAnswers}
+ try{saveState()}catch(_){}
+}
+seedMinhAnTeacherStudentDemo();
+
 window.studentV2OpenAssignment=function(id){
- const s=st();let a=pub(s).find(x=>x.id===id);if(!a)return;a=repairMinhAnMidtermQuiz(s,a);
+ const s=st();let a=pub(s).find(x=>x.id===id);if(!a)return;if(isMinhAnDemoAssignment(s,a)){renderMinhAnDirectQuiz(s,a);return}a=repairMinhAnMidtermQuiz(s,a);
  if(!a.startedAt&&!done(a)){a.startedAt=new Date().toISOString();try{saveState()}catch(_){}}
  const sidebar=`<aside class="sv2-student-sidebar">
   <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div>
@@ -3247,6 +3285,11 @@ isplay:none!important}
 #sv2QuizHost .sv2-quiz-kicker{margin-bottom:7px;color:#2563eb;font-size:10px;font-weight:950;letter-spacing:.13em}
 #sv2QuizHost .sv2-real-quiz>h3{font-size:27px!important;color:#172554!important}
 #sv2QuizHost .quiz-student-card{display:block!important}
+</style>
+
+<style id="v8784-hard-quiz-flow">
+.m84-page{min-height:100vh;padding:24px 32px 110px;background:#f3f7fc;box-sizing:border-box}.m84-top{max-width:1060px;margin:auto auto 14px;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:12px;font-weight:800}.m84-top button{height:40px;padding:0 14px;border:1px solid #d6e1ee;border-radius:11px;background:#fff;color:#334155;font-weight:850}.m84-hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:20px}.m84-hero small{color:#bfdbfe;font-weight:950;letter-spacing:.12em}.m84-hero h2{margin:5px 0;font-size:27px}.m84-hero p{margin:0;color:#dbeafe}.m84-timer,.m84-score{min-width:90px;padding:13px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center;font-size:22px;font-weight:950}.m84-score b,.m84-score span{display:block}.m84-score span{font-size:10px;color:#dbeafe}.m84-list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.m84-q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff;box-shadow:0 7px 20px rgba(30,58,138,.045)}.m84-qhead{display:flex;justify-content:space-between;align-items:center}.m84-qhead>b{color:#1d4ed8}.m84-qhead span{padding:5px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:850}.m84-q h4{margin:10px 0 12px;color:#172554;font-size:15px}.m84-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.m84-options label{display:flex;gap:9px;align-items:flex-start;padding:11px 12px;border:1px solid #e0e8f2;border-radius:11px;cursor:pointer;background:#fbfdff}.m84-options label:hover{border-color:#8fb2f6;background:#f5f8ff}.m84-options label.correct{border-color:#86efac;background:#f0fdf4}.m84-answer{margin-top:10px;color:#15803d;font-size:11px}.m84-submitbar{position:sticky;bottom:12px;max-width:1060px;margin:16px auto 0;padding:12px 14px;border:1px solid #d7e2ef;border-radius:15px;background:rgba(255,255,255,.96);box-shadow:0 12px 30px rgba(30,58,138,.12);display:flex;justify-content:space-between;align-items:center}.m84-submitbar span{color:#64748b;font-size:11px}.m84-submitbar button{height:43px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900}.m84-done{max-width:1060px;margin:16px auto;padding:15px;border:1px solid #bbf7d0;border-radius:13px;background:#f0fdf4;color:#15803d;font-weight:850}
+@media(max-width:700px){.m84-page{padding:16px 12px 88px}.m84-options{grid-template-columns:1fr}.m84-hero{padding:20px 17px}.m84-hero h2{font-size:21px}.m84-submitbar{bottom:72px}}
 </style>
 </body>
 </html>
