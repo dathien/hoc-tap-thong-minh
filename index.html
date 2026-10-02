@@ -5878,3 +5878,80 @@ window.studentV98Submit=function(id){
 <style id="v8799-tab-monitor-style">
 .v99overlay{position:fixed;inset:0;z-index:2147483000;background:rgba(15,23,42,.58);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}.v99modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.3)}.v99ico{width:48px;height:48px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#fff7ed;color:#ea580c;font-size:25px;font-weight:950;border:1px solid #fed7aa}.v99modal h3{margin:5px 0 9px;color:#172554}.v99modal p{margin:0 0 13px;color:#475569;line-height:1.55}.v99soft,.v99strong{padding:11px 12px;border-radius:11px;font-size:12px;line-height:1.5;text-align:left}.v99soft{background:#eff6ff;color:#1e40af}.v99strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.v99modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}.v99count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
 </style>
+
+<script id="v8800-tab-counter-fix">
+(function(){
+'use strict';
+/*
+  8.8.00: Nguồn ghi nhận DUY NHẤT là document.visibilitychange -> hidden.
+  Không dùng window.blur để tăng bộ đếm vì khi đổi tab trình duyệt thường phát
+  cả blur và visibilitychange, dẫn tới 1 lần rời tab bị tính thành 2.
+*/
+let pendingWarning=false;
+const A=v=>Array.isArray(v)?v:[];
+function active(){
+ for(const s of A(state.students)){
+  for(const a of A(s.assignments)){
+   if(a?.quiz && a.attemptStartedByStudent===true && a.startedAt && !a.submittedAt && a.status==='doing')return a;
+  }
+ }
+ return null;
+}
+function save(){try{saveState()}catch(e){}}
+function showWarning(){
+ const a=active();if(!a||!pendingWarning)return;
+ pendingWarning=false;
+ const n=Number(a.integrityV2?.tabLeaves||0);
+ const old=document.getElementById('v100Warn');if(old)old.remove();
+ const d=document.createElement('div');d.id='v100Warn';d.className='v100overlay';
+ d.innerHTML=`<div class="v100modal"><div class="v100ico">!</div><h3>Cảnh báo rời tab làm bài</h3>
+ <p>Bạn vừa rời khỏi tab làm bài. Hệ thống đã ghi nhận <b>lần ${n}</b>.</p>
+ ${n>=3?'<div class="v100strong">Bạn đã rời tab từ 3 lần. Thông tin này được lưu để giáo viên xem.</div>':'<div class="v100soft">Đồng hồ vẫn tiếp tục đếm trong thời gian bạn rời tab.</div>'}
+ <button onclick="document.getElementById('v100Warn').remove()">Tiếp tục làm bài</button></div>`;
+ document.body.appendChild(d);
+}
+document.addEventListener('visibilitychange',function(){
+ const a=active();if(!a)return;
+ if(document.visibilityState==='hidden'){
+   a.integrityV2=a.integrityV2||{tabLeaves:0,events:[]};
+   a.integrityV2.tabLeaves=Number(a.integrityV2.tabLeaves||0)+1;
+   a.integrityV2.events=A(a.integrityV2.events);
+   a.integrityV2.events.push({type:'tab_hidden',at:new Date().toISOString()});
+   pendingWarning=true;save();
+ }else if(document.visibilityState==='visible'){
+   setTimeout(showWarning,100);
+ }
+},true);
+
+/* Hiển thị số liệu mới; bỏ badge của bộ đếm 8.7.99 để tránh hiểu nhầm. */
+setInterval(function(){
+ const old=document.getElementById('v99Count');if(old)old.remove();
+ const a=active(),hero=document.querySelector('.v98hero');if(!a||!hero)return;
+ const n=Number(a.integrityV2?.tabLeaves||0);
+ if(!n)return;
+ let b=document.getElementById('v100Count');
+ if(!b){b=document.createElement('div');b.id='v100Count';b.className='v100count';hero.appendChild(b)}
+ b.textContent='Rời tab: '+n+' lần';
+},700);
+
+/* Khi nộp, dùng đúng bộ đếm visibilitychange mới. */
+const submit0=window.studentV98Submit;
+window.studentV98Submit=function(id){
+ const a=active();
+ if(a){
+  const n=Number(a.integrityV2?.tabLeaves||0);
+  if(n){
+   let c=String(a.teacherComment||'')
+     .replace(/\s*·?\s*Rời màn hình:\s*\d+\s*lần/g,'')
+     .replace(/\s*·?\s*Rời tab:\s*\d+\s*lần/g,'').trim();
+   a.teacherComment=(c?c+' · ':'')+'Rời tab: '+n+' lần';
+   save();
+  }
+ }
+ return submit0(id);
+};
+})();
+</script>
+<style id="v8800-tab-counter-fix-style">
+.v100overlay{position:fixed;inset:0;z-index:2147483640;background:rgba(15,23,42,.58);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}.v100modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.3)}.v100ico{width:48px;height:48px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#fff7ed;color:#ea580c;font-size:25px;font-weight:950;border:1px solid #fed7aa}.v100modal h3{margin:5px 0 9px;color:#172554}.v100modal p{color:#475569;line-height:1.55}.v100soft,.v100strong{padding:11px 12px;border-radius:11px;font-size:12px;text-align:left}.v100soft{background:#eff6ff;color:#1e40af}.v100strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.v100modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}.v100count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
+</style>
