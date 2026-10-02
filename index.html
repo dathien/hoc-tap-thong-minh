@@ -1811,7 +1811,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 <div class="sv2-or"><span>hoặc</span></div>
 <button class="sv2-google-login" onclick="studentV2GoogleLogin()" type="button"><span class="sv2-google-g">G</span><span>Đăng nhập với Google</span></button>
 <div class="sv2-register-line">Chưa có tài khoản? <button type="button" onclick="studentV2Register()">Đăng ký</button></div>
-<button class="sv2-back-link" onclick="studentV2Close()" type="button">← Quay lại trang chính</button>
+<button class="sv2-back-link" onclick="studentV2ResetLogin()" type="button">↺ Xóa thông tin đăng nhập</button>
 <div class="sv2-security-note"><b>Phân quyền sau đăng nhập</b><span>Giáo viên: quản lý theo lớp được cấp quyền.</span><span>Học sinh: chỉ dữ liệu của chính mình.</span><span>Phụ huynh: chỉ xem dữ liệu của con đã liên kết; điểm và nhận xét chỉ đọc.</span></div><div class="sv2-demo-note"><b>Tài khoản học sinh demo:</b> 10A1 · Nguyễn Minh An · Mật khẩu 1234</div>
 </section>
 </div>
@@ -1823,6 +1823,12 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 const E=id=>document.getElementById(id), A=v=>Array.isArray(v)?v:[], safe=v=>typeof esc==='function'?esc(v):String(v||'');
 function classes(){return [...new Set(A(state.students).map(s=>s.className).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'vi',{numeric:true}))}
 window.studentV2OpenLogin=function(){const root=E('studentV2');root.classList.add('open');root.setAttribute('aria-hidden','false');E('sv2Login').hidden=false;E('sv2Login').style.display='grid';E('sv2Home').hidden=true;E('sv2Home').style.display='none';root.scrollTop=0;let remembered={};try{remembered=JSON.parse(localStorage.getItem('htpro_student_login_remember')||'{}')}catch(_){ }E('sv2Class').value=remembered.className||'';E('sv2Student').value=remembered.studentName||'';E('sv2Code').value='';if(E('sv2Remember'))E('sv2Remember').checked=!!remembered.studentName;E('sv2LoginError').textContent='';document.body.style.overflow='hidden';setTimeout(()=>E(remembered.studentName?'sv2Code':'sv2Class').focus(),50)};
+window.studentV2ResetLogin=function(){
+ const c=E('sv2Class'),u=E('sv2Student'),p=E('sv2Code'),r=E('sv2Remember');
+ if(c)c.value='';if(u)u.value='';if(p)p.value='';if(r)r.checked=false;
+ try{localStorage.removeItem('htpro_student_login_remember')}catch(_){}
+ E('sv2LoginError').textContent='';if(u)u.focus();
+};
 window.studentV2TogglePassword=function(){const x=E('sv2Code');if(!x)return;x.type=x.type==='password'?'text':'password'};
 window.studentV2ForgotPassword=function(){E('sv2LoginError').textContent='Khôi phục mật khẩu cần hệ thống tài khoản thật. Khi kết nối backend, yêu cầu sẽ xử lý theo đúng tài khoản Giáo viên / Học sinh / Phụ huynh.'};
 window.studentV2Register=function(){E('sv2LoginError').textContent='Đăng ký sẽ hỗ trợ 3 loại tài khoản khi kết nối backend. Tài khoản phụ huynh phải được liên kết với đúng studentId của con.'};
@@ -1936,6 +1942,28 @@ window.HTPRO_ROLE_POLICY={
  student:{canManage:false,canEditGrades:false,canEditComments:false,scope:'own_student_id',canStudy:true},
  parent:{canManage:false,canEditGrades:false,canEditComments:false,scope:'linked_student_ids',canStudy:false,readOnly:true}
 };
+</script>
+
+<script id="v8754-open-unified-login">
+(function(){
+ function openUnifiedLogin(){
+   const gate=document.getElementById('roleGateway');
+   if(gate) gate.hidden=true;
+   if(typeof window.studentV2OpenLogin==='function'){
+     window.studentV2OpenLogin();
+   }else{
+     const root=document.getElementById('studentV2');
+     const login=document.getElementById('sv2Login');
+     const home=document.getElementById('sv2Home');
+     if(root){root.classList.add('open');root.setAttribute('aria-hidden','false')}
+     if(login){login.hidden=false;login.style.display='grid'}
+     if(home){home.hidden=true;home.style.display='none'}
+     document.body.style.overflow='hidden';
+   }
+ }
+ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(openUnifiedLogin,80));
+ else setTimeout(openUnifiedLogin,80);
+})();
 </script>
 </body>
 </html>
