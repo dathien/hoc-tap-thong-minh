@@ -1799,7 +1799,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 
 <div class="role-login-overlay" id="teacherLoginPanel" hidden>
   <div class="role-login-card">
-    <section class="sv2-login-brand unified-login-brand"><div class="sv2-mark">ÔT</div><h1>ÔN TẬP<br/>THÔNG MINH</h1><p>Ôn đúng trọng tâm · Luyện theo năng lực · Theo dõi tiến bộ mỗi ngày.</p></section>
+    <section class="sv2-login-brand unified-login-brand"><div class="sv2-mark">ÔT</div><h1>ÔN TẬP<br/><span class="brand-yellow">THÔNG MINH</span></h1><p>Ôn đúng trọng tâm · Luyện theo năng lực · Theo dõi tiến bộ mỗi ngày.</p></section>
     <section class="role-login-form">
       <button class="role-back" type="button" onclick="closeRoleLogin('teacherLoginPanel')">← Chọn đối tượng khác</button>
       <h2>Đăng nhập giáo viên</h2>
@@ -1815,7 +1815,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 </div>
 <div class="role-login-overlay" id="parentLoginPanel" hidden>
   <div class="role-login-card">
-    <section class="sv2-login-brand unified-login-brand"><div class="sv2-mark">ÔT</div><h1>ÔN TẬP<br/>THÔNG MINH</h1><p>Ôn đúng trọng tâm · Luyện theo năng lực · Theo dõi tiến bộ mỗi ngày.</p></section>
+    <section class="sv2-login-brand unified-login-brand"><div class="sv2-mark">ÔT</div><h1>ÔN TẬP<br/><span class="brand-yellow">THÔNG MINH</span></h1><p>Ôn đúng trọng tâm · Luyện theo năng lực · Theo dõi tiến bộ mỗi ngày.</p></section>
     <section class="role-login-form">
       <button class="role-back" type="button" onclick="closeRoleLogin('parentLoginPanel')">← Chọn đối tượng khác</button>
       <h2>Đăng nhập phụ huynh</h2>
@@ -1832,7 +1832,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 <div aria-hidden="true" id="studentV2">
 <div class="sv2-login" id="sv2Login">
 <div class="sv2-login-card">
-<section class="sv2-login-brand unified-login-brand"><div class="sv2-mark">ÔT</div><h1>ÔN TẬP<br/>THÔNG MINH</h1><p>Ôn đúng trọng tâm · Luyện theo năng lực · Theo dõi tiến bộ mỗi ngày.</p></section>
+<section class="sv2-login-brand unified-login-brand"><div class="sv2-mark">ÔT</div><h1>ÔN TẬP<br/><span class="brand-yellow">THÔNG MINH</span></h1><p>Ôn đúng trọng tâm · Luyện theo năng lực · Theo dõi tiến bộ mỗi ngày.</p></section>
 <section class="sv2-login-form">
       <button class="sv2-back-link" onclick="backToRoleGateway()" type="button">← Chọn đối tượng khác</button>
 <div class="sv2-login-head"><h2>Đăng nhập học sinh</h2><p>Đăng nhập để tiếp tục quá trình ôn tập và theo dõi tiến bộ.</p></div>
@@ -2292,7 +2292,24 @@ window.roleGoogle=function(who){
  background:rgba(255,255,255,.055)!important;pointer-events:none!important;
 }
 /* teacher/parent old class rules can no longer affect the brand panel */
-#teacherLoginPanel .role-login-brand,#parentLoginPanel .role-login-brand{display:none!important}
+#teacherLoginPanel .role-login-brand,#parentLoginPanel .role-login-brand{d
+<style id="v8769-exact-brand-look">
+/* Mẫu thương hiệu chính thức dùng giống hệt cho GV / HS / PH */
+.unified-login-brand .sv2-mark{
+ width:58px!important;height:58px!important;border-radius:16px!important;
+ background:#fff!important;color:#1e3a8a!important;font-size:21px!important;font-weight:950!important;
+ display:grid!important;place-items:center!important;margin:0 0 26px!important;
+}
+.unified-login-brand h1{
+ margin:0 0 20px!important;font-size:32px!important;line-height:1.12!important;
+ font-weight:950!important;letter-spacing:-.35px!important;color:#fff!important;
+}
+.unified-login-brand h1 br + *{color:inherit!important}
+/* second line THÔNG MINH */
+.unified-login-brand h1{white-space:normal!important}
+.unified-login-brand .brand-yellow{color:#fde768!important}
+</style>
+isplay:none!important}
 @media(max-width:760px){.unified-login-brand{display:none!important}}
 </style>
 </body>
