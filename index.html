@@ -4615,6 +4615,54 @@ function syncAllGrade10(){
 syncAllGrade10();
 setTimeout(syncAllGrade10,0);
 })();
+</script><script id="v895-runtime-guide-modal-source-of-truth">
+(function(){
+'use strict';
+const INTRO=`
+<div class="modal-box">
+ <div class="modal-head"><h2>Giới thiệu Ôn Tập Thông Minh</h2><button class="close" onclick="closeModal('introModal')">×</button></div>
+ <p><b>ÔN TẬP THÔNG MINH</b> hỗ trợ giáo viên tổ chức ôn tập theo <b>lớp → môn → học sinh</b>; lập kế hoạch, giao bài, theo dõi bài nộp, chấm điểm và điều chỉnh hoạt động ôn tập từ dữ liệu thực tế.</p>
+ <div class="guide-grid">
+  <div class="guide-card"><b>👥 Lớp & học sinh</b><p>Chọn lớp đang làm việc, mở hồ sơ từng học sinh và theo dõi dữ liệu học tập theo môn.</p></div>
+  <div class="guide-card"><b>🗓️ Kế hoạch ôn tập</b><p>Xác định nội dung, nhiệm vụ và tiến độ ôn tập; liên kết kế hoạch với bài được giao.</p></div>
+  <div class="guide-card"><b>📝 Bài tập & kiểm tra</b><p>Soạn và giao bài theo lớp, nhóm hoặc cá nhân; thiết lập thời gian, mức độ, cách công bố điểm và đáp án.</p></div>
+  <div class="guide-card"><b>✅ Xem bài & chấm điểm</b><p>Xem từng câu học sinh đã làm, lựa chọn, đáp án đúng; nhập điểm và nhận xét.</p></div>
+  <div class="guide-card"><b>📊 Kết quả & tiến độ</b><p>Theo dõi kết quả theo môn và dữ liệu tích lũy qua nhiều lần học, luyện tập, kiểm tra.</p></div>
+  <div class="guide-card"><b>👨‍👩‍👧 Phụ huynh</b><p>Phụ huynh chỉ xem dữ liệu của học sinh được liên kết; điểm chấm thủ công chỉ hiển thị sau khi giáo viên công bố.</p></div>
+ </div>
+ <div class="info-box" style="margin-top:14px"><b>Luồng sử dụng:</b> Kế hoạch ôn tập → Giao bài → Học sinh làm/nộp → Giáo viên chấm → Kết quả & tiến độ → Điều chỉnh ôn tập.</div>
+</div>`;
+const GUIDE=`
+<div class="modal-box">
+ <div class="modal-head"><h2>Hướng dẫn sử dụng dành cho giáo viên</h2><button class="close" onclick="closeModal('guideModal')">×</button></div>
+ <div class="guide-grid">
+  <div class="guide-card"><b>Bước 1. Chọn lớp & học sinh</b><ol><li>Chọn <b>Lớp đang làm việc</b>.</li><li>Chọn học sinh cần theo dõi.</li><li>Mở hồ sơ khi cần xem chi tiết.</li></ol></div>
+  <div class="guide-card"><b>Bước 2. Lập kế hoạch ôn tập</b><ol><li>Mở <b>Kế hoạch ôn tập</b>.</li><li>Xác định môn, nội dung và nhiệm vụ.</li><li>Theo dõi tiến độ thực tế.</li></ol></div>
+  <div class="guide-card"><b>Bước 3. Soạn & giao bài</b><ol><li>Vào <b>Bài tập & ôn luyện → Soạn & giao bài</b>.</li><li>Chọn lớp, nhóm hoặc cá nhân.</li><li>Thiết lập số câu, mức độ, thời gian, cách chấm và đáp án.</li></ol></div>
+  <div class="guide-card"><b>Bước 4. Theo dõi làm bài</b><ol><li>Dùng <b>Học hôm nay</b> để xem nhiệm vụ.</li><li>Theo dõi bài chưa làm, đang làm, đã nộp hoặc quá hạn.</li><li>Xem <b>Nhật ký học tập</b> khi cần.</li></ol></div>
+  <div class="guide-card"><b>Bước 5. Xem bài & chấm điểm</b><ol><li>Mở <b>Bài học sinh nộp</b>.</li><li>Xem từng câu, lựa chọn của học sinh và đáp án đúng.</li><li>Nhập điểm, nhận xét và công bố kết quả.</li></ol></div>
+  <div class="guide-card"><b>Bước 6. Phân tích & điều chỉnh</b><ol><li>Xem <b>Kết quả & phụ huynh</b> và tiến độ theo môn.</li><li>Đánh giá dựa trên dữ liệu tích lũy, không kết luận từ một bài.</li><li>Điều chỉnh kế hoạch và bài giao tiếp theo.</li></ol></div>
+ </div>
+ <div class="warning-box" style="margin-top:14px"><b>Dùng nhanh:</b> Chọn lớp → Chọn học sinh/môn → Lập kế hoạch → Giao bài → Theo dõi làm/nộp → Chấm & nhận xét → Xem kết quả/tiến độ → Điều chỉnh kế hoạch.</div>
+</div>`;
+function refresh(){
+ const i=document.getElementById('introModal'), g=document.getElementById('guideModal');
+ if(i) i.innerHTML=INTRO;
+ if(g) g.innerHTML=GUIDE;
+}
+refresh();
+document.addEventListener('click',function(e){
+ const b=e.target.closest('button');
+ if(!b)return;
+ const oc=b.getAttribute('onclick')||'';
+ if(oc.includes("openModal('introModal')")||oc.includes('openModal("introModal")')){
+   const i=document.getElementById('introModal'); if(i)i.innerHTML=INTRO;
+ }
+ if(oc.includes("openModal('guideModal')")||oc.includes('openModal("guideModal")')){
+   const g=document.getElementById('guideModal'); if(g)g.innerHTML=GUIDE;
+ }
+},true);
+})();
 </script></body>
 </html>
 <style>
@@ -6535,7 +6583,7 @@ syncLegacy();
 }
 #teacherAssessmentClassify .v111-setting>label{
   display:block!important; margin:0 0 8px!important; font-weight:900!important;
-  color:#173f59!important; 
+  color:#173f59!important;
 }
 #teacherAssessmentClassify .v111-options{display:grid!important;gap:7px!important}
 #teacherAssessmentClassify .v111-options label{
