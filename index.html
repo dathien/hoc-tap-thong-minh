@@ -304,40 +304,28 @@ html,body{margin:0!important;padding:0!important}
 #teacherLoginPanel .sv2-login-brand + .v125-credit,
 #parentLoginPanel .sv2-login-brand + .v125-credit,
 #studentV2 .sv2-login-brand + .v125-credit{margin-top:-10px!important;margin-bottom:16px!important}
-</style><style id="v8830-student-credit-inside-brand-style">
-/* Tên GV là một phần của chính khối thương hiệu, không dùng margin để đẩy vị trí */
-.sv2-student-shell .v130-brand-with-credit,
-#studentV2 .v130-brand-with-credit{
-  position:relative!important;
-  flex-wrap:wrap!important;
-  align-items:center!important;
-  padding-bottom:13px!important;
-  margin-bottom:16px!important;
-  border-bottom:1px solid rgba(255,255,255,.20)!important;
-}
-.sv2-student-shell .v130-student-credit,
-#studentV2 .v130-student-credit{
-  flex:0 0 100%!important;
-  width:100%!important;
-  box-sizing:border-box!important;
-  margin:8px 0 0 0!important;
-  padding:0 0 0 52px!important;
+</style><style id="v8831-student-teacher-direct-style">
+.sv2-student-sidebar .v131-student-teacher{
+  display:block!important;
+  margin:7px 0 13px 52px!important;
+  padding:0!important;
   border:0!important;
-  background:none!important;
+  background:transparent!important;
   color:#dbeafe!important;
   font-size:11px!important;
-  line-height:1.3!important;
-  font-weight:750!important;
+  line-height:1.35!important;
+  font-weight:800!important;
   letter-spacing:.005em!important;
   text-align:left!important;
-  text-decoration:none!important;
   white-space:nowrap!important;
-  opacity:.96!important;
 }
-/* Nếu brand dùng grid thay vì flex, credit vẫn chiếm toàn chiều ngang */
-.sv2-student-shell .v130-brand-with-credit > .v130-student-credit,
-#studentV2 .v130-brand-with-credit > .v130-student-credit{
-  grid-column:1 / -1!important;
+.sv2-student-sidebar .v131-student-teacher::after{
+  content:"";
+  display:block;
+  height:1px;
+  margin:13px 0 0 -52px;
+  width:calc(100% + 52px);
+  background:rgba(255,255,255,.20);
 }
 </style></head>
 <body>
@@ -2057,7 +2045,7 @@ function status(a){return a.status==='graded'?'Đã chấm':done(a)?'Đã nộp'
 window.studentV2RenderHome=function(){const s=st();if(!s)return;A(s.assignments).forEach(a=>repairMinhAnMidtermQuiz(s,a));const as=pub(s),pending=as.filter(a=>!done(a)),finished=as.filter(done),scores=finished.map(a=>Number(a.teacherScore??a.score)).filter(Number.isFinite),avg=scores.length?scores.reduce((x,y)=>x+y,0)/scores.length:0,pct=as.length?Math.round(finished.length/as.length*100):0,recent=finished.slice().sort((a,b)=>String(b.submittedAt||b.date).localeCompare(String(a.submittedAt||a.date))).slice(0,4),tests=as.filter(a=>a.quiz).slice(0,4),today=pending.slice(0,4),subs=subjects(s);
 E('sv2Home').innerHTML=`<div class="sv2-student-shell">
 <aside class="sv2-student-sidebar">
- <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div>
+ <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div>
  <nav>
   <button class="active" onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button>
   <button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button>
@@ -2115,7 +2103,7 @@ window.studentV2OpenPractice=function(){
  </button>`).join('');
  E('sv2Home').innerHTML=`<div class="sv2-student-shell">
  <aside class="sv2-student-sidebar">
-  <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div>
+  <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div>
   <nav>
    <button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button>
    <button class="active" onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button>
@@ -2162,7 +2150,7 @@ window.studentV2FilterSubject=function(subject){
  }).join('');
  E('sv2Home').innerHTML=`<div class="sv2-student-shell">
 <aside class="sv2-student-sidebar">
- <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div>
+ <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div>
  <nav>
   <button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button>
   <button class="active" onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button>
@@ -2235,7 +2223,7 @@ function renderMinhAnDirectQuiz(s,a){
  const subject=demoSubjectOf(a),qs=MINHAN_DEMO_BANKS[subject]||MINHAN_DEMO_BANKS['Toán'],submitted=!!a.submittedAt,answers=Array.isArray(a.quizAnswers)?a.quizAnswers:[];
  a.quiz={duration:15,level:'Tổng hợp',showAnswers:true,questions:qs};a.portalPublished=true;
  try{saveState()}catch(_){}
- const side=`<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
+ const side=`<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
  const qhtml=qs.map((q,i)=>`<section class="m84-q"><div class="m84-qhead"><b>Câu ${i+1}</b><span>${safe(q.level)}</span></div><h4>${safe(q.text)}</h4><div class="m84-options">${q.options.map((o,j)=>`<label class="${submitted&&j===q.correct?'correct':''}"><input type="radio" name="m84q${i}" value="${j}" ${answers[i]===j?'checked':''} ${submitted?'disabled':''}><b>${String.fromCharCode(65+j)}.</b><span>${safe(o)}</span></label>`).join('')}</div>${submitted?`<div class="m84-answer">Đáp án đúng: <b>${String.fromCharCode(65+q.correct)}</b></div>`:''}</section>`).join('');
  E('sv2Home').innerHTML=`<div class="sv2-student-shell">${side}<main class="sv2-student-main"><div class="m84-page"><div class="m84-top"><button onclick="studentV2RenderHome()">← Học hôm nay</button><span>${safe(subject)} · 15 phút · 10 câu</span></div><header class="m84-hero"><div><small>BÀI TRẮC NGHIỆM</small><h2>${safe(a.title)}</h2><p>Chọn một đáp án đúng cho mỗi câu.</p></div>${submitted?`<div class="m84-score"><b>${Number(a.score||0).toFixed(1)}</b><span>điểm</span></div>`:'<div class="m84-timer">15:00</div>'}</header><div class="m84-list">${qhtml}</div>${submitted?`<div class="m84-done">✓ Bài đã nộp · Kết quả đã lưu vào hồ sơ Nguyễn Minh An.</div>`:`<div class="m84-submitbar"><span>Hoàn thành đủ 10 câu trước khi nộp.</span><button onclick="submitMinhAnDirectQuiz('${safe(a.id)}')">Nộp bài trắc nghiệm →</button></div>`}</div></main></div>`;
  E('studentV2').scrollTop=0;window.scrollTo(0,0);
@@ -2300,7 +2288,7 @@ window.studentV2OpenAssignment=function(id){
  const s=st();let a=pub(s).find(x=>x.id===id);if(!a)return;if(isMinhAnDemoAssignment(s,a)){renderMinhAnDirectQuiz(s,a);return}
  if(!a.startedAt&&!done(a)){a.startedAt=new Date().toISOString();try{saveState()}catch(_){}}
  const sidebar=`<aside class="sv2-student-sidebar">
-  <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div>
+  <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div>
   <nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav>
  </aside>`;
  if(a.quiz&&typeof quizView==='function'){
@@ -3565,7 +3553,7 @@ function cur89(){return typeof st==='function'?st():null}
 function find89(id){const s=cur89();return {s,a:A89(s?.assignments).find(x=>String(x.id)===String(id))}}
 function validQuiz89(a){return !!(a?.quiz&&Array.isArray(a.quiz.questions)&&a.quiz.questions.length&&a.quiz.questions.every(q=>Array.isArray(q.options)&&q.options.length>=2))}
 function sidebar89(){
- return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav>
+ return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div><nav>
  <button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
 }
 function remaining89(a){
@@ -3694,7 +3682,7 @@ migrateExistingTeacherIT90();
 window.forceMinhAnTinHocDemo=function(){return null};
 
 function sidebar90(){
- return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
+ return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
 }
 function remain90(a){
  const min=Number(a.quiz?.duration)||0;if(!min)return null;
@@ -3804,7 +3792,7 @@ function locate91(id){
 }
 function valid91(a){return !!(a?.quiz&&Array.isArray(a.quiz.questions)&&a.quiz.questions.length&&a.quiz.questions.every(q=>Array.isArray(q.options)&&q.options.length>=2))}
 function side91(){
- return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
+ return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
 }
 function remain91(a){
  const mins=Number(a.quiz?.duration)||0;if(!mins)return null;
@@ -4022,7 +4010,7 @@ function locate95(id){
 }
 function quiz95(a){return !!(a?.quiz&&Array.isArray(a.quiz.questions)&&a.quiz.questions.length&&a.quiz.questions.every(q=>Array.isArray(q.options)&&q.options.length>=2))}
 function side95(){
- return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
+ return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
 }
 function fmt95(sec){return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')}
 function remaining95(a){
@@ -4124,7 +4112,7 @@ function remain96(a){
  return Math.max(0,Math.ceil((new Date(a.startedAt).getTime()+d*60000-Date.now())/1000));
 }
 function side96(){
- return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
+ return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
 }
 function waiting96(id){
  stop96();
@@ -4228,7 +4216,7 @@ function left97(a){
  return Math.max(0,Math.ceil((new Date(a.startedAt).getTime()+mins*60000-Date.now())/1000));
 }
 function sidebar97(){
- return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
+ return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
 }
 function migrate97(a){
  if(!a||a.submittedAt)return;
@@ -4481,43 +4469,6 @@ window.parentV122Show=function(key,el){
  (R[key]||overview)();
  return false;
 };
-})();
-</script><script id="v8830-student-credit-inside-brand">
-(function(){
-'use strict';
-function install(){
-  const roots=document.querySelectorAll('.sv2-student-shell, #studentV2');
-  roots.forEach(function(root){
-    const sides=root.querySelectorAll('aside, .sv2-student-sidebar, .sv2-sidebar');
-    sides.forEach(function(side){
-      if(side.querySelector('.v130-student-credit')) return;
-
-      let brand=null;
-      const candidates=Array.from(side.querySelectorAll('div,header,section'));
-      for(const el of candidates){
-        const t=(el.textContent||'').replace(/\s+/g,' ').trim();
-        if(t.includes('ÔN TẬP') && t.includes('THÔNG MINH')){
-          /* choose the smallest matching container, not the whole sidebar */
-          const childMatch=Array.from(el.children).some(function(ch){
-            const ct=(ch.textContent||'').replace(/\s+/g,' ').trim();
-            return ct.includes('ÔN TẬP') && ct.includes('THÔNG MINH');
-          });
-          if(!childMatch){brand=el;break;}
-        }
-      }
-      if(!brand) return;
-
-      brand.classList.add('v130-brand-with-credit');
-      const credit=document.createElement('div');
-      credit.className='v130-student-credit';
-      credit.textContent='GV.Hồ Nguyễn Đa Thiện';
-      brand.appendChild(credit);
-    });
-  });
-}
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',install);
-else install();
-new MutationObserver(install).observe(document.body,{childList:true,subtree:true});
 })();
 </script></body>
 </html>
@@ -5986,7 +5937,7 @@ function left(a){
 }
 function stop(){if(activeTimer){clearInterval(activeTimer);activeTimer=null}}
 function side(){
- return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
+ return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
 }
 function preview(id){
  stop();
@@ -6107,7 +6058,7 @@ window.studentV2OpenAssignment=function(id){
    const host=document.getElementById('sv2Home');
    if(!host)return;
    host.innerHTML=`<div class="sv2-student-shell">
-   <aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()">⌂ Trang chủ</button><button onclick="studentV2OpenPractice()">▦ Tự luyện</button><button class="active">✓ Kiểm tra</button></nav></aside>
+   <aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><div class="v131-student-teacher">GV.Hồ Nguyễn Đa Thiện</div><nav><button onclick="studentV2RenderHome()">⌂ Trang chủ</button><button onclick="studentV2OpenPractice()">▦ Tự luyện</button><button class="active">✓ Kiểm tra</button></nav></aside>
    <main class="sv2-student-main"><div class="v104wait">
    <button class="v104back" onclick="studentV2RenderHome()">← Học hôm nay</button>
    <section class="v104card"><div class="v104icon">✓</div><span>BÀI ĐÃ NỘP</span><h2>${esc(a.title||'Bài làm')}</h2>
