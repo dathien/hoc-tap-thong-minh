@@ -1186,7 +1186,7 @@ window.quizOpen=function(){if(!state.students.length){toast('Hãy thêm học si
 window.quizClose=function(){$('quizBuilder').style.display='none';};
 window.quizPreview=function(){const qs=getQuestions();$('qPreview').innerHTML=qs.map((q,i)=>'<div class="qcard quiz-math"><b>Câu '+(i+1)+'.</b> <span class="pill">'+escq(q.level||'')+'</span> '+rich(q.text)+(q.image?'<p><img alt="Hình minh họa câu '+(i+1)+'" src="'+q.image+'"></p>':'')+q.options.map((o,j)=>'<p>'+String.fromCharCode(65+j)+'. '+rich(o)+(j===q.correct?' ✓':'')+'</p>').join('')+'</div>').join('');math($('qPreview'));};
 window.quizPublish=function(){const qs=getQuestions(),title=$('qTitle').value.trim(),subject=$('qSubject').value.trim(),recipient=$('qRecipient').value;$('qError').textContent='';if(!title||!subject||!qs.length||qs.some(q=>!q.text||q.options.some(x=>!x))){$('qError').textContent='Nhập tên bài, môn học và đầy đủ nội dung, bốn lựa chọn cho mỗi câu.';return;}const cls=$('qClass').value;const classStudents=state.students.filter(s=>s.className===cls);const targets=recipient==='class'?classStudents:classStudents.filter(s=>s.id===recipient);if(!targets.length){$('qError').textContent='Chưa chọn được học sinh.';return;}const openAt=$('qOpenAt').value,dueAt=$('qDue').value;const quiz={questions:qs,level:$('qLevel').value,duration:Number($('qDuration').value)||0,attempts:Number($('qAttempts').value)||1,shuffleQuestions:$('qShuffleQ').checked,shuffleAnswers:$('qShuffleA').checked,showAnswers:!!$('qShowAnswers')?.checked,openAt,dueAt};const date=(dueAt||today()).slice(0,10),batchId='asg_'+uid(),assignedAt=new Date().toISOString();targets.forEach(s=>{ensureAssignments(s).push({id:uid(),batchId,assignedAt,assignedClass:cls,assignedScope:recipient==='class'?'class':'student',title,subject,date,note:'Trắc nghiệm '+qs.length+' câu · '+quiz.level,richBody:'',portalPublished:true,quiz:structuredClone(quiz),answer:'',score:'',maxScore:10,status:'pending',createdAt:assignedAt});});try{saveState();}catch(e){targets.forEach(s=>s.assignments.splice(-1,1));$('qError').textContent='Không đủ dung lượng lưu hình hoặc dữ liệu. Hãy giảm kích thước hình rồi thử lại.';return;}quizClose();renderAssignments();toast('Đã giao trắc nghiệm cho '+targets.length+' học sinh lớp '+cls);};
-function quizView(s,a){const done=a.status!=='pending',qs=a.quiz.questions,answers=a.quizAnswers||[];return '<article class="portal-item"><h3>'+escq(a.title)+'</h3><p>'+escq(a.subject)+' · '+escq(a.quiz.level)+' · '+qs.length+' câu · '+(a.quiz.duration?a.quiz.duration+' phút':'Không giới hạn thời gian')+'</p>'+(done?'<p><b>Đã nộp · Điểm '+escq(a.score)+'/10</b></p>':'<p><b>Chọn một đáp án đúng cho mỗi câu rồi nhấn Nộp bài.</b></p>')+qs.map((q,i)=>'<div class="quiz-student-card quiz-math"><b>Câu '+(i+1)+'.</b> '+rich(q.text)+(q.image?'<p><img alt="Hình minh họa câu '+(i+1)+'" src="'+q.image+'"></p>':'')+q.options.map((o,j)=>'<label><input type="radio" name="quiz_'+escq(a.id)+'_'+i+'" value="'+j+'" '+(done?'disabled':'')+' '+(answers[i]===j?'checked':'')+'><span>'+String.fromCharCode(65+j)+'. '+rich(o)+'</span></label>').join('')+(done&&a.quiz.showAnswers?'<p><b>Đáp án đúng: '+String.fromCharCode(65+q.correct)+'</b></p>':'')+'</div>').join('')+(done?'<p>'+escq(a.teacherComment||'')+'</p>':'<button class="btn primary" type="button" onclick="quizSubmit('+JSON.stringify(s.id)+','+JSON.stringify(a.id)+')">Nộp bài trắc nghiệm</button>')+'</article>';}
+function quizView(s,a){const done=a.status!=='pending',qs=a.quiz.questions,answers=a.quizAnswers||[];return '<article class="portal-item sv2-real-quiz"><div class="sv2-quiz-kicker">BÀI TRẮC NGHIỆM</div><h3>'+escq(a.title)+'</h3><p>'+escq(a.subject)+' · '+escq(a.quiz.level)+' · '+qs.length+' câu · '+(a.quiz.duration?a.quiz.duration+' phút':'Không giới hạn thời gian')+'</p>'+(done?'<p><b>Đã nộp · Điểm '+escq(a.score)+'/10</b></p>':'<p><b>Chọn một đáp án đúng cho mỗi câu rồi nhấn Nộp bài.</b></p>')+qs.map((q,i)=>'<div class="quiz-student-card quiz-math"><b>Câu '+(i+1)+'.</b> '+rich(q.text)+(q.image?'<p><img alt="Hình minh họa câu '+(i+1)+'" src="'+q.image+'"></p>':'')+q.options.map((o,j)=>'<label><input type="radio" name="quiz_'+escq(a.id)+'_'+i+'" value="'+j+'" '+(done?'disabled':'')+' '+(answers[i]===j?'checked':'')+'><span>'+String.fromCharCode(65+j)+'. '+rich(o)+'</span></label>').join('')+(done&&a.quiz.showAnswers?'<p><b>Đáp án đúng: '+String.fromCharCode(65+q.correct)+'</b></p>':'')+'</div>').join('')+(done?'<p>'+escq(a.teacherComment||'')+'</p>':'<button class="btn primary" type="button" onclick="quizSubmit('+JSON.stringify(s.id)+','+JSON.stringify(a.id)+')">Nộp bài trắc nghiệm</button>')+'</article>';}
 window.quizSubmit=function(sid,id){const s=state.students.find(x=>x.id===sid),a=s?.assignments?.find(x=>x.id===id);if(!a?.quiz||a.status!=='pending')return;const answers=a.quiz.questions.map((_,i)=>{const e=document.querySelector('input[name="quiz_'+CSS.escape(a.id)+'_'+i+'"]:checked');return e?Number(e.value):null});if(answers.some(x=>x===null)){toast('Hãy trả lời đủ các câu trước khi nộp.');return;}if(!confirm('Nộp bài trắc nghiệm? Sau khi nộp sẽ không sửa đáp án.'))return;const correct=answers.filter((x,i)=>x===a.quiz.questions[i].correct).length;a.quizAnswers=answers;a.answer=answers.map((x,i)=>(i+1)+'. '+String.fromCharCode(65+x)).join('; ');a.score=Math.round(correct/a.quiz.questions.length*100)/10;a.teacherComment='Đúng '+correct+'/'+a.quiz.questions.length+' câu. '+(correct===a.quiz.questions.length?'Hoàn thành tốt.':'Xem lại các câu chưa đúng và luyện tập thêm.');a.status='graded';a.submittedAt=new Date().toISOString();saveState();toast('Đã nộp và chấm bài');if(typeof studentV2OpenAssignment==='function')studentV2OpenAssignment(id);};
 const oldPortal=window.portalRender;window.portalRender=function(){oldPortal();const s=state.students.find(x=>x.id===$('portalStudent').value),list=$('portalList');if(!s||!list)return;const quizzes=(s.assignments||[]).filter(a=>a.portalPublished&&a.quiz);list.querySelectorAll('.portal-item').forEach(node=>{const title=node.querySelector('h3');if(title&&quizzes.some(a=>a.title===title.textContent)){node.remove();}});const wrapper=document.createElement('div');wrapper.innerHTML=quizzes.map(a=>quizView(s,a)).join('');list.prepend(...wrapper.children);math(list);};
 const oldEasyOpen=window.easyOpen;window.easyOpen=function(...args){quizClose();return oldEasyOpen(...args);};
@@ -1947,7 +1947,7 @@ function st(){return A(state.students).find(x=>x.id===currentId)}function done(a
 function subjects(s){const base=['Toán','Ngữ văn','Tiếng Anh','Tin học','Vật lí','Hóa học','Sinh học'];return [...new Set([s.subject,...pub(s).map(a=>a.subject),...base].filter(Boolean))].slice(0,6)}
 function initials(n){return String(n||'HS').trim().split(/\s+/).slice(-2).map(x=>x[0]).join('').toUpperCase()}
 function status(a){return a.status==='graded'?'Đã chấm':done(a)?'Đã nộp':a.startedAt?'Đang làm':'Chưa làm'}
-window.studentV2RenderHome=function(){const s=st();if(!s)return;const as=pub(s),pending=as.filter(a=>!done(a)),finished=as.filter(done),scores=finished.map(a=>Number(a.teacherScore??a.score)).filter(Number.isFinite),avg=scores.length?scores.reduce((x,y)=>x+y,0)/scores.length:0,pct=as.length?Math.round(finished.length/as.length*100):0,recent=finished.slice().sort((a,b)=>String(b.submittedAt||b.date).localeCompare(String(a.submittedAt||a.date))).slice(0,4),tests=as.filter(a=>a.quiz).slice(0,4),today=pending.slice(0,4),subs=subjects(s);
+window.studentV2RenderHome=function(){const s=st();if(!s)return;A(s.assignments).forEach(a=>repairMinhAnMidtermQuiz(s,a));const as=pub(s),pending=as.filter(a=>!done(a)),finished=as.filter(done),scores=finished.map(a=>Number(a.teacherScore??a.score)).filter(Number.isFinite),avg=scores.length?scores.reduce((x,y)=>x+y,0)/scores.length:0,pct=as.length?Math.round(finished.length/as.length*100):0,recent=finished.slice().sort((a,b)=>String(b.submittedAt||b.date).localeCompare(String(a.submittedAt||a.date))).slice(0,4),tests=as.filter(a=>a.quiz).slice(0,4),today=pending.slice(0,4),subs=subjects(s);
 E('sv2Home').innerHTML=`<div class="sv2-student-shell">
 <aside class="sv2-student-sidebar">
  <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div>
@@ -2079,8 +2079,35 @@ window.studentV2FilterSubject=function(subject){
 </main></div>`;
  E('studentV2').scrollTop=0;window.scrollTo(0,0);
 };
+
+function repairMinhAnMidtermQuiz(s,a){
+ if(!s||!a)return a;
+ const isDemo=String(s.name||'').trim()==='Nguyễn Minh An'&&String(s.className||'').trim()==='10A1'&&
+   (a.id==='minhan_demo_midterm_algebra'||String(a.title||'').trim()==='Ôn tập giữa kỳ I – phần Đại số');
+ if(!isDemo)return a;
+ const qs=[
+  ['Cho mệnh đề P: “2 + 3 = 5”. Mệnh đề P là:',['Mệnh đề đúng','Mệnh đề sai','Không phải mệnh đề','Mệnh đề chứa biến'],0,'Nhận biết'],
+  ['Tập hợp A = {1, 2, 3}. Số phần tử của A là:',['1','2','3','4'],2,'Nhận biết'],
+  ['Cho A = {1, 2, 3} và B = {2, 3, 4}. A ∩ B bằng:',['{1, 4}','{2, 3}','{1, 2, 3, 4}','∅'],1,'Thông hiểu'],
+  ['Cho A = {1, 2, 3} và B = {2, 3, 4}. A ∪ B bằng:',['{2, 3}','{1, 4}','{1, 2, 3, 4}','∅'],2,'Thông hiểu'],
+  ['Hàm số y = 2x + 1 có hệ số góc bằng:',['1','2','-1','-2'],1,'Nhận biết'],
+  ['Điểm nào sau đây thuộc đồ thị y = 2x + 1?',['(0; 0)','(0; 1)','(1; 1)','(2; 2)'],1,'Thông hiểu'],
+  ['Với y = -3x + 2, khi x tăng thì y:',['Tăng','Giảm','Không đổi','Luôn bằng 0'],1,'Thông hiểu'],
+  ['Nghiệm của phương trình 2x + 4 = 0 là:',['x = 2','x = -2','x = 4','x = -4'],1,'Thông hiểu'],
+  ['Cho f(x) = x² - 1. Giá trị f(2) bằng:',['1','2','3','4'],2,'Vận dụng'],
+  ['Một hàm số bậc nhất có đồ thị đi qua A(0;1) và B(1;3). Công thức phù hợp là:',['y = x + 1','y = 2x + 1','y = 3x + 1','y = 2x - 1'],1,'Vận dụng']
+ ];
+ a.id='minhan_demo_midterm_algebra';
+ a.subject='Toán';a.portalPublished=true;a.learningTrack='exam';a.assessmentSubtype='semester';
+ a.richBody='Bài trắc nghiệm ôn tập giữa kỳ I gồm 10 câu. Chọn một đáp án đúng cho mỗi câu.';
+ a.quiz={duration:45,level:'Tổng hợp',showAnswers:true,questions:qs.map(x=>({text:x[0],options:x[1],correct:x[2],level:x[3]}))};
+ // Demo must be ready to do, unless it has genuinely been submitted in this session/state.
+ if(!a.submittedAt){a.status='pending';delete a.answer;delete a.score;delete a.teacherScore;delete a.quizAnswers;delete a.teacherComment}
+ try{saveState()}catch(_){}
+ return a;
+}
 window.studentV2OpenAssignment=function(id){
- const s=st(),a=pub(s).find(x=>x.id===id);if(!a)return;
+ const s=st();let a=pub(s).find(x=>x.id===id);if(!a)return;a=repairMinhAnMidtermQuiz(s,a);
  if(!a.startedAt&&!done(a)){a.startedAt=new Date().toISOString();try{saveState()}catch(_){}}
  const sidebar=`<aside class="sv2-student-sidebar">
   <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div>
@@ -3213,6 +3240,13 @@ isplay:none!important}
 #sv2QuizHost .quiz-student-card label:hover{border-color:#93b4f8;background:#f5f8ff}
 #sv2QuizHost .quiz-student-card input{margin-top:3px}
 #sv2QuizHost .portal-item>.btn.primary{min-height:44px;padding:0 20px;border:0;border-radius:11px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900;cursor:pointer}
+</style>
+
+<style id="v8783-quiz-visible">
+#sv2QuizHost .sv2-real-quiz{max-width:1040px;margin:auto!important}
+#sv2QuizHost .sv2-quiz-kicker{margin-bottom:7px;color:#2563eb;font-size:10px;font-weight:950;letter-spacing:.13em}
+#sv2QuizHost .sv2-real-quiz>h3{font-size:27px!important;color:#172554!important}
+#sv2QuizHost .quiz-student-card{display:block!important}
 </style>
 </body>
 </html>
