@@ -3467,6 +3467,88 @@ isplay:none!important}
 /* Bài do giáo viên giao và bài học sinh làm dùng chung một bản ghi; không tạo giao diện tự luận nếu assignment có quiz. */
 #sv2QuizHost .quiz-student-card label{justify-content:flex-start!important;text-align:left!important}
 </style>
+
+<script id="v8789-quiz-runtime-final">
+(function(){
+'use strict';
+let sv289Timer=null;
+const A89=v=>Array.isArray(v)?v:[];
+const S89=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function cur89(){return typeof st==='function'?st():null}
+function find89(id){const s=cur89();return {s,a:A89(s?.assignments).find(x=>String(x.id)===String(id))}}
+function validQuiz89(a){return !!(a?.quiz&&Array.isArray(a.quiz.questions)&&a.quiz.questions.length&&a.quiz.questions.every(q=>Array.isArray(q.options)&&q.options.length>=2))}
+function sidebar89(){
+ return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav>
+ <button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
+}
+function remaining89(a){
+ const mins=Number(a.quiz?.duration)||0;if(!mins)return null;
+ const start=new Date(a.startedAt||Date.now()).getTime();
+ return Math.max(0,Math.ceil((start+mins*60000-Date.now())/1000));
+}
+function fmt89(sec){const m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function startTimer89(id){
+ clearInterval(sv289Timer);const el=document.getElementById('sv289Timer');if(!el)return;
+ const tick=()=>{const {a}=find89(id);if(!a||a.submittedAt){clearInterval(sv289Timer);return}
+   const r=remaining89(a);if(r===null){el.textContent='Không giới hạn';return}
+   el.textContent=fmt89(r);el.classList.toggle('danger',r<=60);
+   if(r<=0){clearInterval(sv289Timer);submit89(id,true)}
+ };
+ tick();sv289Timer=setInterval(tick,1000);
+}
+function render89(id){
+ const {s,a}=find89(id);if(!s||!a)return;
+ // Học sinh chỉ được thấy bài thật đang tồn tại trong assignments của chính mình.
+ if(!validQuiz89(a)){ if(typeof window.__sv289OldOpen==='function')return window.__sv289OldOpen(id); return; }
+ if(!a.startedAt&&!a.submittedAt){a.startedAt=new Date().toISOString();try{saveState()}catch(e){}}
+ const done=!!a.submittedAt||a.status==='graded'||a.status==='done';
+ const answers=A89(a.quizAnswers),qs=a.quiz.questions;
+ const qhtml=qs.map((q,i)=>`<section class="sv289-q"><div class="sv289-qhead"><b>Câu ${i+1}</b><span>${S89(q.level||'')}</span></div><h4>${S89(q.text||'')}</h4><div class="sv289-opts">${A89(q.options).map((o,j)=>`<label class="${done&&j===Number(q.correct)?'correct':''} ${done&&answers[i]===j&&j!==Number(q.correct)?'wrong':''}"><input type="radio" name="sv289_${i}" value="${j}" ${answers[i]===j?'checked':''} ${done?'disabled':''}><b>${String.fromCharCode(65+j)}.</b><span>${S89(o)}</span></label>`).join('')}</div>${done&&a.quiz.showAnswers!==false?`<p class="sv289-key">Đáp án đúng: <b>${String.fromCharCode(65+Number(q.correct))}</b></p>`:''}</section>`).join('');
+ const dur=Number(a.quiz.duration)||0;
+ document.getElementById('sv2Home').innerHTML=`<div class="sv2-student-shell">${sidebar89()}<main class="sv2-student-main"><div class="sv289-page">
+ <div class="sv289-back"><button onclick="studentV2RenderHome()">← Học hôm nay</button><span>${S89(a.subject||'')} · ${qs.length} câu</span></div>
+ <header class="sv289-hero"><div><small>BÀI TRẮC NGHIỆM</small><h2>${S89(a.title||'Bài luyện tập')}</h2><p>${S89(a.note||'Chọn một đáp án đúng cho mỗi câu.')}</p></div>${done?`<div class="sv289-score"><b>${Number(a.score||0).toFixed(1)}</b><span>điểm</span></div>`:`<div class="sv289-clock"><small>THỜI GIAN CÒN LẠI</small><b id="sv289Timer">${dur?fmt89(remaining89(a)):'Không giới hạn'}</b></div>`}</header>
+ <div class="sv289-list">${qhtml}</div>
+ ${done?`<div class="sv289-done">✓ Đã nộp bài${a.teacherComment?` · ${S89(a.teacherComment)}`:''}</div>`:`<div class="sv289-submit"><span>${dur?'Đồng hồ sẽ tự nộp khi hết thời gian.':'Bài không giới hạn thời gian.'}</span><button onclick="studentV289Submit('${S89(a.id)}')">Nộp bài →</button></div>`}
+ </div></main></div>`;
+ window.scrollTo(0,0); if(!done&&dur)startTimer89(a.id);
+}
+function submit89(id,auto){
+ const {s,a}=find89(id);if(!s||!validQuiz89(a)||a.submittedAt)return;
+ const qs=a.quiz.questions,ans=[];
+ for(let i=0;i<qs.length;i++){const e=document.querySelector(`input[name="sv289_${i}"]:checked`);ans.push(e?Number(e.value):null)}
+ if(!auto&&ans.some(v=>v===null)){toast('Hãy trả lời đủ các câu trước khi nộp.');return}
+ if(!auto&&!confirm('Nộp bài trắc nghiệm? Sau khi nộp sẽ không sửa đáp án.'))return;
+ const correct=ans.reduce((n,v,i)=>n+(v!==null&&v===Number(qs[i].correct)?1:0),0);
+ a.quizAnswers=ans;a.answer=ans.map((v,i)=>`${i+1}. ${v===null?'—':String.fromCharCode(65+v)}`).join('; ');
+ a.score=Math.round(correct/qs.length*100)/10;a.teacherScore=a.score;a.status='graded';a.submittedAt=new Date().toISOString();
+ a.teacherComment=`Đúng ${correct}/${qs.length} câu.${auto?' Bài được tự động nộp khi hết thời gian.':''}`;
+ try{saveState()}catch(e){} clearInterval(sv289Timer);toast(auto?'Hết thời gian · Bài đã được tự động nộp':'Đã nộp bài · '+a.score+'/10');render89(id);
+}
+window.studentV289Submit=submit89;
+window.__sv289OldOpen=window.studentV2OpenAssignment;
+window.studentV2OpenAssignment=function(id){
+ const {a}=find89(id);
+ // QUY TẮC DUY NHẤT: có quiz.questions thật -> mở trắc nghiệm; không có -> dùng loại bài khác.
+ if(validQuiz89(a))return render89(id);
+ return window.__sv289OldOpen(id);
+};
+// Bài demo Tin học phải là một assignment thật phía giáo viên. Nếu bản ghi canonical tồn tại,
+// bảo đảm nó có quiz; nếu giáo viên xóa assignment này thì học sinh cũng không còn thấy nó.
+try{
+ const s=(state.students||[]).find(x=>String(x.name||'').trim()==='Nguyễn Minh An'&&String(x.className||'').trim()==='10A1');
+ const a=s?.assignments?.find(x=>x.id==='teacher_demo_it_minhan_10a1');
+ if(a&&(!validQuiz89(a))&&typeof MINHAN_DEMO_BANKS!=='undefined'){
+   a.quiz={duration:15,level:'3 mức',attempts:1,showAnswers:true,questions:structuredClone(MINHAN_DEMO_BANKS['Tin học'])};
+   a.portalPublished=true;a.subject='Tin học';a.status=a.submittedAt?'graded':'pending';saveState();
+ }
+}catch(e){}
+})();
+</script>
+<style id="v8789-quiz-style">
+.sv289-page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc;box-sizing:border-box}.sv289-back{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:12px;font-weight:800}.sv289-back button{height:40px;padding:0 14px;border:1px solid #d6e1ee;border-radius:11px;background:#fff;color:#334155;font-weight:850;cursor:pointer}.sv289-hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:18px}.sv289-hero small{color:#bfdbfe;font-weight:950;letter-spacing:.12em}.sv289-hero h2{margin:5px 0;font-size:27px}.sv289-hero p{margin:0;color:#dbeafe}.sv289-clock,.sv289-score{min-width:120px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.sv289-clock small,.sv289-score span{display:block;font-size:9px}.sv289-clock b,.sv289-score b{display:block;margin-top:3px;font-size:24px}.sv289-clock b.danger{color:#fde047}.sv289-list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.sv289-q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.sv289-qhead{display:flex;justify-content:space-between}.sv289-qhead>b{color:#1d4ed8}.sv289-qhead span{padding:4px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:850}.sv289-q h4{margin:10px 0 13px;color:#172554;line-height:1.5}.sv289-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.sv289-opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;align-items:start;padding:12px 13px;border:1px solid #dce5ef;border-radius:11px;background:#fbfdff;cursor:pointer;text-align:left}.sv289-opts input{margin:2px 0 0}.sv289-opts label.correct{border-color:#86efac;background:#f0fdf4}.sv289-opts label.wrong{border-color:#fca5a5;background:#fef2f2}.sv289-key{color:#15803d;font-size:11px}.sv289-submit{position:sticky;bottom:12px;max-width:1060px;margin:15px auto 0;padding:12px 14px;border:1px solid #d7e2ef;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 12px 30px rgba(30,58,138,.12);display:flex;justify-content:space-between;align-items:center}.sv289-submit span{color:#64748b;font-size:11px}.sv289-submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900}.sv289-done{max-width:1060px;margin:15px auto;padding:15px;border:1px solid #bbf7d0;border-radius:13px;background:#f0fdf4;color:#15803d;font-weight:850}
+@media(max-width:760px){.sv289-page{padding:16px 12px 90px}.sv289-opts{grid-template-columns:1fr}.sv289-hero{padding:20px 17px}.sv289-hero h2{font-size:21px}.sv289-submit{bottom:72px}}
+</style>
 </body>
 </html>
 <style>
