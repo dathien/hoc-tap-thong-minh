@@ -402,29 +402,64 @@ aside::-webkit-scrollbar{
   box-sizing:border-box!important;
   padding-bottom:28px!important;
 }
-</style><style id="v897-ot-owl-avatar">
-/* 8.9.7 — Avatar Cú ÔT dùng thống nhất cho nhận diện ứng dụng */
-.ot-avatar-host{
-  overflow:hidden!important;
+</style><style id="v898-owl-avatar-clean-unified">
+/* 8.9.8 — Cú ÔT: bỏ hoàn toàn nền/khung trắng và đồng bộ kích thước */
+.ot-avatar-host,
+.logo.ot-avatar-host,
+.rg-logo.ot-avatar-host,
+.sv2-mark.ot-avatar-host,
+.unified-login-brand .ot-avatar-host,
+.role-gateway .ot-avatar-host{
+  width:52px!important;
+  height:52px!important;
+  min-width:52px!important;
+  min-height:52px!important;
   padding:0!important;
-  border-radius:14px!important;
-  background:transparent!important;
+  margin:0!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  background:none!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
-  flex:0 0 auto!important;
+  flex:0 0 52px!important;
 }
 .ot-owl-avatar{
+  width:52px!important;
+  height:52px!important;
+  max-width:none!important;
+  max-height:none!important;
   display:block!important;
-  width:100%!important;
-  height:100%!important;
-  object-fit:cover!important;
+  object-fit:contain!important;
   object-position:center!important;
-  border-radius:inherit!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
 }
-.logo.ot-avatar-host{width:44px!important;height:44px!important;}
-.rg-logo.ot-avatar-host{width:48px!important;height:48px!important;}
-.sv2-mark.ot-avatar-host{width:42px!important;height:42px!important;}
+
+/* Trang chọn vai trò: avatar nằm cân với khối thương hiệu, không quá nhỏ */
+.role-gateway .ot-avatar-host,
+.role-gateway .ot-owl-avatar,
+.rg-brand .ot-avatar-host,
+.rg-brand .ot-owl-avatar{
+  width:58px!important;
+  height:58px!important;
+}
+
+/* Các trang đăng nhập: cùng một vị trí và cùng kích thước */
+.unified-login-brand .ot-avatar-host,
+.unified-login-brand .ot-owl-avatar,
+.login-brand .ot-avatar-host,
+.login-brand .ot-owl-avatar{
+  width:54px!important;
+  height:54px!important;
+}
 </style></head>
 <body>
 <div class="app">
