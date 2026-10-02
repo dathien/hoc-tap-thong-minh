@@ -2046,8 +2046,39 @@ window.studentV2FilterSubject=function(subject){
 </main></div>`;
  E('studentV2').scrollTop=0;window.scrollTo(0,0);
 };
-window.studentV2OpenAssignment=function(id){const s=st(),a=pub(s).find(x=>x.id===id);if(!a)return;if(a.quiz&&typeof quizView==='function'){E('sv2Home').innerHTML=`<div class="sv2-app sv2-assignment-view"><button class="btn secondary sv2-back" onclick="studentV2RenderHome()">← Trang chủ học sinh</button><div id="sv2QuizHost">${quizView(s,a)}</div></div>`;return}E('sv2Home').innerHTML=`<div class="sv2-app sv2-assignment-view"><button class="btn secondary sv2-back" onclick="studentV2RenderHome()">← Trang chủ học sinh</button><article class="sv2-card"><h2>${safe(a.title)}</h2><p><b>Môn:</b> ${safe(a.subject||s.subject)} · <b>Trạng thái:</b> ${safe(status(a))}</p><p>${safe(a.richBody||a.portalQuestion||a.note||'')}</p>${done(a)?`<p><b>Kết quả:</b> ${Number.isFinite(Number(a.score))?safe(a.score)+'/10':'Đã nộp'}</p>`:`<p class="help">Bài tự luận sẽ dùng màn hình nộp bài hiện có của app.</p><button class="btn primary" onclick="studentV2UseLegacy('${safe(s.id)}')">Mở bài để làm</button>`}</article></div>`};
-window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');document.body.style.overflow='';if(typeof portalOpen==='function'){portalOpen();setTimeout(()=>{const q=E('portalStudent');if(q){q.value=sid;portalRender()}},0)}};
+window.studentV2OpenAssignment=function(id){
+ const s=st(),a=pub(s).find(x=>x.id===id);if(!a)return;
+ if(!a.startedAt&&!done(a)){a.startedAt=new Date().toISOString();try{saveState()}catch(_){}}
+ const sidebar=`<aside class="sv2-student-sidebar">
+  <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div>
+  <nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav>
+ </aside>`;
+ if(a.quiz&&typeof quizView==='function'){
+  E('sv2Home').innerHTML=`<div class="sv2-student-shell">${sidebar}<main class="sv2-student-main"><div class="sv2-app sv2-assignment-work"><div class="sv2-work-top"><button onclick="studentV2RenderHome()">← Học hôm nay</button><span>${safe(a.subject||s.subject)} · ${safe(a.quiz?.duration||15)} phút</span></div><div id="sv2QuizHost">${quizView(s,a)}</div></div></main></div>`;
+  return;
+ }
+ const submitted=done(a),answer=safe(a.answer||'');
+ E('sv2Home').innerHTML=`<div class="sv2-student-shell">${sidebar}<main class="sv2-student-main"><div class="sv2-app sv2-assignment-work">
+  <div class="sv2-work-top"><button onclick="studentV2RenderHome()">← Học hôm nay</button><span>${safe(a.subject||s.subject)} · ${safe(status(a))}</span></div>
+  <section class="sv2-work-hero"><span>NHIỆM VỤ HỌC TẬP</span><h2>${safe(a.title)}</h2><div><b>${safe(a.subject||s.subject)}</b>${a.dueAt?`<b>Hạn: ${safe(String(a.dueAt).replace('T',' ').slice(0,16))}</b>`:''}</div></section>
+  <section class="sv2-work-card"><div class="sv2-work-label">NỘI DUNG / YÊU CẦU</div><div class="sv2-work-question">${safe(a.richBody||a.portalQuestion||a.note||'Hoàn thành bài theo yêu cầu của giáo viên.').replace(/\n/g,'<br>')}</div>
+  ${submitted?`<div class="sv2-submitted-box"><span>✓ ĐÃ NỘP BÀI</span><p>${answer||'Bài đã được ghi nhận.'}</p>${Number.isFinite(Number(a.teacherScore??a.score))?`<strong>Điểm: ${Number(a.teacherScore??a.score).toFixed(1)}/10</strong>`:''}${a.teacherComment?`<em>Nhận xét: ${safe(a.teacherComment)}</em>`:''}</div>`:
+  `<label class="sv2-answer-label" for="sv2DirectAnswer">Bài làm của em</label><textarea id="sv2DirectAnswer" class="sv2-direct-answer" placeholder="Nhập câu trả lời hoặc nội dung bài làm tại đây...">${answer}</textarea><div class="sv2-work-actions"><button class="sv2-save-draft" onclick="studentV2SaveDirect('${safe(a.id)}')">Lưu nháp</button><button class="sv2-submit-direct" onclick="studentV2SubmitDirect('${safe(a.id)}')">Nộp bài <span>→</span></button></div>`}
+  </section></div></main></div>`;
+};
+window.studentV2SaveDirect=function(id){
+ const s=st(),a=pub(s).find(x=>x.id===id),box=E('sv2DirectAnswer');if(!a||!box)return;
+ a.answer=box.value.trim();a.startedAt=a.startedAt||new Date().toISOString();try{saveState()}catch(_){}
+ toast('Đã lưu nháp bài làm');
+};
+window.studentV2SubmitDirect=function(id){
+ const s=st(),a=pub(s).find(x=>x.id===id),box=E('sv2DirectAnswer');if(!a||!box)return;
+ const answer=box.value.trim();if(!answer){toast('Hãy nhập bài làm trước khi nộp');box.focus();return}
+ a.answer=answer;a.status='done';a.submittedAt=new Date().toISOString();a.startedAt=a.startedAt||a.submittedAt;
+ try{saveState()}catch(_){}
+ toast('Đã nộp bài thành công');studentV2OpenAssignment(id);
+};
+window.studentV2UseLegacy=function(){studentV2RenderHome()};
 })();
 </script>
 <script id="sv2-hard-view-switch">
@@ -3122,6 +3153,20 @@ isplay:none!important}
 .sv2-pc-foot{grid-area:foot;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:10px}.sv2-pc-foot b{color:#1d4ed8;font-size:10px}
 @media(max-width:900px){.sv2-practice-cards{grid-template-columns:1fr}.sv2-practice-dashboard{padding:28px 24px 80px!important}}
 @media(max-width:700px){.sv2-practice-dashboard{padding:22px 14px 92px!important}.sv2-practice-head{align-items:flex-start}.sv2-practice-user{display:none}.sv2-practice-head h2{font-size:25px}.sv2-practice-overview{grid-template-columns:1fr}.sv2-practice-card{grid-template-columns:52px 1fr auto;padding:16px}.sv2-pc-icon{width:52px;height:52px}.sv2-practice-title p{display:none}}
+</style>
+
+<style id="v8781-direct-student-workflow">
+.sv2-assignment-work{min-height:100vh;max-width:none!important;padding:28px 34px 60px!important;background:linear-gradient(180deg,#f6f9fd,#eef4fb)}
+.sv2-work-top{max-width:1040px;margin:0 auto 16px;display:flex;align-items:center;justify-content:space-between;color:#64748b;font-size:12px;font-weight:800}
+.sv2-work-top button{height:40px;padding:0 14px;border:1px solid #d8e3ef;border-radius:11px;background:#fff;color:#334155;font-weight:850;cursor:pointer}
+.sv2-work-hero{max-width:1040px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;box-shadow:0 15px 34px rgba(30,58,138,.14)}
+.sv2-work-hero>span{font-size:10px;font-weight:950;letter-spacing:.13em;color:#bfdbfe}.sv2-work-hero h2{margin:7px 0 14px;font-size:26px;line-height:1.25}.sv2-work-hero div{display:flex;gap:8px;flex-wrap:wrap}.sv2-work-hero b{padding:6px 9px;border-radius:8px;background:rgba(255,255,255,.11);font-size:10px}
+.sv2-work-card{max-width:1040px;margin:16px auto 0;padding:26px 28px;border:1px solid #dce6f2;border-radius:20px;background:#fff;box-shadow:0 12px 32px rgba(30,58,138,.065)}
+.sv2-work-label{margin-bottom:9px;color:#2563eb;font-size:10px;font-weight:950;letter-spacing:.12em}.sv2-work-question{padding:17px;border-radius:13px;background:#f8fafc;color:#334155;font-size:14px;line-height:1.7}
+.sv2-answer-label{display:block;margin:22px 0 8px;color:#172554;font-size:13px;font-weight:900}.sv2-direct-answer{width:100%;min-height:190px;box-sizing:border-box;padding:15px;border:1px solid #cbd8e8;border-radius:13px;resize:vertical;font:inherit;line-height:1.6;outline:none}.sv2-direct-answer:focus{border-color:#3b82f6;box-shadow:0 0 0 3px #dbeafe}
+.sv2-work-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:14px}.sv2-work-actions button{height:43px;padding:0 17px;border-radius:10px;font-weight:900;cursor:pointer}.sv2-save-draft{border:1px solid #d7e1ee;background:#fff;color:#475569}.sv2-submit-direct{border:0;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff}
+.sv2-submitted-box{margin-top:20px;padding:18px;border:1px solid #bbf7d0;border-radius:14px;background:#f0fdf4}.sv2-submitted-box>span{color:#15803d;font-size:11px;font-weight:950}.sv2-submitted-box p{white-space:pre-wrap;color:#334155}.sv2-submitted-box strong,.sv2-submitted-box em{display:block;margin-top:7px}.sv2-submitted-box em{font-style:normal;color:#64748b}
+@media(max-width:700px){.sv2-assignment-work{padding:18px 14px 88px!important}.sv2-work-card,.sv2-work-hero{padding:20px 17px}.sv2-work-hero h2{font-size:22px}}
 </style>
 </body>
 </html>
