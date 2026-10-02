@@ -5955,3 +5955,45 @@ window.studentV98Submit=function(id){
 <style id="v8800-tab-counter-fix-style">
 .v100overlay{position:fixed;inset:0;z-index:2147483640;background:rgba(15,23,42,.58);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}.v100modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.3)}.v100ico{width:48px;height:48px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#fff7ed;color:#ea580c;font-size:25px;font-weight:950;border:1px solid #fed7aa}.v100modal h3{margin:5px 0 9px;color:#172554}.v100modal p{color:#475569;line-height:1.55}.v100soft,.v100strong{padding:11px 12px;border-radius:11px;font-size:12px;text-align:left}.v100soft{background:#eff6ff;color:#1e40af}.v100strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.v100modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}.v100count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
 </style>
+
+<script id="v8801-reset-tab-count-per-attempt">
+(function(){
+'use strict';
+const A=v=>Array.isArray(v)?v:[];
+function findAssignment(id){
+ for(const s of A(state.students)){
+  const a=A(s.assignments).find(x=>String(x.id)===String(id));
+  if(a)return a;
+ }
+ return null;
+}
+function save(){try{saveState()}catch(e){}}
+
+/* Mỗi lần bấm BẮT ĐẦU LÀM là một lượt làm mới:
+   xóa hoàn toàn số lần rời tab và nhật ký của lượt trước. */
+const start0=window.studentV98Start;
+window.studentV98Start=function(id){
+ const a=findAssignment(id);
+ if(a && !a.submittedAt){
+   a.integrityV2={tabLeaves:0,events:[]};
+   a.integrity={tabLeaves:0,events:[]}; /* xóa dữ liệu bộ đếm cũ 8.7.99 */
+   save();
+   const b1=document.getElementById('v99Count'); if(b1)b1.remove();
+   const b2=document.getElementById('v100Count'); if(b2)b2.remove();
+ }
+ return start0(id);
+};
+
+/* Khi bài đang ở trạng thái CHƯA BẮT ĐẦU, không mang số đếm cũ sang màn hình mới. */
+const open0=window.studentV2OpenAssignment;
+window.studentV2OpenAssignment=function(id){
+ const a=findAssignment(id);
+ if(a && a.quiz && !a.submittedAt && a.attemptStartedByStudent!==true){
+   a.integrityV2={tabLeaves:0,events:[]};
+   a.integrity={tabLeaves:0,events:[]};
+   save();
+ }
+ return open0(id);
+};
+})();
+</script>
