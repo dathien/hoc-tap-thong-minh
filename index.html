@@ -1952,7 +1952,35 @@ window.studentV2Quick=function(kind){
  toast((labels[kind]||'Chức năng')+' sẽ được kết nối với dữ liệu học tập ở bước tiếp theo.');
 };
 window.studentV2OpenPractice=function(){const s=st();if(!s)return;const as=pub(s),subs=subjects(s);clearInterval(slideTimer);const icons={'Toán':'＋−','Ngữ văn':'VĂN','Tiếng Anh':'EN','Tin học':'</>','Vật lí':'F','Hóa học':'HÓA','Sinh học':'DNA'};const desc={'Toán':'Tư duy, công thức và giải bài','Ngữ văn':'Đọc hiểu, tiếng Việt và diễn đạt','Tiếng Anh':'Từ vựng, ngữ pháp và kỹ năng','Tin học':'Logic, thuật toán và công nghệ','Vật lí':'Hiện tượng, đại lượng và công thức','Hóa học':'Chất, phản ứng và tính toán','Sinh học':'Sự sống, cơ thể và môi trường'};E('sv2Home').innerHTML=`<div class="sv2-app sv2-practice-page"><div class="sv2-crumb"><button onclick="studentV2RenderHome()">⌂ Trang chủ</button><span>/</span><b>Tự luyện</b></div><section class="sv2-practice-hero"><span>TỰ HỌC CHỦ ĐỘNG</span><h2>Hi ${safe(s.name)}!</h2><p>Bạn muốn luyện tập gì hôm nay?</p></section><div class="sv2-practice-list">${subs.map((subject,i)=>{const rows=as.filter(a=>(a.subject||s.subject)===subject),finished=rows.filter(done).length,total=rows.length,pct=total?Math.round(finished/total*100):0,q=rows.reduce((n,a)=>n+(a.quiz?.questions?.length||0),0);return `<button class="sv2-practice-row" onclick="studentV2FilterSubject('${safe(subject)}')"><span class="sv2-practice-icon p${i%6}">${safe(icons[subject]||subject.slice(0,2).toUpperCase())}</span><span class="sv2-practice-main"><strong>${safe(subject)}</strong><span class="sv2-practice-bar"><i style="width:${pct}%"></i></span><small><em>${pct}% đã hoàn thành</em><b>${total||'—'} bài luyện${q?' · '+q+' câu hỏi':''}</b></small></span><span class="sv2-practice-arrow">›</span></button>`}).join('')}</div></div>`;E('studentV2').scrollTop=0;window.scrollTo(0,0)};
-window.studentV2FilterSubject=function(subject){const s=st(),rows=pub(s).filter(a=>(a.subject||s.subject)===subject);if(!rows.length){toast('Hiện chưa có bài '+subject+' được giao cho em.');return}const a=rows.find(x=>!done(x))||rows[0];studentV2OpenAssignment(a.id)};
+window.studentV2FilterSubject=function(subject){
+ const s=st(),rows=pub(s).filter(a=>(a.subject||s.subject)===subject);
+ if(!rows.length){toast('Hiện chưa có bài '+subject+' được giao cho em.');return}
+ const finished=rows.filter(done), pending=rows.filter(x=>!done(x));
+ const avg=finished.length?finished.reduce((n,a)=>n+(Number(a.teacherScore??a.score)||0),0)/finished.length:0;
+ const totalQ=rows.reduce((n,a)=>n+(a.quiz?.questions?.length||0),0);
+ const subjectIcons={'Toán':'∑','Ngữ văn':'VĂN','Tiếng Anh':'EN','Tin học':'</>','Vật lí':'F','Hóa học':'HÓA','Sinh học':'DNA'};
+ const cards=rows.map(a=>{
+   const isDone=done(a),score=Number(a.teacherScore??a.score),dur=a.quiz?.duration||15,q=a.quiz?.questions?.length||0;
+   return `<article class="sv2-subject-task ${isDone?'done':'todo'}">
+    <div class="sv2-task-state">${isDone?'✓ Đã hoàn thành':'● Chưa hoàn thành'}</div>
+    <h3>${safe(a.title)}</h3>
+    <div class="sv2-task-meta"><span>◷ ${dur} phút</span>${q?`<span>▤ ${q} câu</span>`:''}${a.quiz?.level?`<span>◆ ${safe(a.quiz.level)}</span>`:''}</div>
+    <div class="sv2-task-bottom">${isDone?`<div><small>Kết quả</small><strong>${Number.isFinite(score)?score.toFixed(1):'—'}<em>/10</em></strong></div>`:`<div><small>Trạng thái</small><strong>Sẵn sàng</strong></div>`}
+    <button onclick="studentV2OpenAssignment('${safe(a.id)}')">${isDone?'Xem lại bài':'Bắt đầu luyện'} <b>→</b></button></div>
+   </article>`;
+ }).join('');
+ E('sv2Home').innerHTML=`<div class="sv2-app sv2-subject-page">
+  <div class="sv2-subject-top"><button onclick="studentV2OpenPractice()">← Chọn môn khác</button><span>TỰ LUYỆN / ${safe(subject)}</span></div>
+  <section class="sv2-subject-hero">
+   <div class="sv2-subject-icon">${safe(subjectIcons[subject]||subject.slice(0,2).toUpperCase())}</div>
+   <div><span>ĐANG ÔN TẬP</span><h2>${safe(subject)}</h2><p>Chọn bài luyện phù hợp và tiếp tục tiến độ của em.</p></div>
+   <div class="sv2-subject-summary"><div><strong>${rows.length}</strong><small>Bài luyện</small></div><div><strong>${finished.length}</strong><small>Đã xong</small></div><div><strong>${finished.length?avg.toFixed(1):'—'}</strong><small>Điểm TB</small></div></div>
+  </section>
+  <section class="sv2-subject-section"><div class="sv2-subject-heading"><div><span>LỘ TRÌNH ÔN TẬP</span><h3>Bài luyện của em</h3></div><b>${pending.length} bài cần hoàn thành</b></div>
+  <div class="sv2-subject-grid">${cards}</div></section>
+ </div>`;
+ E('studentV2').scrollTop=0;window.scrollTo(0,0);
+};
 window.studentV2OpenAssignment=function(id){const s=st(),a=pub(s).find(x=>x.id===id);if(!a)return;if(a.quiz&&typeof quizView==='function'){E('sv2Home').innerHTML=`<div class="sv2-app sv2-assignment-view"><button class="btn secondary sv2-back" onclick="studentV2RenderHome()">← Trang chủ học sinh</button><div id="sv2QuizHost">${quizView(s,a)}</div></div>`;return}E('sv2Home').innerHTML=`<div class="sv2-app sv2-assignment-view"><button class="btn secondary sv2-back" onclick="studentV2RenderHome()">← Trang chủ học sinh</button><article class="sv2-card"><h2>${safe(a.title)}</h2><p><b>Môn:</b> ${safe(a.subject||s.subject)} · <b>Trạng thái:</b> ${safe(status(a))}</p><p>${safe(a.richBody||a.portalQuestion||a.note||'')}</p>${done(a)?`<p><b>Kết quả:</b> ${Number.isFinite(Number(a.score))?safe(a.score)+'/10':'Đã nộp'}</p>`:`<p class="help">Bài tự luận sẽ dùng màn hình nộp bài hiện có của app.</p><button class="btn primary" onclick="studentV2UseLegacy('${safe(s.id)}')">Mở bài để làm</button>`}</article></div>`};
 window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');document.body.style.overflow='';if(typeof portalOpen==='function'){portalOpen();setTimeout(()=>{const q=E('portalStudent');if(q){q.value=sid;portalRender()}},0)}};
 })();
@@ -2980,6 +3008,20 @@ isplay:none!important}
   padding:22px 20px!important;border-radius:18px!important
  }
 }
+</style>
+
+<style id="v8778-subject-learning-page">
+.sv2-subject-page{min-height:100vh;max-width:none!important;padding:28px 34px 60px!important;background:linear-gradient(180deg,#f5f8fd,#eef4fb)}
+.sv2-subject-top{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;color:#64748b;font-size:12px;font-weight:900;letter-spacing:.04em}
+.sv2-subject-top button{height:40px;padding:0 14px;border:1px solid #d9e3ef;border-radius:11px;background:#fff;color:#334155;font-weight:850;cursor:pointer}
+.sv2-subject-hero{max-width:1180px;margin:18px auto 24px;padding:28px 30px;border-radius:24px;background:linear-gradient(125deg,#172554,#1e3a8a 60%,#4338ca);color:#fff;display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;box-shadow:0 18px 45px rgba(30,58,138,.16)}
+.sv2-subject-icon{width:68px;height:68px;border-radius:18px;background:#fff;color:#1d4ed8;display:grid;place-items:center;font-size:22px;font-weight:950}
+.sv2-subject-hero>div:nth-child(2)>span{font-size:11px;font-weight:900;letter-spacing:.12em;color:#bfdbfe}.sv2-subject-hero h2{font-size:30px;margin:4px 0 5px}.sv2-subject-hero p{margin:0;color:#dbeafe;font-size:14px}
+.sv2-subject-summary{display:flex;gap:8px}.sv2-subject-summary div{min-width:82px;padding:12px 10px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(255,255,255,.09);text-align:center}.sv2-subject-summary strong{display:block;font-size:21px}.sv2-subject-summary small{color:#dbeafe;font-size:10px}
+.sv2-subject-section{max-width:1180px;margin:auto}.sv2-subject-heading{display:flex;justify-content:space-between;align-items:end;margin:0 0 14px}.sv2-subject-heading span{font-size:10px;font-weight:950;color:#2563eb;letter-spacing:.12em}.sv2-subject-heading h3{margin:3px 0 0;color:#172554;font-size:22px}.sv2-subject-heading>b{padding:7px 10px;border-radius:999px;background:#fff7ed;color:#c2410c;font-size:11px}
+.sv2-subject-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.sv2-subject-task{position:relative;padding:21px;border:1px solid #dce6f2;border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(30,58,138,.055)}.sv2-subject-task.todo{border-top:3px solid #3b82f6}.sv2-subject-task.done{border-top:3px solid #22c55e}.sv2-task-state{font-size:11px;font-weight:900;color:#2563eb}.sv2-subject-task.done .sv2-task-state{color:#15803d}.sv2-subject-task h3{margin:9px 0 13px;color:#172554;font-size:17px;line-height:1.35}.sv2-task-meta{display:flex;gap:7px;flex-wrap:wrap}.sv2-task-meta span{padding:6px 8px;border-radius:8px;background:#f1f5f9;color:#64748b;font-size:10px;font-weight:800}.sv2-task-bottom{display:flex;align-items:end;justify-content:space-between;margin-top:18px;padding-top:15px;border-top:1px solid #edf2f7}.sv2-task-bottom small{display:block;color:#94a3b8;font-size:10px}.sv2-task-bottom strong{font-size:17px;color:#172554}.sv2-task-bottom strong em{font-style:normal;font-size:10px;color:#94a3b8}.sv2-task-bottom button{height:38px;padding:0 13px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-size:11px;font-weight:900;cursor:pointer}
+@media(max-width:850px){.sv2-subject-hero{grid-template-columns:auto 1fr}.sv2-subject-summary{grid-column:1/-1}.sv2-subject-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.sv2-subject-page{padding:18px 14px 88px!important}.sv2-subject-hero{padding:21px 18px}.sv2-subject-summary{display:grid;grid-template-columns:repeat(3,1fr)}.sv2-subject-summary div{min-width:0}.sv2-subject-heading{align-items:start;gap:8px}.sv2-subject-heading>b{white-space:nowrap}}
 </style>
 </body>
 </html>
