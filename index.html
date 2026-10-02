@@ -2364,6 +2364,168 @@ isplay:none!important}
 }
 @media(max-width:760px){.exact-brand{display:none!important}}
 </style>
+
+<style id="v8771-final-login-alignment">
+/* ===== Chuẩn chung 3 trang đăng nhập ===== */
+#teacherLoginPanel .role-login-card,
+#parentLoginPanel .role-login-card,
+#studentV2 .sv2-login-card{
+ width:min(920px,calc(100vw - 32px))!important;
+ height:min(610px,calc(100vh - 32px))!important;
+ min-height:570px!important;
+ grid-template-columns:42% 58%!important;
+ border-radius:26px!important;
+ overflow:hidden!important;
+ background:#fff!important;
+}
+
+/* ===== Panel thương hiệu: cùng vị trí, không trôi lên/xuống ===== */
+.exact-brand{
+ height:100%!important;
+ min-height:100%!important;
+ padding:0 0 0 38px!important;
+ display:flex!important;
+ align-items:center!important;
+ justify-content:flex-start!important;
+}
+.exact-brand .exact-brand-inner{
+ transform:translateY(-18px)!important;
+}
+.exact-brand .sv2-mark{
+ width:58px!important;height:58px!important;
+ margin:0 0 27px!important;
+ border-radius:16px!important;
+}
+.exact-brand h1{
+ font-size:32px!important;
+ line-height:1.08!important;
+ gap:4px!important;
+}
+
+/* ===== Form phải: cùng chiều rộng và nhịp căn ===== */
+#teacherLoginPanel .role-login-form,
+#parentLoginPanel .role-login-form,
+#studentV2 .sv2-login-form{
+ box-sizing:border-box!important;
+ width:100%!important;
+ height:100%!important;
+ padding:38px 54px 32px!important;
+ display:flex!important;
+ flex-direction:column!important;
+ justify-content:center!important;
+}
+
+/* Student có thêm trường Lớp nên form dài hơn: vẫn căn giữa nhưng không ép lệch thương hiệu */
+#studentV2 .sv2-login-form{padding-top:28px!important;padding-bottom:24px!important}
+
+#teacherLoginPanel .role-back,
+#parentLoginPanel .role-back,
+#studentV2 .sv2-back-link{
+ margin:0 0 20px!important;
+ padding:0!important;
+ min-height:18px!important;
+ font-size:13px!important;
+ line-height:18px!important;
+ align-self:flex-start!important;
+}
+
+#teacherLoginPanel .role-login-form h2,
+#parentLoginPanel .role-login-form h2,
+#studentV2 .sv2-login-form h2{
+ margin:0 0 30px!important;
+ font-size:29px!important;
+ line-height:1.15!important;
+}
+
+/* Chỉ học sinh có dòng mô tả: gọn lại để tổng thể cân bằng */
+#studentV2 .sv2-login-form h2{margin-bottom:14px!important}
+#studentV2 .sv2-login-copy{
+ margin:0 0 20px!important;
+ font-size:13px!important;
+ line-height:1.55!important;
+ color:#64748b!important;
+}
+
+#teacherLoginPanel .sv2-field,
+#parentLoginPanel .sv2-field,
+#studentV2 .sv2-field{margin:0 0 18px!important}
+
+#teacherLoginPanel .sv2-field label,
+#parentLoginPanel .sv2-field label,
+#studentV2 .sv2-field label{
+ margin:0 0 7px!important;
+ font-size:13px!important;
+ line-height:18px!important;
+}
+
+#teacherLoginPanel .sv2-field>input,
+#parentLoginPanel .sv2-field>input,
+#studentV2 .sv2-field>input,
+#teacherLoginPanel .teacher-pass-wrap input,
+#parentLoginPanel .role-pass-wrap input,
+#studentV2 .sv2-pass-wrap input{
+ height:52px!important;
+ border-radius:13px!important;
+}
+
+#teacherLoginPanel .sv2-login-row,
+#parentLoginPanel .sv2-login-row,
+#studentV2 .sv2-login-row{
+ margin:0 0 20px!important;
+ min-height:22px!important;
+}
+
+#teacherLoginPanel .sv2-login-btn,
+#parentLoginPanel .sv2-login-btn,
+#studentV2 .sv2-login-btn,
+#teacherLoginPanel .sv2-google-btn,
+#parentLoginPanel .sv2-google-btn,
+#studentV2 .sv2-google-btn{
+ height:50px!important;
+ border-radius:12px!important;
+}
+
+#teacherLoginPanel .sv2-or,
+#parentLoginPanel .sv2-or,
+#studentV2 .sv2-or{margin:15px 0!important}
+
+#teacherLoginPanel .teacher-register-line,
+#parentLoginPanel .parent-register-line,
+#studentV2 .student-register-line{
+ margin-top:14px!important;
+ font-size:12px!important;
+ line-height:18px!important;
+}
+
+/* Tránh error placeholder tạo khoảng trắng khác nhau */
+#teacherLoginPanel .sv2-login-error,
+#parentLoginPanel .sv2-login-error,
+#studentV2 .sv2-login-error{
+ min-height:0!important;
+ margin:0!important;
+}
+#teacherLoginPanel .sv2-login-error:not(:empty),
+#parentLoginPanel .sv2-login-error:not(:empty),
+#studentV2 .sv2-login-error:not(:empty){
+ min-height:18px!important;margin:-8px 0 10px!important;
+}
+
+@media(max-width:760px){
+ #teacherLoginPanel .role-login-card,
+ #parentLoginPanel .role-login-card,
+ #studentV2 .sv2-login-card{
+   width:min(520px,calc(100vw - 24px))!important;
+   height:auto!important;min-height:auto!important;
+   grid-template-columns:1fr!important;
+ }
+ .exact-brand{display:none!important}
+ #teacherLoginPanel .role-login-form,
+ #parentLoginPanel .role-login-form,
+ #studentV2 .sv2-login-form{
+   padding:28px 24px!important;height:auto!important;
+ }
+}
+</style>
 </body>
 </html>
 <style>
