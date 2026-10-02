@@ -304,29 +304,34 @@ html,body{margin:0!important;padding:0!important}
 #teacherLoginPanel .sv2-login-brand + .v125-credit,
 #parentLoginPanel .sv2-login-brand + .v125-credit,
 #studentV2 .sv2-login-brand + .v125-credit{margin-top:-10px!important;margin-bottom:16px!important}
-</style><style id="v8831-student-teacher-direct-style">
+</style><style id="v8832-student-brand-single-block">
+/* 8.8.32: Logo + tên GV là MỘT khối; chỉ có 1 đường phân cách phía dưới */
+.sv2-student-sidebar .sv2-side-brand{
+  border-bottom:0!important;
+  padding-bottom:0!important;
+  margin-bottom:0!important;
+}
 .sv2-student-sidebar .v131-student-teacher{
   display:block!important;
-  margin:7px 0 13px 52px!important;
-  padding:0!important;
+  box-sizing:border-box!important;
+  margin:7px 14px 0 52px!important;
+  padding:0 0 14px!important;
   border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.22)!important;
   background:transparent!important;
   color:#dbeafe!important;
   font-size:11px!important;
   line-height:1.35!important;
   font-weight:800!important;
-  letter-spacing:.005em!important;
+  letter-spacing:0!important;
   text-align:left!important;
+  text-decoration:none!important;
   white-space:nowrap!important;
 }
-.sv2-student-sidebar .v131-student-teacher::after{
-  content:"";
-  display:block;
-  height:1px;
-  margin:13px 0 0 -52px;
-  width:calc(100% + 52px);
-  background:rgba(255,255,255,.20);
-}
+/* bỏ đường kẻ giả của bản 8.8.31 */
+.sv2-student-sidebar .v131-student-teacher::after{display:none!important;content:none!important}
+/* khoảng cách từ đường phân cách đến menu Trang chủ */
+.sv2-student-sidebar .v131-student-teacher + *{margin-top:14px!important}
 </style></head>
 <body>
 <div class="app">
