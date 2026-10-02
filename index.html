@@ -3935,6 +3935,102 @@ if(typeof oldWork94==='function')window.workClassChanged=function(v){const r=old
 .homeroom-v94-toolbar{display:grid;grid-template-columns:220px minmax(260px,1fr);gap:16px;align-items:end;margin-bottom:14px}.homeroom-v94-toolbar>div:first-child{padding:12px 14px;border:1px solid var(--border);border-radius:14px;background:#f8fbff}.homeroom-v94-toolbar strong{display:block;margin-top:4px;font-size:20px;color:#172554}.homeroom-v94-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 14px}.homeroom-v94-summary>div{padding:14px;border:1px solid var(--border);border-radius:14px;background:#fff}.homeroom-v94-summary strong{display:block;font-size:24px;color:#1d4ed8}.homeroom-v94-summary span{font-size:12px;color:#64748b}.homeroom-v94-table th,.homeroom-v94-table td{vertical-align:middle}
 @media(max-width:760px){.homeroom-v94-toolbar,.homeroom-v94-summary{grid-template-columns:1fr}}
 </style>
+
+<script id="v8795-start-before-countdown">
+(function(){
+'use strict';
+let timer95=null;
+const arr95=v=>Array.isArray(v)?v:[];
+const esc95=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function locate95(id){
+ for(const s of arr95(state.students)){
+   const a=arr95(s.assignments).find(x=>String(x.id)===String(id));
+   if(a)return {s,a};
+ }
+ return {s:null,a:null};
+}
+function quiz95(a){return !!(a?.quiz&&Array.isArray(a.quiz.questions)&&a.quiz.questions.length&&a.quiz.questions.every(q=>Array.isArray(q.options)&&q.options.length>=2))}
+function side95(){
+ return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
+}
+function fmt95(sec){return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')}
+function remaining95(a){
+ const min=Number(a.quiz?.duration)||0;if(!min||!a.startedAt)return null;
+ const start=new Date(a.startedAt).getTime();
+ return Math.max(0,Math.ceil((start+min*60000-Date.now())/1000));
+}
+function stop95(){if(timer95){clearInterval(timer95);timer95=null}}
+function run95(id){
+ stop95();
+ const tick=()=>{
+   const {a}=locate95(id),el=document.getElementById('v95Clock');
+   if(!a||!el||!a.startedAt||a.submittedAt){stop95();return}
+   const r=remaining95(a);if(r===null){el.textContent='Không giới hạn';stop95();return}
+   el.textContent=fmt95(r);el.classList.toggle('danger',r<=60);
+   if(r<=0){stop95();submit95(id,true)}
+ };
+ tick();timer95=setInterval(tick,1000);
+}
+function intro95(id){
+ stop95();
+ const {a}=locate95(id);if(!a||!quiz95(a))return;
+ const dur=Number(a.quiz.duration)||0, qs=a.quiz.questions.length;
+ const host=document.getElementById('sv2Home');if(!host)return;
+ host.innerHTML=`<div class="sv2-student-shell">${side95()}<main class="sv2-student-main"><div class="v95intro">
+ <button class="v95back" onclick="studentV2RenderHome()">← Học hôm nay</button>
+ <section class="v95introcard"><div class="v95badge">BÀI ĐƯỢC GIAO</div><h2>${esc95(a.title||'Bài luyện tập')}</h2>
+ <div class="v95meta"><span>${esc95(a.subject||'')}</span><span>${qs} câu</span><span>${dur?dur+' phút':'Không giới hạn thời gian'}</span></div>
+ <div class="v95notice"><b>Thời gian chưa bắt đầu.</b><p>Đồng hồ chỉ bắt đầu đếm ngược sau khi em bấm <b>Bắt đầu làm</b>.</p></div>
+ <button class="v95start" onclick="studentV95Start('${esc95(a.id)}')">Bắt đầu làm →</button></section>
+ </div></main></div>`;window.scrollTo(0,0);
+}
+function render95(id){
+ const {a}=locate95(id);if(!a||!quiz95(a))return;
+ if(!a.startedAt&&!a.submittedAt){intro95(id);return}
+ const done=!!a.submittedAt||['graded','done','submitted'].includes(a.status),qs=a.quiz.questions,ans=arr95(a.quizAnswers),dur=Number(a.quiz.duration)||0;
+ const cards=qs.map((q,i)=>`<section class="v95q"><div class="v95qh"><b>Câu ${i+1}</b><span>${esc95(q.level||'')}</span></div><h4>${esc95(q.text||'')}</h4><div class="v95opts">${arr95(q.options).map((o,j)=>`<label class="${done&&j===Number(q.correct)?'ok':''} ${done&&ans[i]===j&&j!==Number(q.correct)?'bad':''}"><input type="radio" name="v95q${i}" value="${j}" ${ans[i]===j?'checked':''} ${done?'disabled':''}><b>${String.fromCharCode(65+j)}.</b><span>${esc95(o)}</span></label>`).join('')}</div>${done&&a.quiz.showAnswers!==false?`<p class="v95key">Đáp án đúng: <b>${String.fromCharCode(65+Number(q.correct))}</b></p>`:''}</section>`).join('');
+ const host=document.getElementById('sv2Home');if(!host)return;
+ host.innerHTML=`<div class="sv2-student-shell">${side95()}<main class="sv2-student-main"><div class="v95page"><div class="v95top"><button onclick="studentV2RenderHome()">← Học hôm nay</button><span>${esc95(a.subject)} · ${dur?dur+' phút':'Không giới hạn'} · ${qs.length} câu</span></div><header class="v95hero"><div><small>BÀI TRẮC NGHIỆM</small><h2>${esc95(a.title)}</h2><p>Chọn một đáp án đúng cho mỗi câu.</p></div>${done?`<div class="v95score"><b>${Number(a.score||0).toFixed(1)}</b><span>điểm</span></div>`:`<div class="v95timer"><small>THỜI GIAN CÒN LẠI</small><b id="v95Clock">${dur?fmt95(remaining95(a)):'Không giới hạn'}</b></div>`}</header><div class="v95list">${cards}</div>${done?`<div class="v95done">✓ Đã nộp bài · Kết quả được lưu trên chính bài giáo viên đã giao.</div>`:`<div class="v95submit"><span>${dur?'Hết thời gian hệ thống sẽ tự động nộp bài.':'Bài không giới hạn thời gian.'}</span><button onclick="studentV95Submit('${esc95(a.id)}')">Nộp bài →</button></div>`}</div></main></div>`;
+ window.scrollTo(0,0);if(!done&&dur)run95(id);
+}
+function start95(id){
+ const {a}=locate95(id);if(!a||!quiz95(a)||a.submittedAt)return;
+ if(!a.startedAt){
+   a.startedAt=new Date().toISOString();
+   a.status='doing';
+   try{saveState()}catch(e){}
+ }
+ render95(id);
+}
+function submit95(id,auto){
+ const {a}=locate95(id);if(!a||!quiz95(a)||a.submittedAt)return;
+ const qs=a.quiz.questions,ans=[];
+ for(let i=0;i<qs.length;i++){const e=document.querySelector(`input[name="v95q${i}"]:checked`);ans.push(e?Number(e.value):null)}
+ if(!auto&&ans.some(v=>v===null)){toast('Hãy trả lời đủ các câu trước khi nộp.');return}
+ if(!auto&&!confirm('Nộp bài trắc nghiệm? Sau khi nộp sẽ không sửa đáp án.'))return;
+ const right=ans.reduce((n,v,i)=>n+(v!==null&&v===Number(qs[i].correct)?1:0),0);
+ a.quizAnswers=ans;a.answer=ans.map((v,i)=>`${i+1}. ${v===null?'—':String.fromCharCode(65+v)}`).join('; ');
+ a.score=Math.round(right/qs.length*100)/10;a.teacherScore=a.score;a.status='graded';a.submittedAt=new Date().toISOString();
+ a.teacherComment=`Đúng ${right}/${qs.length} câu${auto?' · Tự động nộp khi hết thời gian':''}`;
+ try{saveState()}catch(e){}stop95();toast(auto?'Hết thời gian · Bài đã tự động nộp':'Đã nộp bài · '+a.score+'/10');render95(id);
+}
+window.studentV95Start=start95;
+window.studentV95Submit=submit95;
+
+/* Override cuối cùng: mở bài không khởi động timer. Chỉ nút Bắt đầu làm mới ghi startedAt. */
+const oldOpen95=window.studentV2OpenAssignment;
+window.studentV2OpenAssignment=function(id){
+ const {a}=locate95(id);
+ if(quiz95(a)){render95(id);return}
+ oldOpen95(id);
+};
+})();
+</script>
+<style id="v8795-style">
+.v95intro{min-height:100vh;padding:28px;background:#f3f7fc;box-sizing:border-box}.v95back{height:42px;padding:0 15px;border:1px solid #d7e2ef;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v95introcard{max-width:720px;margin:55px auto;padding:34px;border:1px solid #dce6f2;border-radius:22px;background:#fff;box-shadow:0 18px 45px rgba(30,58,138,.08);text-align:center}.v95badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:950;letter-spacing:.1em}.v95introcard h2{margin:13px 0 15px;color:#172554;font-size:28px}.v95meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.v95meta span{padding:7px 10px;border-radius:9px;background:#f1f5f9;color:#475569;font-size:12px;font-weight:800}.v95notice{margin:22px 0;padding:16px;border:1px solid #bfdbfe;border-radius:14px;background:#f8fbff;color:#334155}.v95notice p{margin:5px 0 0;color:#64748b}.v95start{height:48px;padding:0 28px;border:0;border-radius:12px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:950;font-size:14px;box-shadow:0 10px 24px rgba(37,99,235,.22)}
+.v95page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc;box-sizing:border-box}.v95top{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:12px;font-weight:800}.v95top button{height:40px;padding:0 14px;border:1px solid #d6e1ee;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v95hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:18px}.v95hero small{color:#bfdbfe;font-weight:950;letter-spacing:.12em}.v95hero h2{margin:5px 0;font-size:27px}.v95hero p{margin:0;color:#dbeafe}.v95timer,.v95score{min-width:132px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.v95timer small,.v95score span{display:block;font-size:9px}.v95timer b,.v95score b{display:block;margin-top:3px;font-size:25px}.v95timer b.danger{color:#fde047}.v95list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.v95q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.v95qh{display:flex;justify-content:space-between}.v95qh>b{color:#1d4ed8}.v95qh span{padding:4px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:850}.v95q h4{margin:10px 0 13px;color:#172554;line-height:1.5}.v95opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v95opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;align-items:start;padding:12px 13px;border:1px solid #dce5ef;border-radius:11px;background:#fbfdff;text-align:left;cursor:pointer}.v95opts input{margin:2px 0 0}.v95opts label.ok{border-color:#86efac;background:#f0fdf4}.v95opts label.bad{border-color:#fca5a5;background:#fef2f2}.v95key{color:#15803d;font-size:11px}.v95submit{position:sticky;bottom:12px;max-width:1060px;margin:15px auto 0;padding:12px 14px;border:1px solid #d7e2ef;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 12px 30px rgba(30,58,138,.12);display:flex;justify-content:space-between;align-items:center}.v95submit span{color:#64748b;font-size:11px}.v95submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900}.v95done{max-width:1060px;margin:15px auto;padding:15px;border:1px solid #bbf7d0;border-radius:13px;background:#f0fdf4;color:#15803d;font-weight:850}
+@media(max-width:760px){.v95intro{padding:16px 12px}.v95introcard{margin:30px auto;padding:24px 16px}.v95page{padding:16px 12px 90px}.v95opts{grid-template-columns:1fr}.v95hero{padding:20px 17px}.v95hero h2{font-size:21px}.v95submit{bottom:72px}}
+</style>
 </body>
 </html>
 <style>
