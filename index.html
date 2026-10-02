@@ -1799,7 +1799,12 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 
 <div class="role-login-overlay" id="teacherLoginPanel" hidden>
   <div class="role-login-card">
-    <section class="sv2-login-brand unified-login-brand"><div class="sv2-mark">ÔT</div><h1>ÔN TẬP<br/><span class="brand-yellow">THÔNG MINH</span></h1><p>Ôn đúng trọng tâm · Luyện theo năng lực · Theo dõi tiến bộ mỗi ngày.</p></section>
+    <section class="sv2-login-brand unified-login-brand exact-brand">
+  <div class="exact-brand-inner">
+    <div class="sv2-mark">ÔT</div>
+    <h1><span>ÔN TẬP</span><span class="brand-yellow">THÔNG MINH</span></h1>
+  </div>
+</section>
     <section class="role-login-form">
       <button class="role-back" type="button" onclick="closeRoleLogin('teacherLoginPanel')">← Chọn đối tượng khác</button>
       <h2>Đăng nhập giáo viên</h2>
@@ -1815,7 +1820,12 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 </div>
 <div class="role-login-overlay" id="parentLoginPanel" hidden>
   <div class="role-login-card">
-    <section class="sv2-login-brand unified-login-brand"><div class="sv2-mark">ÔT</div><h1>ÔN TẬP<br/><span class="brand-yellow">THÔNG MINH</span></h1><p>Ôn đúng trọng tâm · Luyện theo năng lực · Theo dõi tiến bộ mỗi ngày.</p></section>
+    <section class="sv2-login-brand unified-login-brand exact-brand">
+  <div class="exact-brand-inner">
+    <div class="sv2-mark">ÔT</div>
+    <h1><span>ÔN TẬP</span><span class="brand-yellow">THÔNG MINH</span></h1>
+  </div>
+</section>
     <section class="role-login-form">
       <button class="role-back" type="button" onclick="closeRoleLogin('parentLoginPanel')">← Chọn đối tượng khác</button>
       <h2>Đăng nhập phụ huynh</h2>
@@ -1832,7 +1842,12 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 <div aria-hidden="true" id="studentV2">
 <div class="sv2-login" id="sv2Login">
 <div class="sv2-login-card">
-<section class="sv2-login-brand unified-login-brand"><div class="sv2-mark">ÔT</div><h1>ÔN TẬP<br/><span class="brand-yellow">THÔNG MINH</span></h1><p>Ôn đúng trọng tâm · Luyện theo năng lực · Theo dõi tiến bộ mỗi ngày.</p></section>
+<section class="sv2-login-brand unified-login-brand exact-brand">
+  <div class="exact-brand-inner">
+    <div class="sv2-mark">ÔT</div>
+    <h1><span>ÔN TẬP</span><span class="brand-yellow">THÔNG MINH</span></h1>
+  </div>
+</section>
 <section class="sv2-login-form">
       <button class="sv2-back-link" onclick="backToRoleGateway()" type="button">← Chọn đối tượng khác</button>
 <div class="sv2-login-head"><h2>Đăng nhập học sinh</h2><p>Đăng nhập để tiếp tục quá trình ôn tập và theo dõi tiến bộ.</p></div>
@@ -2311,6 +2326,43 @@ window.roleGoogle=function(who){
 </style>
 isplay:none!important}
 @media(max-width:760px){.unified-login-brand{display:none!important}}
+</style>
+
+<style id="v8770-exact-brand-three">
+/* Thương hiệu chính thức: cùng đúng một mẫu cho GV / HS / PH */
+.exact-brand{
+ position:relative!important;overflow:hidden!important;
+ display:flex!important;align-items:center!important;justify-content:flex-start!important;
+ padding:0 0 0 28px!important;box-sizing:border-box!important;
+ background:linear-gradient(145deg,#172554 0%,#1e3a8a 58%,#4338ca 100%)!important;
+}
+.exact-brand .exact-brand-inner{
+ position:relative!important;z-index:2!important;
+ display:flex!important;flex-direction:column!important;align-items:flex-start!important;
+ width:100%!important;margin:0!important;padding:0!important;
+}
+.exact-brand .sv2-mark{
+ width:58px!important;height:58px!important;margin:0 0 28px!important;
+ display:grid!important;place-items:center!important;border-radius:16px!important;
+ background:#fff!important;color:#1e3a8a!important;
+ font-size:21px!important;font-weight:950!important;line-height:1!important;
+ box-shadow:none!important;
+}
+.exact-brand h1{
+ display:flex!important;flex-direction:column!important;gap:3px!important;
+ margin:0!important;padding:0!important;
+ font-size:32px!important;line-height:1.08!important;letter-spacing:-.35px!important;
+ font-weight:950!important;color:#fff!important;
+}
+.exact-brand h1 span{display:block!important;color:#fff!important}
+.exact-brand h1 .brand-yellow{color:#fde768!important}
+.exact-brand p{display:none!important}
+.exact-brand:after{
+ content:""!important;position:absolute!important;width:310px!important;height:310px!important;
+ right:-175px!important;bottom:-205px!important;border-radius:50%!important;
+ background:rgba(255,255,255,.05)!important;pointer-events:none!important;
+}
+@media(max-width:760px){.exact-brand{display:none!important}}
 </style>
 </body>
 </html>
