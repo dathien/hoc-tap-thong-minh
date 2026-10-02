@@ -255,7 +255,7 @@ html,body{margin:0!important;padding:0!important}
 <body>
 <div class="app">
 <header class="topbar">
-<div class="brand-mini"><div aria-label="Học tập thông minh" class="logo">HT</div><div class="brand-copy"><div class="brand-name" id="brandAppName">ÔN TẬP THÔNG MINH</div><div class="brand-slogan" id="brandTopSlogan">Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách</div><div class="teacher-credit">GV.Hồ Nguyễn Đa Thiện</div></div></div>
+<div class="brand-mini"><div aria-label="Ôn Tập Thông Minh" class="logo">ÔT</div><div class="brand-copy"><div class="brand-name" id="brandAppName">ÔN TẬP THÔNG MINH</div><div class="brand-slogan" id="brandTopSlogan">Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách</div><div class="teacher-credit">GV.Hồ Nguyễn Đa Thiện</div></div></div>
 <div class="top-actions">
 <button class="icon-btn student-entry-btn" onclick="studentV2OpenLogin()">🎓 Học sinh</button>
 <button class="icon-btn" onclick="openModal('introModal')">Giới thiệu</button>
@@ -269,7 +269,7 @@ html,body{margin:0!important;padding:0!important}
 <div aria-label="Giới thiệu chức năng nổi bật" class="card hero-slider" id="heroSlider">
 <article class="hero-slide active">
 <span class="slide-kicker">Học tập cá nhân hóa</span>
-<h2 id="heroAppName">HỌC TẬP <span class="slide-em">THÔNG MINH PRO</span></h2>
+<h2 id="heroAppName">ÔN TẬP <span class="slide-em">THÔNG MINH</span></h2>
 <div class="slogan" id="heroSlogan">Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách</div>
 <p>Tổ chức hồ sơ, kế hoạch, bài tập và tiến bộ của học sinh trong một quy trình rõ ràng, dễ sử dụng.</p>
 <div class="hero-actions"><button class="btn primary" onclick="goPanel('home')">Bắt đầu nhanh</button><button class="btn secondary" onclick="newProfile();goPanel('profiles')">Thêm học sinh</button></div>
@@ -1773,7 +1773,7 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
 </style>
 <div id="roleGateway">
 <div class="rg-shell">
-<section class="rg-brand"><div class="rg-logo">HT</div><h1>HỌC TẬP<br/><span>THÔNG MINH PRO</span></h1><p>Một không gian thống nhất cho giáo viên tổ chức ôn tập và học sinh thực hiện nhiệm vụ, theo dõi tiến độ, kết quả học tập.</p></section>
+<section class="rg-brand"><div class="rg-logo">ÔT</div><h1>ÔN TẬP<br/><span>THÔNG MINH</span></h1><p>Nền tảng hỗ trợ ôn tập, luyện tập, kiểm tra và theo dõi tiến bộ học tập.</p></section>
 <section class="rg-choose"><small>Chọn khu vực truy cập</small><h2>Bạn đang sử dụng app với vai trò nào?</h2>
 <button class="rg-choice" onclick="openTeacherLogin()" type="button"><span class="ico">👨‍🏫</span><span><b>Giáo viên</b><span>Đăng nhập khu vực quản lý lớp, giao bài và theo dõi học tập.</span></span></button>
 <button class="rg-choice student" onclick="enterStudentArea()" type="button"><span class="ico">🎓</span><span><b>Học sinh</b><span>Đăng nhập để học, luyện tập, kiểm tra và xem kết quả của mình.</span></span></button>
@@ -1799,7 +1799,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 
 <div class="role-login-overlay" id="teacherLoginPanel" hidden>
   <div class="role-login-card">
-    <section class="role-login-brand"><div class="sv2-mark">HT</div><h1>ÔN TẬP<br/>THÔNG MINH</h1><p>Khu vực giáo viên · Quản lý ôn tập, bài tập và tiến độ học sinh.</p></section>
+    <section class="role-login-brand"><div class="sv2-mark">ÔT</div><h1>ÔN TẬP<br/>THÔNG MINH</h1><p>Khu vực giáo viên · Quản lý ôn tập, bài tập và tiến độ học sinh.</p></section>
     <section class="role-login-form">
       <button class="role-back" type="button" onclick="closeRoleLogin('teacherLoginPanel')">← Chọn đối tượng khác</button>
       <h2>Đăng nhập giáo viên</h2>
@@ -1815,7 +1815,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 </div>
 <div class="role-login-overlay" id="parentLoginPanel" hidden>
   <div class="role-login-card">
-    <section class="role-login-brand"><div class="sv2-mark">HT</div><h1>ÔN TẬP<br/>THÔNG MINH</h1><p>Khu vực phụ huynh · Theo dõi tiến độ, kết quả và nhận xét của con.</p></section>
+    <section class="role-login-brand"><div class="sv2-mark">ÔT</div><h1>ÔN TẬP<br/>THÔNG MINH</h1><p>Khu vực phụ huynh · Theo dõi tiến độ, kết quả và nhận xét của con.</p></section>
     <section class="role-login-form">
       <button class="role-back" type="button" onclick="closeRoleLogin('parentLoginPanel')">← Chọn đối tượng khác</button>
       <h2>Đăng nhập phụ huynh</h2>
@@ -1832,7 +1832,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 <div aria-hidden="true" id="studentV2">
 <div class="sv2-login" id="sv2Login">
 <div class="sv2-login-card">
-<section class="sv2-login-brand"><div class="sv2-mark">HT</div><h1>ÔN TẬP<br/>THÔNG MINH</h1><p>Cổng học tập dành cho học sinh. Xem nhiệm vụ, tự luyện, làm bài kiểm tra và theo dõi tiến bộ của chính mình.</p></section>
+<section class="sv2-login-brand"><div class="sv2-mark">ÔT</div><h1>ÔN TẬP<br/>THÔNG MINH</h1><p>Cổng học tập dành cho học sinh. Xem nhiệm vụ, tự luyện, làm bài kiểm tra và theo dõi tiến bộ của chính mình.</p></section>
 <section class="sv2-login-form">
       <button class="sv2-back-link" onclick="backToRoleGateway()" type="button">← Chọn đối tượng khác</button>
 <div class="sv2-login-head"><h2>Đăng nhập học sinh</h2><p>Đăng nhập để tiếp tục quá trình ôn tập và theo dõi tiến bộ.</p></div>
@@ -1869,7 +1869,7 @@ function subjects(s){const base=['Toán','Ngữ văn','Tiếng Anh','Tin học',
 function initials(n){return String(n||'HS').trim().split(/\s+/).slice(-2).map(x=>x[0]).join('').toUpperCase()}
 function status(a){return a.status==='graded'?'Đã chấm':done(a)?'Đã nộp':a.startedAt?'Đang làm':'Chưa làm'}
 window.studentV2RenderHome=function(){const s=st();if(!s)return;const as=pub(s),pending=as.filter(a=>!done(a)),finished=as.filter(done),scores=finished.map(a=>Number(a.teacherScore??a.score)).filter(Number.isFinite),avg=scores.length?scores.reduce((x,y)=>x+y,0)/scores.length:0,pct=as.length?Math.round(finished.length/as.length*100):0,recent=finished.slice().sort((a,b)=>String(b.submittedAt||b.date).localeCompare(String(a.submittedAt||a.date))).slice(0,4),tests=as.filter(a=>a.quiz).slice(0,4),today=pending.slice(0,4),subs=subjects(s);
-E('sv2Home').innerHTML=`<div class="sv2-app"><header class="sv2-top"><div class="sv2-brand"><div class="sv2-brand-mark">HT</div><div>ÔN TẬP THÔNG MINH</div></div><div class="sv2-user"><div class="sv2-avatar">${safe(initials(s.name))}</div><span><b>${safe(s.name)}</b><br><small>${safe(s.className)}</small></span><button class="btn secondary small" onclick="studentV2Logout()">Đăng xuất</button></div></header>
+E('sv2Home').innerHTML=`<div class="sv2-app"><header class="sv2-top"><div class="sv2-brand"><div class="sv2-brand-mark">ÔT</div><div>ÔN TẬP THÔNG MINH</div></div><div class="sv2-user"><div class="sv2-avatar">${safe(initials(s.name))}</div><span><b>${safe(s.name)}</b><br><small>${safe(s.className)}</small></span><button class="btn secondary small" onclick="studentV2Logout()">Đăng xuất</button></div></header>
 <section class="sv2-hero"><article class="sv2-slide active"><small>Học tập cá nhân hóa</small><h2>Học đúng nhiệm vụ,<br><span>tiến bộ mỗi ngày</span></h2><p>Theo dõi bài được giao, hoàn thành đúng hạn và xem lại kết quả ngay trong một không gian học tập thống nhất.</p></article><article class="sv2-slide"><small>Học hôm nay</small><h2>Ưu tiên việc cần làm,<br><span>không bỏ sót bài</span></h2><p>Các nhiệm vụ chưa hoàn thành được đưa lên trước để em biết hôm nay cần bắt đầu từ đâu.</p></article><article class="sv2-slide"><small>Theo dõi tiến bộ</small><h2>Mỗi bài hoàn thành là<br><span>một bước tiến mới</span></h2><p>Điểm số, tiến độ và thành tích được tổng hợp từ chính hoạt động học tập của em.</p></article><button class="sv2-arr prev" onclick="studentV2Slide(-1)">‹</button><button class="sv2-arr next" onclick="studentV2Slide(1)">›</button><div class="sv2-dots"><i class="sv2-dot active"></i><i class="sv2-dot"></i><i class="sv2-dot"></i></div></section>
 <div class="sv2-welcome"><div><h2>Chào ${safe(s.name)} 👋</h2><p>${safe(s.className)} · Hôm nay em có <b>${pending.length}</b> nhiệm vụ chưa hoàn thành.</p></div><div class="sv2-streak">⭐ ${finished.length} bài đã hoàn thành</div></div>
 <div class="sv2-quick-nav-wrap"><nav class="sv2-quick-nav" aria-label="Chức năng học tập">
