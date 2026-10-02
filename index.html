@@ -1771,7 +1771,7 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
 #roleGateway{position:fixed;inset:0;z-index:25000;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#eef4ff,#f8fbff 48%,#eef2ff)}
 #roleGateway[hidden]{display:none!important}.rg-shell{width:min(980px,100%);background:#fff;border:1px solid #dfe7f2;border-radius:28px;box-shadow:0 30px 80px rgba(30,58,138,.16);overflow:hidden;display:grid;grid-template-columns:1.05fr .95fr}.rg-brand{padding:48px;background:linear-gradient(145deg,#172554,#1e3a8a 58%,#4338ca);color:#fff;position:relative;overflow:hidden}.rg-brand:after{content:"";position:absolute;width:330px;height:330px;border:62px solid rgba(255,255,255,.055);border-radius:50%;right:-180px;bottom:-180px}.rg-logo{width:58px;height:58px;border-radius:17px;background:#fff;color:#1e3a8a;display:grid;place-items:center;font-weight:950;font-size:21px;margin-bottom:28px}.rg-brand h1{font-size:34px;line-height:1.12;margin:0 0 14px}.rg-brand h1 span{color:#fde68a}.rg-brand p{color:#dbeafe;line-height:1.65;max-width:520px}.rg-choose{padding:44px;display:flex;flex-direction:column;justify-content:center}.rg-choose small{font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#64748b}.rg-choose h2{font-size:28px;margin:7px 0 22px;color:#172554}.rg-choice{width:100%;display:flex;align-items:center;gap:15px;text-align:left;border:1px solid #dbe4ef;background:#fff;border-radius:18px;padding:17px;margin:0 0 12px;cursor:pointer;transition:.2s}.rg-choice:hover{transform:translateY(-2px);border-color:#a9bff5;box-shadow:0 12px 26px rgba(37,99,235,.09)}.rg-choice .ico{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:23px;background:#eef4ff}.rg-choice b{display:block;font-size:17px;color:#172554;margin-bottom:3px}.rg-choice span{font-size:13px;color:#64748b}.rg-choice.student{background:linear-gradient(135deg,#eff6ff,#eef2ff);border-color:#bfcef9}.rg-note{font-size:12px;color:#94a3b8;margin-top:9px;text-align:center}@media(max-width:760px){.rg-shell{grid-template-columns:1fr}.rg-brand{padding:28px}.rg-brand h1{font-size:27px}.rg-choose{padding:28px}}
 </style>
-<div id="roleGateway" hidden>
+<div id="roleGateway">
 <div class="rg-shell">
 <section class="rg-brand"><div class="rg-logo">HT</div><h1>HỌC TẬP<br/><span>THÔNG MINH PRO</span></h1><p>Một không gian thống nhất cho giáo viên tổ chức ôn tập và học sinh thực hiện nhiệm vụ, theo dõi tiến độ, kết quả học tập.</p></section>
 <section class="rg-choose"><small>Chọn khu vực truy cập</small><h2>Bạn đang sử dụng app với vai trò nào?</h2>
@@ -1796,12 +1796,12 @@ window.enterTeacherArea=function(){
 };
 window.enterStudentArea=function(){document.getElementById('roleGateway').hidden=true;if(typeof studentV2OpenLogin==='function'){studentV2OpenLogin()}else{setTimeout(()=>studentV2OpenLogin(),0)}};
 </script>
-<div aria-hidden="false" class="open" id="studentV2">
-<div class="sv2-login" id="sv2Login" style="display:grid">
+<div aria-hidden="true" id="studentV2">
+<div class="sv2-login" id="sv2Login">
 <div class="sv2-login-card">
 <section class="sv2-login-brand"><div class="sv2-mark">HT</div><h1>HỌC TẬP<br/>THÔNG MINH PRO</h1><p>Cổng học tập dành cho học sinh. Xem nhiệm vụ, tự luyện, làm bài kiểm tra và theo dõi tiến bộ của chính mình.</p></section>
 <section class="sv2-login-form">
-<div class="sv2-login-head"><h2>Đăng nhập</h2><p>Một cổng đăng nhập cho Giáo viên, Học sinh và Phụ huynh. Hệ thống tự xác định quyền sau khi xác thực.</p></div>
+<div class="sv2-login-head"><h2>Đăng nhập</h2><p></p></div>
 <div class="sv2-field sv2-student-class"><label>Lớp <span>(chỉ cần với tài khoản học sinh demo hiện tại)</span></label><input autocomplete="off" id="sv2Class" placeholder="Ví dụ: 10A1" type="text"/></div>
 <div class="sv2-field"><label>Tên đăng nhập</label><input autocomplete="username" id="sv2Student" placeholder="Tên đăng nhập / họ tên" type="text"/></div>
 <div class="sv2-field"><label>Mật khẩu</label><div class="sv2-password-wrap"><input autocomplete="current-password" id="sv2Code" maxlength="32" placeholder="Nhập mật khẩu" type="password"/><button class="sv2-eye" type="button" onclick="studentV2TogglePassword()" aria-label="Hiện hoặc ẩn mật khẩu">◉</button></div></div>
@@ -1812,7 +1812,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 <button class="sv2-google-login" onclick="studentV2GoogleLogin()" type="button"><span class="sv2-google-g">G</span><span>Đăng nhập với Google</span></button>
 <div class="sv2-register-line">Chưa có tài khoản? <button type="button" onclick="studentV2Register()">Đăng ký</button></div>
 <button class="sv2-back-link" onclick="studentV2ResetLogin()" type="button">↺ Xóa thông tin đăng nhập</button>
-<div class="sv2-security-note"><b>Phân quyền sau đăng nhập</b><span>Giáo viên: quản lý theo lớp được cấp quyền.</span><span>Học sinh: chỉ dữ liệu của chính mình.</span><span>Phụ huynh: chỉ xem dữ liệu của con đã liên kết; điểm và nhận xét chỉ đọc.</span></div><div class="sv2-demo-note"><b>Tài khoản học sinh demo:</b> 10A1 · Nguyễn Minh An · Mật khẩu 1234</div>
+
 </section>
 </div>
 </div>
@@ -1944,25 +1944,17 @@ window.HTPRO_ROLE_POLICY={
 };
 </script>
 
-<script id="v8754-open-unified-login">
+
+<script id="v8758-role-entry">
 (function(){
- function openUnifiedLogin(){
+ function showRoleEntry(){
    const gate=document.getElementById('roleGateway');
-   if(gate) gate.hidden=true;
-   if(typeof window.studentV2OpenLogin==='function'){
-     window.studentV2OpenLogin();
-   }else{
-     const root=document.getElementById('studentV2');
-     const login=document.getElementById('sv2Login');
-     const home=document.getElementById('sv2Home');
-     if(root){root.classList.add('open');root.setAttribute('aria-hidden','false')}
-     if(login){login.hidden=false;login.style.display='grid'}
-     if(home){home.hidden=true;home.style.display='none'}
-     document.body.style.overflow='hidden';
-   }
+   const sv=document.getElementById('studentV2');
+   if(gate){gate.hidden=false;gate.style.display='';}
+   if(sv){sv.classList.remove('open');sv.setAttribute('aria-hidden','true');}
  }
- if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(openUnifiedLogin,80));
- else setTimeout(openUnifiedLogin,80);
+ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',showRoleEntry);
+ else showRoleEntry();
 })();
 </script>
 </body>
@@ -3396,12 +3388,6 @@ window.HTPRO_ROLE_POLICY={
 
 <style id="v8753-unified-login">
 .sv2-student-class label span{font-size:10px;font-weight:700;color:#94a3b8}
-.sv2-security-note{margin-top:15px;padding:12px 14px;border:1px solid #dbe6f2;border-radius:13px;background:#f8fbff;display:grid;gap:5px;color:#526477;font-size:11px;line-height:1.4}
-.sv2-security-note b{color:#172554;font-size:12px}.sv2-security-note span:before{content:"• ";color:#1e40af;font-weight:900}
+
 </style>
 
-<style id="v8755-login-visibility-failsafe">
-#roleGateway{display:none!important}
-#studentV2.open{display:block!important;visibility:visible!important;opacity:1!important}
-#studentV2.open #sv2Login:not([hidden]){display:grid!important;visibility:visible!important;opacity:1!important}
-</style>
