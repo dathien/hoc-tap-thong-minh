@@ -679,8 +679,35 @@ aside::-webkit-scrollbar{
 </div>
 <footer class="footer"><span id="footerAppName">ÔN TẬP THÔNG MINH</span></footer>
 </div>
-<div class="modal" id="introModal" onclick="modalBackdrop(event,'introModal')"><div class="modal-box"><div class="modal-head"><h2>Giới thiệu ứng dụng</h2><button class="close" onclick="closeModal('introModal')">×</button></div><p><b id="introAppName">Ôn Tập Thông Minh</b> là công cụ hỗ trợ giáo viên quản lý hồ sơ, xây dựng lộ trình học tập cá nhân hóa và theo dõi tiến bộ của học sinh.</p><div class="guide-grid"><div class="guide-card"><b>🎯 Cá nhân hóa</b><p>Tạo hồ sơ, nhận diện thói quen học và đề xuất mức hỗ trợ phù hợp.</p></div><div class="guide-card"><b>📅 Lập kế hoạch</b><p>Thiết lập mục tiêu, tạo kế hoạch tuần và tổ chức phiên học tập trung.</p></div><div class="guide-card"><b>📈 Theo dõi tiến bộ</b><p>Ghi nhật ký, theo dõi bài tập, kết quả môn học và sự phát triển năng lực.</p></div></div><div class="info-box" style="margin-top:14px">Giáo viên có thể điều chỉnh kế hoạch và đánh giá theo thực tế từng học sinh.</div></div></div>
-<div class="modal" id="guideModal" onclick="modalBackdrop(event,'guideModal')"><div class="modal-box"><div class="modal-head"><h2>Hướng dẫn sử dụng từng bước</h2><button class="close" onclick="closeModal('guideModal')">×</button></div><div class="guide-grid"><div class="guide-card"><b>Bước 1. Tạo hồ sơ</b><ol><li>Nhập họ tên, lớp, môn học.</li><li>Nhập điểm hiện tại và khó khăn.</li><li>Nhấn <b>Lưu hồ sơ</b>.</li></ol></div><div class="guide-card"><b>Bước 2. Khảo sát</b><ol><li>Chọn học sinh.</li><li>Trả lời đủ 15 câu.</li><li>Nhấn <b>Phân tích kết quả</b>.</li></ol></div><div class="guide-card"><b>Bước 3. Xem phân tích</b><ol><li>Xem phong cách nổi trội.</li><li>Xem mức cần hỗ trợ.</li><li>Đọc gợi ý dành cho giáo viên.</li></ol></div><div class="guide-card"><b>Bước 4. Đặt mục tiêu</b><ol><li>Nhập mục tiêu cụ thể.</li><li>Chọn thời hạn.</li><li>Ghi minh chứng hoàn thành.</li></ol></div><div class="guide-card"><b>Bước 5. Tạo kế hoạch tuần</b><ol><li>Nhập chủ đề trọng tâm.</li><li>Nhấn tạo kế hoạch.</li><li>Đánh dấu nhiệm vụ đã xong.</li></ol></div><div class="guide-card"><b>Bước 6–7. Học và ghi nhận</b><ol><li>Bật bộ đếm giờ.</li><li>Hoàn thành phiên học.</li><li>Ghi nhật ký và xuất báo cáo.</li></ol></div></div><div class="warning-box" style="margin-top:14px"><b>Cách dùng nhanh:</b> Tạo hồ sơ → Khảo sát → Xem phân tích → Tạo kế hoạch → Ghi nhật ký → Xuất Word.</div></div></div>
+<div class="modal" id="introModal" onclick="modalBackdrop(event,'introModal')">
+<div class="modal-box">
+<div class="modal-head"><h2>Giới thiệu Ôn Tập Thông Minh</h2><button class="close" onclick="closeModal('introModal')">×</button></div>
+<p><b>Ôn Tập Thông Minh</b> hỗ trợ giáo viên tổ chức ôn tập theo lớp, môn và từng học sinh; giao nhiệm vụ, theo dõi quá trình làm bài, chấm điểm và sử dụng kết quả để điều chỉnh kế hoạch ôn tập.</p>
+<div class="guide-grid">
+<div class="guide-card"><b>👥 Quản lý lớp &amp; học sinh</b><p>Chọn lớp đang làm việc, mở hồ sơ từng học sinh và theo dõi dữ liệu học tập theo đúng lớp, môn.</p></div>
+<div class="guide-card"><b>🗓️ Kế hoạch ôn tập</b><p>Tổ chức mục tiêu, nội dung và nhiệm vụ ôn tập; liên kết kế hoạch với hoạt động học và bài được giao.</p></div>
+<div class="guide-card"><b>📝 Bài tập &amp; kiểm tra</b><p>Soạn và giao bài theo lớp, nhóm hoặc cá nhân; thiết lập thời gian, mức độ, cách công bố điểm và đáp án.</p></div>
+<div class="guide-card"><b>📊 Chấm bài &amp; theo dõi kết quả</b><p>Xem bài học sinh nộp, từng câu trả lời, đáp án đúng, nhập điểm và nhận xét; theo dõi tiến độ theo môn.</p></div>
+<div class="guide-card"><b>🎯 Cá nhân hóa ôn tập</b><p>Dữ liệu bài làm và kết quả tích lũy được dùng để hình thành hồ sơ học tập theo từng môn và gợi ý mức hỗ trợ phù hợp.</p></div>
+<div class="guide-card"><b>👨‍👩‍👧 Kết quả &amp; phụ huynh</b><p>Công bố kết quả phù hợp để học sinh và phụ huynh theo dõi; điểm chấm thủ công chỉ hiển thị sau khi giáo viên công bố.</p></div>
+</div>
+<div class="info-box" style="margin-top:14px">Luồng chính: <b>Kế hoạch ôn tập → Giao bài → Học sinh làm/nộp → Giáo viên chấm → Kết quả &amp; tiến độ → Điều chỉnh ôn tập.</b></div>
+</div>
+</div>
+<div class="modal" id="guideModal" onclick="modalBackdrop(event,'guideModal')">
+<div class="modal-box">
+<div class="modal-head"><h2>Hướng dẫn sử dụng dành cho giáo viên</h2><button class="close" onclick="closeModal('guideModal')">×</button></div>
+<div class="guide-grid">
+<div class="guide-card"><b>Bước 1. Chọn lớp &amp; học sinh</b><ol><li>Chọn <b>Lớp đang làm việc</b>.</li><li>Chọn học sinh cần theo dõi.</li><li>Mở <b>Lớp học &amp; học sinh</b> hoặc hồ sơ học sinh khi cần xem chi tiết.</li></ol></div>
+<div class="guide-card"><b>Bước 2. Xác định kế hoạch ôn tập</b><ol><li>Mở <b>Kế hoạch ôn tập</b>.</li><li>Xác định môn, nội dung và nhiệm vụ cần thực hiện.</li><li>Theo dõi kế hoạch theo tiến độ thực tế của lớp/học sinh.</li></ol></div>
+<div class="guide-card"><b>Bước 3. Soạn &amp; giao bài</b><ol><li>Vào <b>Bài tập &amp; ôn luyện → Soạn &amp; giao bài</b>.</li><li>Chọn lớp/nhóm/cá nhân, mức độ và số câu.</li><li>Thiết lập thời gian, cách chấm và việc cho xem đáp án rồi giao bài.</li></ol></div>
+<div class="guide-card"><b>Bước 4. Theo dõi học sinh làm bài</b><ol><li>Dùng <b>Học hôm nay</b> để xem nhiệm vụ cần thực hiện.</li><li>Theo dõi bài đang chờ, đã nộp và quá hạn.</li><li>Dùng <b>Nhật ký học tập</b> để xem quá trình tích lũy dữ liệu.</li></ol></div>
+<div class="guide-card"><b>Bước 5. Xem bài &amp; chấm điểm</b><ol><li>Vào <b>Bài học sinh nộp</b>.</li><li>Mở bài để xem từng câu, lựa chọn của học sinh và đáp án đúng.</li><li>Nhập điểm, nhận xét và công bố kết quả khi phù hợp.</li></ol></div>
+<div class="guide-card"><b>Bước 6. Phân tích &amp; điều chỉnh</b><ol><li>Xem <b>Kết quả &amp; phụ huynh</b> và tiến độ theo môn.</li><li>Đối chiếu dữ liệu nhiều lần làm bài, không kết luận chỉ từ một bài.</li><li>Điều chỉnh mức hỗ trợ, kế hoạch và bài giao tiếp theo.</li></ol></div>
+</div>
+<div class="warning-box" style="margin-top:14px"><b>Dùng nhanh:</b> Chọn lớp → Chọn học sinh/môn → Lập kế hoạch → Giao bài → Theo dõi làm/nộp → Chấm &amp; nhận xét → Xem kết quả/tiến độ → Điều chỉnh kế hoạch.</div>
+</div>
+</div>
 <div class="modal" id="brandModal" onclick="modalBackdrop(event,'brandModal')"><div class="modal-box"><div class="modal-head"><h2>Chỉnh tên ứng dụng</h2><button class="close" onclick="closeModal('brandModal')">×</button></div><div class="grid2"><label><b>Tên ứng dụng</b><input id="brandNameInput" maxlength="60" placeholder="Ví dụ: Ôn Tập Thông Minh"/></label><label><b>Khẩu hiệu</b><input id="brandSloganInput" maxlength="120" placeholder="Ví dụ: Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách"/></label></div><div class="action-row" style="margin-top:16px"><button class="btn primary" onclick="saveBrandSettings()">💾 Lưu thay đổi</button><button class="btn secondary" onclick="resetBrandSettings()">↺ Khôi phục mặc định</button></div></div></div>
 <div class="toast" id="toast"></div>
 <script>
