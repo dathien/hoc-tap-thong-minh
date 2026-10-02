@@ -304,6 +304,22 @@ html,body{margin:0!important;padding:0!important}
 #teacherLoginPanel .sv2-login-brand + .v125-credit,
 #parentLoginPanel .sv2-login-brand + .v125-credit,
 #studentV2 .sv2-login-brand + .v125-credit{margin-top:-10px!important;margin-bottom:16px!important}
+</style><style id="v8827-student-credit-style">
+#studentV2 .v127-student-credit,
+.sv2-student-shell .v127-student-credit{
+ display:block!important;
+ margin:4px 10px 12px!important;
+ padding:0 0 11px!important;
+ border-bottom:1px solid rgba(255,255,255,.18)!important;
+ background:transparent!important;
+ color:#dbeafe!important;
+ font-size:10.5px!important;
+ line-height:1.3!important;
+ font-weight:800!important;
+ letter-spacing:.01em!important;
+ text-align:left!important;
+ white-space:nowrap!important;
+}
 </style></head>
 <body>
 <div class="app">
@@ -4447,19 +4463,36 @@ window.parentV122Show=function(key,el){
  return false;
 };
 })();
-</script><script id="v8825-credit-under-brand">
+</script><script id="v8827-student-credit-actual-sidebar">
 (function(){
- function place(){
-   document.querySelectorAll('.sv2-student-sidebar').forEach(side=>{
-     const brand=side.querySelector('.sv2-brand,.sv2-student-brand,.sv2side-brand');
-     if(brand && !brand.nextElementSibling?.classList.contains('v125-credit')){
-       const d=document.createElement('div');d.className='v125-credit';d.textContent='GV.Hồ Nguyễn Đa Thiện';
-       brand.insertAdjacentElement('afterend',d);
-     }
-   });
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',place);else place();
- new MutationObserver(place).observe(document.body,{childList:true,subtree:true});
+'use strict';
+function addCredit(){
+  document.querySelectorAll('.sv2-student-shell').forEach(function(shell){
+    const side=shell.querySelector('aside, .sv2-student-sidebar, .sv2-sidebar');
+    if(!side || side.querySelector('.v127-student-credit')) return;
+
+    let brand=side.querySelector('.sv2-brand,.sv2-student-brand,.sv2side-brand,.brand');
+    if(!brand){
+      const candidates=Array.from(side.children);
+      brand=candidates.find(function(el){
+        const t=(el.textContent||'').replace(/\s+/g,' ').trim();
+        return t.includes('ÔN TẬP') && t.includes('THÔNG MINH');
+      }) || null;
+    }
+    if(!brand) return;
+
+    const d=document.createElement('div');
+    d.className='v127-student-credit';
+    d.textContent='GV.Hồ Nguyễn Đa Thiện';
+    brand.insertAdjacentElement('afterend',d);
+  });
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',addCredit);
+}else{
+  addCredit();
+}
+new MutationObserver(addCredit).observe(document.body,{childList:true,subtree:true});
 })();
 </script></body>
 </html>
