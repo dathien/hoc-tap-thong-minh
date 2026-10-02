@@ -2154,6 +2154,27 @@ window.roleGoogle=function(who){
  #teacherLoginPanel .role-login-form h2,#parentLoginPanel .role-login-form h2,#studentV2 .sv2-login-form h2{font-size:26px}
 }
 </style>
+
+<style id="v8763-google-center-fix">
+/* Giáo viên + Phụ huynh: icon G và chữ là một cụm được căn giữa thực sự */
+#teacherLoginPanel .sv2-google-btn,
+#parentLoginPanel .sv2-google-btn{
+ position:relative!important;
+ display:flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ gap:10px!important;
+ padding:0 48px!important;
+ text-align:center!important;
+}
+#teacherLoginPanel .sv2-google-btn .sv2-google-g,
+#parentLoginPanel .sv2-google-btn .sv2-google-g{
+ position:static!important;
+ transform:none!important;
+ flex:0 0 auto!important;
+ margin:0!important;
+}
+</style>
 </body>
 </html>
 <style>
