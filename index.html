@@ -281,6 +281,14 @@ html,body{margin:0!important;padding:0!important}
 </style><style id="v8820-parent-login-style">
 #parentDemoHintV120{margin:-4px 0 10px;padding:8px 10px;border-radius:9px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:800}
 #parentDemoLoginButton{background:linear-gradient(135deg,#2563eb,#4f46e5)!important}
+</style><style id="v8822-parent-nav-style">
+#parentV117 .pv117side nav a{
+ display:block!important;position:relative!important;z-index:20!important;pointer-events:auto!important;
+ text-decoration:none!important;color:#dbeafe!important;text-align:left!important;padding:11px 12px!important;
+ border-radius:10px!important;font-weight:800!important;cursor:pointer!important;margin:2px 0!important
+}
+#parentV117 .pv117side nav a:hover{background:rgba(255,255,255,.08)!important}
+#parentV117 .pv117side nav a.active{background:linear-gradient(135deg,#2563eb,#4f46e5)!important;color:#fff!important}
 </style></head>
 <body>
 <div class="app">
@@ -4312,13 +4320,7 @@ window.studentV2OpenAssignment=function(id){
 <aside class="pv117side">
 <div class="pv117brand"><div>ÔT</div><b>ÔN TẬP<br/><span>THÔNG MINH</span></b></div>
 <div class="pv117who"><small>PHỤ HUYNH HỌC SINH</small><strong id="pv117StudentName">Nguyễn Minh An</strong><span id="pv117StudentClass">Lớp 10A1</span></div>
-<nav>
-<button class="active" data-pv="overview">⌂ Tổng quan</button>
-<button data-pv="assignments">▣ Bài tập &amp; kiểm tra</button>
-<button data-pv="results">▥ Kết quả học tập</button>
-<button data-pv="progress">◫ Tiến độ ôn tập</button>
-<button data-pv="feedback">✦ Nhận xét giáo viên</button>
-</nav>
+<nav><a class="active" data-pv="overview" href="#ph-overview" onclick="return parentV122Show('overview', this);">⌂ Tổng quan</a><a data-pv="assignments" href="#ph-assignments" onclick="return parentV122Show('assignments', this);">▣ Bài tập &amp; kiểm tra</a><a data-pv="results" href="#ph-results" onclick="return parentV122Show('results', this);">▥ Kết quả học tập</a><a data-pv="progress" href="#ph-progress" onclick="return parentV122Show('progress', this);">◫ Tiến độ ôn tập</a><a data-pv="feedback" href="#ph-feedback" onclick="return parentV122Show('feedback', this);">✦ Nhận xét giáo viên</a></nav>
 <button class="pv117logout" onclick="parentV117Logout()">Đăng xuất</button>
 </aside>
 <main class="pv117main">
@@ -4405,94 +4407,30 @@ window.openParentLogin=function(){
  return r;
 };
 })();
-</script><script id="v8821-parent-full-navigation">
+</script><script id="v8822-parent-nav-direct">
 (function(){
 'use strict';
 const A=v=>Array.isArray(v)?v:[];
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function child(){
- try{return A(state.students).find(s=>String(s.name||'').normalize('NFC').trim().toLowerCase()==='nguyễn minh an')
-   ||A(state.students).find(s=>String(s.name||'').toLowerCase().includes('minh an'))||null}catch(_){return null}
-}
-function items(){return A(child()?.assignments)}
-function publishedScore(a){
- if(a?.gradePublished!==true)return null;
- const n=Number(a.teacherScore!==''&&a.teacherScore!=null?a.teacherScore:a.score);
- return Number.isFinite(n)?n:null;
-}
-function status(a){
- if(a.submittedAt && publishedScore(a)!==null)return 'Đã có điểm';
- if(a.submittedAt)return 'Chờ giáo viên chấm';
- if(a.status==='doing')return 'Đang làm';
- return 'Chưa làm';
-}
-function date(v){if(!v)return '—';try{return new Date(v).toLocaleDateString('vi-VN')}catch(_){return '—'}}
-function title(t){const x=document.getElementById('pv117Title');if(x)x.textContent=t}
-function row(a){
- const sc=publishedScore(a);
- return `<div class="pv117row"><div><b>${esc(a.title||'Bài ôn tập')}</b><small>${esc(a.subject||'Ôn tập')} · ${esc(a.assessmentSubtype||'Luyện tập')} · ${date(a.submittedAt||a.date)}</small></div><div>${sc!==null?`<span class="pv117score">${sc}/10</span>`:`<span class="pv117pending">${esc(status(a))}</span>`}</div></div>`;
-}
-function renderOverview(){
- title('Tổng quan học tập');
- const as=items(), sub=as.filter(a=>a.submittedAt), scores=as.map(publishedScore).filter(v=>v!==null);
- const avg=scores.length?(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1):'—';
- const pct=as.length?Math.round(sub.length/as.length*100):0;
- const recent=[...as].sort((a,b)=>new Date(b.submittedAt||b.date||0)-new Date(a.submittedAt||a.date||0)).slice(0,6);
- document.getElementById('pv117Content').innerHTML=`<div class="pv117hero"><div><small>HỒ SƠ PHỤ HUYNH ĐƯỢC LIÊN KẾT</small><h2>Nguyễn Minh An · 10A1</h2><p>Phụ huynh chỉ được xem thông tin học tập của Nguyễn Minh An.</p></div><div class="pv117badge">CHỈ XEM</div></div>
- <div class="pv117stats"><div class="pv117stat"><b>${as.length}</b><span>Bài được giao</span></div><div class="pv117stat"><b>${sub.length}</b><span>Bài đã nộp</span></div><div class="pv117stat"><b>${pct}%</b><span>Tiến độ hoàn thành</span></div><div class="pv117stat"><b>${avg}</b><span>Điểm TB đã công bố</span></div></div>
- <div class="pv117card"><h3>Hoạt động học tập gần đây</h3>${recent.length?recent.map(row).join(''):'<div class="pv117empty">Chưa có dữ liệu.</div>'}</div>`;
-}
-function renderAssignments(){
- title('Bài tập & kiểm tra');
- const as=[...items()].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
- document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Bài được giao cho Nguyễn Minh An</h3>${as.length?as.map(row).join(''):'<div class="pv117empty">Chưa có bài được giao.</div>'}</div>
- <div class="pv117notice">Phụ huynh chỉ theo dõi trạng thái; không thể mở làm bài, sửa hoặc nộp bài thay học sinh.</div>`;
-}
-function renderResults(){
- title('Kết quả học tập');
- const done=items().filter(a=>a.submittedAt);
- document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Kết quả các bài đã nộp</h3>${done.length?done.map(row).join(''):'<div class="pv117empty">Chưa có bài đã nộp.</div>'}</div>
- <div class="pv117notice">Bài chấm thủ công chỉ hiện điểm sau khi giáo viên công bố. Điểm chưa công bố không được tiết lộ cho phụ huynh.</div>`;
-}
-function renderProgress(){
- title('Tiến độ ôn tập');
- const groups={};items().forEach(a=>{const s=a.subject||'Khác';(groups[s]||(groups[s]=[])).push(a)});
- const body=Object.entries(groups).map(([s,x])=>{
-   const d=x.filter(a=>a.submittedAt).length,p=x.length?Math.round(d/x.length*100):0;
-   return `<div class="pv117row"><div><b>${esc(s)}</b><small>${d}/${x.length} bài đã hoàn thành<div class="pv117progress"><i style="width:${p}%"></i></div></small></div><span class="pv117score">${p}%</span></div>`;
- }).join('');
- document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Tiến độ theo môn</h3>${body||'<div class="pv117empty">Chưa có dữ liệu tiến độ.</div>'}</div>`;
-}
-function renderFeedback(){
- title('Nhận xét giáo viên');
- const xs=items().filter(a=>String(a.teacherComment||a.feedback||'').trim());
- document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Nhận xét dành cho Nguyễn Minh An</h3>${xs.length?xs.map(a=>`<div class="pv117row"><div><b>${esc(a.title||a.subject||'Nhận xét')}</b><small>${esc(a.teacherComment||a.feedback)}</small></div><span>${date(a.gradedAt||a.submittedAt)}</span></div>`).join(''):'<div class="pv117empty">Chưa có nhận xét của giáo viên.</div>'}</div>`;
-}
-const renders={overview:renderOverview,assignments:renderAssignments,results:renderResults,progress:renderProgress,feedback:renderFeedback};
-window.parentV121Show=function(which){
- document.querySelectorAll('#parentV117 nav button[data-pv]').forEach(b=>b.classList.toggle('active',b.dataset.pv===which));
- (renders[which]||renderOverview)();
+function st(){try{return A(state.students).find(s=>String(s.name||'').normalize('NFC').trim().toLowerCase()==='nguyễn minh an')||A(state.students).find(s=>String(s.name||'').toLowerCase().includes('minh an'))||null}catch(_){return null}}
+function all(){return A(st()?.assignments)}
+function sc(a){if(a?.gradePublished!==true)return null;const n=Number(a.teacherScore!==''&&a.teacherScore!=null?a.teacherScore:a.score);return Number.isFinite(n)?n:null}
+function dt(v){if(!v)return '—';try{return new Date(v).toLocaleDateString('vi-VN')}catch(_){return '—'}}
+function stat(a){if(a.submittedAt&&sc(a)!==null)return'Đã có điểm';if(a.submittedAt)return'Chờ giáo viên chấm';if(a.status==='doing')return'Đang làm';return'Chưa làm'}
+function row(a){const n=sc(a);return `<div class="pv117row"><div><b>${esc(a.title||'Bài ôn tập')}</b><small>${esc(a.subject||'Ôn tập')} · ${esc(a.assessmentSubtype||'Luyện tập')} · ${dt(a.submittedAt||a.date)}</small></div><div>${n!==null?`<span class="pv117score">${n}/10</span>`:`<span class="pv117pending">${esc(stat(a))}</span>`}</div></div>`}
+function put(title,html){const t=document.getElementById('pv117Title'),c=document.getElementById('pv117Content');if(t)t.textContent=title;if(c)c.innerHTML=html}
+function overview(){const x=all(),d=x.filter(a=>a.submittedAt),ss=x.map(sc).filter(v=>v!==null),avg=ss.length?(ss.reduce((a,b)=>a+b,0)/ss.length).toFixed(1):'—',p=x.length?Math.round(d.length/x.length*100):0,r=[...x].sort((a,b)=>new Date(b.submittedAt||b.date||0)-new Date(a.submittedAt||a.date||0)).slice(0,6);put('Tổng quan học tập',`<div class="pv117hero"><div><small>HỒ SƠ PHỤ HUYNH ĐƯỢC LIÊN KẾT</small><h2>Nguyễn Minh An · 10A1</h2><p>Phụ huynh chỉ được xem thông tin học tập của Nguyễn Minh An.</p></div><div class="pv117badge">CHỈ XEM</div></div><div class="pv117stats"><div class="pv117stat"><b>${x.length}</b><span>Bài được giao</span></div><div class="pv117stat"><b>${d.length}</b><span>Bài đã nộp</span></div><div class="pv117stat"><b>${p}%</b><span>Tiến độ hoàn thành</span></div><div class="pv117stat"><b>${avg}</b><span>Điểm TB đã công bố</span></div></div><div class="pv117card"><h3>Hoạt động học tập gần đây</h3>${r.length?r.map(row).join(''):'<div class="pv117empty">Chưa có dữ liệu.</div>'}</div>`)}
+function assignments(){const x=[...all()].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));put('Bài tập & kiểm tra',`<div class="pv117card"><h3>Bài được giao cho Nguyễn Minh An</h3>${x.length?x.map(row).join(''):'<div class="pv117empty">Chưa có bài được giao.</div>'}</div><div class="pv117notice">Phụ huynh chỉ theo dõi trạng thái, không thể làm hoặc nộp bài thay học sinh.</div>`)}
+function results(){const x=all().filter(a=>a.submittedAt);put('Kết quả học tập',`<div class="pv117card"><h3>Kết quả các bài đã nộp</h3>${x.length?x.map(row).join(''):'<div class="pv117empty">Chưa có bài đã nộp.</div>'}</div><div class="pv117notice">Chỉ điểm đã được giáo viên công bố mới hiển thị.</div>`)}
+function progress(){const g={};all().forEach(a=>{const s=a.subject||'Khác';(g[s]||(g[s]=[])).push(a)});const h=Object.entries(g).map(([s,x])=>{const d=x.filter(a=>a.submittedAt).length,p=x.length?Math.round(d/x.length*100):0;return `<div class="pv117row"><div><b>${esc(s)}</b><small>${d}/${x.length} bài đã hoàn thành<div class="pv117progress"><i style="width:${p}%"></i></div></small></div><span class="pv117score">${p}%</span></div>`}).join('');put('Tiến độ ôn tập',`<div class="pv117card"><h3>Tiến độ theo môn</h3>${h||'<div class="pv117empty">Chưa có dữ liệu tiến độ.</div>'}</div>`)}
+function feedback(){const x=all().filter(a=>String(a.teacherComment||a.feedback||'').trim());const h=x.map(a=>`<div class="pv117row"><div><b>${esc(a.title||a.subject||'Nhận xét')}</b><small>${esc(a.teacherComment||a.feedback)}</small></div><span>${dt(a.gradedAt||a.submittedAt)}</span></div>`).join('');put('Nhận xét giáo viên',`<div class="pv117card"><h3>Nhận xét dành cho Nguyễn Minh An</h3>${h||'<div class="pv117empty">Chưa có nhận xét của giáo viên.</div>'}</div>`)}
+const R={overview,assignments,results,progress,feedback};
+window.parentV122Show=function(key,el){
+ document.querySelectorAll('#parentV117 nav a[data-pv]').forEach(a=>a.classList.remove('active'));
+ if(el)el.classList.add('active');
+ (R[key]||overview)();
+ return false;
 };
-document.addEventListener('click',function(e){
- const b=e.target.closest('#parentV117 nav button[data-pv]');
- if(!b)return;
- e.preventDefault();e.stopPropagation();
- window.parentV121Show(b.dataset.pv);
-},true);
-
-/* Đăng xuất hoạt động độc lập với script phụ huynh cũ đã loại bỏ. */
-window.parentV117Logout=function(){
- const pv=document.getElementById('parentV117');if(pv){pv.classList.remove('open');pv.setAttribute('aria-hidden','true')}
- const app=document.querySelector('.app');if(app)app.style.display='';
- const gate=document.getElementById('roleGateway');if(gate)gate.hidden=false;
- document.body.style.overflow='';
-};
-
-/* Sau đăng nhập 8.8.20, Tổng quan cũng dùng chung renderer 8.8.21. */
-document.addEventListener('click',function(e){
- if(!e.target.closest('#parentDemoLoginButton'))return;
- setTimeout(()=>{if(document.getElementById('parentV117')?.classList.contains('open'))window.parentV121Show('overview')},0);
-},true);
 })();
 </script></body>
 </html>
