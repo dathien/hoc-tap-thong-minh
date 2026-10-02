@@ -438,7 +438,6 @@ html,body{margin:0!important;padding:0!important}
 <div class="grid2"><div class="field"><label>Thời gian học mỗi ngày</label><select id="pTime"><option value="30">30 phút</option><option selected="" value="45">45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option></select></div><div class="field"><label>Số ngày học mỗi tuần</label><select id="pDays"><option>3</option><option>4</option><option selected="">5</option><option>6</option><option>7</option></select></div></div>
 <div class="field"><label>Khó khăn đang gặp</label><textarea id="pDifficulty" placeholder="Ví dụ: Dễ mất tập trung, chưa nhớ công thức, ngại làm bài..."></textarea></div>
 <div class="field"><label>Điểm mạnh hoặc sở thích</label><textarea id="pStrength" placeholder="Ví dụ: Thích hình ảnh, thực hành tốt, chăm ghi chép..."></textarea></div><div class="field"><label>Ghi chú của giáo viên</label><textarea id="pTeacherNote" placeholder="Ví dụ: Học sinh muốn ưu tiên ôn Toán trước, sau đó chuyển sang Hóa học; mục tiêu khoảng 6–7 điểm."></textarea><small class="help">Ghi nhanh nhu cầu học sinh trao đổi trực tiếp, mục tiêu hoặc lưu ý riêng để giáo viên không phải nhớ bên ngoài app.</small></div>
-
 <div class="action-row"><button class="btn primary" onclick="saveProfile()">💾 Lưu hồ sơ</button><button class="btn secondary" onclick="fillSampleProfile()">Điền mẫu minh họa</button><button class="btn danger" id="deleteProfileBtn" onclick="deleteCurrentProfile()">Xóa hồ sơ</button></div>
 </div>
 <div><h3 style="margin-top:0">Danh sách học sinh theo lớp và môn</h3><div id="profileList"></div></div>
@@ -491,7 +490,6 @@ html,body{margin:0!important;padding:0!important}
 <div class="panel-head"><div><h2>Học hôm nay</h2><p>Nhiệm vụ ở đây lấy trực tiếp từ bài giáo viên đã giao và kế hoạch ôn tập; học sinh không phải nhập lại nội dung.</p></div><span class="tag blue" id="todaySubjectBadge">Chưa chọn học sinh</span></div>
 <div class="grid3 today-picker"><div class="field"><label>Lớp</label><select id="todayClass" onchange="todayClassChanged()"></select></div><div class="field"><label>Học sinh đang học</label><select id="todayStudent" onchange="chooseTodayStudent(this.value);renderTodayLearning()"></select></div><div class="field"><label>Theo dõi nhanh</label><button class="btn secondary" onclick="todayToggleClassSummary()" style="width:100%;min-height:42px">Tình hình lớp hôm nay</button></div></div>
 <div id="todayOverview" style="margin:12px 0"></div>
-
 <div id="todayUnifiedContent"></div>
 <div class="action-row today-footer-actions"><button class="btn secondary" onclick="goPanel('plan')">Kế hoạch ôn tập</button><button class="btn secondary" onclick="goPanel('assignments')">Bài tập &amp; ôn luyện</button><button class="btn secondary" onclick="goPanel('journal')">Nhật ký học tập</button></div>
 </section>
@@ -5981,7 +5979,7 @@ function work(id){
  <header class="v98hero"><div><small>BÀI TRẮC NGHIỆM</small><h2>${esc(a.title)}</h2><p>Chọn một đáp án đúng cho mỗi câu.</p></div>
  ${done?`<div class="v98clock"><small>KẾT QUẢ</small><b>${Number(a.score||0).toFixed(1)}/10</b></div>`:`<div class="v98clock"><small>THỜI GIAN CÒN LẠI</small><b id="v98Clock">${d?fmt(left(a)):'Không giới hạn'}</b></div>`}</header>
  <div class="v98list">${cards}</div>
- ${done?`<div class="v98done">✓ Đã nộp bài.</div>`:`<div class="v98submit"><span>Thời gian chỉ được tính sau thao tác Bắt đầu làm.</span><button onclick="studentV98Submit('${esc(a.id)}')">Nộp bài →</button></div>`}
+ ${done?`<div class="v98done">✓ Đã nộp bài.</div>`:`<div class="v98submit"><span></span><button onclick="studentV98Submit('${esc(a.id)}')">Nộp bài →</button></div>`}
  </div></main></div>`;
  if(!done&&d&&a.attemptStartedByStudent===true)tick(id);
 }
