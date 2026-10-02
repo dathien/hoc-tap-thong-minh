@@ -1809,7 +1809,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
       <div class="sv2-login-error" id="teacherLoginError"></div>
       <button class="sv2-login-btn" type="button" onclick="teacherLoginSubmit()">Đăng nhập</button>
       <div class="sv2-or"><span>hoặc</span></div>
-      <button class="sv2-google-btn" type="button" onclick="roleGoogle('Giáo viên')"><span class="sv2-google-g">G</span> Đăng nhập với Google</button>
+      <button class="sv2-google-btn" type="button" onclick="roleGoogle('Giáo viên')"><span class="sv2-google-g">G</span> Đăng nhập với Google</button><div class="teacher-register-line">Chưa có tài khoản? <button type="button" onclick="teacherRegister()">Đăng ký</button></div>
     </section>
   </div>
 </div>
@@ -1983,6 +1983,10 @@ window.backToRoleGateway=function(){
  if(sv){sv.classList.remove('open');sv.setAttribute('aria-hidden','true');}
  if(g)g.hidden=false;document.body.style.overflow='';
 };
+window.teacherRegister=function(){
+ const e=document.getElementById('teacherLoginError');
+ if(e)e.textContent='Đăng ký tài khoản giáo viên sẽ hoạt động khi kết nối hệ thống tài khoản chính thức.';
+};
 window.teacherTogglePassword=function(){
  const p=document.getElementById('teacherLoginPass');
  if(p)p.type=p.type==='password'?'text':'password';
@@ -2057,6 +2061,12 @@ window.roleGoogle=function(who){
  #teacherLoginPanel .role-login-form{padding:30px 24px}
  #teacherLoginPanel .role-login-form h2{font-size:26px}
 }
+</style>
+
+<style id="v8761-teacher-register">
+#teacherLoginPanel .teacher-register-line{margin-top:18px;text-align:center;color:#64748b;font-size:13px;font-weight:600}
+#teacherLoginPanel .teacher-register-line button{border:0;background:transparent;padding:2px 4px;color:#1d4ed8;font:inherit;font-weight:900;cursor:pointer}
+#teacherLoginPanel .teacher-register-line button:hover{text-decoration:underline}
 </style>
 </body>
 </html>
