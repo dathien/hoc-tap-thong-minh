@@ -1163,12 +1163,27 @@ window.managerAssign=function(id){const subject=document.getElementById('subject
 <div><label for="qTrack">Đưa bài vào khu vực học sinh</label><select id="qTrack" onchange="syncAssessmentSubtype()"><option value="assignment">Bài tập &amp; ôn luyện</option><option value="practice">Kiểm tra · Luyện tập</option><option value="exam">Kiểm tra · Ôn thi</option></select></div>
 <div><label for="qSubtype">Nhóm bài / kỳ kiểm tra</label><select id="qSubtype"></select></div>
 </div>
+<div class="v110-policy-panel">
+<div class="v110-policy-head"><b>Thiết lập chấm điểm &amp; đáp án</b><span>Áp dụng cho bài đang giao</span></div>
+<div class="v110-policy-grid">
+<div class="v110-policy-card">
+<div class="v110-policy-title">Hiển thị điểm</div>
+<label><input checked="" name="qGradeReleaseMode" type="radio" value="instant"/> <span><b>Cho xem điểm ngay sau khi nộp</b><small>Hệ thống tự chấm và hiển thị điểm ngay.</small></span></label>
+<label><input name="qGradeReleaseMode" type="radio" value="manual"/> <span><b>Giáo viên chấm thủ công</b><small>Học sinh chỉ thấy điểm sau khi giáo viên chấm và công bố.</small></span></label>
+</div>
+<div class="v110-policy-card">
+<div class="v110-policy-title">Hiển thị đáp án</div>
+<label><input checked="" name="v108AnswerRelease" type="radio" value="show"/> <span><b>Cho xem đáp án sau khi có điểm</b><small>Chỉ hiện đáp án đúng sau khi điểm đã được công bố.</small></span></label>
+<label><input name="v108AnswerRelease" type="radio" value="hide"/> <span><b>Không cho xem đáp án</b><small>Học sinh chỉ xem kết quả/điểm, không xem đáp án đúng.</small></span></label>
+</div>
+</div>
+</div>
 <div class="quiz-step"><b>2</b><span>Phân hóa &amp; số câu</span></div>
-<div class="qgrid"><div><label for="qLevel">Chế độ phân hóa</label><select id="qLevel" onchange="syncQuizScheme();autoDistributeLevels()"><option value="Phân hóa 3 mức">3 mức · Nhận biết – Thông hiểu – Vận dụng</option><option selected="" value="Phân hóa 4 mức">4 mức · Nhận biết – Thông hiểu – Vận dụng – Vận dụng cao</option></select></div><div><label for="qQuestionCount">Số câu hỏi</label><div class="question-count-control"><button aria-label="Giảm số câu" class="qcount-btn" onclick="changeQuizQuestionCount(-1)" type="button">−</button><input aria-label="Số câu hỏi" id="qQuestionCount" max="50" min="5" onchange="applyQuizQuestionCount();autoDistributeLevels()" step="1" type="number" value="10"/><button aria-label="Tăng số câu" class="qcount-btn" onclick="changeQuizQuestionCount(1)" type="button">＋</button></div><small class="qcount-hint">5–50 câu · Có thể tăng/giảm hoặc nhập trực tiếp.</small></div></div>
+<div class="qgrid"><div><label for="qLevel">Chế độ phân hóa</label><select id="qLevel" onchange="syncQuizScheme();autoDistributeLevels()"><option value="Phân hóa 3 mức">3 mức · Nhận biết – Thông hiểu – Vận dụng</option><option selected="" value="Phân hóa 4 mức">4 mức · Nhận biết – Thông hiểu – Vận dụng – Vận dụng cao</option></select></div><div><label for="qQuestionCount">Số câu hỏi</label><div class="question-count-control"><button aria-label="Giảm số câu" class="qcount-btn" onclick="changeQuizQuestionCount(-1)" type="button">−</button><input aria-label="Số câu hỏi" id="qQuestionCount" max="50" min="5" onchange="applyQuizQuestionCount();autoDistributeLevels()" step="1" type="number" value="10"><button aria-label="Tăng số câu" class="qcount-btn" onclick="changeQuizQuestionCount(1)" type="button">＋</button></input></div><small class="qcount-hint">5–50 câu · Có thể tăng/giảm hoặc nhập trực tiếp.</small></div></div>
 <div class="level-distribution" id="qDistribution"></div>
 <div class="quiz-step"><b>3</b><span>Thời gian &amp; cách làm</span></div>
-<div class="qgrid"><div><label for="qDuration">Thời gian làm bài (phút)</label><input id="qDuration" max="180" min="0" type="number" value="15"/><small class="qcount-hint">Nhập 0 nếu không giới hạn.</small></div><div><label for="qAttempts">Số lần được làm</label><select id="qAttempts"><option value="1">1 lần</option><option value="2">2 lần</option><option value="3">3 lần</option></select></div><div><label for="qOpenAt">Mở bài từ</label><input id="qOpenAt" type="datetime-local"/></div><div><label for="qDue">Hạn nộp</label><input id="qDue" type="datetime-local"/></div></div>
-<div class="quiz-options-box"><label><input checked="" id="qShuffleQ" type="checkbox"/> Trộn thứ tự câu hỏi</label><label><input checked="" id="qShuffleA" type="checkbox"/> Trộn đáp án A–D</label><label><input id="qShowAnswers" type="checkbox"/> Cho xem đáp án đúng ngay sau khi nộp</label></div>
+<div class="qgrid"><div><label for="qDuration">Thời gian làm bài (phút)</label><input id="qDuration" max="180" min="0" type="number" value="15"><small class="qcount-hint">Nhập 0 nếu không giới hạn.</small></input></div><div><label for="qAttempts">Số lần được làm</label><select id="qAttempts"><option value="1">1 lần</option><option value="2">2 lần</option><option value="3">3 lần</option></select></div><div><label for="qOpenAt">Mở bài từ</label><input id="qOpenAt" type="datetime-local"/></div><div><label for="qDue">Hạn nộp</label><input id="qDue" type="datetime-local"/></div></div>
+<div class="quiz-options-box"><label><input checked="" id="qShuffleQ" type="checkbox"/> Trộn thứ tự câu hỏi</label><label><input checked="" id="qShuffleA" type="checkbox"/> Trộn đáp án A–D</label><label style="display:none!important"><input id="qShowAnswers" type="checkbox"/> Cho xem đáp án đúng ngay sau khi nộp</label></div>
 <div class="quiz-step"><b>4</b><span>Câu hỏi</span></div><p class="help">Mỗi câu có mức độ riêng. Giáo viên có thể sửa mức sau khi hệ thống phân bổ tự động.</p>
 <div id="qQuestions"></div>
 <div class="action-row"><button class="btn secondary" onclick="quizAddQuestion();syncQuestionCountField();renderDistribution()" type="button">＋ Thêm câu hỏi</button><button class="btn secondary" onclick="quizPreview()" type="button">Xem trước toàn bộ đề</button><button class="btn primary" onclick="quizPublish()" type="button">Giao bài</button><button class="btn secondary" onclick="quizClose()" type="button">Hủy</button></div><p id="qError" role="alert" style="color:#a52323;font-weight:600"></p><div id="qPreview"></div>
@@ -5855,213 +5870,9 @@ save();
 <style id="v8804-teacher-grading-style">
 .v104wait{min-height:100vh;padding:28px;background:#f3f7fc}.v104back{height:42px;padding:0 15px;border:1px solid #d7e2ef;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v104card{max-width:650px;margin:55px auto;padding:34px;border:1px solid #dce6f2;border-radius:22px;background:#fff;text-align:center;box-shadow:0 18px 45px rgba(30,58,138,.08)}.v104icon{width:54px;height:54px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:#ecfdf5;color:#059669;font-size:25px;font-weight:950}.v104card>span{font-size:10px;font-weight:950;letter-spacing:.12em;color:#64748b}.v104card h2{margin:9px 0 16px;color:#172554}.v104state{display:inline-block;padding:9px 14px;border-radius:999px;background:#fff7ed;color:#c2410c;font-size:12px;font-weight:900}.v104card p{max-width:500px;margin:16px auto;color:#64748b;line-height:1.6}.v104time{margin-bottom:18px;color:#94a3b8;font-size:11px}.v104card button{height:44px;padding:0 20px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}
 </style>
-<script id="v8805-grade-release-modes">
-(function(){
-'use strict';
-const A=v=>Array.isArray(v)?v:[];
-const E=id=>document.getElementById(id);
-function find(id){
- for(const s of A(state.students)){const a=A(s.assignments).find(x=>String(x.id)===String(id));if(a)return {s,a}}
- return {};
-}
-function save(){try{saveState()}catch(e){}}
-function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-
-/* 1) Teacher setting in the real assignment builder.
-   Applies to Bài tập / Kiểm tra / Ôn giữa kỳ / Ôn cuối kỳ because these all use qSubtype. */
-function installChoice(){
- if(E('qGradeReleaseMode'))return;
- const box=E('qShowAnswers')?.closest('.quiz-options-box');
- if(!box)return;
- const wrap=document.createElement('div');
- wrap.className='v105gradebox';
- wrap.innerHTML=`<div class="v105title">Cách chấm & hiển thị điểm</div>
- <label class="v105choice"><input type="radio" name="qGradeReleaseMode" value="instant" checked>
- <span><b>Cho xem điểm ngay sau khi nộp bài</b><small>Hệ thống tự chấm trắc nghiệm và công bố điểm ngay cho học sinh.</small></span></label>
- <label class="v105choice"><input type="radio" name="qGradeReleaseMode" value="manual">
- <span><b>Giáo viên chấm thủ công</b><small>Sau khi nộp chỉ hiện “Đang chờ giáo viên chấm”. Điểm chỉ xuất hiện sau khi giáo viên nhập điểm.</small></span></label>`;
- box.parentNode.insertBefore(wrap,box.nextSibling);
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installChoice);else installChoice();
-
-/* 2) Patch publishing: attach the selected policy to every newly-created assignment.
-   We wrap saveState during quizPublish, so the assignment objects receive the mode before persistence. */
-const publish0=window.quizPublish;
-window.quizPublish=function(){
- const mode=document.querySelector('input[name="qGradeReleaseMode"]:checked')?.value||'instant';
- const before=new Set();
- for(const s of A(state.students))for(const a of A(s.assignments))before.add(a);
- const save0=window.saveState;
- window.saveState=function(){
-   for(const s of A(state.students))for(const a of A(s.assignments)){
-     if(!before.has(a)&&a?.quiz){
-       a.gradingMode=mode;
-       a.gradePublished=false;
-     }
-   }
-   return save0.apply(this,arguments);
- };
- try{return publish0.apply(this,arguments)}
- finally{window.saveState=save0}
-};
-
-/* 3) Submission policy.
-   instant = auto-grade + publish now.
-   manual = save auto score internally, hide score until teacher grades. */
-window.studentV98Submit=function(id){
- const {a}=find(id);if(!a||!a.quiz||a.submittedAt)return;
- const qs=A(a.quiz.questions),ans=[];
- for(let i=0;i<qs.length;i++){const e=document.querySelector(`input[name="v98q${i}"]:checked`);ans.push(e?Number(e.value):null)}
- if(ans.some(v=>v===null)){toast('Hãy trả lời đủ các câu trước khi nộp.');return}
- if(!confirm('Nộp bài? Sau khi nộp sẽ không thể sửa đáp án.'))return;
- const right=ans.reduce((n,v,i)=>n+(v!==null&&v===Number(qs[i].correct)?1:0),0);
- const auto=Math.round(right/qs.length*100)/10;
- a.quizAnswers=ans;a.autoScore=auto;a.submittedAt=new Date().toISOString();
- if((a.gradingMode||'instant')==='manual'){
-   a.score='';a.teacherScore='';a.status='submitted';a.gradedAt='';a.gradePublished=false;a.teacherComment='';
-   toast('Đã nộp bài · Đang chờ giáo viên chấm');
- }else{
-   a.score=auto;a.teacherScore=auto;a.status='graded';a.gradedAt=new Date().toISOString();a.gradePublished=true;
-   a.teacherComment='Hệ thống tự chấm: đúng '+right+'/'+qs.length+' câu';
-   toast('Đã nộp bài · Điểm: '+auto+'/10');
- }
- save();studentV2OpenAssignment(id);
-};
-
-/* 4) Student result gate. Manual assignments remain hidden until teacher publishes.
-   Instant assignments display the result immediately. */
-const open0=window.studentV2OpenAssignment;
-window.studentV2OpenAssignment=function(id){
- const {a}=find(id);
- if(a?.submittedAt && (a.gradingMode||'instant')==='manual' && a.gradePublished!==true){
-   const host=E('sv2Home');if(!host)return;
-   host.innerHTML=`<div class="sv2-student-shell">
-   <aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()">⌂ Trang chủ</button><button onclick="studentV2OpenPractice()">▦ Tự luyện</button><button class="active">✓ Kiểm tra</button></nav></aside>
-   <main class="sv2-student-main"><div class="v105wait"><button class="v105back" onclick="studentV2RenderHome()">← Học hôm nay</button>
-   <section class="v105card"><div class="v105ok">✓</div><span>BÀI ĐÃ NỘP</span><h2>${esc(a.title||'Bài làm')}</h2>
-   <div class="v105pending">Đang chờ giáo viên chấm</div><p>Giáo viên đã chọn chế độ <b>chấm thủ công</b>. Điểm sẽ hiển thị sau khi giáo viên chấm và nhập điểm.</p>
-   <button onclick="studentV2RenderHome()">Về Học hôm nay</button></section></div></main></div>`;
-   return;
- }
- return open0(id);
-};
-
-/* 5) Any teacher grading route publishes the grade.
-   Covers the current comment-grade dialog, detailed submission dialog, and direct gradeAssignment flow. */
-function publishAfterGrade(a){
- if(!a)return;
- const n=Number(a.teacherScore!==''&&a.teacherScore!=null?a.teacherScore:a.score);
- if(Number.isFinite(n)){
-   a.teacherScore=n;a.score=n;a.status='graded';a.gradedAt=a.gradedAt||new Date().toISOString();a.gradePublished=true;
- }
-}
-const saveComment0=window.saveCommentGrade;
-if(typeof saveComment0==='function')window.saveCommentGrade=function(){
- const before=[];
- for(const s of A(state.students))for(const a of A(s.assignments))before.push([a,a.status,a.score,a.teacherScore]);
- const r=saveComment0.apply(this,arguments);
- for(const [a,st,sc,ts] of before)if(a.status==='graded'&&(a.status!==st||a.score!==sc||a.teacherScore!==ts))publishAfterGrade(a);
- save();return r;
-};
-const saveReal0=window.saveRealGrade;
-if(typeof saveReal0==='function')window.saveRealGrade=function(sid,id){
- const r=saveReal0.apply(this,arguments);const {a}=find(id);publishAfterGrade(a);save();return r;
-};
-const grade0=window.gradeAssignment;
-if(typeof grade0==='function')window.gradeAssignment=function(sid,id){
- const before=find(id).a;const oldStatus=before?.status,oldScore=before?.score;
- const r=grade0.apply(this,arguments);
- const a=find(id).a;if(a&&(a.status==='graded')&&(a.status!==oldStatus||a.score!==oldScore)){publishAfterGrade(a);save()}
- return r;
-};
-
-/* Existing assignments: default to instant unless they were explicitly placed in manual waiting state by 8.8.04. */
-for(const s of A(state.students))for(const a of A(s.assignments)){
- if(a?.quiz && !a.gradingMode){
-   a.gradingMode=(a.submittedAt && a.gradePublished===false && !a.gradedAt)?'manual':'instant';
- }
-}
-save();
-})();
-</script>
-<style id="v8805-grade-release-style">
-.v105gradebox{margin-top:12px;padding:15px;border:1px solid #cbdcf0;border-radius:14px;background:#f8fbff}.v105title{margin-bottom:9px;color:#172554;font-weight:900}.v105choice{display:grid!important;grid-template-columns:20px 1fr;gap:9px;align-items:start!important;padding:10px 11px;margin:7px 0;border:1px solid #dbe5f0;border-radius:11px;background:#fff}.v105choice input{margin-top:3px}.v105choice span{display:block}.v105choice b,.v105choice small{display:block}.v105choice b{color:#1e293b}.v105choice small{margin-top:3px;color:#64748b;font-size:11px;line-height:1.45}.v105wait{min-height:100vh;padding:28px;background:#f3f7fc}.v105back{height:42px;padding:0 15px;border:1px solid #d7e2ef;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v105card{max-width:650px;margin:55px auto;padding:34px;border:1px solid #dce6f2;border-radius:22px;background:#fff;text-align:center}.v105ok{width:54px;height:54px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:#ecfdf5;color:#059669;font-size:25px;font-weight:950}.v105card>span{font-size:10px;font-weight:950;letter-spacing:.12em;color:#64748b}.v105card h2{color:#172554}.v105pending{display:inline-block;padding:9px 14px;border-radius:999px;background:#fff7ed;color:#c2410c;font-size:12px;font-weight:900}.v105card p{color:#64748b;line-height:1.6}.v105card button{height:44px;padding:0 20px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}
-</style>
 
 
-<script id="v8808-answer-release-choice">
-(function(){
-'use strict';
-const A=v=>Array.isArray(v)?v:[];
-const E=id=>document.getElementById(id);
-function find(id){
- for(const s of A(state.students)){const a=A(s.assignments).find(x=>String(x.id)===String(id));if(a)return a}
- return null;
-}
-function save(){try{saveState()}catch(e){}}
 
-/* Hiển thị rõ tùy chọn đáp án ngay cạnh cơ chế chấm/hiển thị điểm. */
-function install(){
- if(E('v108AnswerBox'))return;
- const grade=document.querySelector('.v105gradebox');
- if(!grade)return;
- const box=document.createElement('div');
- box.id='v108AnswerBox';box.className='v108box';
- box.innerHTML=`<div class="v108title">Hiển thị đáp án cho học sinh</div>
- <label class="v108choice"><input type="radio" name="v108AnswerRelease" value="show" checked>
- <span><b>Cho xem đáp án sau khi có điểm</b><small>Học sinh được xem đáp án đúng sau khi điểm đã được công bố.</small></span></label>
- <label class="v108choice"><input type="radio" name="v108AnswerRelease" value="hide">
- <span><b>Không cho xem đáp án</b><small>Học sinh chỉ xem điểm/kết quả, không hiển thị đáp án đúng.</small></span></label>`;
- grade.insertAdjacentElement('afterend',box);
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(install,0));else setTimeout(install,0);
-
-/* Gắn lựa chọn này vào tất cả assignment mới khi giáo viên giao. */
-const pub0=window.quizPublish;
-window.quizPublish=function(){
- const answerMode=document.querySelector('input[name="v108AnswerRelease"]:checked')?.value||'show';
- const before=new Set();
- for(const s of A(state.students))for(const a of A(s.assignments))before.add(a);
- const save0=window.saveState;
- window.saveState=function(){
-  for(const s of A(state.students))for(const a of A(s.assignments)){
-   if(!before.has(a)&&a?.quiz){
-    a.answerReleaseMode=answerMode;
-    a.quiz.showAnswers=(answerMode==='show');
-   }
-  }
-  return save0.apply(this,arguments);
- };
- try{return pub0.apply(this,arguments)}finally{window.saveState=save0}
-};
-
-/* Đồng bộ dữ liệu cũ: showAnswers cũ được chuyển thành chính sách rõ ràng. */
-for(const s of A(state.students))for(const a of A(s.assignments)){
- if(a?.quiz&&!a.answerReleaseMode){
-  a.answerReleaseMode=(a.quiz.showAnswers===false)?'hide':'show';
- }
- if(a?.quiz)a.quiz.showAnswers=(a.answerReleaseMode==='show');
-}
-save();
-
-/* Khi mở kết quả, cưỡng chế đúng chính sách:
-   - chưa có điểm: không xem đáp án;
-   - đã có điểm + show: được xem;
-   - hide: không bao giờ lộ đáp án đúng. */
-const open0=window.studentV2OpenAssignment;
-window.studentV2OpenAssignment=function(id){
- const a=find(id);
- if(a?.quiz){
-  const published=a.gradePublished===true;
-  a.quiz.showAnswers=published && a.answerReleaseMode==='show';
- }
- return open0(id);
-};
-})();
-</script>
-<style id="v8808-answer-release-style">
-.v108box{margin-top:12px;padding:15px;border:1px solid #cbdcf0;border-radius:14px;background:#fff}.v108title{margin-bottom:9px;color:#172554;font-weight:900}.v108choice{display:grid!important;grid-template-columns:20px 1fr;gap:9px;align-items:start!important;padding:10px 11px;margin:7px 0;border:1px solid #dbe5f0;border-radius:11px;background:#f8fbff}.v108choice input{margin-top:3px}.v108choice b,.v108choice small{display:block}.v108choice b{color:#1e293b}.v108choice small{margin-top:3px;color:#64748b;font-size:11px;line-height:1.45}
-</style>
 
 <script id="v8809-tab-monitor-state-machine">
 (function(){
@@ -6251,7 +6062,6 @@ setInterval(function(){
 disarm();
 })();
 </script>
-
 <style id="v8809-tab-monitor-style">
 .v109overlay{position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.60);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}
 .v109modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.30)}
@@ -6264,3 +6074,90 @@ disarm();
 .v109modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}
 .v109count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
 </style>
+
+<style id="v8810-policy-ui-style">
+.v110-policy-panel{margin:14px 0 4px;padding:14px;border:1px solid #b9d8e4;border-radius:14px;background:#fff}
+.v110-policy-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;color:#173f59}
+.v110-policy-head b{font-size:14px}.v110-policy-head span{font-size:11px;color:#6b8190}
+.v110-policy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.v110-policy-card{padding:12px;border:1px solid #d8e6ec;border-radius:12px;background:#f8fbfd}
+.v110-policy-title{margin-bottom:7px;font-size:12px;font-weight:950;color:#087f78;text-transform:uppercase;letter-spacing:.04em}
+#quizBuilder .v110-policy-card label{display:grid!important;grid-template-columns:18px minmax(0,1fr);gap:8px;align-items:start;margin:7px 0!important;padding:9px;border:1px solid #dce8ee;border-radius:9px;background:#fff;cursor:pointer}
+#quizBuilder .v110-policy-card input{width:auto!important;margin-top:3px}
+.v110-policy-card span,.v110-policy-card b,.v110-policy-card small{display:block}
+.v110-policy-card b{font-size:12px;color:#20364a}.v110-policy-card small{margin-top:2px;font-size:10.5px;line-height:1.4;color:#6b7f8d}
+@media(max-width:760px){.v110-policy-grid{grid-template-columns:1fr}.v110-policy-head{align-items:flex-start;flex-direction:column}}
+</style>
+<script id="v8810-policy-logic">
+(function(){
+'use strict';
+const A=v=>Array.isArray(v)?v:[];
+function save(){try{saveState()}catch(e){}}
+function find(id){for(const s of A(state.students)){const a=A(s.assignments).find(x=>String(x.id)===String(id));if(a)return a}return null}
+
+/* Sync legacy checkbox only as a compatibility field; visible radio buttons are authoritative. */
+function syncLegacy(){
+ const answer=document.querySelector('input[name="v108AnswerRelease"]:checked')?.value||'show';
+ const old=document.getElementById('qShowAnswers');
+ if(old)old.checked=(answer==='show');
+}
+document.addEventListener('change',e=>{
+ if(e.target?.name==='v108AnswerRelease')syncLegacy();
+},true);
+
+/* Reset visible controls each time teacher opens the assignment builder. */
+const openBase=window.quizOpen;
+window.quizOpen=function(){
+ const r=openBase.apply(this,arguments);
+ const g=document.querySelector('input[name="qGradeReleaseMode"][value="instant"]');
+ const a=document.querySelector('input[name="v108AnswerRelease"][value="show"]');
+ if(g)g.checked=true;if(a)a.checked=true;syncLegacy();
+ return r;
+};
+
+/* Persist BOTH policies to every assignment created by quizPublish. */
+const publishBase=window.quizPublish;
+window.quizPublish=function(){
+ const grading=document.querySelector('input[name="qGradeReleaseMode"]:checked')?.value||'instant';
+ const answer=document.querySelector('input[name="v108AnswerRelease"]:checked')?.value||'show';
+ syncLegacy();
+ const before=new Set();
+ for(const s of A(state.students))for(const x of A(s.assignments))before.add(x);
+ const saveBase=window.saveState;
+ window.saveState=function(){
+   for(const s of A(state.students))for(const x of A(s.assignments)){
+     if(!before.has(x)&&x?.quiz){
+       x.gradingMode=grading;
+       x.answerReleaseMode=answer;
+       x.quiz.showAnswers=(answer==='show');
+       x.gradePublished=false;
+     }
+   }
+   return saveBase.apply(this,arguments);
+ };
+ try{return publishBase.apply(this,arguments)}
+ finally{window.saveState=saveBase}
+};
+
+/* Student submit obeys the teacher's grading policy. */
+const submitOriginal=window.studentV98Submit;
+window.studentV98Submit=function(id){
+ const a=find(id);
+ if(!a)return submitOriginal(id);
+ /* Existing 8.8.04/05 submission logic reads gradingMode. */
+ return submitOriginal(id);
+};
+
+/* Student answer visibility obeys teacher policy after score publication. */
+const openAssignmentBase=window.studentV2OpenAssignment;
+window.studentV2OpenAssignment=function(id){
+ const a=find(id);
+ if(a?.quiz){
+   a.quiz.showAnswers=(a.gradePublished===true && (a.answerReleaseMode||'show')==='show');
+ }
+ return openAssignmentBase(id);
+};
+
+syncLegacy();
+})();
+</script>
