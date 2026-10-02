@@ -1796,8 +1796,8 @@ window.enterTeacherArea=function(){
 };
 window.enterStudentArea=function(){document.getElementById('roleGateway').hidden=true;if(typeof studentV2OpenLogin==='function'){studentV2OpenLogin()}else{setTimeout(()=>studentV2OpenLogin(),0)}};
 </script>
-<div aria-hidden="true" id="studentV2">
-<div class="sv2-login" id="sv2Login">
+<div aria-hidden="false" class="open" id="studentV2">
+<div class="sv2-login" id="sv2Login" style="display:grid">
 <div class="sv2-login-card">
 <section class="sv2-login-brand"><div class="sv2-mark">HT</div><h1>HỌC TẬP<br/>THÔNG MINH PRO</h1><p>Cổng học tập dành cho học sinh. Xem nhiệm vụ, tự luyện, làm bài kiểm tra và theo dõi tiến bộ của chính mình.</p></section>
 <section class="sv2-login-form">
@@ -1816,7 +1816,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 </section>
 </div>
 </div>
-<div hidden="" id="sv2Home"></div>
+<div hidden="" id="sv2Home" style="display:none"></div>
 </div>
 <script id="student-v2-script">
 (function(){'use strict';let currentId=null,slide=0,slideTimer=null;
@@ -3398,4 +3398,10 @@ window.HTPRO_ROLE_POLICY={
 .sv2-student-class label span{font-size:10px;font-weight:700;color:#94a3b8}
 .sv2-security-note{margin-top:15px;padding:12px 14px;border:1px solid #dbe6f2;border-radius:13px;background:#f8fbff;display:grid;gap:5px;color:#526477;font-size:11px;line-height:1.4}
 .sv2-security-note b{color:#172554;font-size:12px}.sv2-security-note span:before{content:"• ";color:#1e40af;font-weight:900}
+</style>
+
+<style id="v8755-login-visibility-failsafe">
+#roleGateway{display:none!important}
+#studentV2.open{display:block!important;visibility:visible!important;opacity:1!important}
+#studentV2.open #sv2Login:not([hidden]){display:grid!important;visibility:visible!important;opacity:1!important}
 </style>
