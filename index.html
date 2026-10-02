@@ -1162,27 +1162,36 @@ window.managerAssign=function(id){const subject=document.getElementById('subject
 <div class="qgrid" id="teacherAssessmentClassify">
 <div><label for="qTrack">Đưa bài vào khu vực học sinh</label><select id="qTrack" onchange="syncAssessmentSubtype()"><option value="assignment">Bài tập &amp; ôn luyện</option><option value="practice">Kiểm tra · Luyện tập</option><option value="exam">Kiểm tra · Ôn thi</option></select></div>
 <div><label for="qSubtype">Nhóm bài / kỳ kiểm tra</label><select id="qSubtype"></select></div>
-</div>
-<div class="v110-policy-panel">
-<div class="v110-policy-head"><b>Thiết lập chấm điểm &amp; đáp án</b><span>Áp dụng cho bài đang giao</span></div>
-<div class="v110-policy-grid">
-<div class="v110-policy-card">
-<div class="v110-policy-title">Hiển thị điểm</div>
-<label><input checked="" name="qGradeReleaseMode" type="radio" value="instant"/> <span><b>Cho xem điểm ngay sau khi nộp</b><small>Hệ thống tự chấm và hiển thị điểm ngay.</small></span></label>
-<label><input name="qGradeReleaseMode" type="radio" value="manual"/> <span><b>Giáo viên chấm thủ công</b><small>Học sinh chỉ thấy điểm sau khi giáo viên chấm và công bố.</small></span></label>
-</div>
-<div class="v110-policy-card">
-<div class="v110-policy-title">Hiển thị đáp án</div>
-<label><input checked="" name="v108AnswerRelease" type="radio" value="show"/> <span><b>Cho xem đáp án sau khi có điểm</b><small>Chỉ hiện đáp án đúng sau khi điểm đã được công bố.</small></span></label>
-<label><input name="v108AnswerRelease" type="radio" value="hide"/> <span><b>Không cho xem đáp án</b><small>Học sinh chỉ xem kết quả/điểm, không xem đáp án đúng.</small></span></label>
+
+<div class="v111-setting">
+<label>Hiển thị điểm cho học sinh</label>
+<div class="v111-options">
+<label><input checked="" name="qGradeReleaseMode" type="radio" value="instant"/>
+<span><b>Xem điểm ngay sau khi nộp</b><small>Hệ thống tự chấm và hiện điểm ngay.</small></span>
+</label>
+<label><input name="qGradeReleaseMode" type="radio" value="manual"/>
+<span><b>Giáo viên chấm thủ công</b><small>Chỉ hiện điểm sau khi giáo viên chấm.</small></span>
+</label>
 </div>
 </div>
+<div class="v111-setting">
+<label>Hiển thị đáp án cho học sinh</label>
+<div class="v111-options">
+<label><input checked="" name="v108AnswerRelease" type="radio" value="show"/>
+<span><b>Cho xem đáp án</b><small>Chỉ xem sau khi điểm đã được công bố.</small></span>
+</label>
+<label><input name="v108AnswerRelease" type="radio" value="hide"/>
+<span><b>Không cho xem đáp án</b><small>Chỉ hiển thị điểm/kết quả.</small></span>
+</label>
 </div>
+</div>
+</div>
+
 <div class="quiz-step"><b>2</b><span>Phân hóa &amp; số câu</span></div>
-<div class="qgrid"><div><label for="qLevel">Chế độ phân hóa</label><select id="qLevel" onchange="syncQuizScheme();autoDistributeLevels()"><option value="Phân hóa 3 mức">3 mức · Nhận biết – Thông hiểu – Vận dụng</option><option selected="" value="Phân hóa 4 mức">4 mức · Nhận biết – Thông hiểu – Vận dụng – Vận dụng cao</option></select></div><div><label for="qQuestionCount">Số câu hỏi</label><div class="question-count-control"><button aria-label="Giảm số câu" class="qcount-btn" onclick="changeQuizQuestionCount(-1)" type="button">−</button><input aria-label="Số câu hỏi" id="qQuestionCount" max="50" min="5" onchange="applyQuizQuestionCount();autoDistributeLevels()" step="1" type="number" value="10"><button aria-label="Tăng số câu" class="qcount-btn" onclick="changeQuizQuestionCount(1)" type="button">＋</button></input></div><small class="qcount-hint">5–50 câu · Có thể tăng/giảm hoặc nhập trực tiếp.</small></div></div>
+<div class="qgrid"><div><label for="qLevel">Chế độ phân hóa</label><select id="qLevel" onchange="syncQuizScheme();autoDistributeLevels()"><option value="Phân hóa 3 mức">3 mức · Nhận biết – Thông hiểu – Vận dụng</option><option selected="" value="Phân hóa 4 mức">4 mức · Nhận biết – Thông hiểu – Vận dụng – Vận dụng cao</option></select></div><div><label for="qQuestionCount">Số câu hỏi</label><div class="question-count-control"><button aria-label="Giảm số câu" class="qcount-btn" onclick="changeQuizQuestionCount(-1)" type="button">−</button><input aria-label="Số câu hỏi" id="qQuestionCount" max="50" min="5" onchange="applyQuizQuestionCount();autoDistributeLevels()" step="1" type="number" value="10"/><button aria-label="Tăng số câu" class="qcount-btn" onclick="changeQuizQuestionCount(1)" type="button">＋</button></div><small class="qcount-hint">5–50 câu · Có thể tăng/giảm hoặc nhập trực tiếp.</small></div></div>
 <div class="level-distribution" id="qDistribution"></div>
 <div class="quiz-step"><b>3</b><span>Thời gian &amp; cách làm</span></div>
-<div class="qgrid"><div><label for="qDuration">Thời gian làm bài (phút)</label><input id="qDuration" max="180" min="0" type="number" value="15"><small class="qcount-hint">Nhập 0 nếu không giới hạn.</small></input></div><div><label for="qAttempts">Số lần được làm</label><select id="qAttempts"><option value="1">1 lần</option><option value="2">2 lần</option><option value="3">3 lần</option></select></div><div><label for="qOpenAt">Mở bài từ</label><input id="qOpenAt" type="datetime-local"/></div><div><label for="qDue">Hạn nộp</label><input id="qDue" type="datetime-local"/></div></div>
+<div class="qgrid"><div><label for="qDuration">Thời gian làm bài (phút)</label><input id="qDuration" max="180" min="0" type="number" value="15"/><small class="qcount-hint">Nhập 0 nếu không giới hạn.</small></div><div><label for="qAttempts">Số lần được làm</label><select id="qAttempts"><option value="1">1 lần</option><option value="2">2 lần</option><option value="3">3 lần</option></select></div><div><label for="qOpenAt">Mở bài từ</label><input id="qOpenAt" type="datetime-local"/></div><div><label for="qDue">Hạn nộp</label><input id="qDue" type="datetime-local"/></div></div>
 <div class="quiz-options-box"><label><input checked="" id="qShuffleQ" type="checkbox"/> Trộn thứ tự câu hỏi</label><label><input checked="" id="qShuffleA" type="checkbox"/> Trộn đáp án A–D</label><label style="display:none!important"><input id="qShowAnswers" type="checkbox"/> Cho xem đáp án đúng ngay sau khi nộp</label></div>
 <div class="quiz-step"><b>4</b><span>Câu hỏi</span></div><p class="help">Mỗi câu có mức độ riêng. Giáo viên có thể sửa mức sau khi hệ thống phân bổ tự động.</p>
 <div id="qQuestions"></div>
@@ -5870,10 +5879,6 @@ save();
 <style id="v8804-teacher-grading-style">
 .v104wait{min-height:100vh;padding:28px;background:#f3f7fc}.v104back{height:42px;padding:0 15px;border:1px solid #d7e2ef;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v104card{max-width:650px;margin:55px auto;padding:34px;border:1px solid #dce6f2;border-radius:22px;background:#fff;text-align:center;box-shadow:0 18px 45px rgba(30,58,138,.08)}.v104icon{width:54px;height:54px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:#ecfdf5;color:#059669;font-size:25px;font-weight:950}.v104card>span{font-size:10px;font-weight:950;letter-spacing:.12em;color:#64748b}.v104card h2{margin:9px 0 16px;color:#172554}.v104state{display:inline-block;padding:9px 14px;border-radius:999px;background:#fff7ed;color:#c2410c;font-size:12px;font-weight:900}.v104card p{max-width:500px;margin:16px auto;color:#64748b;line-height:1.6}.v104time{margin-bottom:18px;color:#94a3b8;font-size:11px}.v104card button{height:44px;padding:0 20px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}
 </style>
-
-
-
-
 <script id="v8809-tab-monitor-state-machine">
 (function(){
 'use strict';
@@ -6075,19 +6080,6 @@ disarm();
 .v109count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
 </style>
 
-<style id="v8810-policy-ui-style">
-.v110-policy-panel{margin:14px 0 4px;padding:14px;border:1px solid #b9d8e4;border-radius:14px;background:#fff}
-.v110-policy-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;color:#173f59}
-.v110-policy-head b{font-size:14px}.v110-policy-head span{font-size:11px;color:#6b8190}
-.v110-policy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.v110-policy-card{padding:12px;border:1px solid #d8e6ec;border-radius:12px;background:#f8fbfd}
-.v110-policy-title{margin-bottom:7px;font-size:12px;font-weight:950;color:#087f78;text-transform:uppercase;letter-spacing:.04em}
-#quizBuilder .v110-policy-card label{display:grid!important;grid-template-columns:18px minmax(0,1fr);gap:8px;align-items:start;margin:7px 0!important;padding:9px;border:1px solid #dce8ee;border-radius:9px;background:#fff;cursor:pointer}
-#quizBuilder .v110-policy-card input{width:auto!important;margin-top:3px}
-.v110-policy-card span,.v110-policy-card b,.v110-policy-card small{display:block}
-.v110-policy-card b{font-size:12px;color:#20364a}.v110-policy-card small{margin-top:2px;font-size:10.5px;line-height:1.4;color:#6b7f8d}
-@media(max-width:760px){.v110-policy-grid{grid-template-columns:1fr}.v110-policy-head{align-items:flex-start;flex-direction:column}}
-</style>
 <script id="v8810-policy-logic">
 (function(){
 'use strict';
@@ -6161,3 +6153,28 @@ window.studentV2OpenAssignment=function(id){
 syncLegacy();
 })();
 </script>
+<style id="v8811-visible-policy-style">
+#teacherAssessmentClassify .v111-setting{
+  display:block!important; visibility:visible!important; opacity:1!important;
+  min-height:118px; padding:12px; border:1px solid #bcd8e4; border-radius:12px;
+  background:#fff; grid-column:auto;
+}
+#teacherAssessmentClassify .v111-setting>label{
+  display:block!important; margin:0 0 8px!important; font-weight:900!important;
+  color:#173f59!important;
+}
+#teacherAssessmentClassify .v111-options{display:grid!important;gap:7px!important}
+#teacherAssessmentClassify .v111-options label{
+  display:grid!important;grid-template-columns:18px minmax(0,1fr)!important;
+  gap:8px!important;align-items:start!important;margin:0!important;padding:8px 9px!important;
+  border:1px solid #dce8ee!important;border-radius:9px!important;background:#f8fbfd!important;
+  cursor:pointer!important;
+}
+#teacherAssessmentClassify .v111-options input{width:auto!important;margin:3px 0 0!important}
+#teacherAssessmentClassify .v111-options span,
+#teacherAssessmentClassify .v111-options b,
+#teacherAssessmentClassify .v111-options small{display:block!important}
+#teacherAssessmentClassify .v111-options b{font-size:12px;color:#20364a}
+#teacherAssessmentClassify .v111-options small{margin-top:2px;font-size:10px;line-height:1.35;color:#6b7f8d}
+@media(max-width:760px){#teacherAssessmentClassify .v111-setting{grid-column:1/-1}}
+</style>
