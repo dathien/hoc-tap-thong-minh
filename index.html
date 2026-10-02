@@ -1969,7 +1969,21 @@ window.studentV2FilterSubject=function(subject){
     <button onclick="studentV2OpenAssignment('${safe(a.id)}')">${isDone?'Xem lại bài':'Bắt đầu luyện'} <b>→</b></button></div>
    </article>`;
  }).join('');
- E('sv2Home').innerHTML=`<div class="sv2-app sv2-subject-page">
+ E('sv2Home').innerHTML=`<div class="sv2-student-shell">
+<aside class="sv2-student-sidebar">
+ <div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div>
+ <nav>
+  <button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button>
+  <button class="active" onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button>
+  <button onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button>
+  <button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button>
+  <i></i>
+  <button onclick="document.querySelector('#sv2Home .sv2-progress-grid')?.scrollIntoView({behavior:'smooth'})"><span>▥</span>Tiến độ học tập</button>
+  <button onclick="document.querySelector('#sv2Home .sv2-progress-grid')?.scrollIntoView({behavior:'smooth'})"><span>★</span>Kết quả của tôi</button>
+ </nav>
+</aside>
+<main class="sv2-student-main">
+<div class="sv2-app sv2-subject-page">
   <div class="sv2-subject-top"><button onclick="studentV2OpenPractice()">← Chọn môn khác</button><span>TỰ LUYỆN / ${safe(subject)}</span></div>
   <section class="sv2-subject-hero">
    <div class="sv2-subject-icon">${safe(subjectIcons[subject]||subject.slice(0,2).toUpperCase())}</div>
@@ -1978,7 +1992,8 @@ window.studentV2FilterSubject=function(subject){
   </section>
   <section class="sv2-subject-section"><div class="sv2-subject-heading"><div><span>LỘ TRÌNH ÔN TẬP</span><h3>Bài luyện của em</h3></div><b>${pending.length} bài cần hoàn thành</b></div>
   <div class="sv2-subject-grid">${cards}</div></section>
- </div>`;
+ </div>
+</main></div>`;
  E('studentV2').scrollTop=0;window.scrollTo(0,0);
 };
 window.studentV2OpenAssignment=function(id){const s=st(),a=pub(s).find(x=>x.id===id);if(!a)return;if(a.quiz&&typeof quizView==='function'){E('sv2Home').innerHTML=`<div class="sv2-app sv2-assignment-view"><button class="btn secondary sv2-back" onclick="studentV2RenderHome()">← Trang chủ học sinh</button><div id="sv2QuizHost">${quizView(s,a)}</div></div>`;return}E('sv2Home').innerHTML=`<div class="sv2-app sv2-assignment-view"><button class="btn secondary sv2-back" onclick="studentV2RenderHome()">← Trang chủ học sinh</button><article class="sv2-card"><h2>${safe(a.title)}</h2><p><b>Môn:</b> ${safe(a.subject||s.subject)} · <b>Trạng thái:</b> ${safe(status(a))}</p><p>${safe(a.richBody||a.portalQuestion||a.note||'')}</p>${done(a)?`<p><b>Kết quả:</b> ${Number.isFinite(Number(a.score))?safe(a.score)+'/10':'Đã nộp'}</p>`:`<p class="help">Bài tự luận sẽ dùng màn hình nộp bài hiện có của app.</p><button class="btn primary" onclick="studentV2UseLegacy('${safe(s.id)}')">Mở bài để làm</button>`}</article></div>`};
@@ -3022,6 +3037,18 @@ isplay:none!important}
 .sv2-subject-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.sv2-subject-task{position:relative;padding:21px;border:1px solid #dce6f2;border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(30,58,138,.055)}.sv2-subject-task.todo{border-top:3px solid #3b82f6}.sv2-subject-task.done{border-top:3px solid #22c55e}.sv2-task-state{font-size:11px;font-weight:900;color:#2563eb}.sv2-subject-task.done .sv2-task-state{color:#15803d}.sv2-subject-task h3{margin:9px 0 13px;color:#172554;font-size:17px;line-height:1.35}.sv2-task-meta{display:flex;gap:7px;flex-wrap:wrap}.sv2-task-meta span{padding:6px 8px;border-radius:8px;background:#f1f5f9;color:#64748b;font-size:10px;font-weight:800}.sv2-task-bottom{display:flex;align-items:end;justify-content:space-between;margin-top:18px;padding-top:15px;border-top:1px solid #edf2f7}.sv2-task-bottom small{display:block;color:#94a3b8;font-size:10px}.sv2-task-bottom strong{font-size:17px;color:#172554}.sv2-task-bottom strong em{font-style:normal;font-size:10px;color:#94a3b8}.sv2-task-bottom button{height:38px;padding:0 13px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-size:11px;font-weight:900;cursor:pointer}
 @media(max-width:850px){.sv2-subject-hero{grid-template-columns:auto 1fr}.sv2-subject-summary{grid-column:1/-1}.sv2-subject-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.sv2-subject-page{padding:18px 14px 88px!important}.sv2-subject-hero{padding:21px 18px}.sv2-subject-summary{display:grid;grid-template-columns:repeat(3,1fr)}.sv2-subject-summary div{min-width:0}.sv2-subject-heading{align-items:start;gap:8px}.sv2-subject-heading>b{white-space:nowrap}}
+</style>
+
+<style id="v8779-sidebar-subject-fix">
+#sv2Home .sv2-student-shell .sv2-subject-page{
+ width:100%!important;
+ box-sizing:border-box!important;
+ min-height:100vh!important;
+}
+#sv2Home .sv2-student-shell .sv2-student-main{min-width:0!important;width:100%!important}
+@media(max-width:700px){
+ #sv2Home .sv2-student-shell .sv2-subject-page{padding-bottom:88px!important}
+}
 </style>
 </body>
 </html>
