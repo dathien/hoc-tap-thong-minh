@@ -1880,7 +1880,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 <div class="sv2-field"><label>Mật khẩu</label><div class="role-pass-wrap"><input autocomplete="current-password" id="parentLoginPass" placeholder="Nhập mật khẩu" type="password"/><button aria-label="Hiện hoặc ẩn mật khẩu" class="role-eye" onclick="parentTogglePassword()" type="button">◉</button></div></div>
 <div class="sv2-login-row"><label class="sv2-remember"><input id="parentRemember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" onclick="roleForgot('Phụ huynh')" type="button">Quên mật khẩu?</button></div>
 <div class="sv2-login-error" id="parentLoginError"></div>
-<button class="sv2-login-btn" onclick="parentLoginSubmit()" type="button">Đăng nhập</button>
+<button class="sv2-login-btn" id="parentDemoLoginButton" onclick="parentV119DemoLogin(event)" type="button">Đăng nhập</button>
 <div class="sv2-or"><span>hoặc</span></div>
 <button class="sv2-google-btn" onclick="roleGoogle('Phụ huynh')" type="button"><span class="sv2-google-g">G</span> Đăng nhập với Google</button><div class="parent-register-line">Chưa có tài khoản? <button onclick="parentRegister()" type="button">Đăng ký</button></div>
 </section>
@@ -4432,6 +4432,77 @@ window.openParentLogin=function(){
    }
  }catch(_){}
 };
+})();
+</script><script id="v8819-direct-parent-login">
+(function(){
+'use strict';
+window.parentV119DemoLogin=function(ev){
+  if(ev){ev.preventDefault();ev.stopPropagation();}
+  const u=(document.getElementById('parentLoginUser')?.value||'').trim();
+  const p=(document.getElementById('parentLoginPass')?.value||'').trim();
+  const err=document.getElementById('parentLoginError');
+  if(u!=='ph.minhan'||p!=='1234'){
+    if(err)err.textContent='Tên đăng nhập hoặc mật khẩu không đúng.';
+    return false;
+  }
+  if(err)err.textContent='';
+
+  /* Resolve Nguyễn Minh An only; class is displayed as 10A1 for the demo account. */
+  let st=null;
+  try{
+    st=(Array.isArray(state?.students)?state.students:[]).find(x=>
+      String(x?.name||'').trim().toLowerCase()==='nguyễn minh an'
+    )||null;
+  }catch(_){}
+
+  /* The demo must still enter even if old demo data uses an internal class code. */
+  try{
+    if(typeof window.parentV117EnterDemo==='function'){
+      const ok=window.parentV117EnterDemo();
+      if(ok!==false)return false;
+    }
+  }catch(_){}
+
+  const login=document.getElementById('parentLoginPanel');
+  const gate=document.getElementById('roleGateway');
+  const app=document.querySelector('.app');
+  const pv=document.getElementById('parentV117');
+  if(login)login.hidden=true;
+  if(gate)gate.hidden=true;
+  if(app)app.style.display='none';
+  if(pv){
+    pv.classList.add('open');pv.setAttribute('aria-hidden','false');
+    const n=document.getElementById('pv117StudentName');
+    const c=document.getElementById('pv117StudentClass');
+    if(n)n.textContent='Nguyễn Minh An';
+    if(c)c.textContent='Lớp 10A1';
+    document.body.style.overflow='hidden';
+    /* If the original parent renderer cannot resolve the child, show a safe read-only shell. */
+    if(!st){
+      const content=document.getElementById('pv117Content');
+      if(content)content.innerHTML='<div class="pv117hero"><div><small>HỒ SƠ ĐƯỢC LIÊN KẾT</small><h2>Nguyễn Minh An · 10A1</h2><p>Tài khoản phụ huynh demo chỉ được xem hồ sơ học tập của Nguyễn Minh An.</p></div><div class="pv117badge">Chỉ xem</div></div><div class="pv117empty" style="margin-top:14px">Chưa tìm thấy dữ liệu học tập demo để hiển thị.</div>';
+    }else{
+      /* expose resolved student to the existing renderer through a dedicated demo renderer */
+      const as=Array.isArray(st.assignments)?st.assignments:[];
+      const scored=as.filter(a=>a.gradePublished===true && Number.isFinite(Number(a.teacherScore!==''&&a.teacherScore!=null?a.teacherScore:a.score)));
+      const submitted=as.filter(a=>a.submittedAt);
+      const avg=scored.length?(scored.reduce((s,a)=>s+Number(a.teacherScore!==''&&a.teacherScore!=null?a.teacherScore:a.score),0)/scored.length).toFixed(1):'—';
+      const content=document.getElementById('pv117Content');
+      if(content)content.innerHTML=`<div class="pv117hero"><div><small>HỒ SƠ ĐƯỢC LIÊN KẾT</small><h2>Nguyễn Minh An · 10A1</h2><p>Phụ huynh chỉ được xem dữ liệu học tập của học sinh này.</p></div><div class="pv117badge">Chỉ xem</div></div>
+      <div class="pv117stats"><div class="pv117stat"><b>${as.length}</b><span>Bài được giao</span></div><div class="pv117stat"><b>${submitted.length}</b><span>Bài đã nộp</span></div><div class="pv117stat"><b>${as.length?Math.round(submitted.length/as.length*100):0}%</b><span>Tiến độ hoàn thành</span></div><div class="pv117stat"><b>${avg}</b><span>Điểm TB đã công bố</span></div></div>
+      <div class="pv117notice">Chỉ các điểm giáo viên đã công bố mới hiển thị cho phụ huynh.</div>`;
+    }
+  }else{
+    if(err)err.textContent='Không thể mở cổng phụ huynh demo.';
+  }
+  return false;
+};
+
+/* Enter key uses the same direct handler. */
+['parentLoginUser','parentLoginPass'].forEach(id=>{
+ const el=document.getElementById(id);
+ if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')window.parentV119DemoLogin(e)});
+});
 })();
 </script></body>
 </html>
