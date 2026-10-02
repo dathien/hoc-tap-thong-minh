@@ -1775,9 +1775,9 @@ const __journalOldGoPanel=goPanel;goPanel=function(name){__journalOldGoPanel(nam
 <div class="rg-shell">
 <section class="rg-brand"><div class="rg-logo">HT</div><h1>HỌC TẬP<br/><span>THÔNG MINH PRO</span></h1><p>Một không gian thống nhất cho giáo viên tổ chức ôn tập và học sinh thực hiện nhiệm vụ, theo dõi tiến độ, kết quả học tập.</p></section>
 <section class="rg-choose"><small>Chọn khu vực truy cập</small><h2>Bạn đang sử dụng app với vai trò nào?</h2>
-<button class="rg-choice" onclick="enterTeacherArea()" type="button"><span class="ico">👨‍🏫</span><span><b>Khu vực giáo viên</b><span>Quản lý lớp, kế hoạch, giao bài và theo dõi kết quả.</span></span></button>
-<button class="rg-choice student" onclick="enterStudentArea()" type="button"><span class="ico">🎓</span><span><b>Khu vực học sinh</b><span>Đăng nhập để học hôm nay, tự luyện và xem tiến độ.</span></span></button>
-<div class="rg-note">Học sinh phải đăng nhập trước khi vào trang học tập.</div>
+<button class="rg-choice" onclick="openTeacherLogin()" type="button"><span class="ico">👨‍🏫</span><span><b>Giáo viên</b><span>Đăng nhập khu vực quản lý lớp, giao bài và theo dõi học tập.</span></span></button>
+<button class="rg-choice student" onclick="enterStudentArea()" type="button"><span class="ico">🎓</span><span><b>Học sinh</b><span>Đăng nhập để học, luyện tập, kiểm tra và xem kết quả của mình.</span></span></button>
+<button class="rg-choice parent" onclick="openParentLogin()" type="button"><span class="ico">👨‍👩‍👧</span><span><b>Phụ huynh</b><span>Đăng nhập để theo dõi thông tin học tập của con được liên kết.</span></span></button>
 </section>
 </div>
 </div>
@@ -1796,14 +1796,47 @@ window.enterTeacherArea=function(){
 };
 window.enterStudentArea=function(){document.getElementById('roleGateway').hidden=true;if(typeof studentV2OpenLogin==='function'){studentV2OpenLogin()}else{setTimeout(()=>studentV2OpenLogin(),0)}};
 </script>
+
+<div class="role-login-overlay" id="teacherLoginPanel" hidden>
+  <div class="role-login-card">
+    <section class="role-login-brand"><div class="sv2-mark">HT</div><h1>HỌC TẬP<br/>THÔNG MINH PRO</h1><p>Khu vực dành cho giáo viên quản lý lớp học, kế hoạch ôn tập, bài tập và kết quả học sinh.</p></section>
+    <section class="role-login-form">
+      <button class="role-back" type="button" onclick="closeRoleLogin('teacherLoginPanel')">← Chọn đối tượng khác</button>
+      <h2>Đăng nhập giáo viên</h2>
+      <div class="sv2-field"><label>Tên đăng nhập</label><input id="teacherLoginUser" autocomplete="username" placeholder="Nhập tên đăng nhập"/></div>
+      <div class="sv2-field"><label>Mật khẩu</label><input id="teacherLoginPass" autocomplete="current-password" type="password" placeholder="Nhập mật khẩu"/></div>
+      <div class="sv2-login-row"><label class="sv2-remember"><input id="teacherRemember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" type="button" onclick="roleForgot('Giáo viên')">Quên mật khẩu?</button></div>
+      <div class="sv2-login-error" id="teacherLoginError"></div>
+      <button class="sv2-login-btn" type="button" onclick="teacherLoginSubmit()">Đăng nhập</button>
+      <div class="sv2-or"><span>hoặc</span></div>
+      <button class="sv2-google-btn" type="button" onclick="roleGoogle('Giáo viên')"><span class="sv2-google-g">G</span> Đăng nhập với Google</button>
+    </section>
+  </div>
+</div>
+<div class="role-login-overlay" id="parentLoginPanel" hidden>
+  <div class="role-login-card">
+    <section class="role-login-brand"><div class="sv2-mark">HT</div><h1>HỌC TẬP<br/>THÔNG MINH PRO</h1><p>Khu vực dành cho phụ huynh theo dõi tiến độ, kết quả và nhận xét học tập của con.</p></section>
+    <section class="role-login-form">
+      <button class="role-back" type="button" onclick="closeRoleLogin('parentLoginPanel')">← Chọn đối tượng khác</button>
+      <h2>Đăng nhập phụ huynh</h2>
+      <div class="sv2-field"><label>Tên đăng nhập</label><input id="parentLoginUser" autocomplete="username" placeholder="Nhập tên đăng nhập"/></div>
+      <div class="sv2-field"><label>Mật khẩu</label><input id="parentLoginPass" autocomplete="current-password" type="password" placeholder="Nhập mật khẩu"/></div>
+      <div class="sv2-login-row"><label class="sv2-remember"><input id="parentRemember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" type="button" onclick="roleForgot('Phụ huynh')">Quên mật khẩu?</button></div>
+      <div class="sv2-login-error" id="parentLoginError"></div>
+      <button class="sv2-login-btn" type="button" onclick="parentLoginSubmit()">Đăng nhập</button>
+      <div class="sv2-or"><span>hoặc</span></div>
+      <button class="sv2-google-btn" type="button" onclick="roleGoogle('Phụ huynh')"><span class="sv2-google-g">G</span> Đăng nhập với Google</button>
+    </section>
+  </div>
+</div>
 <div aria-hidden="true" id="studentV2">
 <div class="sv2-login" id="sv2Login">
 <div class="sv2-login-card">
 <section class="sv2-login-brand"><div class="sv2-mark">HT</div><h1>HỌC TẬP<br/>THÔNG MINH PRO</h1><p>Cổng học tập dành cho học sinh. Xem nhiệm vụ, tự luyện, làm bài kiểm tra và theo dõi tiến bộ của chính mình.</p></section>
 <section class="sv2-login-form">
-<div class="sv2-login-head"><h2>Đăng nhập</h2><p></p></div>
-<div class="sv2-field sv2-student-class"><label>Lớp <span>(chỉ cần với tài khoản học sinh demo hiện tại)</span></label><input autocomplete="off" id="sv2Class" placeholder="Ví dụ: 10A1" type="text"/></div>
-<div class="sv2-field"><label>Tên đăng nhập</label><input autocomplete="username" id="sv2Student" placeholder="Tên đăng nhập / họ tên" type="text"/></div>
+<div class="sv2-login-head"><h2>Đăng nhập học sinh</h2><p>Đăng nhập để tiếp tục quá trình ôn tập và theo dõi tiến bộ.</p></div>
+<div class="sv2-field"><label>Lớp</label><input autocomplete="off" id="sv2Class" placeholder="Ví dụ: 10A1" type="text"/></div>
+<div class="sv2-field"><label>Họ và tên học sinh</label><input autocomplete="username" id="sv2Student" placeholder="Nhập họ và tên" type="text"/></div>
 <div class="sv2-field"><label>Mật khẩu</label><div class="sv2-password-wrap"><input autocomplete="current-password" id="sv2Code" maxlength="32" placeholder="Nhập mật khẩu" type="password"/><button class="sv2-eye" type="button" onclick="studentV2TogglePassword()" aria-label="Hiện hoặc ẩn mật khẩu">◉</button></div></div>
 <div class="sv2-login-row"><label class="sv2-remember"><input id="sv2Remember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" type="button" onclick="studentV2ForgotPassword()">Quên mật khẩu?</button></div>
 <div class="sv2-login-error" id="sv2LoginError"></div>
@@ -1811,36 +1844,24 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 <div class="sv2-or"><span>hoặc</span></div>
 <button class="sv2-google-login" onclick="studentV2GoogleLogin()" type="button"><span class="sv2-google-g">G</span><span>Đăng nhập với Google</span></button>
 <div class="sv2-register-line">Chưa có tài khoản? <button type="button" onclick="studentV2Register()">Đăng ký</button></div>
-<button class="sv2-back-link" onclick="studentV2ResetLogin()" type="button">↺ Xóa thông tin đăng nhập</button>
-
+<button class="sv2-back-link" onclick="backToRoleGateway()" type="button">← Chọn đối tượng khác</button>
+<div class="sv2-demo-note"><b>Tài khoản demo:</b> 10A1 · Nguyễn Minh An · Mật khẩu 1234</div>
 </section>
 </div>
 </div>
-<div hidden="" id="sv2Home" style="display:none"></div>
+<div hidden="" id="sv2Home"></div>
 </div>
 <script id="student-v2-script">
 (function(){'use strict';let currentId=null,slide=0,slideTimer=null;
 const E=id=>document.getElementById(id), A=v=>Array.isArray(v)?v:[], safe=v=>typeof esc==='function'?esc(v):String(v||'');
 function classes(){return [...new Set(A(state.students).map(s=>s.className).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'vi',{numeric:true}))}
 window.studentV2OpenLogin=function(){const root=E('studentV2');root.classList.add('open');root.setAttribute('aria-hidden','false');E('sv2Login').hidden=false;E('sv2Login').style.display='grid';E('sv2Home').hidden=true;E('sv2Home').style.display='none';root.scrollTop=0;let remembered={};try{remembered=JSON.parse(localStorage.getItem('htpro_student_login_remember')||'{}')}catch(_){ }E('sv2Class').value=remembered.className||'';E('sv2Student').value=remembered.studentName||'';E('sv2Code').value='';if(E('sv2Remember'))E('sv2Remember').checked=!!remembered.studentName;E('sv2LoginError').textContent='';document.body.style.overflow='hidden';setTimeout(()=>E(remembered.studentName?'sv2Code':'sv2Class').focus(),50)};
-window.studentV2ResetLogin=function(){
- const c=E('sv2Class'),u=E('sv2Student'),p=E('sv2Code'),r=E('sv2Remember');
- if(c)c.value='';if(u)u.value='';if(p)p.value='';if(r)r.checked=false;
- try{localStorage.removeItem('htpro_student_login_remember')}catch(_){}
- E('sv2LoginError').textContent='';if(u)u.focus();
-};
 window.studentV2TogglePassword=function(){const x=E('sv2Code');if(!x)return;x.type=x.type==='password'?'text':'password'};
-window.studentV2ForgotPassword=function(){E('sv2LoginError').textContent='Khôi phục mật khẩu cần hệ thống tài khoản thật. Khi kết nối backend, yêu cầu sẽ xử lý theo đúng tài khoản Giáo viên / Học sinh / Phụ huynh.'};
-window.studentV2Register=function(){E('sv2LoginError').textContent='Đăng ký sẽ hỗ trợ 3 loại tài khoản khi kết nối backend. Tài khoản phụ huynh phải được liên kết với đúng studentId của con.'};
-window.studentV2GoogleLogin=function(){E('sv2LoginError').textContent='Google Login cần OAuth/Firebase hoặc backend xác thực. Sau xác thực, hệ thống sẽ đọc role và studentId/parentId để mở đúng khu vực; hiện không giả lập đăng nhập.'};
+window.studentV2ForgotPassword=function(){E('sv2LoginError').textContent='Quên mật khẩu cần kết nối tài khoản thật. Hiện tại hãy liên hệ giáo viên để được cấp lại mật khẩu.'};
+window.studentV2Register=function(){E('sv2LoginError').textContent='Đăng ký tài khoản sẽ được kích hoạt khi app kết nối hệ thống tài khoản. Hiện tại giáo viên tạo hồ sơ học sinh trong app.'};
+window.studentV2GoogleLogin=function(){E('sv2LoginError').textContent='Đăng nhập Google cần cấu hình Google OAuth/Firebase hoặc hệ thống xác thực phía máy chủ. Nút đã sẵn sàng giao diện nhưng chưa giả lập đăng nhập.'};
 window.studentV2Close=function(){E('studentV2').classList.remove('open');E('studentV2').setAttribute('aria-hidden','true');document.body.style.overflow='';clearInterval(slideTimer)};
 window.studentV2ClassChanged=function(){};
-window.htRoleRoute=function(account){
- const role=String(account?.role||'student').toLowerCase();
- if(role==='teacher'){studentV2Close();if(typeof enterTeacherArea==='function')enterTeacherArea();return 'teacher'}
- if(role==='parent'){window.__parentAccount=account;E('sv2LoginError').textContent='Tài khoản phụ huynh đã sẵn sàng về luồng quyền; cần backend để liên kết parentId → studentId trước khi sử dụng thật.';return 'parent'}
- return 'student';
-};
 window.studentV2Login=function(){const norm=v=>String(v||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('vi-VN');const className=E('sv2Class').value.trim(),studentName=E('sv2Student').value.trim(),code=E('sv2Code').value.trim();if(!className||!studentName||!code){E('sv2LoginError').textContent='Vui lòng nhập đầy đủ lớp, họ tên học sinh và mật khẩu.';return}const s=A(state.students).find(x=>norm(x.className)===norm(className)&&norm(x.name)===norm(studentName));if(!s){E('sv2LoginError').textContent='Không tìm thấy học sinh với lớp và họ tên đã nhập.';return}if(code!==String(s.accessCode||'1234')){E('sv2LoginError').textContent='Mật khẩu chưa đúng.';return}const id=s.id;if(E('sv2Remember')?.checked){localStorage.setItem('htpro_student_login_remember',JSON.stringify({className,studentName}))}else{localStorage.removeItem('htpro_student_login_remember')}currentId=id;state.currentStudentId=id;try{saveState()}catch(_){}const login=E('sv2Login'),home=E('sv2Home'),root=E('studentV2');login.hidden=true;login.style.display='none';home.hidden=false;home.style.display='block';studentV2RenderHome();root.scrollTop=0;window.scrollTo(0,0);};
 function st(){return A(state.students).find(x=>x.id===currentId)}function done(a){return ['done','submitted','graded'].includes(a.status)||!!a.submittedAt}function pub(s){return A(s.assignments).filter(a=>a.portalPublished!==false&&(a.assignedAt||a.quiz||a.title))}
 function subjects(s){const base=['Toán','Ngữ văn','Tiếng Anh','Tin học','Vật lí','Hóa học','Sinh học'];return [...new Set([s.subject,...pub(s).map(a=>a.subject),...base].filter(Boolean))].slice(0,6)}
@@ -1936,27 +1957,55 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
 })();
 </script>
 
-<script id="v8753-role-policy">
-window.HTPRO_ROLE_POLICY={
- teacher:{canManage:true,canEditGrades:true,canEditComments:true,scope:'authorized_classes'},
- student:{canManage:false,canEditGrades:false,canEditComments:false,scope:'own_student_id',canStudy:true},
- parent:{canManage:false,canEditGrades:false,canEditComments:false,scope:'linked_student_ids',canStudy:false,readOnly:true}
+<script id="v8759-role-login">
+window.openTeacherLogin=function(){
+ const g=document.getElementById('roleGateway'),p=document.getElementById('teacherLoginPanel');
+ if(g)g.hidden=true;if(p){p.hidden=false;document.getElementById('teacherLoginUser')?.focus();}
+};
+window.openParentLogin=function(){
+ const g=document.getElementById('roleGateway'),p=document.getElementById('parentLoginPanel');
+ if(g)g.hidden=true;if(p){p.hidden=false;document.getElementById('parentLoginUser')?.focus();}
+};
+window.closeRoleLogin=function(id){
+ const p=document.getElementById(id),g=document.getElementById('roleGateway');
+ if(p)p.hidden=true;if(g)g.hidden=false;
+};
+window.backToRoleGateway=function(){
+ try{if(typeof studentV2Close==='function')studentV2Close();}catch(_){}
+ const sv=document.getElementById('studentV2'),g=document.getElementById('roleGateway');
+ if(sv){sv.classList.remove('open');sv.setAttribute('aria-hidden','true');}
+ if(g)g.hidden=false;document.body.style.overflow='';
+};
+window.teacherLoginSubmit=function(){
+ const u=document.getElementById('teacherLoginUser')?.value.trim(),p=document.getElementById('teacherLoginPass')?.value.trim(),e=document.getElementById('teacherLoginError');
+ if(!u||!p){if(e)e.textContent='Vui lòng nhập tên đăng nhập và mật khẩu.';return;}
+ if(e)e.textContent='';
+ document.getElementById('teacherLoginPanel').hidden=true;
+ enterTeacherArea();
+};
+window.parentLoginSubmit=function(){
+ const u=document.getElementById('parentLoginUser')?.value.trim(),p=document.getElementById('parentLoginPass')?.value.trim(),e=document.getElementById('parentLoginError');
+ if(!u||!p){if(e)e.textContent='Vui lòng nhập tên đăng nhập và mật khẩu.';return;}
+ if(e)e.textContent='Tài khoản phụ huynh cần được liên kết với hồ sơ học sinh khi kết nối hệ thống tài khoản chính thức.';
+};
+window.roleForgot=function(who){
+ const id=who==='Giáo viên'?'teacherLoginError':'parentLoginError';
+ const e=document.getElementById(id);if(e)e.textContent='Khôi phục mật khẩu sẽ hoạt động khi kết nối hệ thống tài khoản.';
+};
+window.roleGoogle=function(who){
+ const id=who==='Giáo viên'?'teacherLoginError':'parentLoginError';
+ const e=document.getElementById(id);if(e)e.textContent='Đăng nhập Google cần cấu hình xác thực Google trước khi sử dụng thật.';
 };
 </script>
 
-
-<script id="v8758-role-entry">
-(function(){
- function showRoleEntry(){
-   const gate=document.getElementById('roleGateway');
-   const sv=document.getElementById('studentV2');
-   if(gate){gate.hidden=false;gate.style.display='';}
-   if(sv){sv.classList.remove('open');sv.setAttribute('aria-hidden','true');}
- }
- if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',showRoleEntry);
- else showRoleEntry();
-})();
-</script>
+<style id="v8759-role-login-style">
+.rg-choice.parent{background:linear-gradient(135deg,#fffaf0,#fff7ed);border-color:#fed7aa}
+.role-login-overlay{position:fixed;inset:0;z-index:26000;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#eef4ff,#f8fbff 48%,#eef2ff)}
+.role-login-overlay[hidden]{display:none!important}.role-login-card{width:min(920px,100%);background:#fff;border:1px solid #dfe7f2;border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(30,58,138,.16);display:grid;grid-template-columns:1fr 1fr}
+.role-login-brand{padding:46px;background:linear-gradient(145deg,#172554,#1e3a8a 58%,#4338ca);color:#fff}.role-login-brand h1{font-size:31px;line-height:1.15;margin:22px 0 12px}.role-login-brand p{color:#dbeafe;line-height:1.65}
+.role-login-form{padding:42px;display:flex;flex-direction:column;justify-content:center}.role-login-form h2{font-size:27px;color:#172554;margin:8px 0 22px}.role-back{align-self:flex-start;border:0;background:transparent;color:#526477;font-weight:800;cursor:pointer;padding:0 0 8px}
+@media(max-width:760px){.role-login-card{grid-template-columns:1fr}.role-login-brand{padding:26px}.role-login-form{padding:28px}}
+</style>
 </body>
 </html>
 <style>
@@ -3385,9 +3434,3 @@ window.HTPRO_ROLE_POLICY={
 .sv2-register-line{text-align:center;margin-top:16px;color:#64748b;font-size:13px}.sv2-register-line button{margin-left:4px}.sv2-back-link{display:block;margin:14px auto 0;color:#64748b;font-size:12px}.sv2-demo-note{margin-top:16px!important}
 @media(max-width:760px){.sv2-login-form{padding:28px 22px!important}.sv2-login-row{align-items:flex-start;flex-direction:column}.sv2-login-brand{padding:30px!important}}
 </style>
-
-<style id="v8753-unified-login">
-.sv2-student-class label span{font-size:10px;font-weight:700;color:#94a3b8}
-
-</style>
-
