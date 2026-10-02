@@ -2910,6 +2910,77 @@ isplay:none!important}
  .sv2-student-main{padding-bottom:72px}
 }
 </style>
+
+<style id="v8777-practice-detail-polish">
+/* Trang sau khi chọn môn/tự luyện: biến màn hình trắng đơn điệu thành learning workspace */
+#sv2PracticeDetail,#sv2Practice,#sv2SubjectPractice,.sv2-practice-detail{
+ min-height:100vh!important;
+ background:
+   radial-gradient(circle at 90% 8%,rgba(79,70,229,.08),transparent 28%),
+   linear-gradient(180deg,#f5f8fd 0%,#eef4fb 100%)!important;
+}
+#sv2PracticeDetail .sv2-inner,#sv2Practice .sv2-inner,#sv2SubjectPractice .sv2-inner,
+.sv2-practice-detail .sv2-inner{
+ max-width:1120px!important;margin:0 auto!important;padding:28px 28px 60px!important;
+}
+#sv2PracticeDetail .sv2-back,#sv2Practice .sv2-back,#sv2SubjectPractice .sv2-back,
+.sv2-practice-detail .sv2-back,
+#sv2PracticeDetail button:first-child,#sv2Practice button:first-child,#sv2SubjectPractice button:first-child{
+ border:1px solid #d8e2ef!important;background:#fff!important;color:#334155!important;
+ border-radius:12px!important;min-height:42px!important;padding:0 15px!important;
+ font-weight:800!important;box-shadow:0 5px 14px rgba(15,23,42,.04)!important;
+}
+
+/* Generic task/article cards used by this view */
+#sv2PracticeDetail article,#sv2Practice article,#sv2SubjectPractice article,
+.sv2-practice-detail article{
+ position:relative!important;overflow:hidden!important;
+ margin-top:18px!important;padding:28px 30px!important;
+ border:1px solid #dce6f2!important;border-radius:22px!important;background:#fff!important;
+ box-shadow:0 16px 38px rgba(30,58,138,.08)!important;
+}
+#sv2PracticeDetail article:before,#sv2Practice article:before,#sv2SubjectPractice article:before,
+.sv2-practice-detail article:before{
+ content:"";position:absolute;left:0;top:0;bottom:0;width:6px;
+ background:linear-gradient(180deg,#2563eb,#4f46e5);
+}
+#sv2PracticeDetail article h2,#sv2Practice article h2,#sv2SubjectPractice article h2,
+.sv2-practice-detail article h2{
+ margin:0 0 14px!important;color:#172554!important;font-size:25px!important;line-height:1.3!important;
+}
+#sv2PracticeDetail article p,#sv2Practice article p,#sv2SubjectPractice article p,
+.sv2-practice-detail article p{
+ color:#64748b!important;font-size:14px!important;line-height:1.65!important;
+}
+#sv2PracticeDetail article button,#sv2Practice article button,#sv2SubjectPractice article button,
+.sv2-practice-detail article button{
+ min-height:44px!important;padding:0 18px!important;border:0!important;border-radius:11px!important;
+ background:linear-gradient(135deg,#2563eb,#4f46e5)!important;color:#fff!important;
+ font-weight:900!important;box-shadow:0 8px 18px rgba(37,99,235,.18)!important;
+}
+
+/* If the actual renderer is the simple page shown in screenshot, style its known inline container too */
+#studentV2 [style*="max-width:1100px"]{
+ max-width:1120px!important;
+}
+#studentV2 [style*="background:#fff"][style*="border"]{
+ border-color:#dce6f2!important;
+ box-shadow:0 16px 38px rgba(30,58,138,.08)!important;
+}
+
+/* Compact subject context badge */
+.sv2-practice-subject-badge{
+ display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;
+ background:#eaf2ff;color:#1d4ed8;font-size:12px;font-weight:900;
+}
+@media(max-width:700px){
+ #sv2PracticeDetail .sv2-inner,#sv2Practice .sv2-inner,#sv2SubjectPractice .sv2-inner,
+ .sv2-practice-detail .sv2-inner{padding:18px 14px 88px!important}
+ #sv2PracticeDetail article,#sv2Practice article,#sv2SubjectPractice article,.sv2-practice-detail article{
+  padding:22px 20px!important;border-radius:18px!important
+ }
+}
+</style>
 </body>
 </html>
 <style>
