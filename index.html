@@ -1986,7 +1986,8 @@ window.studentV2Quick=function(kind){
 };
 window.studentV2OpenPractice=function(){
  const s=st();if(!s)return;
- const as=pub(s),subs=subjects(s);clearInterval(slideTimer);
+ forceMinhAnTinHocDemo();
+ const as=pub(s),subs=subjects(s);if(String(s.name||'').trim()==='Nguyễn Minh An'&&String(s.className||'').trim()==='10A1'&&!subs.includes('Tin học'))subs.push('Tin học');clearInterval(slideTimer);
  const icons={'Toán':'∑','Ngữ văn':'VĂN','Tiếng Anh':'EN','Tin học':'</>','Vật lí':'F','Hóa học':'HÓA','Sinh học':'DNA'};
  const desc={'Toán':'Tư duy, công thức và giải bài','Ngữ văn':'Đọc hiểu, tiếng Việt và diễn đạt','Tiếng Anh':'Từ vựng, ngữ pháp và kỹ năng','Tin học':'Logic, thuật toán và công nghệ','Vật lí':'Hiện tượng, đại lượng và công thức','Hóa học':'Chất, phản ứng và tính toán','Sinh học':'Sự sống, cơ thể và môi trường'};
  const stats=subs.map(subject=>{
@@ -2155,6 +2156,38 @@ function seedMinhAnTeacherStudentDemo(){
  try{saveState()}catch(_){}
 }
 seedMinhAnTeacherStudentDemo();
+
+function forceMinhAnTinHocDemo(){
+ if(!window.state||!Array.isArray(state.students))return;
+ const s=state.students.find(x=>String(x.name||'').trim()==='Nguyễn Minh An'&&String(x.className||'').trim()==='10A1');
+ if(!s)return;
+ s.assignments=Array.isArray(s.assignments)?s.assignments:[];
+ // Remove stale Tin học demo variants so only one canonical assignment remains.
+ s.assignments=s.assignments.filter(a=>!(
+   (String(a.subject||'').trim()==='Tin học' && (
+      String(a.id||'').startsWith('minhan_demo_') ||
+      /tin học|dữ liệu và thông tin/i.test(String(a.title||''))
+   ))
+ ));
+ const meta=MINHAN_DEMO_META['Tin học'], qs=MINHAN_DEMO_BANKS['Tin học'];
+ s.assignments.unshift({
+   id:meta.id,
+   title:meta.title,
+   subject:'Tin học',
+   status:'pending',
+   date:'2026-10-02',
+   assignedAt:'2026-10-02T07:00:00',
+   dueAt:'2026-10-05T21:00',
+   portalPublished:true,
+   learningTrack:'practice',
+   assessmentSubtype:'15min',
+   richBody:'Bài trắc nghiệm Tin học 10 câu dành cho Nguyễn Minh An.',
+   quiz:{duration:15,level:'Tổng hợp',showAnswers:true,questions:qs}
+ });
+ try{saveState()}catch(_){}
+}
+forceMinhAnTinHocDemo();
+
 
 window.studentV2OpenAssignment=function(id){
  const s=st();let a=pub(s).find(x=>x.id===id);if(!a)return;if(isMinhAnDemoAssignment(s,a)){renderMinhAnDirectQuiz(s,a);return}
@@ -3350,6 +3383,89 @@ isplay:none!important}
 @media(max-width:760px){
  .m84-options{grid-template-columns:1fr!important}
 }
+</style>
+
+<script id="v8788-teacher-student-single-flow">
+(function(){
+ const CANON_ID='teacher_demo_it_minhan_10a1';
+ const IT_Q=[
+  {text:'Trong máy tính, đơn vị nhỏ nhất dùng để biểu diễn thông tin là:',options:['bit','byte','KB','MB'],correct:0,level:'Nhận biết'},
+  {text:'Một byte gồm bao nhiêu bit?',options:['4 bit','8 bit','16 bit','1024 bit'],correct:1,level:'Nhận biết'},
+  {text:'Hệ nhị phân sử dụng hai chữ số nào?',options:['0 và 1','1 và 2','0 và 9','2 và 8'],correct:0,level:'Nhận biết'},
+  {text:'Số nhị phân 1010 tương ứng với số nào trong hệ thập phân?',options:['8','9','10','12'],correct:2,level:'Thông hiểu'},
+  {text:'Phát biểu nào mô tả đúng nhất về thuật toán?',options:['Một dãy hữu hạn các bước để giải một bài toán','Một thiết bị dùng để lưu dữ liệu','Một loại phần mềm hệ thống','Một tệp chứa hình ảnh'],correct:0,level:'Thông hiểu'},
+  {text:'Trong lập trình, biến được dùng chủ yếu để làm gì?',options:['Lưu giá trị có thể thay đổi trong chương trình','Chỉ hiển thị văn bản ra màn hình','Kết nối máy tính với Internet','Tạo thiết bị phần cứng'],correct:0,level:'Thông hiểu'},
+  {text:'Trong Python, câu lệnh x = 5 có ý nghĩa gì?',options:['So sánh x với 5','Gán giá trị 5 cho biến x','In giá trị 5 ra màn hình','Xóa biến x'],correct:1,level:'Thông hiểu'},
+  {text:'Cho x = 3. Sau khi thực hiện x = x + 2, giá trị của x là:',options:['2','3','5','6'],correct:2,level:'Vận dụng'},
+  {text:'Lệnh input() trong Python thường được dùng để:',options:['Nhận dữ liệu do người dùng nhập','Xuất dữ liệu ra màn hình','Kết thúc chương trình','Xóa dữ liệu đã nhập'],correct:0,level:'Vận dụng'},
+  {text:'Đoạn lệnh nào kiểm tra đúng điều kiện x lớn hơn 0 trong Python?',options:['if x > 0:','if x = 0:','print(x > 0)','x > 0 = if'],correct:0,level:'Vận dụng'}
+ ];
+ function student(){
+   return (state.students||[]).find(s=>String(s.name||'').trim()==='Nguyễn Minh An'&&String(s.className||'').trim()==='10A1');
+ }
+ function canonicalize(){
+   const s=student(); if(!s)return null;
+   s.assignments=Array.isArray(s.assignments)?s.assignments:[];
+   // Xóa toàn bộ bản Tin học demo cũ. Chỉ giữ một bài duy nhất theo đúng cấu trúc do giáo viên giao.
+   s.assignments=s.assignments.filter(a=>{
+     if(a.id===CANON_ID)return true;
+     const isOldDemo=String(a.subject||'').trim()==='Tin học' &&
+       (String(a.id||'').startsWith('minhan_demo_') ||
+        /tin học\s*[–-]\s*dữ liệu và thông tin/i.test(String(a.title||'')) ||
+        /ôn tập tin học\s*[–-]\s*dữ liệu và lập trình/i.test(String(a.title||'')));
+     return !isOldDemo;
+   });
+   let a=s.assignments.find(x=>x.id===CANON_ID);
+   if(!a){
+     const now=new Date().toISOString();
+     a={
+       id:CANON_ID,batchId:'demo_batch_it_10a1',assignedAt:now,
+       assignedClass:'10A1',assignedScope:'student',
+       title:'Tin học – Dữ liệu, biểu diễn thông tin và lập trình',
+       subject:'Tin học',date:'2026-10-02',
+       note:'Trắc nghiệm 10 câu · 3 mức độ',
+       richBody:'Bài được giao từ khu vực Bài tập & ôn luyện của giáo viên.',
+       portalPublished:true,
+       learningTrack:'practice',assessmentSubtype:'15 phút',
+       quiz:{questions:structuredClone(IT_Q),level:'3 mức',duration:15,attempts:1,shuffleQuestions:false,shuffleAnswers:false,showAnswers:true,openAt:'',dueAt:'2026-10-05T21:00'},
+       answer:'',score:'',maxScore:10,status:'pending',createdAt:now,dueAt:'2026-10-05T21:00'
+     };
+     s.assignments.unshift(a);
+   }else{
+     a.assignedClass='10A1';a.assignedScope='student';a.portalPublished=true;
+     a.learningTrack='practice';a.assessmentSubtype='15 phút';
+     a.quiz={questions:structuredClone(IT_Q),level:'3 mức',duration:15,attempts:1,shuffleQuestions:false,shuffleAnswers:false,showAnswers:true,openAt:'',dueAt:a.dueAt||'2026-10-05T21:00'};
+   }
+   try{saveState()}catch(e){}
+   return a;
+ }
+ // Thay cơ chế demo cũ: từ đây Tin học dùng đúng một assignment chung giữa GV và HS.
+ window.forceMinhAnTinHocDemo=canonicalize;
+ canonicalize();
+
+ // Sau khi giáo viên giao trắc nghiệm bằng form thật, học sinh đọc trực tiếp chính object vừa được thêm vào assignments.
+ // Không tạo bản sao ở cổng học sinh.
+ const oldRenderAssignments=window.renderAssignments;
+ if(typeof oldRenderAssignments==='function'){
+   window.renderAssignments=function(){
+     canonicalize();
+     return oldRenderAssignments.apply(this,arguments);
+   };
+ }
+
+ // Đảm bảo trang học sinh luôn đọc dữ liệu mới nhất từ cùng state.students[].assignments.
+ const oldHome=window.studentV2RenderHome;
+ if(typeof oldHome==='function'){
+   window.studentV2RenderHome=function(){
+     canonicalize();
+     return oldHome.apply(this,arguments);
+   };
+ }
+})();
+</script>
+<style id="v8788-teacher-flow-note">
+/* Bài do giáo viên giao và bài học sinh làm dùng chung một bản ghi; không tạo giao diện tự luận nếu assignment có quiz. */
+#sv2QuizHost .quiz-student-card label{justify-content:flex-start!important;text-align:left!important}
 </style>
 </body>
 </html>
