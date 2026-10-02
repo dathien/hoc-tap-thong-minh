@@ -304,21 +304,38 @@ html,body{margin:0!important;padding:0!important}
 #teacherLoginPanel .sv2-login-brand + .v125-credit,
 #parentLoginPanel .sv2-login-brand + .v125-credit,
 #studentV2 .sv2-login-brand + .v125-credit{margin-top:-10px!important;margin-bottom:16px!important}
-</style><style id="v8827-student-credit-style">
+</style><style id="v8829-student-credit-polish">
+/* 8.8.29 — tên GV dưới thương hiệu ở sidebar học sinh */
 #studentV2 .v127-student-credit,
 .sv2-student-shell .v127-student-credit{
- display:block!important;
- margin:4px 10px 12px!important;
- padding:0 0 11px!important;
- border-bottom:1px solid rgba(255,255,255,.18)!important;
- background:transparent!important;
- color:#dbeafe!important;
- font-size:10.5px!important;
- line-height:1.3!important;
- font-weight:800!important;
- letter-spacing:.01em!important;
- text-align:left!important;
- white-space:nowrap!important;
+  display:block!important;
+  box-sizing:border-box!important;
+  margin:8px 16px 0 66px!important;
+  padding:0 0 13px!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.18)!important;
+  background:transparent!important;
+  color:#dbeafe!important;
+  font-size:11.5px!important;
+  line-height:1.35!important;
+  font-weight:750!important;
+  letter-spacing:.005em!important;
+  text-align:left!important;
+  text-decoration:none!important;
+  white-space:nowrap!important;
+  opacity:.96!important;
+}
+/* Tạo khoảng thở giữa tên GV và menu đầu tiên */
+#studentV2 .v127-student-credit + *,
+.sv2-student-shell .v127-student-credit + *{
+  margin-top:12px!important;
+}
+@media(max-width:720px){
+  #studentV2 .v127-student-credit,
+  .sv2-student-shell .v127-student-credit{
+    margin-left:16px!important;
+    margin-right:16px!important;
+  }
 }
 </style></head>
 <body>
