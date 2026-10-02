@@ -5757,8 +5757,6 @@ window.studentV2OpenAssignment=function(id){
 <style id="v8798-final-style">
 .v98preview{min-height:100vh;padding:28px;background:#f3f7fc}.v98back,.v98top button{height:42px;padding:0 15px;border:1px solid #d7e2ef;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v98card{max-width:720px;margin:48px auto;padding:34px;border:1px solid #dce6f2;border-radius:22px;background:#fff;text-align:center;box-shadow:0 18px 45px rgba(30,58,138,.08)}.v98tag{display:inline-block;padding:6px 10px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:950}.v98card h2{margin:14px 0;color:#172554;font-size:28px}.v98meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.v98meta span{padding:7px 10px;border-radius:9px;background:#f1f5f9;color:#475569;font-size:12px;font-weight:800}.v98idle{width:190px;margin:22px auto;padding:15px;border:1px solid #bfdbfe;border-radius:15px;background:#f8fbff}.v98idle small,.v98idle strong{display:block}.v98idle b{display:block;margin:5px 0;font-size:29px;color:#172554}.v98idle strong{font-size:10px;color:#2563eb}.v98start{height:49px;padding:0 32px;border:0;border-radius:12px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:950}.v98page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc}.v98top{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center}.v98hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center}.v98hero h2{margin:5px 0}.v98hero p{margin:0;color:#dbeafe}.v98clock{min-width:132px;padding:12px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.v98clock small,.v98clock b{display:block}.v98clock b{font-size:25px;margin-top:4px}.v98list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.v98q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.v98qh{display:flex;justify-content:space-between}.v98opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v98opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;padding:12px;border:1px solid #dce5ef;border-radius:11px}.v98submit,.v98done{max-width:1060px;margin:15px auto;padding:14px;border-radius:14px;background:#fff;border:1px solid #d7e2ef}.v98submit{display:flex;justify-content:space-between;align-items:center;position:sticky;bottom:12px}.v98submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:#3156df;color:#fff;font-weight:900}
 </style>
-
-
 <script id="v8804-teacher-grading-workflow">
 (function(){
 'use strict';
@@ -5990,101 +5988,122 @@ save();
 .v105gradebox{margin-top:12px;padding:15px;border:1px solid #cbdcf0;border-radius:14px;background:#f8fbff}.v105title{margin-bottom:9px;color:#172554;font-weight:900}.v105choice{display:grid!important;grid-template-columns:20px 1fr;gap:9px;align-items:start!important;padding:10px 11px;margin:7px 0;border:1px solid #dbe5f0;border-radius:11px;background:#fff}.v105choice input{margin-top:3px}.v105choice span{display:block}.v105choice b,.v105choice small{display:block}.v105choice b{color:#1e293b}.v105choice small{margin-top:3px;color:#64748b;font-size:11px;line-height:1.45}.v105wait{min-height:100vh;padding:28px;background:#f3f7fc}.v105back{height:42px;padding:0 15px;border:1px solid #d7e2ef;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v105card{max-width:650px;margin:55px auto;padding:34px;border:1px solid #dce6f2;border-radius:22px;background:#fff;text-align:center}.v105ok{width:54px;height:54px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:#ecfdf5;color:#059669;font-size:25px;font-weight:950}.v105card>span{font-size:10px;font-weight:950;letter-spacing:.12em;color:#64748b}.v105card h2{color:#172554}.v105pending{display:inline-block;padding:9px 14px;border-radius:999px;background:#fff7ed;color:#c2410c;font-size:12px;font-weight:900}.v105card p{color:#64748b;line-height:1.6}.v105card button{height:44px;padding:0 20px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}
 </style>
 
-<script id="v8806-context-tab-monitor">
+
+
+<script id="v8807-role-locked-tab-monitor">
 (function(){
 'use strict';
 const A=v=>Array.isArray(v)?v:[];
-let watchedId=null,pending=false,modalOpen=false;
+let watchedId=null,pending=false,modalOpen=false,studentAttemptSession=false;
 
 function find(id){
  for(const s of A(state.students)){const a=A(s.assignments).find(x=>String(x.id)===String(id));if(a)return a}
  return null;
 }
 function save(){try{saveState()}catch(e){}}
-function inQuizScreen(){
- return !!document.getElementById('v98Clock') && !!document.querySelector('.v98list');
-}
-function active(){
- if(!watchedId || !inQuizScreen())return null;
- const a=find(watchedId);
- if(!a || a.attemptStartedByStudent!==true || !a.startedAt || a.submittedAt || a.status!=='doing')return null;
- return a;
-}
-function clearUI(){
- ['v103Warn','v103Count','v106Warn','v106Count'].forEach(id=>{const x=document.getElementById(id);if(x)x.remove()});
+function purge(){
+ ['v103Warn','v106Warn','v107Warn','v103Count','v106Count','v107Count'].forEach(id=>{const x=document.getElementById(id);if(x)x.remove()});
  modalOpen=false;
 }
-function showWarning(){
- const a=active();if(!a||!pending||modalOpen)return;
- pending=false;modalOpen=true;clearUI();modalOpen=true;
- const n=Number(a.integrityTabV4?.count||0);
- const d=document.createElement('div');d.id='v106Warn';d.className='v106overlay';
- d.innerHTML=`<div class="v106modal"><div class="v106ico">!</div><h3>Cảnh báo rời tab làm bài</h3>
- <p>Bạn vừa rời khỏi tab làm bài. Hệ thống đã ghi nhận <b>lần ${n}</b>.</p>
- ${n>=3?'<div class="v106strong">Bạn đã rời tab từ 3 lần. Nhật ký này sẽ được lưu cùng bài làm.</div>':'<div class="v106soft">Đồng hồ vẫn tiếp tục đếm trong thời gian bạn rời tab.</div>'}
- <button id="v106Continue">Tiếp tục làm bài</button></div>`;
- document.body.appendChild(d);
- document.getElementById('v106Continue').onclick=()=>{d.remove();modalOpen=false};
+function teacherUIVisible(){
+ /* Teacher app has these real panels/sidebar; student quiz shell does not. */
+ const teacherSidebar=document.querySelector('aside.card.sidebar');
+ if(teacherSidebar && getComputedStyle(teacherSidebar).display!=='none')return true;
+ const teacherPanel=document.querySelector('.panel.active, .panel[style*="display: block"], #homePanel.active');
+ if(teacherPanel && !document.querySelector('.v98list'))return true;
+ return false;
 }
-
-/* Monitoring exists only while the exact student quiz screen is mounted. */
+function studentQuizMounted(){
+ return studentAttemptSession===true &&
+        watchedId!==null &&
+        !!document.getElementById('v98Clock') &&
+        !!document.querySelector('.v98list') &&
+        !!document.querySelector('.sv2-student-shell') &&
+        !teacherUIVisible();
+}
+function active(){
+ if(!studentQuizMounted())return null;
+ const a=find(watchedId);
+ if(!a||a.attemptStartedByStudent!==true||!a.startedAt||a.submittedAt||a.status!=='doing')return null;
+ return a;
+}
+function disarm(){
+ watchedId=null;pending=false;studentAttemptSession=false;purge();
+}
+function warn(){
+ const a=active();if(!a||!pending||modalOpen)return;
+ pending=false;modalOpen=true;purge();modalOpen=true;
+ const n=Number(a.integrityTabV5?.count||0);
+ const d=document.createElement('div');d.id='v107Warn';d.className='v107overlay';
+ d.innerHTML=`<div class="v107modal"><div class="v107ico">!</div><h3>Cảnh báo rời tab làm bài</h3>
+ <p>Bạn vừa rời khỏi tab làm bài. Hệ thống đã ghi nhận <b>lần ${n}</b>.</p>
+ <div class="${n>=3?'v107strong':'v107soft'}">${n>=3?'Bạn đã rời tab từ 3 lần. Nhật ký sẽ được lưu cùng bài làm.':'Đồng hồ vẫn tiếp tục chạy trong thời gian bạn rời tab.'}</div>
+ <button id="v107Continue">Tiếp tục làm bài</button></div>`;
+ document.body.appendChild(d);
+ document.getElementById('v107Continue').onclick=()=>{d.remove();modalOpen=false};
+}
 document.addEventListener('visibilitychange',function(){
  const a=active();if(!a)return;
  if(document.visibilityState==='hidden'){
-   a.integrityTabV4=a.integrityTabV4||{count:0,events:[]};
-   a.integrityTabV4.count=Number(a.integrityTabV4.count||0)+1;
-   a.integrityTabV4.events=A(a.integrityTabV4.events);
-   a.integrityTabV4.events.push({at:new Date().toISOString(),type:'tab_hidden'});
+   a.integrityTabV5=a.integrityTabV5||{count:0,events:[]};
+   a.integrityTabV5.count=Number(a.integrityTabV5.count||0)+1;
+   a.integrityTabV5.events=A(a.integrityTabV5.events);
+   a.integrityTabV5.events.push({at:new Date().toISOString(),type:'tab_hidden'});
    pending=true;save();
- }else if(document.visibilityState==='visible'){
-   setTimeout(showWarning,100);
- }
+ }else if(document.visibilityState==='visible')setTimeout(warn,100);
 },true);
 
-/* The ONLY event that arms monitoring: clicking Bắt đầu làm. */
+/* ONLY clicking the student's actual Start button arms monitoring. */
 const start0=window.studentV98Start;
 window.studentV98Start=function(id){
+ disarm();
  const a=find(id);
- watchedId=null;pending=false;clearUI();
  if(a&&!a.submittedAt){
-   a.integrityTabV4={count:0,events:[]};
-   delete a.integrity;delete a.integrityV2;delete a.integrityTab;delete a.integrityTabV3;
+   a.integrityTabV5={count:0,events:[]};
+   delete a.integrity;delete a.integrityV2;delete a.integrityTab;delete a.integrityTabV3;delete a.integrityTabV4;
    save();
  }
  const r=start0(id);
  watchedId=String(id);
+ studentAttemptSession=true;
  return r;
 };
 
-/* Leaving the quiz screen disarms monitoring immediately. */
+/* Teacher navigation / teacher login / leaving quiz always kills monitoring. */
+document.addEventListener('click',function(e){
+ setTimeout(function(){
+   if(teacherUIVisible() || !document.querySelector('.v98list'))disarm();
+ },0);
+},true);
+
+const go0=window.goPanel;
+if(typeof go0==='function')window.goPanel=function(){
+ disarm();
+ return go0.apply(this,arguments);
+};
+
+/* Opening a non-active student assignment also disarms. */
 const open0=window.studentV2OpenAssignment;
 window.studentV2OpenAssignment=function(id){
  const a=find(id);
- if(!a || a.attemptStartedByStudent!==true || a.submittedAt){
-   watchedId=null;pending=false;clearUI();
- }
+ if(!a||a.submittedAt||a.attemptStartedByStudent!==true)disarm();
  return open0(id);
 };
 
-function disarm(){
- if(!inQuizScreen()){watchedId=null;pending=false;clearUI()}
-}
-document.addEventListener('click',()=>setTimeout(disarm,0),true);
-
-/* Badge only on the exact mounted quiz screen. */
 setInterval(function(){
- const a=active(),hero=document.querySelector('.v98hero'),old=document.getElementById('v106Count');
+ if(teacherUIVisible()){disarm();return}
+ const a=active(),hero=document.querySelector('.v98hero'),old=document.getElementById('v107Count');
  if(!a||!hero){if(old)old.remove();return}
- const n=Number(a.integrityTabV4?.count||0);
+ const n=Number(a.integrityTabV5?.count||0);
  if(!n){if(old)old.remove();return}
- let b=old;if(!b){b=document.createElement('div');b.id='v106Count';b.className='v106count';hero.appendChild(b)}
+ let b=old;if(!b){b=document.createElement('div');b.id='v107Count';b.className='v107count';hero.appendChild(b)}
  b.textContent='Rời tab lượt này: '+n;
-},700);
+},500);
 
-/* On initial page load, NEVER inherit monitoring from localStorage. */
-watchedId=null;pending=false;clearUI();
+/* Critical: page load/login starts fully disarmed regardless of saved assignment status. */
+disarm();
 })();
 </script>
-<style id="v8806-context-tab-monitor-style">
-.v106overlay{position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.6);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}.v106modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.3)}.v106ico{width:48px;height:48px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:#fff7ed;color:#ea580c;font-size:25px;font-weight:950;border:1px solid #fed7aa}.v106modal h3{margin:5px 0 9px;color:#172554}.v106modal p{color:#475569;line-height:1.55}.v106soft,.v106strong{padding:11px 12px;border-radius:11px;font-size:12px;text-align:left}.v106soft{background:#eff6ff;color:#1e40af}.v106strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.v106modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}.v106count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
+<style id="v8807-role-locked-tab-monitor-style">
+.v107overlay{position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.6);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}.v107modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.3)}.v107ico{width:48px;height:48px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:#fff7ed;color:#ea580c;font-size:25px;font-weight:950;border:1px solid #fed7aa}.v107modal h3{margin:5px 0 9px;color:#172554}.v107modal p{color:#475569;line-height:1.55}.v107soft,.v107strong{padding:11px 12px;border-radius:11px;font-size:12px;text-align:left}.v107soft{background:#eff6ff;color:#1e40af}.v107strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.v107modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}.v107count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
 </style>
