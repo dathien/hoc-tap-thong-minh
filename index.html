@@ -3549,6 +3549,122 @@ try{
 .sv289-page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc;box-sizing:border-box}.sv289-back{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:12px;font-weight:800}.sv289-back button{height:40px;padding:0 14px;border:1px solid #d6e1ee;border-radius:11px;background:#fff;color:#334155;font-weight:850;cursor:pointer}.sv289-hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:18px}.sv289-hero small{color:#bfdbfe;font-weight:950;letter-spacing:.12em}.sv289-hero h2{margin:5px 0;font-size:27px}.sv289-hero p{margin:0;color:#dbeafe}.sv289-clock,.sv289-score{min-width:120px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.sv289-clock small,.sv289-score span{display:block;font-size:9px}.sv289-clock b,.sv289-score b{display:block;margin-top:3px;font-size:24px}.sv289-clock b.danger{color:#fde047}.sv289-list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.sv289-q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.sv289-qhead{display:flex;justify-content:space-between}.sv289-qhead>b{color:#1d4ed8}.sv289-qhead span{padding:4px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:850}.sv289-q h4{margin:10px 0 13px;color:#172554;line-height:1.5}.sv289-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.sv289-opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;align-items:start;padding:12px 13px;border:1px solid #dce5ef;border-radius:11px;background:#fbfdff;cursor:pointer;text-align:left}.sv289-opts input{margin:2px 0 0}.sv289-opts label.correct{border-color:#86efac;background:#f0fdf4}.sv289-opts label.wrong{border-color:#fca5a5;background:#fef2f2}.sv289-key{color:#15803d;font-size:11px}.sv289-submit{position:sticky;bottom:12px;max-width:1060px;margin:15px auto 0;padding:12px 14px;border:1px solid #d7e2ef;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 12px 30px rgba(30,58,138,.12);display:flex;justify-content:space-between;align-items:center}.sv289-submit span{color:#64748b;font-size:11px}.sv289-submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900}.sv289-done{max-width:1060px;margin:15px auto;padding:15px;border:1px solid #bbf7d0;border-radius:13px;background:#f0fdf4;color:#15803d;font-weight:850}
 @media(max-width:760px){.sv289-page{padding:16px 12px 90px}.sv289-opts{grid-template-columns:1fr}.sv289-hero{padding:20px 17px}.sv289-hero h2{font-size:21px}.sv289-submit{bottom:72px}}
 </style>
+
+<script id="v8790-root-fix">
+(function(){
+'use strict';
+/*
+ FIX GỐC 8.7.90:
+ Các bản trước gọi st() từ script vá bên ngoài, nhưng st() nằm trong closure student-v2-script.
+ Vì vậy script vá không lấy được học sinh hiện tại và luôn rơi về renderer tự luận cũ.
+ Bản này không gọi st(). Assignment được tìm trực tiếp bằng ID duy nhất trong state.students.
+*/
+let timer90=null;
+const arr90=v=>Array.isArray(v)?v:[];
+const esc90=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function locate90(id){
+ for(const s of arr90(window.state?.students)){
+   const a=arr90(s.assignments).find(x=>String(x.id)===String(id));
+   if(a)return {s,a};
+ }
+ return {s:null,a:null};
+}
+function quiz90(a){return !!(a?.quiz&&Array.isArray(a.quiz.questions)&&a.quiz.questions.length>0&&a.quiz.questions.every(q=>Array.isArray(q.options)&&q.options.length>=2))}
+function itQuestions90(){return [
+ {text:'Trong máy tính, đơn vị nhỏ nhất dùng để biểu diễn thông tin là:',options:['bit','byte','KB','MB'],correct:0,level:'Nhận biết'},
+ {text:'Một byte gồm bao nhiêu bit?',options:['4 bit','8 bit','16 bit','1024 bit'],correct:1,level:'Nhận biết'},
+ {text:'Hệ nhị phân sử dụng hai chữ số nào?',options:['0 và 1','1 và 2','0 và 9','2 và 8'],correct:0,level:'Nhận biết'},
+ {text:'Số nhị phân 1010 tương ứng với số nào trong hệ thập phân?',options:['8','9','10','12'],correct:2,level:'Thông hiểu'},
+ {text:'Phát biểu nào mô tả đúng nhất về thuật toán?',options:['Một dãy hữu hạn các bước để giải một bài toán','Một thiết bị dùng để lưu dữ liệu','Một loại phần mềm hệ thống','Một tệp chứa hình ảnh'],correct:0,level:'Thông hiểu'},
+ {text:'Trong lập trình, biến được dùng chủ yếu để làm gì?',options:['Lưu giá trị có thể thay đổi trong chương trình','Chỉ hiển thị văn bản ra màn hình','Kết nối máy tính với Internet','Tạo thiết bị phần cứng'],correct:0,level:'Thông hiểu'},
+ {text:'Trong Python, câu lệnh x = 5 có ý nghĩa gì?',options:['So sánh x với 5','Gán giá trị 5 cho biến x','In giá trị 5 ra màn hình','Xóa biến x'],correct:1,level:'Thông hiểu'},
+ {text:'Cho x = 3. Sau khi thực hiện x = x + 2, giá trị của x là:',options:['2','3','5','6'],correct:2,level:'Vận dụng'},
+ {text:'Lệnh input() trong Python thường được dùng để:',options:['Nhận dữ liệu do người dùng nhập','Xuất dữ liệu ra màn hình','Kết thúc chương trình','Xóa dữ liệu đã nhập'],correct:0,level:'Vận dụng'},
+ {text:'Đoạn lệnh nào kiểm tra đúng điều kiện x lớn hơn 0 trong Python?',options:['if x > 0:','if x = 0:','print(x > 0)','x > 0 = if'],correct:0,level:'Vận dụng'}
+]}
+function migrateExistingTeacherIT90(){
+ // Không tạo bài mới ở đây. Chỉ sửa BẢN GHI ĐÃ TỒN TẠI phía giáo viên/học sinh.
+ // Nhờ vậy: giáo viên xóa bài => học sinh cũng không còn bài.
+ let changed=false;
+ for(const s of arr90(window.state?.students)){
+   if(String(s.className||'').trim()!=='10A1'||!/Nguyễn Minh An/i.test(String(s.name||'')))continue;
+   for(const a of arr90(s.assignments)){
+     const isIT=String(a.subject||'').trim()==='Tin học' &&
+       (/Dữ liệu, biểu diễn thông tin và lập trình/i.test(String(a.title||'')) ||
+        a.id==='teacher_demo_it_minhan_10a1');
+     if(isIT&&!quiz90(a)){
+       a.quiz={duration:15,level:'3 mức',attempts:1,showAnswers:true,questions:itQuestions90()};
+       a.portalPublished=true;a.learningTrack='practice';a.assessmentSubtype='15 phút';
+       a.status=a.submittedAt?'graded':'pending';changed=true;
+     }
+   }
+ }
+ if(changed)try{saveState()}catch(e){}
+}
+migrateExistingTeacherIT90();
+
+// Vô hiệu hóa cơ chế cũ tự sinh lại bài mỗi khi mở Tự luyện.
+// Từ đây chỉ giáo viên/bản ghi đã có mới quyết định học sinh có thấy bài hay không.
+window.forceMinhAnTinHocDemo=function(){return null};
+
+function sidebar90(){
+ return `<aside class="sv2-student-sidebar"><div class="sv2-side-brand"><div class="sv2-side-mark">ÔT</div><b>ÔN TẬP<br><span>THÔNG MINH</span></b></div><nav><button onclick="studentV2RenderHome()"><span>⌂</span>Trang chủ</button><button onclick="studentV2OpenPractice()"><span>▦</span>Tự luyện</button><button class="active" onclick="studentV2Quick('test')"><span>✓</span>Kiểm tra</button><button onclick="studentV2Quick('battle')"><span>♟</span>Đấu trí</button><i></i><button onclick="studentV2RenderHome()"><span>▥</span>Tiến độ học tập</button><button onclick="studentV2RenderHome()"><span>★</span>Kết quả của tôi</button></nav></aside>`;
+}
+function remain90(a){
+ const min=Number(a.quiz?.duration)||0;if(!min)return null;
+ const start=new Date(a.startedAt).getTime();
+ return Math.max(0,Math.ceil((start+min*60000-Date.now())/1000));
+}
+function time90(v){return String(Math.floor(v/60)).padStart(2,'0')+':'+String(v%60).padStart(2,'0')}
+function clock90(id){
+ clearInterval(timer90);
+ const tick=()=>{
+   const {a}=locate90(id),el=document.getElementById('v90Clock');
+   if(!a||!el||a.submittedAt){clearInterval(timer90);return}
+   const r=remain90(a);if(r===null){el.textContent='Không giới hạn';clearInterval(timer90);return}
+   el.textContent=time90(r);el.classList.toggle('danger',r<=60);
+   if(r<=0){clearInterval(timer90);submit90(id,true)}
+ };
+ tick();timer90=setInterval(tick,1000);
+}
+function render90(id){
+ const {s,a}=locate90(id);if(!s||!a||!quiz90(a))return false;
+ if(!a.startedAt&&!a.submittedAt){a.startedAt=new Date().toISOString();try{saveState()}catch(e){}}
+ const done=!!a.submittedAt||['graded','done','submitted'].includes(a.status);
+ const ans=arr90(a.quizAnswers),qs=a.quiz.questions,dur=Number(a.quiz.duration)||0;
+ const cards=qs.map((q,i)=>`<section class="v90q"><div class="v90qh"><b>Câu ${i+1}</b><span>${esc90(q.level||'')}</span></div><h4>${esc90(q.text||'')}</h4><div class="v90opts">${arr90(q.options).map((o,j)=>`<label class="${done&&j===Number(q.correct)?'ok':''} ${done&&ans[i]===j&&j!==Number(q.correct)?'bad':''}"><input type="radio" name="v90q${i}" value="${j}" ${ans[i]===j?'checked':''} ${done?'disabled':''}><b>${String.fromCharCode(65+j)}.</b><span>${esc90(o)}</span></label>`).join('')}</div>${done&&a.quiz.showAnswers!==false?`<p class="v90key">Đáp án đúng: <b>${String.fromCharCode(65+Number(q.correct))}</b></p>`:''}</section>`).join('');
+ const home=document.getElementById('sv2Home');if(!home)return false;
+ home.innerHTML=`<div class="sv2-student-shell">${sidebar90()}<main class="sv2-student-main"><div class="v90page"><div class="v90top"><button onclick="studentV2RenderHome()">← Học hôm nay</button><span>${esc90(a.subject)} · ${qs.length} câu</span></div><header class="v90hero"><div><small>BÀI TRẮC NGHIỆM</small><h2>${esc90(a.title)}</h2><p>${esc90(a.note||'Chọn một đáp án đúng cho mỗi câu.')}</p></div>${done?`<div class="v90score"><b>${Number(a.score||0).toFixed(1)}</b><span>điểm</span></div>`:`<div class="v90timer"><small>THỜI GIAN CÒN LẠI</small><b id="v90Clock">${dur?time90(remain90(a)):'Không giới hạn'}</b></div>`}</header><div class="v90list">${cards}</div>${done?`<div class="v90done">✓ Đã nộp bài · Kết quả đã lưu để giáo viên xem.</div>`:`<div class="v90submit"><span>${dur?'Hết thời gian hệ thống sẽ tự nộp bài.':'Bài không giới hạn thời gian.'}</span><button onclick="studentV90Submit('${esc90(a.id)}')">Nộp bài →</button></div>`}</div></main></div>`;
+ window.scrollTo(0,0);if(!done&&dur)clock90(id);return true;
+}
+function submit90(id,auto){
+ const {a}=locate90(id);if(!a||!quiz90(a)||a.submittedAt)return;
+ const qs=a.quiz.questions,ans=[];
+ for(let i=0;i<qs.length;i++){const e=document.querySelector(`input[name="v90q${i}"]:checked`);ans.push(e?Number(e.value):null)}
+ if(!auto&&ans.some(v=>v===null)){toast('Hãy trả lời đủ các câu trước khi nộp.');return}
+ if(!auto&&!confirm('Nộp bài trắc nghiệm?'))return;
+ const right=ans.reduce((n,v,i)=>n+(v!==null&&v===Number(qs[i].correct)?1:0),0);
+ a.quizAnswers=ans;a.answer=ans.map((v,i)=>`${i+1}.${v===null?'—':String.fromCharCode(65+v)}`).join(' ');
+ a.score=Math.round(right/qs.length*100)/10;a.teacherScore=a.score;a.status='graded';a.submittedAt=new Date().toISOString();
+ a.teacherComment=`Đúng ${right}/${qs.length} câu${auto?' · Tự động nộp khi hết thời gian':''}`;
+ try{saveState()}catch(e){} clearInterval(timer90);toast(auto?'Hết thời gian · Bài đã tự động nộp':'Đã nộp bài · '+a.score+'/10');render90(id);
+}
+window.studentV90Submit=submit90;
+
+// Đây là override cuối cùng và không phụ thuộc closure st().
+const previousOpen90=window.studentV2OpenAssignment;
+window.studentV2OpenAssignment=function(id){
+ migrateExistingTeacherIT90();
+ const {a}=locate90(id);
+ if(quiz90(a)){render90(id);return}
+ previousOpen90(id);
+};
+})();
+</script>
+<style id="v8790-style">
+.v90page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc;box-sizing:border-box}.v90top{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:12px;font-weight:800}.v90top button{height:40px;padding:0 14px;border:1px solid #d6e1ee;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v90hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:18px}.v90hero small{color:#bfdbfe;font-weight:950;letter-spacing:.12em}.v90hero h2{margin:5px 0;font-size:27px}.v90hero p{margin:0;color:#dbeafe}.v90timer,.v90score{min-width:120px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.v90timer small,.v90score span{display:block;font-size:9px}.v90timer b,.v90score b{display:block;margin-top:3px;font-size:24px}.v90timer b.danger{color:#fde047}.v90list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.v90q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.v90qh{display:flex;justify-content:space-between}.v90qh>b{color:#1d4ed8}.v90qh span{padding:4px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:850}.v90q h4{margin:10px 0 13px;color:#172554;line-height:1.5}.v90opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v90opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;align-items:start;padding:12px 13px;border:1px solid #dce5ef;border-radius:11px;background:#fbfdff;text-align:left;cursor:pointer}.v90opts input{margin:2px 0 0}.v90opts label.ok{border-color:#86efac;background:#f0fdf4}.v90opts label.bad{border-color:#fca5a5;background:#fef2f2}.v90key{color:#15803d;font-size:11px}.v90submit{position:sticky;bottom:12px;max-width:1060px;margin:15px auto 0;padding:12px 14px;border:1px solid #d7e2ef;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 12px 30px rgba(30,58,138,.12);display:flex;justify-content:space-between;align-items:center}.v90submit span{color:#64748b;font-size:11px}.v90submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900}.v90done{max-width:1060px;margin:15px auto;padding:15px;border:1px solid #bbf7d0;border-radius:13px;background:#f0fdf4;color:#15803d;font-weight:850}
+@media(max-width:760px){.v90page{padding:16px 12px 90px}.v90opts{grid-template-columns:1fr}.v90hero{padding:20px 17px}.v90hero h2{font-size:21px}.v90submit{bottom:72px}}
+</style>
 </body>
 </html>
 <style>
