@@ -304,20 +304,29 @@ html,body{margin:0!important;padding:0!important}
 #teacherLoginPanel .sv2-login-brand + .v125-credit,
 #parentLoginPanel .sv2-login-brand + .v125-credit,
 #studentV2 .sv2-login-brand + .v125-credit{margin-top:-10px!important;margin-bottom:16px!important}
-</style><style id="v8829-student-credit-polish">
-/* 8.8.29 — tên GV dưới thương hiệu ở sidebar học sinh */
-#studentV2 .v127-student-credit,
-.sv2-student-shell .v127-student-credit{
-  display:block!important;
+</style><style id="v8830-student-credit-inside-brand-style">
+/* Tên GV là một phần của chính khối thương hiệu, không dùng margin để đẩy vị trí */
+.sv2-student-shell .v130-brand-with-credit,
+#studentV2 .v130-brand-with-credit{
+  position:relative!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  padding-bottom:13px!important;
+  margin-bottom:16px!important;
+  border-bottom:1px solid rgba(255,255,255,.20)!important;
+}
+.sv2-student-shell .v130-student-credit,
+#studentV2 .v130-student-credit{
+  flex:0 0 100%!important;
+  width:100%!important;
   box-sizing:border-box!important;
-  margin:8px 16px 0 66px!important;
-  padding:0 0 13px!important;
+  margin:8px 0 0 0!important;
+  padding:0 0 0 52px!important;
   border:0!important;
-  border-bottom:1px solid rgba(255,255,255,.18)!important;
-  background:transparent!important;
+  background:none!important;
   color:#dbeafe!important;
-  font-size:11.5px!important;
-  line-height:1.35!important;
+  font-size:11px!important;
+  line-height:1.3!important;
   font-weight:750!important;
   letter-spacing:.005em!important;
   text-align:left!important;
@@ -325,17 +334,10 @@ html,body{margin:0!important;padding:0!important}
   white-space:nowrap!important;
   opacity:.96!important;
 }
-/* Tạo khoảng thở giữa tên GV và menu đầu tiên */
-#studentV2 .v127-student-credit + *,
-.sv2-student-shell .v127-student-credit + *{
-  margin-top:12px!important;
-}
-@media(max-width:720px){
-  #studentV2 .v127-student-credit,
-  .sv2-student-shell .v127-student-credit{
-    margin-left:16px!important;
-    margin-right:16px!important;
-  }
+/* Nếu brand dùng grid thay vì flex, credit vẫn chiếm toàn chiều ngang */
+.sv2-student-shell .v130-brand-with-credit > .v130-student-credit,
+#studentV2 .v130-brand-with-credit > .v130-student-credit{
+  grid-column:1 / -1!important;
 }
 </style></head>
 <body>
@@ -4480,36 +4482,42 @@ window.parentV122Show=function(key,el){
  return false;
 };
 })();
-</script><script id="v8827-student-credit-actual-sidebar">
+</script><script id="v8830-student-credit-inside-brand">
 (function(){
 'use strict';
-function addCredit(){
-  document.querySelectorAll('.sv2-student-shell').forEach(function(shell){
-    const side=shell.querySelector('aside, .sv2-student-sidebar, .sv2-sidebar');
-    if(!side || side.querySelector('.v127-student-credit')) return;
+function install(){
+  const roots=document.querySelectorAll('.sv2-student-shell, #studentV2');
+  roots.forEach(function(root){
+    const sides=root.querySelectorAll('aside, .sv2-student-sidebar, .sv2-sidebar');
+    sides.forEach(function(side){
+      if(side.querySelector('.v130-student-credit')) return;
 
-    let brand=side.querySelector('.sv2-brand,.sv2-student-brand,.sv2side-brand,.brand');
-    if(!brand){
-      const candidates=Array.from(side.children);
-      brand=candidates.find(function(el){
+      let brand=null;
+      const candidates=Array.from(side.querySelectorAll('div,header,section'));
+      for(const el of candidates){
         const t=(el.textContent||'').replace(/\s+/g,' ').trim();
-        return t.includes('ÔN TẬP') && t.includes('THÔNG MINH');
-      }) || null;
-    }
-    if(!brand) return;
+        if(t.includes('ÔN TẬP') && t.includes('THÔNG MINH')){
+          /* choose the smallest matching container, not the whole sidebar */
+          const childMatch=Array.from(el.children).some(function(ch){
+            const ct=(ch.textContent||'').replace(/\s+/g,' ').trim();
+            return ct.includes('ÔN TẬP') && ct.includes('THÔNG MINH');
+          });
+          if(!childMatch){brand=el;break;}
+        }
+      }
+      if(!brand) return;
 
-    const d=document.createElement('div');
-    d.className='v127-student-credit';
-    d.textContent='GV.Hồ Nguyễn Đa Thiện';
-    brand.insertAdjacentElement('afterend',d);
+      brand.classList.add('v130-brand-with-credit');
+      const credit=document.createElement('div');
+      credit.className='v130-student-credit';
+      credit.textContent='GV.Hồ Nguyễn Đa Thiện';
+      brand.appendChild(credit);
+    });
   });
 }
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',addCredit);
-}else{
-  addCredit();
-}
-new MutationObserver(addCredit).observe(document.body,{childList:true,subtree:true});
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',install);
+else install();
+new MutationObserver(install).observe(document.body,{childList:true,subtree:true});
 })();
 </script></body>
 </html>
