@@ -1804,7 +1804,7 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
       <button class="role-back" type="button" onclick="closeRoleLogin('teacherLoginPanel')">← Chọn đối tượng khác</button>
       <h2>Đăng nhập giáo viên</h2>
       <div class="sv2-field"><label>Tên đăng nhập</label><input id="teacherLoginUser" autocomplete="username" placeholder="Nhập tên đăng nhập"/></div>
-      <div class="sv2-field"><label>Mật khẩu</label><input id="teacherLoginPass" autocomplete="current-password" type="password" placeholder="Nhập mật khẩu"/></div>
+      <div class="sv2-field"><label>Mật khẩu</label><div class="teacher-pass-wrap"><input id="teacherLoginPass" autocomplete="current-password" type="password" placeholder="Nhập mật khẩu"/><button class="teacher-eye" type="button" aria-label="Hiện hoặc ẩn mật khẩu" onclick="teacherTogglePassword()">◉</button></div></div>
       <div class="sv2-login-row"><label class="sv2-remember"><input id="teacherRemember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" type="button" onclick="roleForgot('Giáo viên')">Quên mật khẩu?</button></div>
       <div class="sv2-login-error" id="teacherLoginError"></div>
       <button class="sv2-login-btn" type="button" onclick="teacherLoginSubmit()">Đăng nhập</button>
@@ -1960,7 +1960,14 @@ window.studentV2UseLegacy=function(sid){E('studentV2').classList.remove('open');
 <script id="v8759-role-login">
 window.openTeacherLogin=function(){
  const g=document.getElementById('roleGateway'),p=document.getElementById('teacherLoginPanel');
- if(g)g.hidden=true;if(p){p.hidden=false;document.getElementById('teacherLoginUser')?.focus();}
+ if(g)g.hidden=true;
+ if(p){
+   p.hidden=false;
+   const u=document.getElementById('teacherLoginUser');
+   const r=document.getElementById('teacherRemember');
+   try{if(localStorage.getItem('htpro_teacher_remember')==='admin'){u.value='admin';if(r)r.checked=true;}}catch(_){}
+   u?.focus();
+ }
 };
 window.openParentLogin=function(){
  const g=document.getElementById('roleGateway'),p=document.getElementById('parentLoginPanel');
@@ -1976,10 +1983,22 @@ window.backToRoleGateway=function(){
  if(sv){sv.classList.remove('open');sv.setAttribute('aria-hidden','true');}
  if(g)g.hidden=false;document.body.style.overflow='';
 };
+window.teacherTogglePassword=function(){
+ const p=document.getElementById('teacherLoginPass');
+ if(p)p.type=p.type==='password'?'text':'password';
+};
 window.teacherLoginSubmit=function(){
- const u=document.getElementById('teacherLoginUser')?.value.trim(),p=document.getElementById('teacherLoginPass')?.value.trim(),e=document.getElementById('teacherLoginError');
+ const u=document.getElementById('teacherLoginUser')?.value.trim();
+ const p=document.getElementById('teacherLoginPass')?.value;
+ const e=document.getElementById('teacherLoginError');
  if(!u||!p){if(e)e.textContent='Vui lòng nhập tên đăng nhập và mật khẩu.';return;}
+ if(u!=='admin'||p!=='admin@123'){if(e)e.textContent='Tên đăng nhập hoặc mật khẩu không đúng.';return;}
  if(e)e.textContent='';
+ try{
+   const remember=document.getElementById('teacherRemember')?.checked;
+   if(remember)localStorage.setItem('htpro_teacher_remember','admin');
+   else localStorage.removeItem('htpro_teacher_remember');
+ }catch(_){}
  document.getElementById('teacherLoginPanel').hidden=true;
  enterTeacherArea();
 };
@@ -2005,6 +2024,39 @@ window.roleGoogle=function(who){
 .role-login-brand{padding:46px;background:linear-gradient(145deg,#172554,#1e3a8a 58%,#4338ca);color:#fff}.role-login-brand h1{font-size:31px;line-height:1.15;margin:22px 0 12px}.role-login-brand p{color:#dbeafe;line-height:1.65}
 .role-login-form{padding:42px;display:flex;flex-direction:column;justify-content:center}.role-login-form h2{font-size:27px;color:#172554;margin:8px 0 22px}.role-back{align-self:flex-start;border:0;background:transparent;color:#526477;font-weight:800;cursor:pointer;padding:0 0 8px}
 @media(max-width:760px){.role-login-card{grid-template-columns:1fr}.role-login-brand{padding:26px}.role-login-form{padding:28px}}
+</style>
+
+<style id="v8760-teacher-login-polish">
+#teacherLoginPanel .role-login-card{width:min(900px,calc(100vw - 32px));min-height:550px;grid-template-columns:42% 58%;border-radius:26px}
+#teacherLoginPanel .role-login-brand{padding:44px 38px;display:flex;flex-direction:column;justify-content:center}
+#teacherLoginPanel .role-login-form{padding:42px 54px;justify-content:center;gap:0}
+#teacherLoginPanel .role-login-form h2{margin:12px 0 28px;font-size:30px;letter-spacing:-.5px}
+#teacherLoginPanel .sv2-field{margin-bottom:19px}
+#teacherLoginPanel .sv2-field label{display:block;margin:0 0 8px;font-size:14px;font-weight:800;color:#172033}
+#teacherLoginPanel .sv2-field>input,
+#teacherLoginPanel .teacher-pass-wrap input{width:100%;height:52px;box-sizing:border-box;border:1px solid #cbd7e6;border-radius:13px;padding:0 14px;font-size:15px;background:#fff;outline:none;transition:.18s}
+#teacherLoginPanel .sv2-field>input:focus,
+#teacherLoginPanel .teacher-pass-wrap input:focus{border-color:#3b82f6;box-shadow:0 0 0 4px rgba(59,130,246,.12)}
+#teacherLoginPanel .teacher-pass-wrap{position:relative}
+#teacherLoginPanel .teacher-pass-wrap input{padding-right:48px}
+#teacherLoginPanel .teacher-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:0;border-radius:9px;background:transparent;color:#64748b;cursor:pointer;font-size:18px}
+#teacherLoginPanel .sv2-login-row{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:1px 0 20px}
+#teacherLoginPanel .sv2-remember{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;font-size:13px;font-weight:700;color:#526477}
+#teacherLoginPanel .sv2-remember input{width:16px;height:16px;margin:0}
+#teacherLoginPanel .sv2-text-link{white-space:nowrap;font-size:13px}
+#teacherLoginPanel .sv2-login-btn,
+#teacherLoginPanel .sv2-google-btn{height:50px;border-radius:12px;font-weight:800;font-size:14px}
+#teacherLoginPanel .sv2-login-btn{border:0;background:linear-gradient(135deg,#1d4ed8,#4338ca);color:#fff;box-shadow:0 9px 20px rgba(37,99,235,.18)}
+#teacherLoginPanel .sv2-google-btn{background:#fff;border:1px solid #d4deea;color:#1f2937}
+#teacherLoginPanel .sv2-or{margin:17px 0}
+#teacherLoginPanel .sv2-login-error{min-height:18px;margin:-6px 0 10px;color:#dc2626;font-size:12px;font-weight:700}
+#teacherLoginPanel .role-back{margin-bottom:4px}
+@media(max-width:760px){
+ #teacherLoginPanel .role-login-card{grid-template-columns:1fr;min-height:auto}
+ #teacherLoginPanel .role-login-brand{display:none}
+ #teacherLoginPanel .role-login-form{padding:30px 24px}
+ #teacherLoginPanel .role-login-form h2{font-size:26px}
+}
 </style>
 </body>
 </html>
