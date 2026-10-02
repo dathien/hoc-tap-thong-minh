@@ -2661,6 +2661,127 @@ isplay:none!important}
  #teacherLoginPanel .exact-brand,#parentLoginPanel .exact-brand,#studentV2 .exact-brand{display:none!important}
 }
 </style>
+
+<style id="v8774-copy-student-brand-exact">
+/* LẤY TRANG HỌC SINH LÀM MẪU DUY NHẤT — GV/HS/PH dùng cùng kích thước */
+#teacherLoginPanel .role-login-card,
+#parentLoginPanel .role-login-card,
+#studentV2 .sv2-login-card{
+ width:900px!important;
+ max-width:calc(100vw - 2px)!important;
+ height:600px!important;
+ min-height:600px!important;
+ grid-template-columns:300px 600px!important;
+ border-radius:0!important;
+ overflow:hidden!important;
+}
+
+/* Panel trái đúng hình học sinh: 300 × 600 */
+#teacherLoginPanel .exact-brand,
+#parentLoginPanel .exact-brand,
+#studentV2 .exact-brand{
+ width:300px!important;
+ height:600px!important;
+ min-height:600px!important;
+ padding:0!important;
+ margin:0!important;
+ position:relative!important;
+ display:block!important;
+ overflow:hidden!important;
+ background:linear-gradient(145deg,#172554 0%,#1e3a8a 58%,#4338ca 100%)!important;
+}
+
+/* Cụm logo + tên app: đúng cùng một tọa độ trên cả 3 trang */
+#teacherLoginPanel .exact-brand .exact-brand-inner,
+#parentLoginPanel .exact-brand .exact-brand-inner,
+#studentV2 .exact-brand .exact-brand-inner{
+ position:absolute!important;
+ left:28px!important;
+ top:254px!important;
+ width:245px!important;
+ height:auto!important;
+ margin:0!important;
+ padding:0!important;
+ transform:none!important;
+ display:block!important;
+}
+
+/* Logo */
+#teacherLoginPanel .exact-brand .sv2-mark,
+#parentLoginPanel .exact-brand .sv2-mark,
+#studentV2 .exact-brand .sv2-mark{
+ width:46px!important;
+ height:46px!important;
+ margin:0 0 25px!important;
+ padding:0!important;
+ display:grid!important;
+ place-items:center!important;
+ border-radius:11px!important;
+ background:#fff!important;
+ color:#1e3a8a!important;
+ font-size:16px!important;
+ font-weight:950!important;
+ line-height:1!important;
+ box-shadow:none!important;
+}
+
+/* Tên thương hiệu */
+#teacherLoginPanel .exact-brand h1,
+#parentLoginPanel .exact-brand h1,
+#studentV2 .exact-brand h1{
+ margin:0!important;
+ padding:0!important;
+ display:flex!important;
+ flex-direction:column!important;
+ gap:3px!important;
+ font-size:27px!important;
+ line-height:1.08!important;
+ font-weight:950!important;
+ letter-spacing:-.25px!important;
+}
+#teacherLoginPanel .exact-brand h1 span,
+#parentLoginPanel .exact-brand h1 span,
+#studentV2 .exact-brand h1 span{
+ display:block!important;
+ color:#fff!important;
+}
+#teacherLoginPanel .exact-brand h1 .brand-yellow,
+#parentLoginPanel .exact-brand h1 .brand-yellow,
+#studentV2 .exact-brand h1 .brand-yellow{
+ color:#fde768!important;
+}
+
+/* Vòng trang trí cùng tọa độ */
+#teacherLoginPanel .exact-brand:after,
+#parentLoginPanel .exact-brand:after,
+#studentV2 .exact-brand:after{
+ content:""!important;
+ position:absolute!important;
+ width:335px!important;
+ height:335px!important;
+ right:-170px!important;
+ bottom:-210px!important;
+ border-radius:50%!important;
+ background:rgba(255,255,255,.07)!important;
+}
+
+/* Không cho CSS cũ của từng role thay đổi panel */
+#teacherLoginPanel .role-login-brand,
+#parentLoginPanel .role-login-brand{display:none!important}
+
+@media(max-width:760px){
+ #teacherLoginPanel .role-login-card,
+ #parentLoginPanel .role-login-card,
+ #studentV2 .sv2-login-card{
+  width:min(520px,calc(100vw - 24px))!important;
+  height:auto!important;min-height:auto!important;
+  grid-template-columns:1fr!important;border-radius:20px!important;
+ }
+ #teacherLoginPanel .exact-brand,
+ #parentLoginPanel .exact-brand,
+ #studentV2 .exact-brand{display:none!important}
+}
+</style>
 </body>
 </html>
 <style>
