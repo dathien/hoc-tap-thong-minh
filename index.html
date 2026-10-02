@@ -4495,6 +4495,205 @@ window.parentV122Show=function(key,el){
  return false;
 };
 })();
+</script><script id="v8837-force-minhan-question-sync">
+/* 8.8.37 — Đồng bộ THỰC SỰ ngân hàng câu hỏi vào các assignment mà giao diện Nguyễn Minh An đang mở.
+   Bản 8.8.35 mới tạo bank nhưng các renderer/demo cũ vẫn có thể ghi đè bằng câu hỏi cũ. */
+(function(){
+'use strict';
+function syncV8837(){
+  if(typeof state==='undefined' || typeof MINHAN_DEMO_BANKS==='undefined') return;
+  const students=Array.isArray(state.students)?state.students:[];
+  const s=students.find(x=>String(x.name||'').trim()==='Nguyễn Minh An' &&
+                           String(x.className||'').trim()==='10A1');
+  if(!s) return;
+  s.assignments=Array.isArray(s.assignments)?s.assignments:[];
+
+  const spec={
+    'Toán':     {id:'minhan_demo_midterm_algebra', title:'Toán 10 – Mệnh đề và tập hợp', duration:45, subtype:'Giữa kỳ'},
+    'Ngữ văn':  {id:'minhan_demo_literature',      title:'Ngữ văn 10 – Sức hấp dẫn của truyện kể', duration:15, subtype:'15 phút'},
+    'Tiếng Anh':{id:'minhan_demo_english',         title:'English 10 – Unit 1: Family Life', duration:15, subtype:'15 phút'},
+    'Vật lí':   {id:'minhan_demo_physics',         title:'Vật lí 10 – Mở đầu và động học', duration:15, subtype:'15 phút'},
+    'Hóa học':  {id:'minhan_demo_chemistry',       title:'Hóa học 10 – Cấu tạo nguyên tử', duration:15, subtype:'15 phút'},
+    'Sinh học': {id:'minhan_demo_biology',         title:'Sinh học 10 – Mở đầu và các cấp tổ chức sống', duration:15, subtype:'15 phút'},
+    'Tin học':  {id:'minhan_demo_it',              title:'Tin học 10 – Thông tin và dữ liệu số', duration:15, subtype:'15 phút'}
+  };
+
+  // Loại riêng assignment Tin học demo cũ do patch 8.7.91 tạo ra, vì nó chứa bank Python cũ.
+  s.assignments=s.assignments.filter(a=>String(a.id||'')!=='teacher_demo_it_minhan_10a1');
+
+  Object.entries(spec).forEach(([subject,cfg])=>{
+    let a=s.assignments.find(x=>String(x.id||'')===cfg.id);
+    if(!a){
+      a={id:cfg.id,subject,title:cfg.title,status:'pending',
+         date:'2026-10-02',assignedAt:'2026-10-02T07:00:00',
+         dueAt:'2026-10-05T21:00',portalPublished:true};
+      s.assignments.push(a);
+    }
+    a.id=cfg.id;
+    a.title=cfg.title;
+    a.subject=subject;
+    a.portalPublished=true;
+    a.learningTrack=subject==='Toán'?'exam':'practice';
+    a.assessmentSubtype=cfg.subtype;
+    a.richBody='Bài trắc nghiệm 10 câu đã đồng bộ theo nội dung môn '+subject+' lớp 10.';
+    a.quiz={
+      duration:cfg.duration,
+      level:'3 mức',
+      attempts:1,
+      showAnswers:true,
+      questions:structuredClone(MINHAN_DEMO_BANKS[subject])
+    };
+  });
+
+  // Reset đúng 1 lần để localStorage cũ không giữ bài/đáp án của ngân hàng trước.
+  if(s._questionBankVersion!=='8.8.37'){
+    const ids=new Set(Object.values(spec).map(x=>x.id));
+    s.assignments.forEach(a=>{
+      if(!ids.has(String(a.id||''))) return;
+      a.status='pending';
+      delete a.submittedAt; delete a.startedAt; delete a.quizAnswers;
+      delete a.score; delete a.autoScore; delete a.teacherScore;
+      delete a.gradePublished; delete a.tabLeaveCount;
+    });
+    s._questionBankVersion='8.8.37';
+  }
+
+  try{saveState()}catch(_){}
+}
+syncV8837();
+setTimeout(syncV8837,0);
+})();
+</script><script id="v8838-global-grade10-bank-and-grading">
+/* 8.8.38 — Đồng bộ ngân hàng lớp 10 ở cấp APP + giáo viên chấm thấy đúng câu học sinh đã làm */
+(function(){
+'use strict';
+
+function isGrade10Student(s){
+  return /^10(?:\D|$)/.test(String(s?.className||'').trim());
+}
+function bankFor(subject){
+  return (typeof MINHAN_DEMO_BANKS!=='undefined' && MINHAN_DEMO_BANKS[subject])
+    ? structuredClone(MINHAN_DEMO_BANKS[subject]) : null;
+}
+function syncGrade10AppBank(){
+  if(typeof state==='undefined' || typeof MINHAN_DEMO_BANKS==='undefined') return;
+  if(state._grade10QuestionBankVersion==='8.8.38') return;
+
+  (state.students||[]).forEach(s=>{
+    if(!isGrade10Student(s) || !Array.isArray(s.assignments)) return;
+    s.assignments.forEach(a=>{
+      const subject=String(a.subject||s.subject||'').trim();
+      const bank=bankFor(subject);
+      if(!bank || !a.quiz) return;
+
+      // Đây là migration một lần cho dữ liệu lớp 10 đang có trong app.
+      // Sau migration, bài giáo viên tự soạn mới không bị can thiệp.
+      a.quiz.questions=bank;
+      a.quiz.level='3 mức';
+      a.quiz.questionBankVersion='8.8.38';
+      a.questionBankSource='Lớp 10 · ngân hàng đã cập nhật';
+
+      // Câu đã thay thì câu trả lời/điểm cũ không còn tương thích.
+      a.status='pending';
+      delete a.quizAnswers; delete a.submittedAt; delete a.startedAt;
+      delete a.score; delete a.autoScore; delete a.teacherScore;
+      delete a.gradePublished; delete a.teacherComment;
+    });
+  });
+  state._grade10QuestionBankVersion='8.8.38';
+  try{saveState()}catch(_){}
+}
+
+/* Dữ liệu xem trước "Bài học sinh nộp": khối 10 phải dùng chính ngân hàng mới,
+   không dùng các câu placeholder "Phương án A/B/C/D" cũ. */
+const oldSampleQuestions = window.sampleQuestionsForSubmission ||
+  (typeof sampleQuestionsForSubmission==='function' ? sampleQuestionsForSubmission : null);
+window.sampleQuestionsForSubmission=function(x){
+  if(String(x?.grade)==='10'){
+    const bank=bankFor(x.subject);
+    if(bank){
+      return bank.map((q,i)=>{
+        const chosen=(i===2||i===7)?(q.correct+1)%4:q.correct;
+        return {...q,chosen,
+          explain:q.explain||('Đáp án đúng: '+String.fromCharCode(65+q.correct)+'.')};
+      });
+    }
+  }
+  return oldSampleQuestions?oldSampleQuestions(x):[];
+};
+// Hàm gốc gọi identifier toàn cục; gán lại để lời gọi đó cũng trỏ tới bản mới.
+try{sampleQuestionsForSubmission=window.sampleQuestionsForSubmission}catch(_){}
+
+/* Chấm bài thật: với trắc nghiệm, mở toàn bộ câu + 4 đáp án + HS chọn + đáp án đúng,
+   sau đó GV nhập điểm và nhận xét ngay trong cùng cửa sổ. */
+const oldGrade = window.gradeAssignment ||
+  (typeof gradeAssignment==='function' ? gradeAssignment : null);
+
+window.gradeAssignment=function(sid,id){
+  const s=(state.students||[]).find(x=>String(x.id)===String(sid));
+  const a=s?.assignments?.find(x=>String(x.id)===String(id));
+  if(!a?.quiz?.questions?.length){
+    return oldGrade?oldGrade(sid,id):undefined;
+  }
+
+  const qs=a.quiz.questions, ans=Array.isArray(a.quizAnswers)?a.quizAnswers:[];
+  const old=document.getElementById('v8838GradeDialog'); if(old) old.remove();
+  const d=document.createElement('dialog'); d.id='v8838GradeDialog';
+  d.style.cssText='width:min(1050px,96vw);max-height:94vh;border:0;border-radius:20px;padding:0;box-shadow:0 24px 70px rgba(15,45,60,.28);overflow:hidden';
+  const cards=qs.map((q,i)=>{
+    const chosen=ans[i];
+    return `<article style="border:1px solid #dce8ec;border-radius:15px;padding:15px;margin-bottom:13px;background:#fff">
+      <div style="display:flex;justify-content:space-between;gap:10px">
+        <b>Câu ${i+1}. ${esc(q.text)}</b><span style="white-space:nowrap;font-size:12px;font-weight:800;color:#607786">${esc(q.level||'')}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px">
+      ${(q.options||[]).map((o,j)=>{
+        const hs=j===chosen, ok=j===q.correct;
+        return `<div style="padding:10px 12px;border:1px solid ${ok?'#86d7b4':hs?'#fdba74':'#dce8ec'};background:${ok?'#ecfdf5':hs?'#fff7ed':'#f8fbfc'};border-radius:10px">
+          <b>${String.fromCharCode(65+j)}.</b> ${esc(o)}
+          ${hs?'<small style="font-weight:800"> · HS chọn</small>':''}
+          ${ok?'<small style="font-weight:800;color:#087f78"> · Đáp án đúng</small>':''}
+        </div>`}).join('')}
+      </div>
+      <div style="margin-top:9px;font-size:13px"><b>${chosen==null?'Chưa có câu trả lời':chosen===q.correct?'✓ Đúng':'✕ Sai'}</b>${q.source?` · <span style="color:#607786">${esc(q.source)}</span>`:''}</div>
+    </article>`;
+  }).join('');
+
+  d.innerHTML=`<div style="padding:18px 22px;border-bottom:1px solid #e1ebef;display:flex;justify-content:space-between;gap:12px;background:#f8fbfc">
+    <div><small style="font-weight:800;color:#607786">XEM BÀI NỘP & CHẤM ĐIỂM</small>
+    <h2 style="margin:5px 0 0">${esc(a.title)}</h2>
+    <div style="margin-top:4px;color:#607786">${esc(s.name)} · ${esc(s.className)} · ${esc(a.subject||s.subject||'')}</div></div>
+    <button class="btn secondary small" type="button" onclick="document.getElementById('v8838GradeDialog').close()">✕</button></div>
+    <div style="padding:18px 22px;overflow:auto;max-height:calc(94vh - 92px)">
+      ${cards}
+      <div style="position:sticky;bottom:0;background:#fff;border-top:1px solid #dce8ec;padding:14px 0 4px">
+        <div style="display:grid;grid-template-columns:180px 1fr;gap:12px">
+          <label><b>Điểm (0–10)</b><input id="v8838Score" type="number" min="0" max="10" step=".1" value="${a.teacherScore!==undefined&&a.teacherScore!==''?esc(a.teacherScore):a.score!==undefined?esc(a.score):''}" style="width:100%;margin-top:6px"></label>
+          <label><b>Nhận xét giáo viên</b><input id="v8838Comment" value="${esc(a.teacherComment||'')}" style="width:100%;margin-top:6px"></label>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+          <button class="btn secondary" type="button" onclick="document.getElementById('v8838GradeDialog').close()">Đóng</button>
+          <button class="btn primary" type="button" id="v8838SaveGrade">Lưu điểm & nhận xét</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(d);
+  d.querySelector('#v8838SaveGrade').onclick=()=>{
+    const n=Number(d.querySelector('#v8838Score').value);
+    if(!Number.isFinite(n)||n<0||n>10){toast('Điểm phải từ 0 đến 10');return}
+    a.teacherScore=n; a.score=n;
+    a.teacherComment=d.querySelector('#v8838Comment').value.trim();
+    a.status='graded'; a.gradePublished=true;
+    try{saveState()}catch(_){}
+    d.close(); renderAssignments(); toast('Đã lưu điểm và nhận xét');
+  };
+  d.showModal();
+};
+try{gradeAssignment=window.gradeAssignment}catch(_){}
+
+syncGrade10AppBank();
+setTimeout(syncGrade10AppBank,0);
+})();
 </script></body>
 </html>
 <style>
