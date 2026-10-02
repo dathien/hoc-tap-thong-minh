@@ -5760,95 +5760,81 @@ window.studentV2OpenAssignment=function(id){
 
 
 
-
-
-
-<script id="v8802-single-tab-monitor">
+<script id="v8803-clean-tab-monitor">
 (function(){
 'use strict';
 const A=v=>Array.isArray(v)?v:[];
-let pending=false, modalOpen=false;
+let pending=false, modal=false;
 
 function active(){
- for(const s of A(state.students)){
-  for(const a of A(s.assignments)){
-   if(a?.quiz && a.attemptStartedByStudent===true && a.startedAt && !a.submittedAt && a.status==='doing') return a;
-  }
- }
+ for(const s of A(state.students))for(const a of A(s.assignments))
+  if(a?.quiz&&a.attemptStartedByStudent===true&&a.startedAt&&!a.submittedAt&&a.status==='doing')return a;
  return null;
 }
 function find(id){
- for(const s of A(state.students)){
-  const a=A(s.assignments).find(x=>String(x.id)===String(id));
-  if(a)return a;
- }
+ for(const s of A(state.students)){const a=A(s.assignments).find(x=>String(x.id)===String(id));if(a)return a}
  return null;
 }
 function save(){try{saveState()}catch(e){}}
-function closeOld(){
- for(const id of ['v99Warn','v100Warn','v102Warn']){
-  const e=document.getElementById(id);if(e)e.remove();
+function purgeUI(){
+ ['v99Warn','v100Warn','v102Warn','v103Warn','v99Count','v100Count','v102Count','v103Count'].forEach(id=>{
+  const x=document.getElementById(id);if(x)x.remove();
+ });
+ modal=false;
+}
+/* Clear all legacy counters once on load. */
+for(const s of A(state.students))for(const a of A(s.assignments)){
+ if(a?.quiz&&!a.submittedAt){
+   delete a.integrity; delete a.integrityV2;
+   if(!a.integrityTabV3)a.integrityTabV3={count:0,events:[]};
  }
- modalOpen=false;
 }
-function show(){
- const a=active(); if(!a||!pending||modalOpen)return;
- pending=false; modalOpen=true; closeOld(); modalOpen=true;
- const n=Number(a.integrityTab?.count||0);
- const d=document.createElement('div');
- d.id='v102Warn'; d.className='v102overlay';
- d.innerHTML=`<div class="v102modal"><div class="v102ico">!</div>
- <h3>Cảnh báo rời tab làm bài</h3>
- <p>Bạn vừa rời khỏi tab làm bài. Hệ thống đã ghi nhận <b>lần ${n}</b>.</p>
- ${n>=3?'<div class="v102strong">Bạn đã rời tab từ 3 lần. Thông tin này được lưu để giáo viên xem.</div>':'<div class="v102soft">Đồng hồ vẫn tiếp tục đếm trong thời gian bạn rời tab.</div>'}
- <button id="v102Continue">Tiếp tục làm bài</button></div>`;
- document.body.appendChild(d);
- document.getElementById('v102Continue').onclick=()=>{d.remove();modalOpen=false};
-}
+save(); purgeUI();
 
-/* ONE source only: hidden transition = exactly one leave. */
+function warn(){
+ const a=active();if(!a||!pending||modal)return;
+ pending=false;modal=true;purgeUI();modal=true;
+ const n=Number(a.integrityTabV3?.count||0);
+ const d=document.createElement('div');d.id='v103Warn';d.className='v103overlay';
+ d.innerHTML=`<div class="v103modal"><div class="v103ico">!</div><div class="v103ver">GIÁM SÁT TAB · 8.8.03</div>
+ <h3>Cảnh báo rời tab làm bài</h3><p>Hệ thống vừa ghi nhận <b>lần ${n}</b> rời tab trong <b>lượt làm hiện tại</b>.</p>
+ ${n>=3?'<div class="v103strong">Đã rời tab từ 3 lần. Nhật ký này sẽ được lưu cùng bài làm.</div>':'<div class="v103soft">Đồng hồ vẫn tiếp tục chạy khi bạn rời tab.</div>'}
+ <button id="v103Continue">Tiếp tục làm bài</button></div>`;
+ document.body.appendChild(d);
+ document.getElementById('v103Continue').onclick=()=>{d.remove();modal=false};
+}
 document.addEventListener('visibilitychange',function(){
- const a=active(); if(!a)return;
+ const a=active();if(!a)return;
  if(document.visibilityState==='hidden'){
-   a.integrityTab=a.integrityTab||{count:0,events:[]};
-   a.integrityTab.count=Number(a.integrityTab.count||0)+1;
-   a.integrityTab.events=A(a.integrityTab.events);
-   a.integrityTab.events.push({at:new Date().toISOString(),type:'tab_hidden'});
-   pending=true; save();
- }else if(document.visibilityState==='visible'){
-   setTimeout(show,80);
- }
+   a.integrityTabV3=a.integrityTabV3||{count:0,events:[]};
+   a.integrityTabV3.count++;
+   a.integrityTabV3.events.push({at:new Date().toISOString(),type:'hidden'});
+   pending=true;save();
+ }else if(document.visibilityState==='visible')setTimeout(warn,100);
 },true);
 
-/* Reset exactly when a NEW attempt begins. */
-const startBase=window.studentV98Start;
+/* Reset is tied to the actual Start button. */
+const baseStart=window.studentV98Start;
 window.studentV98Start=function(id){
  const a=find(id);
- if(a && !a.submittedAt){
-   a.integrityTab={count:0,events:[]};
-   /* purge legacy counters so they can never reappear */
-   delete a.integrity;
-   delete a.integrityV2;
-   closeOld(); pending=false;
-   save();
+ if(a&&!a.submittedAt){
+   a.integrityTabV3={count:0,events:[]};
+   delete a.integrity;delete a.integrityV2;delete a.integrityTab;
+   pending=false;purgeUI();save();
  }
- return startBase(id);
+ return baseStart(id);
 };
 
-/* Badge uses only the clean counter. */
-setInterval(function(){
- for(const id of ['v99Count','v100Count']){const x=document.getElementById(id);if(x)x.remove()}
- const a=active(),hero=document.querySelector('.v98hero');
- const old=document.getElementById('v102Count');
+setInterval(()=>{
+ const a=active(),hero=document.querySelector('.v98hero'),old=document.getElementById('v103Count');
  if(!a||!hero){if(old)old.remove();return}
- const n=Number(a.integrityTab?.count||0);
+ const n=Number(a.integrityTabV3?.count||0);
  if(!n){if(old)old.remove();return}
- let b=old;
- if(!b){b=document.createElement('div');b.id='v102Count';b.className='v102count';hero.appendChild(b)}
- b.textContent='Rời tab: '+n+' lần';
-},700);
+ let b=old;if(!b){b=document.createElement('div');b.id='v103Count';b.className='v103count';hero.appendChild(b)}
+ b.textContent='Rời tab lượt này: '+n;
+},800);
 })();
 </script>
-<style id="v8802-single-tab-monitor-style">
-.v102overlay{position:fixed;inset:0;z-index:2147483640;background:rgba(15,23,42,.58);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}.v102modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.3)}.v102ico{width:48px;height:48px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#fff7ed;color:#ea580c;font-size:25px;font-weight:950;border:1px solid #fed7aa}.v102modal h3{margin:5px 0 9px;color:#172554}.v102modal p{color:#475569;line-height:1.55}.v102soft,.v102strong{padding:11px 12px;border-radius:11px;font-size:12px;text-align:left}.v102soft{background:#eff6ff;color:#1e40af}.v102strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.v102modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}.v102count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
+<style id="v8803-clean-tab-monitor-style">
+.v103overlay{position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.6);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}.v103modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.3)}.v103ico{width:48px;height:48px;margin:0 auto 8px;border-radius:50%;display:grid;place-items:center;background:#fff7ed;color:#ea580c;font-size:25px;font-weight:950;border:1px solid #fed7aa}.v103ver{font-size:9px;font-weight:950;letter-spacing:.12em;color:#64748b}.v103modal h3{margin:7px 0 9px;color:#172554}.v103modal p{color:#475569;line-height:1.55}.v103soft,.v103strong{padding:11px 12px;border-radius:11px;font-size:12px;text-align:left}.v103soft{background:#eff6ff;color:#1e40af}.v103strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.v103modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}.v103count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
 </style>
