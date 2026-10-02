@@ -438,7 +438,7 @@ html,body{margin:0!important;padding:0!important}
 <div class="grid2"><div class="field"><label>Thời gian học mỗi ngày</label><select id="pTime"><option value="30">30 phút</option><option selected="" value="45">45 phút</option><option value="60">60 phút</option><option value="90">90 phút</option></select></div><div class="field"><label>Số ngày học mỗi tuần</label><select id="pDays"><option>3</option><option>4</option><option selected="">5</option><option>6</option><option>7</option></select></div></div>
 <div class="field"><label>Khó khăn đang gặp</label><textarea id="pDifficulty" placeholder="Ví dụ: Dễ mất tập trung, chưa nhớ công thức, ngại làm bài..."></textarea></div>
 <div class="field"><label>Điểm mạnh hoặc sở thích</label><textarea id="pStrength" placeholder="Ví dụ: Thích hình ảnh, thực hành tốt, chăm ghi chép..."></textarea></div><div class="field"><label>Ghi chú của giáo viên</label><textarea id="pTeacherNote" placeholder="Ví dụ: Học sinh muốn ưu tiên ôn Toán trước, sau đó chuyển sang Hóa học; mục tiêu khoảng 6–7 điểm."></textarea><small class="help">Ghi nhanh nhu cầu học sinh trao đổi trực tiếp, mục tiêu hoặc lưu ý riêng để giáo viên không phải nhớ bên ngoài app.</small></div>
-<div class="info-box" id="subjectTip"></div>
+
 <div class="action-row"><button class="btn primary" onclick="saveProfile()">💾 Lưu hồ sơ</button><button class="btn secondary" onclick="fillSampleProfile()">Điền mẫu minh họa</button><button class="btn danger" id="deleteProfileBtn" onclick="deleteCurrentProfile()">Xóa hồ sơ</button></div>
 </div>
 <div><h3 style="margin-top:0">Danh sách học sinh theo lớp và môn</h3><div id="profileList"></div></div>
@@ -482,7 +482,7 @@ html,body{margin:0!important;padding:0!important}
 </section>
 <section class="card panel" id="planPanel">
 <div class="panel-head"><div><h2>Kế hoạch ôn tập tuần</h2><p>Kế hoạch ôn tập cá nhân của học sinh đang chọn; chuyển lớp hoặc học sinh để xem kế hoạch tương ứng.</p></div></div>
-<div class="field" style="max-width:520px"><label for="planStudentSelect">Chọn học sinh lập kế hoạch</label><select id="planStudentSelect" onchange="switchStudent(this.value)"></select></div><div class="info-box" id="planStudentContext" style="margin-bottom:12px;text-align:left"></div>
+<div class="field" style="max-width:520px"><label for="planStudentSelect">Chọn học sinh lập kế hoạch</label><select id="planStudentSelect" onchange="switchStudent(this.value)"></select></div>
 <div class="grid3"><div class="field"><label>Tuần bắt đầu</label><input id="weekStart" type="date"/></div><div class="field"><label>Chủ đề trọng tâm</label><input id="weekTopic" placeholder="Ví dụ: Phương trình bậc hai"/></div><div class="field"><label>Mức độ</label><select id="weekLevel"><option>Tự động theo hồ sơ</option><option>Hỗ trợ nền tảng</option><option>Củng cố</option><option>Phát triển</option><option>Nâng cao</option></select></div></div>
 <div class="action-row"><button class="btn primary" onclick="generateWeekPlan()">✨ Tạo kế hoạch tuần</button><button class="btn secondary" onclick="saveWeekPlan()">💾 Lưu thay đổi</button><button class="btn warning" onclick="resetWeekPlan()">Tạo lại</button></div>
 <div class="week-grid" id="weekPlan" style="margin-top:15px"></div>
@@ -491,7 +491,7 @@ html,body{margin:0!important;padding:0!important}
 <div class="panel-head"><div><h2>Học hôm nay</h2><p>Nhiệm vụ ở đây lấy trực tiếp từ bài giáo viên đã giao và kế hoạch ôn tập; học sinh không phải nhập lại nội dung.</p></div><span class="tag blue" id="todaySubjectBadge">Chưa chọn học sinh</span></div>
 <div class="grid3 today-picker"><div class="field"><label>Lớp</label><select id="todayClass" onchange="todayClassChanged()"></select></div><div class="field"><label>Học sinh đang học</label><select id="todayStudent" onchange="chooseTodayStudent(this.value);renderTodayLearning()"></select></div><div class="field"><label>Theo dõi nhanh</label><button class="btn secondary" onclick="todayToggleClassSummary()" style="width:100%;min-height:42px">Tình hình lớp hôm nay</button></div></div>
 <div id="todayOverview" style="margin:12px 0"></div>
-<div class="info-box" id="todayPersonal" style="margin-bottom:12px"></div>
+
 <div id="todayUnifiedContent"></div>
 <div class="action-row today-footer-actions"><button class="btn secondary" onclick="goPanel('plan')">Kế hoạch ôn tập</button><button class="btn secondary" onclick="goPanel('assignments')">Bài tập &amp; ôn luyện</button><button class="btn secondary" onclick="goPanel('journal')">Nhật ký học tập</button></div>
 </section>
@@ -6187,7 +6187,7 @@ function showWarning(){
     <h3>Cảnh báo rời tab làm bài</h3>
     <p>Bạn vừa rời khỏi tab làm bài. Hệ thống ghi nhận <b>lần ${n}</b>.</p>
     <div class="${n>=3?'v109strong':'v109soft'}">
-      ${n>=3?'Bạn đã rời tab từ 3 lần. Nhật ký sẽ được lưu cùng bài làm.':'Thời gian rời tab không làm tăng thêm số lần. Chỉ mỗi lần chuyển khỏi tab làm bài mới được tính 1 lần.'}
+      ${n>=3?'Bạn đã rời tab từ 3 lần. Nhật ký sẽ được lưu cùng bài làm.':''}
     </div>
     <button id="v109Continue">Tiếp tục làm bài</button>
   </div>`;
