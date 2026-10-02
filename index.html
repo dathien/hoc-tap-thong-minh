@@ -1187,7 +1187,7 @@ window.quizClose=function(){$('quizBuilder').style.display='none';};
 window.quizPreview=function(){const qs=getQuestions();$('qPreview').innerHTML=qs.map((q,i)=>'<div class="qcard quiz-math"><b>Câu '+(i+1)+'.</b> <span class="pill">'+escq(q.level||'')+'</span> '+rich(q.text)+(q.image?'<p><img alt="Hình minh họa câu '+(i+1)+'" src="'+q.image+'"></p>':'')+q.options.map((o,j)=>'<p>'+String.fromCharCode(65+j)+'. '+rich(o)+(j===q.correct?' ✓':'')+'</p>').join('')+'</div>').join('');math($('qPreview'));};
 window.quizPublish=function(){const qs=getQuestions(),title=$('qTitle').value.trim(),subject=$('qSubject').value.trim(),recipient=$('qRecipient').value;$('qError').textContent='';if(!title||!subject||!qs.length||qs.some(q=>!q.text||q.options.some(x=>!x))){$('qError').textContent='Nhập tên bài, môn học và đầy đủ nội dung, bốn lựa chọn cho mỗi câu.';return;}const cls=$('qClass').value;const classStudents=state.students.filter(s=>s.className===cls);const targets=recipient==='class'?classStudents:classStudents.filter(s=>s.id===recipient);if(!targets.length){$('qError').textContent='Chưa chọn được học sinh.';return;}const openAt=$('qOpenAt').value,dueAt=$('qDue').value;const quiz={questions:qs,level:$('qLevel').value,duration:Number($('qDuration').value)||0,attempts:Number($('qAttempts').value)||1,shuffleQuestions:$('qShuffleQ').checked,shuffleAnswers:$('qShuffleA').checked,showAnswers:!!$('qShowAnswers')?.checked,openAt,dueAt};const date=(dueAt||today()).slice(0,10),batchId='asg_'+uid(),assignedAt=new Date().toISOString();targets.forEach(s=>{ensureAssignments(s).push({id:uid(),batchId,assignedAt,assignedClass:cls,assignedScope:recipient==='class'?'class':'student',title,subject,date,note:'Trắc nghiệm '+qs.length+' câu · '+quiz.level,richBody:'',portalPublished:true,quiz:structuredClone(quiz),answer:'',score:'',maxScore:10,status:'pending',createdAt:assignedAt});});try{saveState();}catch(e){targets.forEach(s=>s.assignments.splice(-1,1));$('qError').textContent='Không đủ dung lượng lưu hình hoặc dữ liệu. Hãy giảm kích thước hình rồi thử lại.';return;}quizClose();renderAssignments();toast('Đã giao trắc nghiệm cho '+targets.length+' học sinh lớp '+cls);};
 function quizView(s,a){const done=a.status!=='pending',qs=a.quiz.questions,answers=a.quizAnswers||[];return '<article class="portal-item"><h3>'+escq(a.title)+'</h3><p>'+escq(a.subject)+' · '+escq(a.quiz.level)+' · '+qs.length+' câu · '+(a.quiz.duration?a.quiz.duration+' phút':'Không giới hạn thời gian')+'</p>'+(done?'<p><b>Đã nộp · Điểm '+escq(a.score)+'/10</b></p>':'<p><b>Chọn một đáp án đúng cho mỗi câu rồi nhấn Nộp bài.</b></p>')+qs.map((q,i)=>'<div class="quiz-student-card quiz-math"><b>Câu '+(i+1)+'.</b> '+rich(q.text)+(q.image?'<p><img alt="Hình minh họa câu '+(i+1)+'" src="'+q.image+'"></p>':'')+q.options.map((o,j)=>'<label><input type="radio" name="quiz_'+escq(a.id)+'_'+i+'" value="'+j+'" '+(done?'disabled':'')+' '+(answers[i]===j?'checked':'')+'><span>'+String.fromCharCode(65+j)+'. '+rich(o)+'</span></label>').join('')+(done&&a.quiz.showAnswers?'<p><b>Đáp án đúng: '+String.fromCharCode(65+q.correct)+'</b></p>':'')+'</div>').join('')+(done?'<p>'+escq(a.teacherComment||'')+'</p>':'<button class="btn primary" type="button" onclick="quizSubmit('+JSON.stringify(s.id)+','+JSON.stringify(a.id)+')">Nộp bài trắc nghiệm</button>')+'</article>';}
-window.quizSubmit=function(sid,id){const s=state.students.find(x=>x.id===sid),a=s?.assignments?.find(x=>x.id===id);if(!a?.quiz||a.status!=='pending')return;const answers=a.quiz.questions.map((_,i)=>{const e=document.querySelector('input[name="quiz_'+CSS.escape(a.id)+'_'+i+'"]:checked');return e?Number(e.value):null});if(answers.some(x=>x===null)){toast('Hãy trả lời đủ các câu trước khi nộp.');return;}if(!confirm('Nộp bài trắc nghiệm? Sau khi nộp sẽ không sửa đáp án.'))return;const correct=answers.filter((x,i)=>x===a.quiz.questions[i].correct).length;a.quizAnswers=answers;a.answer=answers.map((x,i)=>(i+1)+'. '+String.fromCharCode(65+x)).join('; ');a.score=Math.round(correct/a.quiz.questions.length*100)/10;a.teacherComment='Đúng '+correct+'/'+a.quiz.questions.length+' câu. '+(correct===a.quiz.questions.length?'Hoàn thành tốt.':'Xem lại các câu chưa đúng và luyện tập thêm.');a.status='graded';a.submittedAt=new Date().toISOString();saveState();portalRender();toast('Đã nộp và chấm bài trên thiết bị này');};
+window.quizSubmit=function(sid,id){const s=state.students.find(x=>x.id===sid),a=s?.assignments?.find(x=>x.id===id);if(!a?.quiz||a.status!=='pending')return;const answers=a.quiz.questions.map((_,i)=>{const e=document.querySelector('input[name="quiz_'+CSS.escape(a.id)+'_'+i+'"]:checked');return e?Number(e.value):null});if(answers.some(x=>x===null)){toast('Hãy trả lời đủ các câu trước khi nộp.');return;}if(!confirm('Nộp bài trắc nghiệm? Sau khi nộp sẽ không sửa đáp án.'))return;const correct=answers.filter((x,i)=>x===a.quiz.questions[i].correct).length;a.quizAnswers=answers;a.answer=answers.map((x,i)=>(i+1)+'. '+String.fromCharCode(65+x)).join('; ');a.score=Math.round(correct/a.quiz.questions.length*100)/10;a.teacherComment='Đúng '+correct+'/'+a.quiz.questions.length+' câu. '+(correct===a.quiz.questions.length?'Hoàn thành tốt.':'Xem lại các câu chưa đúng và luyện tập thêm.');a.status='graded';a.submittedAt=new Date().toISOString();saveState();toast('Đã nộp và chấm bài');if(typeof studentV2OpenAssignment==='function')studentV2OpenAssignment(id);};
 const oldPortal=window.portalRender;window.portalRender=function(){oldPortal();const s=state.students.find(x=>x.id===$('portalStudent').value),list=$('portalList');if(!s||!list)return;const quizzes=(s.assignments||[]).filter(a=>a.portalPublished&&a.quiz);list.querySelectorAll('.portal-item').forEach(node=>{const title=node.querySelector('h3');if(title&&quizzes.some(a=>a.title===title.textContent)){node.remove();}});const wrapper=document.createElement('div');wrapper.innerHTML=quizzes.map(a=>quizView(s,a)).join('');list.prepend(...wrapper.children);math(list);};
 const oldEasyOpen=window.easyOpen;window.easyOpen=function(...args){quizClose();return oldEasyOpen(...args);};
 window.newAssignment=function(){quizOpen();};
@@ -1881,23 +1881,56 @@ window.studentV2ClassChanged=function(){};
 
 function ensureMinhAnDemo(s){
  if(!s || String(s.name||'').trim()!=='Nguyễn Minh An' || String(s.className||'').trim()!=='10A1') return;
- const hasDemo=(Array.isArray(s.assignments)?s.assignments:[]).some(a=>String(a.id||'').startsWith('minhan_demo_'));
- if(hasDemo) return;
- s.subject='Toán';
- s.activeReviewSubject='Toán';
- s.assignments=[
-  {id:'minhan_demo_1',title:'Hàm số và đồ thị – luyện tập cơ bản',subject:'Toán',status:'graded',score:8.0,teacherScore:8.0,date:'2026-09-22',submittedAt:'2026-09-22T20:10',portalPublished:true,quiz:{duration:15,level:'Thông hiểu',questions:[{q:'Câu 1'},{q:'Câu 2'},{q:'Câu 3'},{q:'Câu 4'},{q:'Câu 5'}]}},
-  {id:'minhan_demo_2',title:'Mệnh đề và tập hợp – kiểm tra 15 phút',subject:'Toán',status:'graded',score:7.5,teacherScore:7.5,date:'2026-09-24',submittedAt:'2026-09-24T19:40',portalPublished:true,quiz:{duration:15,level:'Nhận biết – Thông hiểu',questions:[{q:'1'},{q:'2'},{q:'3'},{q:'4'},{q:'5'},{q:'6'},{q:'7'},{q:'8'},{q:'9'},{q:'10'}]}},
-  {id:'minhan_demo_3',title:'Vectơ – bài luyện theo chủ đề',subject:'Toán',status:'graded',score:8.5,teacherScore:8.5,date:'2026-09-27',submittedAt:'2026-09-27T20:15',portalPublished:true,quiz:{duration:30,level:'Thông hiểu – Vận dụng',questions:[{q:'1'},{q:'2'},{q:'3'},{q:'4'},{q:'5'},{q:'6'}]}},
-  {id:'minhan_demo_4',title:'Ôn tập giữa kỳ I – phần Đại số',subject:'Toán',status:'pending',date:'2026-10-02',dueAt:'2026-10-03T21:00',portalPublished:true,quiz:{duration:45,level:'Tổng hợp',questions:[{q:'1'},{q:'2'},{q:'3'},{q:'4'},{q:'5'},{q:'6'},{q:'7'},{q:'8'},{q:'9'},{q:'10'}]}},
-  {id:'minhan_demo_5',title:'Tiếng Anh – Unit 1 Review',subject:'Tiếng Anh',status:'graded',score:7.0,teacherScore:7.0,date:'2026-09-29',submittedAt:'2026-09-29T19:05',portalPublished:true,quiz:{duration:15,level:'Thông hiểu',questions:[{q:'1'},{q:'2'},{q:'3'},{q:'4'},{q:'5'}]}},
-  {id:'minhan_demo_6',title:'Tin học – dữ liệu và thông tin',subject:'Tin học',status:'pending',date:'2026-10-02',dueAt:'2026-10-04T20:00',portalPublished:true,quiz:{duration:15,level:'Nhận biết – Thông hiểu',questions:[{q:'1'},{q:'2'},{q:'3'},{q:'4'},{q:'5'}]}}
+ if(!Array.isArray(s.assignments))s.assignments=[];
+ const demoQuiz={
+  duration:45,level:'Tổng hợp',showAnswers:true,
+  questions:[
+   {text:'Cho mệnh đề P: “2 + 3 = 5”. Mệnh đề P là:',options:['Mệnh đề đúng','Mệnh đề sai','Không phải mệnh đề','Mệnh đề chứa biến'],correct:0,level:'Nhận biết'},
+   {text:'Tập hợp A = {1, 2, 3}. Số phần tử của A là:',options:['1','2','3','4'],correct:2,level:'Nhận biết'},
+   {text:'Cho A = {1, 2, 3} và B = {2, 3, 4}. A ∩ B bằng:',options:['{1, 4}','{2, 3}','{1, 2, 3, 4}','∅'],correct:1,level:'Thông hiểu'},
+   {text:'Cho A = {1, 2, 3} và B = {2, 3, 4}. A ∪ B bằng:',options:['{2, 3}','{1, 4}','{1, 2, 3, 4}','∅'],correct:2,level:'Thông hiểu'},
+   {text:'Hàm số y = 2x + 1 có hệ số góc bằng:',options:['1','2','-1','-2'],correct:1,level:'Nhận biết'},
+   {text:'Điểm nào sau đây thuộc đồ thị y = 2x + 1?',options:['(0; 0)','(0; 1)','(1; 1)','(2; 2)'],correct:1,level:'Thông hiểu'},
+   {text:'Với y = -3x + 2, khi x tăng thì y:',options:['Tăng','Giảm','Không đổi','Luôn bằng 0'],correct:1,level:'Thông hiểu'},
+   {text:'Nghiệm của phương trình 2x + 4 = 0 là:',options:['x = 2','x = -2','x = 4','x = -4'],correct:1,level:'Thông hiểu'},
+   {text:'Cho f(x) = x² - 1. Giá trị f(2) bằng:',options:['1','2','3','4'],correct:2,level:'Vận dụng'},
+   {text:'Một hàm số bậc nhất có đồ thị đi qua A(0;1) và B(1;3). Công thức phù hợp là:',options:['y = x + 1','y = 2x + 1','y = 3x + 1','y = 2x - 1'],correct:1,level:'Vận dụng'}
+  ]
+ };
+ const demo={
+  id:'minhan_demo_midterm_algebra',
+  title:'Ôn tập giữa kỳ I – phần Đại số',
+  subject:'Toán',
+  status:'pending',
+  date:'2026-10-02',
+  dueAt:'2026-10-03T21:00',
+  portalPublished:true,
+  learningTrack:'exam',
+  assessmentSubtype:'semester',
+  assignedBy:'Giáo viên',
+  richBody:'Bài trắc nghiệm ôn tập giữa kỳ I gồm 10 câu. Chọn một đáp án đúng cho mỗi câu.',
+  quiz:demoQuiz
+ };
+ // Xóa bản demo cũ hoặc bản cùng tên nhưng không có cấu trúc trắc nghiệm đúng.
+ s.assignments=s.assignments.filter(a=>!(
+   String(a.id||'').startsWith('minhan_demo_4') ||
+   a.id==='minhan_demo_midterm_algebra' ||
+   String(a.title||'').trim()==='Ôn tập giữa kỳ I – phần Đại số'
+ ));
+ s.assignments.unshift(demo);
+
+ // Giữ các dữ liệu demo khác, nhưng không ghi đè dữ liệu thật nếu đã tồn tại.
+ const extras=[
+  {id:'minhan_demo_1',title:'Hàm số và đồ thị – luyện tập cơ bản',subject:'Toán',status:'graded',score:8.0,teacherScore:8.0,date:'2026-09-22',submittedAt:'2026-09-22T20:10',portalPublished:true},
+  {id:'minhan_demo_2',title:'Mệnh đề và tập hợp – kiểm tra 15 phút',subject:'Toán',status:'graded',score:7.5,teacherScore:7.5,date:'2026-09-24',submittedAt:'2026-09-24T19:40',portalPublished:true},
+  {id:'minhan_demo_3',title:'Vectơ – bài luyện theo chủ đề',subject:'Toán',status:'graded',score:8.5,teacherScore:8.5,date:'2026-09-27',submittedAt:'2026-09-27T20:15',portalPublished:true},
+  {id:'minhan_demo_5',title:'Tiếng Anh – Unit 1 Review',subject:'Tiếng Anh',status:'graded',score:7.0,teacherScore:7.0,date:'2026-09-29',submittedAt:'2026-09-29T19:05',portalPublished:true},
+  {id:'minhan_demo_6',title:'Tin học – dữ liệu và thông tin',subject:'Tin học',status:'pending',date:'2026-10-02',dueAt:'2026-10-04T20:00',portalPublished:true}
  ];
- s.journals=[
-  {date:'2026-09-22',subject:'Toán',title:'Hàm số và đồ thị',note:'Hoàn thành bài luyện, cần chú ý đọc kỹ yêu cầu.'},
-  {date:'2026-09-27',subject:'Toán',title:'Vectơ',note:'Tiến bộ tốt ở câu thông hiểu; tiếp tục luyện vận dụng.'},
-  {date:'2026-09-29',subject:'Tiếng Anh',title:'Unit 1 Review',note:'Cần củng cố từ vựng và cấu trúc câu.'}
- ];
+ extras.forEach(x=>{if(!s.assignments.some(a=>a.id===x.id))s.assignments.push(x)});
+ s.subject='Toán';s.activeReviewSubject='Toán';
+ if(!Array.isArray(s.journals))s.journals=[];
+ if(!s.journals.some(j=>j.id==='minhan_journal_demo'))s.journals.push({id:'minhan_journal_demo',date:'2026-10-02',subject:'Toán',title:'Chuẩn bị ôn giữa kỳ I',note:'Bài trắc nghiệm 10 câu đang chờ hoàn thành.'});
  try{saveState()}catch(_){}
 }
 window.studentV2Login=function(){const norm=v=>String(v||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('vi-VN');const className=E('sv2Class').value.trim(),studentName=E('sv2Student').value.trim(),code=E('sv2Code').value.trim();if(!className||!studentName||!code){E('sv2LoginError').textContent='Vui lòng nhập đầy đủ lớp, họ tên học sinh và mật khẩu.';return}let s=A(state.students).find(x=>norm(x.className)===norm(className)&&norm(x.name)===norm(studentName));
@@ -3167,6 +3200,19 @@ isplay:none!important}
 .sv2-work-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:14px}.sv2-work-actions button{height:43px;padding:0 17px;border-radius:10px;font-weight:900;cursor:pointer}.sv2-save-draft{border:1px solid #d7e1ee;background:#fff;color:#475569}.sv2-submit-direct{border:0;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff}
 .sv2-submitted-box{margin-top:20px;padding:18px;border:1px solid #bbf7d0;border-radius:14px;background:#f0fdf4}.sv2-submitted-box>span{color:#15803d;font-size:11px;font-weight:950}.sv2-submitted-box p{white-space:pre-wrap;color:#334155}.sv2-submitted-box strong,.sv2-submitted-box em{display:block;margin-top:7px}.sv2-submitted-box em{font-style:normal;color:#64748b}
 @media(max-width:700px){.sv2-assignment-work{padding:18px 14px 88px!important}.sv2-work-card,.sv2-work-hero{padding:20px 17px}.sv2-work-hero h2{font-size:22px}}
+</style>
+
+<style id="v8782-student-quiz-polish">
+#sv2QuizHost{max-width:1040px;margin:16px auto 0}
+#sv2QuizHost .portal-item{padding:26px 28px;border:1px solid #dce6f2;border-radius:20px;background:#fff;box-shadow:0 12px 32px rgba(30,58,138,.065)}
+#sv2QuizHost .portal-item>h3{margin:0 0 6px;color:#172554;font-size:25px}
+#sv2QuizHost .portal-item>p{color:#64748b;font-size:13px}
+#sv2QuizHost .quiz-student-card{margin:14px 0;padding:18px;border:1px solid #dce6f2;border-radius:15px;background:#fbfdff;color:#172554}
+#sv2QuizHost .quiz-student-card>b{display:block;margin-bottom:10px}
+#sv2QuizHost .quiz-student-card label{display:flex;align-items:flex-start;gap:9px;margin:7px 0;padding:10px 12px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;cursor:pointer}
+#sv2QuizHost .quiz-student-card label:hover{border-color:#93b4f8;background:#f5f8ff}
+#sv2QuizHost .quiz-student-card input{margin-top:3px}
+#sv2QuizHost .portal-item>.btn.primary{min-height:44px;padding:0 20px;border:0;border-radius:11px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900;cursor:pointer}
 </style>
 </body>
 </html>
