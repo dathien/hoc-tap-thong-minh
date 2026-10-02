@@ -267,13 +267,23 @@ html,body{margin:0!important;padding:0!important}
 #teacherPublishPolicyV113 strong{font-size:12px!important;color:#17324d!important}
 #teacherPublishPolicyV113 small{margin-top:2px!important;font-size:10.5px!important;line-height:1.4!important;color:#64748b!important}
 @media(max-width:760px){#teacherPublishPolicyV113 .v113cols{grid-template-columns:1fr!important}}
+</style><style id="v8817-parent-style">
+#parentV117{position:fixed;inset:0;z-index:25000;background:#f4f7fb;display:none;grid-template-columns:260px 1fr;font-family:Inter,"Segoe UI",Arial,sans-serif;color:#172033}
+#parentV117.open{display:grid!important}#parentV117 .pv117side{background:linear-gradient(180deg,#12203f,#172554 58%,#1e3a8a);color:#fff;padding:22px 16px;display:flex;flex-direction:column;min-height:100vh}
+.pv117brand{display:flex;gap:11px;align-items:center;padding:4px 5px 20px}.pv117brand>div{width:42px;height:42px;border-radius:12px;background:#fff;color:#1e3a8a;display:grid;place-items:center;font-weight:950}.pv117brand b{line-height:1.18}.pv117brand span{color:#facc15}
+.pv117who{padding:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.07);margin-bottom:15px}.pv117who small,.pv117who strong,.pv117who span{display:block}.pv117who small{font-size:9px;letter-spacing:.08em;color:#bfdbfe}.pv117who strong{margin-top:5px;font-size:15px}.pv117who span{margin-top:3px;font-size:11px;color:#cbd5e1}
+.pv117side nav{display:grid;gap:5px}.pv117side nav button{border:0;background:transparent;color:#dbeafe;text-align:left;padding:11px 12px;border-radius:10px;font-weight:800;cursor:pointer}.pv117side nav button.active{background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff}.pv117logout{margin-top:auto;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);color:#fff;border-radius:10px;padding:11px;font-weight:850;cursor:pointer}
+.pv117main{overflow:auto;min-width:0}.pv117main header{height:76px;background:#fff;border-bottom:1px solid #e4eaf2;padding:0 28px;display:flex;align-items:center;justify-content:space-between}.pv117main header small{font-size:9px;font-weight:950;letter-spacing:.1em;color:#64748b}.pv117main header h1{font-size:21px;margin:3px 0 0;color:#172554}.pv117readonly{padding:7px 11px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:900}
+#pv117Content{padding:24px 28px}.pv117hero{padding:22px;border-radius:18px;background:linear-gradient(135deg,#172554,#1e40af);color:#fff;display:flex;justify-content:space-between;gap:18px;align-items:center}.pv117hero h2{margin:3px 0 7px}.pv117hero p{margin:0;color:#dbeafe;line-height:1.5}.pv117badge{padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.12);font-size:11px;font-weight:850}
+.pv117stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0}.pv117stat,.pv117card{background:#fff;border:1px solid #e0e8f1;border-radius:14px;padding:16px}.pv117stat b{display:block;font-size:24px;color:#1e3a8a}.pv117stat span{font-size:11px;color:#64748b}.pv117grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}.pv117card h3{margin:0 0 12px;color:#172554;font-size:15px}.pv117row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:11px 0;border-bottom:1px solid #edf1f5}.pv117row:last-child{border-bottom:0}.pv117row b,.pv117row small,.pv117row span{display:block}.pv117row small{margin-top:3px;color:#64748b;font-size:10.5px}.pv117score{font-weight:950;color:#1e40af}.pv117pending{font-size:10px;font-weight:850;color:#c2410c;background:#fff7ed;padding:6px 8px;border-radius:8px}.pv117empty{padding:28px;text-align:center;color:#64748b;background:#fff;border:1px dashed #cbd5e1;border-radius:14px}
+.pv117notice{margin-top:14px;padding:12px 14px;border-radius:11px;background:#f0fdf4;color:#166534;font-size:11px;line-height:1.5}.pv117progress{height:8px;border-radius:99px;background:#e7edf5;overflow:hidden;margin-top:7px}.pv117progress i{display:block;height:100%;background:#2563eb;border-radius:99px}
+@media(max-width:850px){#parentV117{grid-template-columns:1fr}.pv117side{display:none!important}.pv117stats{grid-template-columns:repeat(2,1fr)}.pv117grid{grid-template-columns:1fr}#pv117Content{padding:16px}.pv117main header{padding:0 16px}}
 </style></head>
 <body>
 <div class="app">
 <header class="topbar">
 <div class="brand-mini"><div aria-label="Ôn Tập Thông Minh" class="logo">ÔT</div><div class="brand-copy"><div class="brand-name" id="brandAppName">ÔN TẬP THÔNG MINH</div><div class="brand-slogan" id="brandTopSlogan">Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách</div><div class="teacher-credit">GV.Hồ Nguyễn Đa Thiện</div></div></div>
 <div class="top-actions">
-
 <button class="icon-btn" onclick="openModal('introModal')">Giới thiệu</button>
 <button class="icon-btn" onclick="openModal('guideModal')">Hướng dẫn</button>
 <button class="icon-btn" onclick="toggleFont()" title="Tăng cỡ chữ">A+</button>
@@ -4287,6 +4297,135 @@ window.studentV2OpenAssignment=function(id){
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);
  else start();
 })();
+</script><div aria-hidden="true" id="parentV117">
+<aside class="pv117side">
+<div class="pv117brand"><div>ÔT</div><b>ÔN TẬP<br/><span>THÔNG MINH</span></b></div>
+<div class="pv117who"><small>PHỤ HUYNH HỌC SINH</small><strong id="pv117StudentName">Nguyễn Minh An</strong><span id="pv117StudentClass">Lớp 10A1</span></div>
+<nav>
+<button class="active" data-pv="overview">⌂ Tổng quan</button>
+<button data-pv="assignments">▣ Bài tập &amp; kiểm tra</button>
+<button data-pv="results">▥ Kết quả học tập</button>
+<button data-pv="progress">◫ Tiến độ ôn tập</button>
+<button data-pv="feedback">✦ Nhận xét giáo viên</button>
+</nav>
+<button class="pv117logout" onclick="parentV117Logout()">Đăng xuất</button>
+</aside>
+<main class="pv117main">
+<header><div><small>CỔNG PHỤ HUYNH</small><h1 id="pv117Title">Tổng quan học tập</h1></div><div class="pv117readonly">Chỉ xem</div></header>
+<section id="pv117Content"></section>
+</main>
+</div><script id="v8817-parent-demo">
+(function(){
+'use strict';
+const USER='ph.minhan', PASS='1234', CHILD_NAME='Nguyễn Minh An', CHILD_CLASS='10A1';
+const A=v=>Array.isArray(v)?v:[];
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let child=null;
+
+function linkedChild(){
+ return A(state.students).find(s=>String(s.name||'').trim()===CHILD_NAME && String(s.className||s.class||'').trim()===CHILD_CLASS)
+     || A(state.students).find(s=>String(s.name||'').trim()===CHILD_NAME);
+}
+function assignments(){return A(child?.assignments)}
+function publishedScore(a){
+ if(a?.gradePublished===true){
+   const n=Number(a.teacherScore!==''&&a.teacherScore!=null?a.teacherScore:a.score);
+   return Number.isFinite(n)?n:null;
+ }
+ return null;
+}
+function statusText(a){
+ if(a.submittedAt && publishedScore(a)!==null)return 'Đã có điểm';
+ if(a.submittedAt)return 'Chờ giáo viên chấm';
+ if(a.status==='doing')return 'Đang làm';
+ return 'Chưa làm';
+}
+function subject(a){return a.subject||a.quiz?.subject||'Chưa phân môn'}
+function fmtDate(v){if(!v)return '—';try{return new Date(v).toLocaleDateString('vi-VN')}catch(_){return '—'}}
+function setTitle(t){const x=document.getElementById('pv117Title');if(x)x.textContent=t}
+function rows(list,kind){
+ if(!list.length)return '<div class="pv117empty">Chưa có dữ liệu học tập.</div>';
+ return list.map(a=>{
+   const sc=publishedScore(a);
+   return `<div class="pv117row"><div><b>${esc(a.title||'Bài học')}</b><small>${esc(subject(a))} · ${esc(a.assessmentSubtype||a.subtype||'Ôn luyện')} · ${fmtDate(a.submittedAt||a.date)}</small></div><div>${sc!==null?`<span class="pv117score">${sc}/10</span>`:`<span class="pv117pending">${esc(statusText(a))}</span>`}</div></div>`;
+ }).join('');
+}
+function overview(){
+ setTitle('Tổng quan học tập');
+ const as=assignments(), submitted=as.filter(a=>a.submittedAt), scored=as.map(publishedScore).filter(x=>x!==null);
+ const avg=scored.length?(scored.reduce((a,b)=>a+b,0)/scored.length).toFixed(1):'—';
+ const pct=as.length?Math.round(submitted.length/as.length*100):0;
+ const latest=[...as].sort((a,b)=>new Date(b.submittedAt||b.date||0)-new Date(a.submittedAt||a.date||0)).slice(0,5);
+ const comments=as.filter(a=>a.teacherComment).slice(-4).reverse();
+ document.getElementById('pv117Content').innerHTML=`<div class="pv117hero"><div><small>HỒ SƠ ĐƯỢC LIÊN KẾT</small><h2>${esc(child.name)} · ${esc(child.className||child.class||CHILD_CLASS)}</h2><p>Phụ huynh chỉ được xem dữ liệu học tập của học sinh này. Không có quyền sửa điểm, bài làm hoặc hồ sơ.</p></div><div class="pv117badge">Tài khoản phụ huynh demo</div></div>
+ <div class="pv117stats"><div class="pv117stat"><b>${as.length}</b><span>Bài được giao</span></div><div class="pv117stat"><b>${submitted.length}</b><span>Bài đã nộp</span></div><div class="pv117stat"><b>${pct}%</b><span>Tiến độ hoàn thành</span></div><div class="pv117stat"><b>${avg}</b><span>Điểm TB đã công bố</span></div></div>
+ <div class="pv117grid"><div class="pv117card"><h3>Hoạt động gần đây</h3>${rows(latest)}</div><div class="pv117card"><h3>Nhận xét gần đây</h3>${comments.length?comments.map(a=>`<div class="pv117row"><div><b>${esc(subject(a))}</b><small>${esc(a.teacherComment)}</small></div></div>`).join(''):'<div class="pv117empty">Chưa có nhận xét mới.</div>'}</div></div>
+ <div class="pv117notice">Điểm chỉ xuất hiện tại cổng phụ huynh sau khi được công bố theo chính sách của từng bài. Bài chấm thủ công chưa được giáo viên chấm sẽ chỉ hiển thị trạng thái chờ chấm.</div>`;
+}
+function assignmentView(){
+ setTitle('Bài tập & kiểm tra');
+ const as=[...assignments()].sort((a,b)=>new Date(b.date||b.submittedAt||0)-new Date(a.date||a.submittedAt||0));
+ document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Tất cả bài được giao cho ${esc(child.name)}</h3>${rows(as)}</div>`;
+}
+function results(){
+ setTitle('Kết quả học tập');
+ const as=assignments().filter(a=>a.submittedAt);
+ document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Điểm đã được giáo viên công bố</h3>${rows(as)}</div><div class="pv117notice">Các điểm chưa được giáo viên công bố không được hiển thị cho phụ huynh.</div>`;
+}
+function progress(){
+ setTitle('Tiến độ ôn tập');
+ const as=assignments(), groups={};
+ as.forEach(a=>{const s=subject(a);(groups[s]||(groups[s]=[])).push(a)});
+ const body=Object.entries(groups).map(([s,x])=>{const done=x.filter(a=>a.submittedAt).length,p=x.length?Math.round(done/x.length*100):0;return `<div class="pv117row"><div><b>${esc(s)}</b><small>${done}/${x.length} bài đã hoàn thành<div class="pv117progress"><i style="width:${p}%"></i></div></small></div><span class="pv117score">${p}%</span></div>`}).join('');
+ document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Tiến độ theo môn</h3>${body||'<div class="pv117empty">Chưa có dữ liệu.</div>'}</div>`;
+}
+function feedback(){
+ setTitle('Nhận xét giáo viên');
+ const list=assignments().filter(a=>String(a.teacherComment||'').trim());
+ document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Nhận xét dành cho ${esc(child.name)}</h3>${list.length?list.map(a=>`<div class="pv117row"><div><b>${esc(a.title||subject(a))}</b><small>${esc(a.teacherComment)}</small></div><span>${fmtDate(a.gradedAt||a.submittedAt)}</span></div>`).join(''):'<div class="pv117empty">Chưa có nhận xét của giáo viên.</div>'}</div>`;
+}
+function show(which){
+ document.querySelectorAll('#parentV117 nav button').forEach(b=>b.classList.toggle('active',b.dataset.pv===which));
+ ({overview,assignments:assignmentView,results,progress,feedback}[which]||overview)();
+}
+document.addEventListener('click',e=>{const b=e.target.closest('#parentV117 nav button[data-pv]');if(b)show(b.dataset.pv)},true);
+
+window.parentLoginSubmit=function(){
+ const u=document.getElementById('parentLoginUser')?.value.trim();
+ const p=document.getElementById('parentLoginPass')?.value.trim();
+ const e=document.getElementById('parentLoginError');
+ if(u!==USER||p!==PASS){if(e)e.textContent='Tên đăng nhập hoặc mật khẩu không đúng.';return}
+ child=linkedChild();
+ if(!child){if(e)e.textContent='Không tìm thấy hồ sơ Nguyễn Minh An – 10A1 để liên kết.';return}
+ if(e)e.textContent='';
+ document.getElementById('parentLoginPanel').hidden=true;
+ document.getElementById('roleGateway').hidden=true;
+ const app=document.querySelector('.app');if(app)app.style.display='none';
+ const pv=document.getElementById('parentV117');pv.classList.add('open');pv.setAttribute('aria-hidden','false');
+ document.body.style.overflow='hidden';
+ document.getElementById('pv117StudentName').textContent=child.name||CHILD_NAME;
+ document.getElementById('pv117StudentClass').textContent='Lớp '+(child.className||child.class||CHILD_CLASS);
+ if(document.getElementById('parentRemember')?.checked)try{localStorage.setItem('ot_parent_demo_remember',USER)}catch(_){}
+ show('overview');
+};
+window.parentV117Logout=function(){
+ const pv=document.getElementById('parentV117');pv.classList.remove('open');pv.setAttribute('aria-hidden','true');
+ const app=document.querySelector('.app');if(app)app.style.display='';
+ const g=document.getElementById('roleGateway');if(g)g.hidden=false;
+ document.body.style.overflow='';
+ child=null;
+};
+const openParent0=window.openParentLogin;
+window.openParentLogin=function(){
+ openParent0();
+ try{
+   if(localStorage.getItem('ot_parent_demo_remember')===USER){
+     const u=document.getElementById('parentLoginUser'),r=document.getElementById('parentRemember');
+     if(u)u.value=USER;if(r)r.checked=true;
+   }
+ }catch(_){}
+};
+})();
 </script></body>
 </html>
 <style>
@@ -6224,4 +6363,3 @@ syncLegacy();
 #teacherAssessmentClassify .v111-options small{margin-top:2px;font-size:10px;line-height:1.35;color:#6b7f8d}
 @media(max-width:760px){#teacherAssessmentClassify .v111-setting{grid-column:1/-1}}
 </style>
-
