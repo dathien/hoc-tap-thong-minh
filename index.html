@@ -273,7 +273,7 @@ html,body{margin:0!important;padding:0!important}
 <header class="topbar">
 <div class="brand-mini"><div aria-label="Ôn Tập Thông Minh" class="logo">ÔT</div><div class="brand-copy"><div class="brand-name" id="brandAppName">ÔN TẬP THÔNG MINH</div><div class="brand-slogan" id="brandTopSlogan">Cá nhân hóa lộ trình – Theo dõi tiến bộ – Đồng hành đúng cách</div><div class="teacher-credit">GV.Hồ Nguyễn Đa Thiện</div></div></div>
 <div class="top-actions">
-<button class="icon-btn student-entry-btn" onclick="studentV2OpenLogin()">🎓 Học sinh</button>
+
 <button class="icon-btn" onclick="openModal('introModal')">Giới thiệu</button>
 <button class="icon-btn" onclick="openModal('guideModal')">Hướng dẫn</button>
 <button class="icon-btn" onclick="toggleFont()" title="Tăng cỡ chữ">A+</button>
@@ -953,7 +953,7 @@ const _personalBuildSession=buildSession;buildSession=function(){const s=current
 <style>
 #studentPortal{display:none;position:fixed;inset:0;z-index:10000;background:#f5f9fc;overflow:auto;padding:22px;color:#183047}#studentPortal.open{display:block}#studentPortal .portal-shell{max-width:980px;margin:auto;background:white;border:1px solid #d6e5ef;border-radius:18px;padding:24px;box-shadow:0 12px 35px #2342 12}#studentPortal .portal-actions{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}#studentPortal textarea{width:100%;min-height:110px;padding:12px;border:1px solid #bed1df;border-radius:10px}#studentPortal select{max-width:100%;padding:10px;border-radius:10px}#studentPortal .portal-item{border:1px solid #dbe6ef;border-radius:12px;padding:15px;margin:12px 0}#studentPortal button{cursor:pointer}#studentPortal .portal-note{color:#566c7b;font-size:13px}
 </style>
-<div aria-hidden="true" id="studentPortal"><div class="portal-shell"><div class="portal-actions" style="justify-content:space-between;align-items:center"><button class="btn secondary" onclick="portalClose()" type="button">← Trở về giáo viên</button></div><p class="portal-note">Chọn hồ sơ để thử làm và nộp bài trên cùng trình duyệt. Chưa có tài khoản học sinh hoặc đồng bộ trực tuyến.</p><label for="portalStudent">Học sinh</label> <select id="portalStudent" onchange="portalRender()"></select><div id="portalList"></div></div></div>
+<div aria-hidden="true" id="studentPortal"><div class="portal-shell"><div class="portal-actions" style="justify-content:space-between;align-items:center"><h2>🎓 Giao diện học sinh · Bản thử trên thiết bị này</h2><button class="btn secondary" onclick="portalClose()" type="button">← Trở về giáo viên</button></div><p class="portal-note">Chọn hồ sơ để thử làm và nộp bài trên cùng trình duyệt. Chưa có tài khoản học sinh hoặc đồng bộ trực tuyến.</p><label for="portalStudent">Học sinh</label> <select id="portalStudent" onchange="portalRender()"></select><div id="portalList"></div></div></div>
 <script>
 (function(){'use strict';
 function selected(){return state.students.find(s=>s.id===document.getElementById('portalStudent').value)}
@@ -4267,6 +4267,26 @@ window.studentV2OpenAssignment=function(id){
    return r;
  };
 })();
+</script><script id="v8816-teacher-topbar-guard">
+(function(){
+ function cleanTeacherTopbar(){
+   document.querySelectorAll('.top-actions button,.top-actions a').forEach(function(x){
+     const t=(x.textContent||'').replace(/\s+/g,' ').trim();
+     if(t==='Học sinh' || t.includes('Giao diện học sinh') ||
+        x.id==='portalOpenButton' || x.classList.contains('student-entry-btn')){
+       x.remove();
+     }
+   });
+ }
+ function start(){
+   cleanTeacherTopbar();
+   const bar=document.querySelector('.top-actions');
+   if(!bar)return;
+   new MutationObserver(cleanTeacherTopbar).observe(bar,{childList:true,subtree:true});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);
+ else start();
+})();
 </script></body>
 </html>
 <style>
@@ -6204,15 +6224,4 @@ syncLegacy();
 #teacherAssessmentClassify .v111-options small{margin-top:2px;font-size:10px;line-height:1.35;color:#6b7f8d}
 @media(max-width:760px){#teacherAssessmentClassify .v111-setting{grid-column:1/-1}}
 </style>
-<script id="v8815-remove-student-preview-button">
-(function(){
- function removeTeacherStudentPreview(){
-   const b=document.getElementById('portalOpenButton'); if(b)b.remove();
-   document.querySelectorAll('.top-actions button,.top-actions a').forEach(x=>{
-     if((x.textContent||'').includes('Giao diện học sinh'))x.remove();
-   });
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',removeTeacherStudentPreview);
- else removeTeacherStudentPreview();
-})();
-</script>
+
