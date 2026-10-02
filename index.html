@@ -313,6 +313,7 @@ html,body{margin:0!important;padding:0!important}
 <div class="nav-title">Điều hướng</div>
 <button class="nav-btn active" data-panel="home" onclick="goPanel('home')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"></path><path d="M5.5 10.5V20h13v-9.5"></path><path d="M9.5 20v-6h5v6"></path></svg></span><span class="nav-label">Tổng quan</span></button>
 <button class="nav-btn" data-panel="profiles" onclick="goPanel('profiles')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3.5 19c.4-3.3 2.2-5 5.5-5s5.1 1.7 5.5 5"></path><circle cx="17" cy="9" r="2.3"></circle><path d="M15.5 14.5c3.1-.4 4.7 1.1 5 4"></path></svg></span><span class="nav-label">Lớp học &amp; học sinh</span></button>
+<button class="nav-btn" data-panel="homeroom" onclick="goPanel('homeroom')"><span class="nav-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"></path><path d="M8 9h2M14 9h2M8 13h2M14 13h2M8 17h8"></path></svg></span><span class="nav-label">Lớp chủ nhiệm</span></button>
 <button class="nav-btn" data-panel="plan" onclick="goPanel('plan')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><rect height="15" rx="2" width="16" x="4" y="5"></rect><path d="M8 3v4M16 3v4M4 10h16M8 14h3M8 17h6"></path></svg></span><span class="nav-label">Kế hoạch ôn tập</span></button>
 <button class="nav-btn" data-panel="session" onclick="goPanel('session')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m10 8 6 4-6 4Z"></path></svg></span><span class="nav-label">Học hôm nay</span></button>
 <button class="nav-btn" data-panel="journal" onclick="goPanel('journal')"><span class="nav-icon"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 4h14v16H5z"></path><path d="M8 8h8M8 12h8M8 16h5"></path></svg></span><span class="nav-label">Nhật ký học tập</span></button>
@@ -390,6 +391,15 @@ html,body{margin:0!important;padding:0!important}
 </div>
 <div><h3 style="margin-top:0">Mục tiêu đang theo dõi</h3><div id="goalList"></div></div>
 </div>
+</section>
+<section class="card panel" id="homeroomPanel">
+<div class="panel-head"><div><h2>Lớp chủ nhiệm</h2><p>Danh sách học sinh của lớp đang làm việc. Chọn học sinh để mở hồ sơ và theo dõi quá trình ôn tập.</p></div></div>
+<div class="homeroom-v94-toolbar">
+  <div><span class="help">Lớp đang xem</span><strong id="homeroomV94Class">—</strong></div>
+  <div class="field"><label>Tìm học sinh</label><input id="homeroomV94Search" placeholder="Nhập họ tên học sinh..." oninput="renderHomeroomV94()"></div>
+</div>
+<div class="homeroom-v94-summary"><div><strong id="homeroomV94Count">0</strong><span>Học sinh</span></div><div><strong id="homeroomV94Tasks">0</strong><span>Bài đã giao</span></div><div><strong id="homeroomV94Done">0%</strong><span>Hoàn thành</span></div></div>
+<div class="table-wrap"><table class="data-table homeroom-v94-table"><thead><tr><th>STT</th><th>Học sinh</th><th>Lớp</th><th>Môn đang ôn</th><th>Bài đã giao</th><th>Thao tác</th></tr></thead><tbody id="homeroomV94Body"></tbody></table></div>
 </section>
 <section class="card panel" id="planPanel">
 <div class="panel-head"><div><h2>Kế hoạch ôn tập tuần</h2><p>Kế hoạch ôn tập cá nhân của học sinh đang chọn; chuyển lớp hoặc học sinh để xem kế hoạch tương ứng.</p></div></div>
@@ -3887,6 +3897,44 @@ function resetDemo93(){
 resetDemo93();
 })();
 </script>
+
+<script id="v8794-homeroom-real">
+(function(){
+'use strict';
+function e94(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+window.renderHomeroomV94=function(){
+ const body=document.getElementById('homeroomV94Body');if(!body)return;
+ const work=document.getElementById('workClassSelect')?.value||'';
+ const current=state.students?.find(s=>s.id===state.currentStudentId);
+ const cls=work||current?.className||state.students?.[0]?.className||'';
+ const q=(document.getElementById('homeroomV94Search')?.value||'').trim().toLocaleLowerCase('vi');
+ let list=(Array.isArray(state.students)?state.students:[]).filter(s=>!cls||String(s.className||'')===String(cls));
+ if(q)list=list.filter(s=>String(s.name||'').toLocaleLowerCase('vi').includes(q));
+ const allTasks=list.flatMap(s=>Array.isArray(s.assignments)?s.assignments:[]);
+ const done=allTasks.filter(a=>a.submittedAt||['done','submitted','graded'].includes(a.status)).length;
+ document.getElementById('homeroomV94Class').textContent=cls||'Chưa chọn lớp';
+ document.getElementById('homeroomV94Count').textContent=list.length;
+ document.getElementById('homeroomV94Tasks').textContent=allTasks.length;
+ document.getElementById('homeroomV94Done').textContent=(allTasks.length?Math.round(done/allTasks.length*100):0)+'%';
+ body.innerHTML=list.length?list.map((s,i)=>{
+   const n=(Array.isArray(s.assignments)?s.assignments:[]).length;
+   return `<tr><td>${i+1}</td><td><b>${e94(s.name)}</b></td><td>${e94(s.className||'')}</td><td>${e94(s.activeReviewSubject||s.subject||'—')}</td><td>${n}</td><td><button class="btn secondary small" onclick="state.currentStudentId='${e94(s.id)}';saveState();renderAll();goPanel('profiles')">Mở hồ sơ</button></td></tr>`
+ }).join(''):'<tr><td colspan="6" class="homeroom-empty">Chưa có học sinh trong lớp đang chọn.</td></tr>';
+};
+const oldGo94=window.goPanel;
+window.goPanel=function(name){
+ const r=oldGo94.apply(this,arguments);
+ if(name==='homeroom')setTimeout(window.renderHomeroomV94,0);
+ return r;
+};
+const oldWork94=window.workClassChanged;
+if(typeof oldWork94==='function')window.workClassChanged=function(v){const r=oldWork94.apply(this,arguments);setTimeout(window.renderHomeroomV94,0);return r};
+})();
+</script>
+<style id="v8794-homeroom-style">
+.homeroom-v94-toolbar{display:grid;grid-template-columns:220px minmax(260px,1fr);gap:16px;align-items:end;margin-bottom:14px}.homeroom-v94-toolbar>div:first-child{padding:12px 14px;border:1px solid var(--border);border-radius:14px;background:#f8fbff}.homeroom-v94-toolbar strong{display:block;margin-top:4px;font-size:20px;color:#172554}.homeroom-v94-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 14px}.homeroom-v94-summary>div{padding:14px;border:1px solid var(--border);border-radius:14px;background:#fff}.homeroom-v94-summary strong{display:block;font-size:24px;color:#1d4ed8}.homeroom-v94-summary span{font-size:12px;color:#64748b}.homeroom-v94-table th,.homeroom-v94-table td{vertical-align:middle}
+@media(max-width:760px){.homeroom-v94-toolbar,.homeroom-v94-summary{grid-template-columns:1fr}}
+</style>
 </body>
 </html>
 <style>
