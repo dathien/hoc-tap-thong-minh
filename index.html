@@ -6107,3 +6107,77 @@ disarm();
 <style id="v8807-role-locked-tab-monitor-style">
 .v107overlay{position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.6);backdrop-filter:blur(5px);display:grid;place-items:center;padding:18px}.v107modal{width:min(440px,calc(100vw - 36px));background:#fff;border-radius:20px;padding:27px;text-align:center;box-shadow:0 30px 80px rgba(15,23,42,.3)}.v107ico{width:48px;height:48px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:#fff7ed;color:#ea580c;font-size:25px;font-weight:950;border:1px solid #fed7aa}.v107modal h3{margin:5px 0 9px;color:#172554}.v107modal p{color:#475569;line-height:1.55}.v107soft,.v107strong{padding:11px 12px;border-radius:11px;font-size:12px;text-align:left}.v107soft{background:#eff6ff;color:#1e40af}.v107strong{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}.v107modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}.v107count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
 </style>
+
+<script id="v8808-answer-release-choice">
+(function(){
+'use strict';
+const A=v=>Array.isArray(v)?v:[];
+const E=id=>document.getElementById(id);
+function find(id){
+ for(const s of A(state.students)){const a=A(s.assignments).find(x=>String(x.id)===String(id));if(a)return a}
+ return null;
+}
+function save(){try{saveState()}catch(e){}}
+
+/* Hiển thị rõ tùy chọn đáp án ngay cạnh cơ chế chấm/hiển thị điểm. */
+function install(){
+ if(E('v108AnswerBox'))return;
+ const grade=document.querySelector('.v105gradebox');
+ if(!grade)return;
+ const box=document.createElement('div');
+ box.id='v108AnswerBox';box.className='v108box';
+ box.innerHTML=`<div class="v108title">Hiển thị đáp án cho học sinh</div>
+ <label class="v108choice"><input type="radio" name="v108AnswerRelease" value="show" checked>
+ <span><b>Cho xem đáp án sau khi có điểm</b><small>Học sinh được xem đáp án đúng sau khi điểm đã được công bố.</small></span></label>
+ <label class="v108choice"><input type="radio" name="v108AnswerRelease" value="hide">
+ <span><b>Không cho xem đáp án</b><small>Học sinh chỉ xem điểm/kết quả, không hiển thị đáp án đúng.</small></span></label>`;
+ grade.insertAdjacentElement('afterend',box);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(install,0));else setTimeout(install,0);
+
+/* Gắn lựa chọn này vào tất cả assignment mới khi giáo viên giao. */
+const pub0=window.quizPublish;
+window.quizPublish=function(){
+ const answerMode=document.querySelector('input[name="v108AnswerRelease"]:checked')?.value||'show';
+ const before=new Set();
+ for(const s of A(state.students))for(const a of A(s.assignments))before.add(a);
+ const save0=window.saveState;
+ window.saveState=function(){
+  for(const s of A(state.students))for(const a of A(s.assignments)){
+   if(!before.has(a)&&a?.quiz){
+    a.answerReleaseMode=answerMode;
+    a.quiz.showAnswers=(answerMode==='show');
+   }
+  }
+  return save0.apply(this,arguments);
+ };
+ try{return pub0.apply(this,arguments)}finally{window.saveState=save0}
+};
+
+/* Đồng bộ dữ liệu cũ: showAnswers cũ được chuyển thành chính sách rõ ràng. */
+for(const s of A(state.students))for(const a of A(s.assignments)){
+ if(a?.quiz&&!a.answerReleaseMode){
+  a.answerReleaseMode=(a.quiz.showAnswers===false)?'hide':'show';
+ }
+ if(a?.quiz)a.quiz.showAnswers=(a.answerReleaseMode==='show');
+}
+save();
+
+/* Khi mở kết quả, cưỡng chế đúng chính sách:
+   - chưa có điểm: không xem đáp án;
+   - đã có điểm + show: được xem;
+   - hide: không bao giờ lộ đáp án đúng. */
+const open0=window.studentV2OpenAssignment;
+window.studentV2OpenAssignment=function(id){
+ const a=find(id);
+ if(a?.quiz){
+  const published=a.gradePublished===true;
+  a.quiz.showAnswers=published && a.answerReleaseMode==='show';
+ }
+ return open0(id);
+};
+})();
+</script>
+<style id="v8808-answer-release-style">
+.v108box{margin-top:12px;padding:15px;border:1px solid #cbdcf0;border-radius:14px;background:#fff}.v108title{margin-bottom:9px;color:#172554;font-weight:900}.v108choice{display:grid!important;grid-template-columns:20px 1fr;gap:9px;align-items:start!important;padding:10px 11px;margin:7px 0;border:1px solid #dbe5f0;border-radius:11px;background:#f8fbff}.v108choice input{margin-top:3px}.v108choice b,.v108choice small{display:block}.v108choice b{color:#1e293b}.v108choice small{margin-top:3px;color:#64748b;font-size:11px;line-height:1.45}
+</style>
