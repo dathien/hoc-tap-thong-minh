@@ -3775,6 +3775,118 @@ window.studentV2OpenAssignment=function(id){
 .v91page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc;box-sizing:border-box}.v91top{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;color:#64748b;font-size:12px;font-weight:800}.v91top button{height:40px;padding:0 14px;border:1px solid #d6e1ee;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v91hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:18px}.v91hero small{color:#bfdbfe;font-weight:950;letter-spacing:.12em}.v91hero h2{margin:5px 0;font-size:27px}.v91hero p{margin:0;color:#dbeafe}.v91timer,.v91score{min-width:132px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.v91timer small,.v91score span{display:block;font-size:9px}.v91timer b,.v91score b{display:block;margin-top:3px;font-size:25px}.v91timer b.danger{color:#fde047}.v91list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.v91q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.v91qh{display:flex;justify-content:space-between}.v91qh>b{color:#1d4ed8}.v91qh span{padding:4px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:850}.v91q h4{margin:10px 0 13px;color:#172554;line-height:1.5}.v91opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v91opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;align-items:start;padding:12px 13px;border:1px solid #dce5ef;border-radius:11px;background:#fbfdff;text-align:left;cursor:pointer}.v91opts input{margin:2px 0 0}.v91opts label.ok{border-color:#86efac;background:#f0fdf4}.v91opts label.bad{border-color:#fca5a5;background:#fef2f2}.v91key{color:#15803d;font-size:11px}.v91submit{position:sticky;bottom:12px;max-width:1060px;margin:15px auto 0;padding:12px 14px;border:1px solid #d7e2ef;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 12px 30px rgba(30,58,138,.12);display:flex;justify-content:space-between;align-items:center}.v91submit span{color:#64748b;font-size:11px}.v91submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:900}.v91done{max-width:1060px;margin:15px auto;padding:15px;border:1px solid #bbf7d0;border-radius:13px;background:#f0fdf4;color:#15803d;font-weight:850}
 @media(max-width:760px){.v91page{padding:16px 12px 90px}.v91opts{grid-template-columns:1fr}.v91hero{padding:20px 17px}.v91hero h2{font-size:21px}.v91submit{bottom:72px}}
 </style>
+
+<script id="v8792-restore-homeroom-menu">
+(function(){
+'use strict';
+function addHomeroomMenu92(){
+  /* Chỉ tác động giao diện GIÁO VIÊN; không chạm cổng học sinh/phụ huynh. */
+  const candidates=[
+    document.querySelector('#sidebar .nav'),
+    document.querySelector('#sidebar nav'),
+    document.querySelector('.sidebar .nav'),
+    document.querySelector('.sidebar nav'),
+    document.querySelector('.side-menu'),
+    document.querySelector('.sidebar-menu')
+  ].filter(Boolean);
+  const nav=candidates[0]; if(!nav)return false;
+  if(nav.querySelector('[data-v92-homeroom]'))return true;
+
+  /* Nếu app đã có nút/menu Lớp chủ nhiệm nhưng bị CSS ẩn/rớt, khôi phục chính nó. */
+  const existing=[...nav.querySelectorAll('button,a,[role="button"],div')].find(el=>
+    /lớp chủ nhiệm/i.test((el.textContent||'').trim())
+  );
+  if(existing){
+    existing.style.removeProperty('display');
+    existing.style.removeProperty('visibility');
+    existing.style.removeProperty('opacity');
+    existing.setAttribute('data-v92-homeroom','1');
+    return true;
+  }
+
+  /* Tìm panel/chức năng tương ứng đã có trong app để không tạo chức năng giả. */
+  const panelIds=['homeroomPanel','classPanel','classesPanel','profilesPanel'];
+  const target=panelIds.find(id=>document.getElementById(id));
+  if(!target)return false;
+
+  const btn=document.createElement('button');
+  btn.type='button'; btn.className='nav-item v92-homeroom';
+  btn.setAttribute('data-v92-homeroom','1');
+  btn.innerHTML='<span class="v92-mi">▦</span><span>Lớp chủ nhiệm</span>';
+  btn.onclick=function(){
+    if(typeof goPanel==='function') goPanel(target);
+    else{
+      const el=document.getElementById(target);
+      if(el){document.querySelectorAll('.panel').forEach(x=>x.hidden=true);el.hidden=false;el.scrollIntoView({block:"start"});}
+    }
+  };
+
+  /* Đặt gần nhóm quản lý lớp/học sinh nếu tìm được; nếu không đặt trước phần cài đặt. */
+  const nodes=[...nav.children];
+  const ref=nodes.find(el=>/kế hoạch ôn tập|học hôm nay|nhật ký học tập/i.test(el.textContent||'')) ||
+            nodes.find(el=>/cài đặt|dữ liệu/i.test(el.textContent||''));
+  if(ref) nav.insertBefore(btn,ref); else nav.appendChild(btn);
+  return true;
+}
+function run92(){
+  addHomeroomMenu92();
+  /* Khôi phục khả năng cuộn để menu dài không bị rớt khỏi khung nhìn. */
+  document.querySelectorAll('#sidebar,.sidebar,.teacher-sidebar').forEach(el=>{
+    el.style.overflowY='auto';
+    el.style.overflowX='hidden';
+  });
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run92);
+else run92();
+setTimeout(run92,300);
+})();
+</script>
+<style id="v8792-homeroom-style">
+.v92-homeroom{width:100%;display:flex!important;align-items:center;gap:11px;visibility:visible!important;opacity:1!important}
+.v92-mi{width:22px;display:inline-flex;justify-content:center}
+#sidebar,.sidebar,.teacher-sidebar{overflow-y:auto!important;overflow-x:hidden!important}
+</style>
+
+<script id="v8793-reset-demo-attempt">
+(function(){
+'use strict';
+/* Bài demo phải bắt đầu ở trạng thái CHƯA LÀM.
+   Chỉ reset các assignment demo của Nguyễn Minh An, không đụng bài thật khác. */
+function resetDemo93(){
+ const s=(Array.isArray(state.students)?state.students:[]).find(x=>
+   String(x.name||'').trim()==='Nguyễn Minh An' &&
+   String(x.className||'').trim()==='10A1'
+ );
+ if(!s)return;
+ const demoIds=new Set([
+   'minhan_demo_math','minhan_demo_literature','minhan_demo_english',
+   'minhan_demo_physics','minhan_demo_chemistry','minhan_demo_biology',
+   'minhan_demo_it','teacher_demo_it_minhan_10a1'
+ ]);
+ let changed=false;
+ (Array.isArray(s.assignments)?s.assignments:[]).forEach(a=>{
+   if(!demoIds.has(String(a.id||'')))return;
+   /* reset một lần cho phiên bản 8.7.93 */
+   if(a._demoResetVersion==='8.7.93')return;
+   a.status='pending';
+   a.score='';
+   a.teacherScore='';
+   a.autoScore='';
+   a.answer='';
+   a.quizAnswers=[];
+   a.submittedAt='';
+   a.startedAt='';
+   a.teacherComment='';
+   a.feedback='';
+   a.gradedAt='';
+   a._demoResetVersion='8.7.93';
+   changed=true;
+ });
+ if(changed)try{saveState()}catch(e){}
+}
+resetDemo93();
+})();
+</script>
 </body>
 </html>
 <style>
