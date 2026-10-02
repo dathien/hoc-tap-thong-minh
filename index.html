@@ -278,6 +278,9 @@ html,body{margin:0!important;padding:0!important}
 .pv117stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0}.pv117stat,.pv117card{background:#fff;border:1px solid #e0e8f1;border-radius:14px;padding:16px}.pv117stat b{display:block;font-size:24px;color:#1e3a8a}.pv117stat span{font-size:11px;color:#64748b}.pv117grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}.pv117card h3{margin:0 0 12px;color:#172554;font-size:15px}.pv117row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:11px 0;border-bottom:1px solid #edf1f5}.pv117row:last-child{border-bottom:0}.pv117row b,.pv117row small,.pv117row span{display:block}.pv117row small{margin-top:3px;color:#64748b;font-size:10.5px}.pv117score{font-weight:950;color:#1e40af}.pv117pending{font-size:10px;font-weight:850;color:#c2410c;background:#fff7ed;padding:6px 8px;border-radius:8px}.pv117empty{padding:28px;text-align:center;color:#64748b;background:#fff;border:1px dashed #cbd5e1;border-radius:14px}
 .pv117notice{margin-top:14px;padding:12px 14px;border-radius:11px;background:#f0fdf4;color:#166534;font-size:11px;line-height:1.5}.pv117progress{height:8px;border-radius:99px;background:#e7edf5;overflow:hidden;margin-top:7px}.pv117progress i{display:block;height:100%;background:#2563eb;border-radius:99px}
 @media(max-width:850px){#parentV117{grid-template-columns:1fr}.pv117side{display:none!important}.pv117stats{grid-template-columns:repeat(2,1fr)}.pv117grid{grid-template-columns:1fr}#pv117Content{padding:16px}.pv117main header{padding:0 16px}}
+</style><style id="v8820-parent-login-style">
+#parentDemoHintV120{margin:-4px 0 10px;padding:8px 10px;border-radius:9px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:800}
+#parentDemoLoginButton{background:linear-gradient(135deg,#2563eb,#4f46e5)!important}
 </style></head>
 <body>
 <div class="app">
@@ -1879,8 +1882,8 @@ window.enterStudentArea=function(){document.getElementById('roleGateway').hidden
 <div class="sv2-field"><label>Tên đăng nhập</label><input autocomplete="username" id="parentLoginUser" placeholder="Nhập tên đăng nhập"/></div>
 <div class="sv2-field"><label>Mật khẩu</label><div class="role-pass-wrap"><input autocomplete="current-password" id="parentLoginPass" placeholder="Nhập mật khẩu" type="password"/><button aria-label="Hiện hoặc ẩn mật khẩu" class="role-eye" onclick="parentTogglePassword()" type="button">◉</button></div></div>
 <div class="sv2-login-row"><label class="sv2-remember"><input id="parentRemember" type="checkbox"/> <span>Ghi nhớ đăng nhập</span></label><button class="sv2-text-link" onclick="roleForgot('Phụ huynh')" type="button">Quên mật khẩu?</button></div>
-<div class="sv2-login-error" id="parentLoginError"></div>
-<button class="sv2-login-btn" id="parentDemoLoginButton" onclick="parentV119DemoLogin(event)" type="button">Đăng nhập</button>
+<div id="parentDemoHintV120">Demo: Nguyễn Minh An · 10A1 · ph.minhan / 1234</div><div class="sv2-login-error" id="parentLoginError"></div>
+<button class="sv2-login-btn" id="parentDemoLoginButton" onclick="parentV119DemoLogin(event)" type="button">Đăng nhập demo Nguyễn Minh An</button>
 <div class="sv2-or"><span>hoặc</span></div>
 <button class="sv2-google-btn" onclick="roleGoogle('Phụ huynh')" type="button"><span class="sv2-google-g">G</span> Đăng nhập với Google</button><div class="parent-register-line">Chưa có tài khoản? <button onclick="parentRegister()" type="button">Đăng ký</button></div>
 </section>
@@ -4322,187 +4325,85 @@ window.studentV2OpenAssignment=function(id){
 <header><div><small>CỔNG PHỤ HUYNH</small><h1 id="pv117Title">Tổng quan học tập</h1></div><div class="pv117readonly">Chỉ xem</div></header>
 <section id="pv117Content"></section>
 </main>
-</div><script id="v8817-parent-demo">
+</div><script id="v8820-parent-login-authoritative">
 (function(){
 'use strict';
-const USER='ph.minhan', PASS='1234', CHILD_NAME='Nguyễn Minh An', CHILD_CLASS='10A1';
-const A=v=>Array.isArray(v)?v:[];
-const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let child=null;
+const USER='ph.minhan', PASS='1234';
+function students(){
+ try{return Array.isArray(state?.students)?state.students:[]}catch(_){return []}
+}
+function norm(s){return String(s||'').normalize('NFC').trim().toLowerCase()}
+function getChild(){
+ return students().find(s=>norm(s.name)==='nguyễn minh an')
+     || students().find(s=>norm(s.name).includes('minh an'))
+     || null;
+}
+function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function score(a){
+ if(a?.gradePublished!==true)return null;
+ const n=Number(a.teacherScore!==''&&a.teacherScore!=null?a.teacherScore:a.score);
+ return Number.isFinite(n)?n:null;
+}
+function enter(){
+ const u=(document.getElementById('parentLoginUser')?.value||'').trim();
+ const p=(document.getElementById('parentLoginPass')?.value||'').trim();
+ const er=document.getElementById('parentLoginError');
+ if(u!==USER||p!==PASS){if(er)er.textContent='Tên đăng nhập hoặc mật khẩu không đúng.';return}
+ if(er)er.textContent='';
 
-function linkedChild(){
- return A(state.students).find(s=>String(s.name||'').trim()===CHILD_NAME && String(s.className||s.class||'').trim()===CHILD_CLASS)
-     || A(state.students).find(s=>String(s.name||'').trim()===CHILD_NAME);
-}
-function assignments(){return A(child?.assignments)}
-function publishedScore(a){
- if(a?.gradePublished===true){
-   const n=Number(a.teacherScore!==''&&a.teacherScore!=null?a.teacherScore:a.score);
-   return Number.isFinite(n)?n:null;
- }
- return null;
-}
-function statusText(a){
- if(a.submittedAt && publishedScore(a)!==null)return 'Đã có điểm';
- if(a.submittedAt)return 'Chờ giáo viên chấm';
- if(a.status==='doing')return 'Đang làm';
- return 'Chưa làm';
-}
-function subject(a){return a.subject||a.quiz?.subject||'Chưa phân môn'}
-function fmtDate(v){if(!v)return '—';try{return new Date(v).toLocaleDateString('vi-VN')}catch(_){return '—'}}
-function setTitle(t){const x=document.getElementById('pv117Title');if(x)x.textContent=t}
-function rows(list,kind){
- if(!list.length)return '<div class="pv117empty">Chưa có dữ liệu học tập.</div>';
- return list.map(a=>{
-   const sc=publishedScore(a);
-   return `<div class="pv117row"><div><b>${esc(a.title||'Bài học')}</b><small>${esc(subject(a))} · ${esc(a.assessmentSubtype||a.subtype||'Ôn luyện')} · ${fmtDate(a.submittedAt||a.date)}</small></div><div>${sc!==null?`<span class="pv117score">${sc}/10</span>`:`<span class="pv117pending">${esc(statusText(a))}</span>`}</div></div>`;
- }).join('');
-}
-function overview(){
- setTitle('Tổng quan học tập');
- const as=assignments(), submitted=as.filter(a=>a.submittedAt), scored=as.map(publishedScore).filter(x=>x!==null);
- const avg=scored.length?(scored.reduce((a,b)=>a+b,0)/scored.length).toFixed(1):'—';
- const pct=as.length?Math.round(submitted.length/as.length*100):0;
- const latest=[...as].sort((a,b)=>new Date(b.submittedAt||b.date||0)-new Date(a.submittedAt||a.date||0)).slice(0,5);
- const comments=as.filter(a=>a.teacherComment).slice(-4).reverse();
- document.getElementById('pv117Content').innerHTML=`<div class="pv117hero"><div><small>HỒ SƠ ĐƯỢC LIÊN KẾT</small><h2>${esc(child.name)} · ${esc(child.className||child.class||CHILD_CLASS)}</h2><p>Phụ huynh chỉ được xem dữ liệu học tập của học sinh này. Không có quyền sửa điểm, bài làm hoặc hồ sơ.</p></div><div class="pv117badge">Tài khoản phụ huynh demo</div></div>
- <div class="pv117stats"><div class="pv117stat"><b>${as.length}</b><span>Bài được giao</span></div><div class="pv117stat"><b>${submitted.length}</b><span>Bài đã nộp</span></div><div class="pv117stat"><b>${pct}%</b><span>Tiến độ hoàn thành</span></div><div class="pv117stat"><b>${avg}</b><span>Điểm TB đã công bố</span></div></div>
- <div class="pv117grid"><div class="pv117card"><h3>Hoạt động gần đây</h3>${rows(latest)}</div><div class="pv117card"><h3>Nhận xét gần đây</h3>${comments.length?comments.map(a=>`<div class="pv117row"><div><b>${esc(subject(a))}</b><small>${esc(a.teacherComment)}</small></div></div>`).join(''):'<div class="pv117empty">Chưa có nhận xét mới.</div>'}</div></div>
- <div class="pv117notice">Điểm chỉ xuất hiện tại cổng phụ huynh sau khi được công bố theo chính sách của từng bài. Bài chấm thủ công chưa được giáo viên chấm sẽ chỉ hiển thị trạng thái chờ chấm.</div>`;
-}
-function assignmentView(){
- setTitle('Bài tập & kiểm tra');
- const as=[...assignments()].sort((a,b)=>new Date(b.date||b.submittedAt||0)-new Date(a.date||a.submittedAt||0));
- document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Tất cả bài được giao cho ${esc(child.name)}</h3>${rows(as)}</div>`;
-}
-function results(){
- setTitle('Kết quả học tập');
- const as=assignments().filter(a=>a.submittedAt);
- document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Điểm đã được giáo viên công bố</h3>${rows(as)}</div><div class="pv117notice">Các điểm chưa được giáo viên công bố không được hiển thị cho phụ huynh.</div>`;
-}
-function progress(){
- setTitle('Tiến độ ôn tập');
- const as=assignments(), groups={};
- as.forEach(a=>{const s=subject(a);(groups[s]||(groups[s]=[])).push(a)});
- const body=Object.entries(groups).map(([s,x])=>{const done=x.filter(a=>a.submittedAt).length,p=x.length?Math.round(done/x.length*100):0;return `<div class="pv117row"><div><b>${esc(s)}</b><small>${done}/${x.length} bài đã hoàn thành<div class="pv117progress"><i style="width:${p}%"></i></div></small></div><span class="pv117score">${p}%</span></div>`}).join('');
- document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Tiến độ theo môn</h3>${body||'<div class="pv117empty">Chưa có dữ liệu.</div>'}</div>`;
-}
-function feedback(){
- setTitle('Nhận xét giáo viên');
- const list=assignments().filter(a=>String(a.teacherComment||'').trim());
- document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Nhận xét dành cho ${esc(child.name)}</h3>${list.length?list.map(a=>`<div class="pv117row"><div><b>${esc(a.title||subject(a))}</b><small>${esc(a.teacherComment)}</small></div><span>${fmtDate(a.gradedAt||a.submittedAt)}</span></div>`).join(''):'<div class="pv117empty">Chưa có nhận xét của giáo viên.</div>'}</div>`;
-}
-function show(which){
- document.querySelectorAll('#parentV117 nav button').forEach(b=>b.classList.toggle('active',b.dataset.pv===which));
- ({overview,assignments:assignmentView,results,progress,feedback}[which]||overview)();
-}
-document.addEventListener('click',e=>{const b=e.target.closest('#parentV117 nav button[data-pv]');if(b)show(b.dataset.pv)},true);
+ const st=getChild();
+ const lp=document.getElementById('parentLoginPanel');
+ const rg=document.getElementById('roleGateway');
+ const app=document.querySelector('.app');
+ const pv=document.getElementById('parentV117');
+ if(!pv){if(er)er.textContent='Không thể mở cổng phụ huynh demo.';return}
 
-window.parentV117EnterDemo=function(){
- const e=document.getElementById('parentLoginError');
- child=linkedChild();
- if(!child){if(e)e.textContent='Không tìm thấy hồ sơ Nguyễn Minh An – 10A1 để liên kết.';return false}
- if(e)e.textContent='';
- const lp=document.getElementById('parentLoginPanel');if(lp)lp.hidden=true;
- const rg=document.getElementById('roleGateway');if(rg)rg.hidden=true;
- const app=document.querySelector('.app');if(app)app.style.display='none';
- const pv=document.getElementById('parentV117');if(!pv){if(e)e.textContent='Không tìm thấy cổng phụ huynh.';return false}
+ if(lp)lp.hidden=true;if(rg)rg.hidden=true;if(app)app.style.display='none';
  pv.classList.add('open');pv.setAttribute('aria-hidden','false');
  document.body.style.overflow='hidden';
- document.getElementById('pv117StudentName').textContent=child.name||CHILD_NAME;
- document.getElementById('pv117StudentClass').textContent='Lớp '+(child.className||child.class||CHILD_CLASS);
- if(document.getElementById('parentRemember')?.checked)try{localStorage.setItem('ot_parent_demo_remember',USER)}catch(_){}
- show('overview');
- return true;
-};
-window.parentV117Logout=function(){
- const pv=document.getElementById('parentV117');pv.classList.remove('open');pv.setAttribute('aria-hidden','true');
- const app=document.querySelector('.app');if(app)app.style.display='';
- const g=document.getElementById('roleGateway');if(g)g.hidden=false;
- document.body.style.overflow='';
- child=null;
-};
-const openParent0=window.openParentLogin;
+ document.getElementById('pv117StudentName').textContent='Nguyễn Minh An';
+ document.getElementById('pv117StudentClass').textContent='Lớp 10A1';
+
+ const as=Array.isArray(st?.assignments)?st.assignments:[];
+ const submitted=as.filter(a=>a.submittedAt);
+ const scored=as.map(score).filter(v=>v!==null);
+ const avg=scored.length?(scored.reduce((a,b)=>a+b,0)/scored.length).toFixed(1):'—';
+ const pct=as.length?Math.round(submitted.length/as.length*100):0;
+ const latest=[...as].sort((a,b)=>new Date(b.submittedAt||b.date||0)-new Date(a.submittedAt||a.date||0)).slice(0,6);
+ const rows=latest.length?latest.map(a=>{
+   const sc=score(a);
+   return `<div class="pv117row"><div><b>${esc(a.title||'Bài học')}</b><small>${esc(a.subject||'Ôn tập')}</small></div><div>${sc!==null?`<span class="pv117score">${sc}/10</span>`:`<span class="pv117pending">${a.submittedAt?'Chờ giáo viên chấm':'Chưa làm'}</span>`}</div></div>`;
+ }).join(''):'<div class="pv117empty">Chưa có dữ liệu bài học.</div>';
+
+ const c=document.getElementById('pv117Content');
+ if(c)c.innerHTML=`<div class="pv117hero"><div><small>HỒ SƠ PHỤ HUYNH ĐƯỢC LIÊN KẾT</small><h2>Nguyễn Minh An · 10A1</h2><p>Phụ huynh chỉ được xem thông tin học tập của Nguyễn Minh An.</p></div><div class="pv117badge">CHỈ XEM</div></div>
+ <div class="pv117stats"><div class="pv117stat"><b>${as.length}</b><span>Bài được giao</span></div><div class="pv117stat"><b>${submitted.length}</b><span>Bài đã nộp</span></div><div class="pv117stat"><b>${pct}%</b><span>Tiến độ hoàn thành</span></div><div class="pv117stat"><b>${avg}</b><span>Điểm TB đã công bố</span></div></div>
+ <div class="pv117card"><h3>Hoạt động học tập gần đây</h3>${rows}</div>
+ <div class="pv117notice">Chỉ điểm đã được giáo viên công bố mới hiển thị. Phụ huynh không có quyền sửa điểm, bài làm hoặc hồ sơ.</div>`;
+}
+
+/* CAPTURE: chặn mọi onclick/listener đăng nhập phụ huynh cũ trước khi chúng chạy. */
+document.addEventListener('click',function(e){
+ const b=e.target.closest('#parentDemoLoginButton');
+ if(!b)return;
+ e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+ enter();
+},true);
+
+document.addEventListener('keydown',function(e){
+ if(e.key!=='Enter'||!e.target.closest('#parentLoginPanel'))return;
+ e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+ enter();
+},true);
+
+/* Dọn thông báo legacy mỗi lần mở form. */
+const op=window.openParentLogin;
 window.openParentLogin=function(){
- openParent0();
- try{
-   if(localStorage.getItem('ot_parent_demo_remember')===USER){
-     const u=document.getElementById('parentLoginUser'),r=document.getElementById('parentRemember');
-     if(u)u.value=USER;if(r)r.checked=true;
-   }
- }catch(_){}
+ const r=op?op.apply(this,arguments):undefined;
+ const er=document.getElementById('parentLoginError');if(er)er.textContent='';
+ const u=document.getElementById('parentLoginUser');if(u&&!u.value)u.value=USER;
+ return r;
 };
-})();
-</script><script id="v8819-direct-parent-login">
-(function(){
-'use strict';
-window.parentV119DemoLogin=function(ev){
-  if(ev){ev.preventDefault();ev.stopPropagation();}
-  const u=(document.getElementById('parentLoginUser')?.value||'').trim();
-  const p=(document.getElementById('parentLoginPass')?.value||'').trim();
-  const err=document.getElementById('parentLoginError');
-  if(u!=='ph.minhan'||p!=='1234'){
-    if(err)err.textContent='Tên đăng nhập hoặc mật khẩu không đúng.';
-    return false;
-  }
-  if(err)err.textContent='';
-
-  /* Resolve Nguyễn Minh An only; class is displayed as 10A1 for the demo account. */
-  let st=null;
-  try{
-    st=(Array.isArray(state?.students)?state.students:[]).find(x=>
-      String(x?.name||'').trim().toLowerCase()==='nguyễn minh an'
-    )||null;
-  }catch(_){}
-
-  /* The demo must still enter even if old demo data uses an internal class code. */
-  try{
-    if(typeof window.parentV117EnterDemo==='function'){
-      const ok=window.parentV117EnterDemo();
-      if(ok!==false)return false;
-    }
-  }catch(_){}
-
-  const login=document.getElementById('parentLoginPanel');
-  const gate=document.getElementById('roleGateway');
-  const app=document.querySelector('.app');
-  const pv=document.getElementById('parentV117');
-  if(login)login.hidden=true;
-  if(gate)gate.hidden=true;
-  if(app)app.style.display='none';
-  if(pv){
-    pv.classList.add('open');pv.setAttribute('aria-hidden','false');
-    const n=document.getElementById('pv117StudentName');
-    const c=document.getElementById('pv117StudentClass');
-    if(n)n.textContent='Nguyễn Minh An';
-    if(c)c.textContent='Lớp 10A1';
-    document.body.style.overflow='hidden';
-    /* If the original parent renderer cannot resolve the child, show a safe read-only shell. */
-    if(!st){
-      const content=document.getElementById('pv117Content');
-      if(content)content.innerHTML='<div class="pv117hero"><div><small>HỒ SƠ ĐƯỢC LIÊN KẾT</small><h2>Nguyễn Minh An · 10A1</h2><p>Tài khoản phụ huynh demo chỉ được xem hồ sơ học tập của Nguyễn Minh An.</p></div><div class="pv117badge">Chỉ xem</div></div><div class="pv117empty" style="margin-top:14px">Chưa tìm thấy dữ liệu học tập demo để hiển thị.</div>';
-    }else{
-      /* expose resolved student to the existing renderer through a dedicated demo renderer */
-      const as=Array.isArray(st.assignments)?st.assignments:[];
-      const scored=as.filter(a=>a.gradePublished===true && Number.isFinite(Number(a.teacherScore!==''&&a.teacherScore!=null?a.teacherScore:a.score)));
-      const submitted=as.filter(a=>a.submittedAt);
-      const avg=scored.length?(scored.reduce((s,a)=>s+Number(a.teacherScore!==''&&a.teacherScore!=null?a.teacherScore:a.score),0)/scored.length).toFixed(1):'—';
-      const content=document.getElementById('pv117Content');
-      if(content)content.innerHTML=`<div class="pv117hero"><div><small>HỒ SƠ ĐƯỢC LIÊN KẾT</small><h2>Nguyễn Minh An · 10A1</h2><p>Phụ huynh chỉ được xem dữ liệu học tập của học sinh này.</p></div><div class="pv117badge">Chỉ xem</div></div>
-      <div class="pv117stats"><div class="pv117stat"><b>${as.length}</b><span>Bài được giao</span></div><div class="pv117stat"><b>${submitted.length}</b><span>Bài đã nộp</span></div><div class="pv117stat"><b>${as.length?Math.round(submitted.length/as.length*100):0}%</b><span>Tiến độ hoàn thành</span></div><div class="pv117stat"><b>${avg}</b><span>Điểm TB đã công bố</span></div></div>
-      <div class="pv117notice">Chỉ các điểm giáo viên đã công bố mới hiển thị cho phụ huynh.</div>`;
-    }
-  }else{
-    if(err)err.textContent='Không thể mở cổng phụ huynh demo.';
-  }
-  return false;
-};
-
-/* Enter key uses the same direct handler. */
-['parentLoginUser','parentLoginPass'].forEach(id=>{
- const el=document.getElementById(id);
- if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')window.parentV119DemoLogin(e)});
-});
 })();
 </script></body>
 </html>
