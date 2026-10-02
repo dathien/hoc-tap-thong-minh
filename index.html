@@ -251,7 +251,17 @@ html,body{margin:0!important;padding:0!important}
 .sv2-quick-item span:last-child{font-size:12px;font-weight:800;line-height:1.15;text-align:center}
 @media(max-width:760px){.sv2-quick-nav{grid-template-columns:repeat(3,1fr);border-radius:24px}.sv2-quick-item{min-height:66px}}
 </style>
-</head>
+<style id="v8812-policy-style">
+#teacherPublishPolicyV112 .v112grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+#teacherPublishPolicyV112 .v112card{display:block!important;padding:12px!important;border:1px solid #cfe2e7!important;border-radius:12px!important;background:#fff!important}
+#teacherPublishPolicyV112 .v112title{font-size:12px!important;font-weight:950!important;color:#0f766e!important;text-transform:uppercase!important;margin-bottom:8px!important}
+#teacherPublishPolicyV112 .v112opt{display:grid!important;grid-template-columns:18px minmax(0,1fr)!important;gap:8px!important;align-items:start!important;margin:7px 0!important;padding:9px!important;border:1px solid #dbe7ed!important;border-radius:9px!important;background:#f8fbfd!important;cursor:pointer!important}
+#teacherPublishPolicyV112 .v112opt input{display:block!important;width:auto!important;height:auto!important;margin:3px 0 0!important}
+#teacherPublishPolicyV112 .v112opt span,#teacherPublishPolicyV112 .v112opt b,#teacherPublishPolicyV112 .v112opt small{display:block!important}
+#teacherPublishPolicyV112 .v112opt b{font-size:12px!important;color:#17324d!important}
+#teacherPublishPolicyV112 .v112opt small{font-size:10.5px!important;color:#64748b!important;line-height:1.4!important;margin-top:2px!important}
+@media(max-width:760px){#teacherPublishPolicyV112 .v112grid{grid-template-columns:1fr!important}}
+</style></head>
 <body>
 <div class="app">
 <header class="topbar">
@@ -1157,36 +1167,31 @@ window.managerAssign=function(id){const subject=document.getElementById('subject
 </style>
 <div aria-label="Soạn và giao bài trắc nghiệm" id="quizBuilder">
 <div class="quiz-builder-head"><div><span class="quiz-kicker">GIAO BÀI ÔN LUYỆN</span><h3>Trắc nghiệm phân hóa theo năng lực</h3><p>Chọn lớp, học sinh, môn học và cấu trúc 3 mức hoặc 4 mức. Học sinh làm trực tiếp trong app; kết quả từng câu được lưu để giáo viên xem và chấm.</p></div><button class="btn secondary small" onclick="quizClose()" type="button">Đóng</button></div>
-<div class="quiz-step"><b>1</b><span>Đối tượng &amp; nội dung</span></div>
+<section id="teacherPublishPolicyV112" style="display:block!important;visibility:visible!important;opacity:1!important;margin:14px 0 16px;padding:16px;border:2px solid #0f8b83;border-radius:14px;background:#f7fffe">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
+<div style="font-weight:950;color:#075e59;font-size:15px">CÀI ĐẶT KHI GIAO BÀI</div>
+<div style="font-size:11px;color:#64748b">Giáo viên chọn trước khi bấm Giao bài</div>
+</div>
+<div class="v112grid">
+<div class="v112card">
+<div class="v112title">Điểm của học sinh</div>
+<label class="v112opt"><input checked="" name="qGradeReleaseMode" type="radio" value="instant"/><span><b>Hiện điểm ngay sau khi nộp</b><small>Hệ thống tự chấm và công bố điểm ngay.</small></span></label>
+<label class="v112opt"><input name="qGradeReleaseMode" type="radio" value="manual"/><span><b>Chấm thủ công</b><small>Học sinh chờ giáo viên chấm và nhập điểm.</small></span></label>
+</div>
+<div class="v112card">
+<div class="v112title">Đáp án đúng</div>
+<label class="v112opt"><input checked="" name="v108AnswerRelease" type="radio" value="show"/><span><b>Cho xem đáp án</b><small>Chỉ hiện sau khi điểm được công bố.</small></span></label>
+<label class="v112opt"><input name="v108AnswerRelease" type="radio" value="hide"/><span><b>Không cho xem đáp án</b><small>Học sinh chỉ xem điểm/kết quả.</small></span></label>
+</div>
+</div>
+</section><div class="quiz-step"><b>1</b><span>Đối tượng &amp; nội dung</span></div>
 <div class="qgrid"><div><label for="qClass">Lớp nhận bài</label><select id="qClass" onchange="quizClassChanged()"></select></div><div><label for="qRecipient">Giao cho</label><select id="qRecipient"></select></div><div><label for="qSubject">Môn học</label><input id="qSubject" list="qSubjectList" placeholder="Ví dụ: Toán"/><datalist id="qSubjectList"><option value="Toán"><option value="Vật lí"><option value="Hóa học"><option value="Sinh học"><option value="Lịch sử"><option value="Địa lí"><option value="Tiếng Anh"><option value="Tin học"></option></option></option></option></option></option></option></option></datalist></div><div><label for="qTitle">Tên bài ôn luyện</label><input id="qTitle" placeholder="Ví dụ: Ôn tập hàm số"/></div></div>
 <div class="qgrid" id="teacherAssessmentClassify">
 <div><label for="qTrack">Đưa bài vào khu vực học sinh</label><select id="qTrack" onchange="syncAssessmentSubtype()"><option value="assignment">Bài tập &amp; ôn luyện</option><option value="practice">Kiểm tra · Luyện tập</option><option value="exam">Kiểm tra · Ôn thi</option></select></div>
 <div><label for="qSubtype">Nhóm bài / kỳ kiểm tra</label><select id="qSubtype"></select></div>
 
-<div class="v111-setting">
-<label>Hiển thị điểm cho học sinh</label>
-<div class="v111-options">
-<label><input checked="" name="qGradeReleaseMode" type="radio" value="instant"/>
-<span><b>Xem điểm ngay sau khi nộp</b><small>Hệ thống tự chấm và hiện điểm ngay.</small></span>
-</label>
-<label><input name="qGradeReleaseMode" type="radio" value="manual"/>
-<span><b>Giáo viên chấm thủ công</b><small>Chỉ hiện điểm sau khi giáo viên chấm.</small></span>
-</label>
-</div>
-</div>
-<div class="v111-setting">
-<label>Hiển thị đáp án cho học sinh</label>
-<div class="v111-options">
-<label><input checked="" name="v108AnswerRelease" type="radio" value="show"/>
-<span><b>Cho xem đáp án</b><small>Chỉ xem sau khi điểm đã được công bố.</small></span>
-</label>
-<label><input name="v108AnswerRelease" type="radio" value="hide"/>
-<span><b>Không cho xem đáp án</b><small>Chỉ hiển thị điểm/kết quả.</small></span>
-</label>
-</div>
-</div>
-</div>
 
+</div>
 <div class="quiz-step"><b>2</b><span>Phân hóa &amp; số câu</span></div>
 <div class="qgrid"><div><label for="qLevel">Chế độ phân hóa</label><select id="qLevel" onchange="syncQuizScheme();autoDistributeLevels()"><option value="Phân hóa 3 mức">3 mức · Nhận biết – Thông hiểu – Vận dụng</option><option selected="" value="Phân hóa 4 mức">4 mức · Nhận biết – Thông hiểu – Vận dụng – Vận dụng cao</option></select></div><div><label for="qQuestionCount">Số câu hỏi</label><div class="question-count-control"><button aria-label="Giảm số câu" class="qcount-btn" onclick="changeQuizQuestionCount(-1)" type="button">−</button><input aria-label="Số câu hỏi" id="qQuestionCount" max="50" min="5" onchange="applyQuizQuestionCount();autoDistributeLevels()" step="1" type="number" value="10"/><button aria-label="Tăng số câu" class="qcount-btn" onclick="changeQuizQuestionCount(1)" type="button">＋</button></div><small class="qcount-hint">5–50 câu · Có thể tăng/giảm hoặc nhập trực tiếp.</small></div></div>
 <div class="level-distribution" id="qDistribution"></div>
@@ -4240,7 +4245,16 @@ window.studentV2OpenAssignment=function(id){
 </script>
 <style id="v8797-style">
 .v97preview{min-height:100vh;padding:28px;background:#f3f7fc}.v97back,.v97top button{height:42px;padding:0 15px;border:1px solid #d7e2ef;border-radius:11px;background:#fff;color:#334155;font-weight:850}.v97card{max-width:720px;margin:48px auto;padding:34px;border:1px solid #dce6f2;border-radius:22px;background:#fff;text-align:center;box-shadow:0 18px 45px rgba(30,58,138,.08)}.v97eyebrow{display:inline-block;padding:6px 10px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px;font-weight:950}.v97card h2{margin:14px 0;color:#172554;font-size:28px}.v97chips{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.v97chips span{padding:7px 10px;border-radius:9px;background:#f1f5f9;color:#475569;font-size:12px;font-weight:800}.v97notrun{width:185px;margin:22px auto;padding:15px;border:1px solid #bfdbfe;border-radius:15px;background:#f8fbff}.v97notrun small,.v97notrun strong{display:block}.v97notrun small{color:#64748b;font-size:9px}.v97notrun b{display:block;margin:5px 0;font-size:29px;color:#172554}.v97notrun strong{color:#2563eb;font-size:10px}.v97start{height:49px;padding:0 32px;border:0;border-radius:12px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-weight:950}.v97page{min-height:100vh;padding:24px 32px 105px;background:#f3f7fc}.v97top{max-width:1060px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center}.v97hero{max-width:1060px;margin:auto;padding:24px 28px;border-radius:20px;background:linear-gradient(125deg,#172554,#1e3a8a 62%,#4338ca);color:#fff;display:flex;justify-content:space-between;align-items:center}.v97hero h2{margin:5px 0}.v97hero p{margin:0;color:#dbeafe}.v97clock{min-width:132px;padding:12px;border-radius:14px;background:rgba(255,255,255,.12);text-align:center}.v97clock small,.v97clock b{display:block}.v97clock b{font-size:25px;margin-top:4px}.v97list{max-width:1060px;margin:15px auto;display:grid;gap:12px}.v97q{padding:20px 22px;border:1px solid #dce6f2;border-radius:17px;background:#fff}.v97qh{display:flex;justify-content:space-between}.v97qh>b{color:#1d4ed8}.v97qh span{padding:4px 8px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10px}.v97opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.v97opts label{display:grid;grid-template-columns:20px 28px minmax(0,1fr);gap:8px;padding:12px;border:1px solid #dce5ef;border-radius:11px}.v97submit,.v97done{max-width:1060px;margin:15px auto;padding:14px;border-radius:14px;background:#fff;border:1px solid #d7e2ef}.v97submit{display:flex;justify-content:space-between;align-items:center;position:sticky;bottom:12px}.v97submit button{height:43px;padding:0 18px;border:0;border-radius:10px;background:#3156df;color:#fff;font-weight:900}
-</style></body>
+</style><script id="v8812-policy-sync">
+(function(){
+ function sync(){
+  const a=document.querySelector('input[name="v108AnswerRelease"]:checked')?.value||'show';
+  const old=document.getElementById('qShowAnswers'); if(old) old.checked=(a==='show');
+ }
+ document.addEventListener('change',e=>{if(e.target?.name==='v108AnswerRelease')sync()},true);
+ setTimeout(sync,0);
+})();
+</script></body>
 </html>
 <style>
 /* v8.6.30 - Phân tích cá nhân hóa có dữ liệu demo lớp chủ nhiệm */
@@ -6079,7 +6093,6 @@ disarm();
 .v109modal button{margin-top:16px;height:44px;padding:0 22px;border:0;border-radius:11px;background:#3156df;color:#fff;font-weight:900}
 .v109count{align-self:center;padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.13);font-size:11px;font-weight:850;color:#fde68a}
 </style>
-
 <script id="v8810-policy-logic">
 (function(){
 'use strict';
