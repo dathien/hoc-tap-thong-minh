@@ -4405,6 +4405,95 @@ window.openParentLogin=function(){
  return r;
 };
 })();
+</script><script id="v8821-parent-full-navigation">
+(function(){
+'use strict';
+const A=v=>Array.isArray(v)?v:[];
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function child(){
+ try{return A(state.students).find(s=>String(s.name||'').normalize('NFC').trim().toLowerCase()==='nguyễn minh an')
+   ||A(state.students).find(s=>String(s.name||'').toLowerCase().includes('minh an'))||null}catch(_){return null}
+}
+function items(){return A(child()?.assignments)}
+function publishedScore(a){
+ if(a?.gradePublished!==true)return null;
+ const n=Number(a.teacherScore!==''&&a.teacherScore!=null?a.teacherScore:a.score);
+ return Number.isFinite(n)?n:null;
+}
+function status(a){
+ if(a.submittedAt && publishedScore(a)!==null)return 'Đã có điểm';
+ if(a.submittedAt)return 'Chờ giáo viên chấm';
+ if(a.status==='doing')return 'Đang làm';
+ return 'Chưa làm';
+}
+function date(v){if(!v)return '—';try{return new Date(v).toLocaleDateString('vi-VN')}catch(_){return '—'}}
+function title(t){const x=document.getElementById('pv117Title');if(x)x.textContent=t}
+function row(a){
+ const sc=publishedScore(a);
+ return `<div class="pv117row"><div><b>${esc(a.title||'Bài ôn tập')}</b><small>${esc(a.subject||'Ôn tập')} · ${esc(a.assessmentSubtype||'Luyện tập')} · ${date(a.submittedAt||a.date)}</small></div><div>${sc!==null?`<span class="pv117score">${sc}/10</span>`:`<span class="pv117pending">${esc(status(a))}</span>`}</div></div>`;
+}
+function renderOverview(){
+ title('Tổng quan học tập');
+ const as=items(), sub=as.filter(a=>a.submittedAt), scores=as.map(publishedScore).filter(v=>v!==null);
+ const avg=scores.length?(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1):'—';
+ const pct=as.length?Math.round(sub.length/as.length*100):0;
+ const recent=[...as].sort((a,b)=>new Date(b.submittedAt||b.date||0)-new Date(a.submittedAt||a.date||0)).slice(0,6);
+ document.getElementById('pv117Content').innerHTML=`<div class="pv117hero"><div><small>HỒ SƠ PHỤ HUYNH ĐƯỢC LIÊN KẾT</small><h2>Nguyễn Minh An · 10A1</h2><p>Phụ huynh chỉ được xem thông tin học tập của Nguyễn Minh An.</p></div><div class="pv117badge">CHỈ XEM</div></div>
+ <div class="pv117stats"><div class="pv117stat"><b>${as.length}</b><span>Bài được giao</span></div><div class="pv117stat"><b>${sub.length}</b><span>Bài đã nộp</span></div><div class="pv117stat"><b>${pct}%</b><span>Tiến độ hoàn thành</span></div><div class="pv117stat"><b>${avg}</b><span>Điểm TB đã công bố</span></div></div>
+ <div class="pv117card"><h3>Hoạt động học tập gần đây</h3>${recent.length?recent.map(row).join(''):'<div class="pv117empty">Chưa có dữ liệu.</div>'}</div>`;
+}
+function renderAssignments(){
+ title('Bài tập & kiểm tra');
+ const as=[...items()].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+ document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Bài được giao cho Nguyễn Minh An</h3>${as.length?as.map(row).join(''):'<div class="pv117empty">Chưa có bài được giao.</div>'}</div>
+ <div class="pv117notice">Phụ huynh chỉ theo dõi trạng thái; không thể mở làm bài, sửa hoặc nộp bài thay học sinh.</div>`;
+}
+function renderResults(){
+ title('Kết quả học tập');
+ const done=items().filter(a=>a.submittedAt);
+ document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Kết quả các bài đã nộp</h3>${done.length?done.map(row).join(''):'<div class="pv117empty">Chưa có bài đã nộp.</div>'}</div>
+ <div class="pv117notice">Bài chấm thủ công chỉ hiện điểm sau khi giáo viên công bố. Điểm chưa công bố không được tiết lộ cho phụ huynh.</div>`;
+}
+function renderProgress(){
+ title('Tiến độ ôn tập');
+ const groups={};items().forEach(a=>{const s=a.subject||'Khác';(groups[s]||(groups[s]=[])).push(a)});
+ const body=Object.entries(groups).map(([s,x])=>{
+   const d=x.filter(a=>a.submittedAt).length,p=x.length?Math.round(d/x.length*100):0;
+   return `<div class="pv117row"><div><b>${esc(s)}</b><small>${d}/${x.length} bài đã hoàn thành<div class="pv117progress"><i style="width:${p}%"></i></div></small></div><span class="pv117score">${p}%</span></div>`;
+ }).join('');
+ document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Tiến độ theo môn</h3>${body||'<div class="pv117empty">Chưa có dữ liệu tiến độ.</div>'}</div>`;
+}
+function renderFeedback(){
+ title('Nhận xét giáo viên');
+ const xs=items().filter(a=>String(a.teacherComment||a.feedback||'').trim());
+ document.getElementById('pv117Content').innerHTML=`<div class="pv117card"><h3>Nhận xét dành cho Nguyễn Minh An</h3>${xs.length?xs.map(a=>`<div class="pv117row"><div><b>${esc(a.title||a.subject||'Nhận xét')}</b><small>${esc(a.teacherComment||a.feedback)}</small></div><span>${date(a.gradedAt||a.submittedAt)}</span></div>`).join(''):'<div class="pv117empty">Chưa có nhận xét của giáo viên.</div>'}</div>`;
+}
+const renders={overview:renderOverview,assignments:renderAssignments,results:renderResults,progress:renderProgress,feedback:renderFeedback};
+window.parentV121Show=function(which){
+ document.querySelectorAll('#parentV117 nav button[data-pv]').forEach(b=>b.classList.toggle('active',b.dataset.pv===which));
+ (renders[which]||renderOverview)();
+};
+document.addEventListener('click',function(e){
+ const b=e.target.closest('#parentV117 nav button[data-pv]');
+ if(!b)return;
+ e.preventDefault();e.stopPropagation();
+ window.parentV121Show(b.dataset.pv);
+},true);
+
+/* Đăng xuất hoạt động độc lập với script phụ huynh cũ đã loại bỏ. */
+window.parentV117Logout=function(){
+ const pv=document.getElementById('parentV117');if(pv){pv.classList.remove('open');pv.setAttribute('aria-hidden','true')}
+ const app=document.querySelector('.app');if(app)app.style.display='';
+ const gate=document.getElementById('roleGateway');if(gate)gate.hidden=false;
+ document.body.style.overflow='';
+};
+
+/* Sau đăng nhập 8.8.20, Tổng quan cũng dùng chung renderer 8.8.21. */
+document.addEventListener('click',function(e){
+ if(!e.target.closest('#parentDemoLoginButton'))return;
+ setTimeout(()=>{if(document.getElementById('parentV117')?.classList.contains('open'))window.parentV121Show('overview')},0);
+},true);
+})();
 </script></body>
 </html>
 <style>
